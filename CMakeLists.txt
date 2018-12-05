@@ -39,3 +39,13 @@ set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp)
 set(HEADERS include/rlslp.hpp include/parallel_recompression.hpp)
 
 build_library()
+
+# building tests
+set(BUILD_TESTS true)
+
+build_tests("bcomp")
+build_tests("pcomp")
+build_tests("multiset")
+build_tests("partition")
+build_tests("recomp")
+build_tests("radix_sort")
