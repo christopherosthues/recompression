@@ -3,7 +3,9 @@
 
 #include <omp.h>
 
+#include <parallel/algorithm>
 #include <chrono>
+#include <thread>
 
 #ifdef DEBUG
 
@@ -13,18 +15,228 @@
 
 #include <glog/logging.h>
 
+#ifndef THREAD_COUNT
+#define THREAD_COUNT std::thread::hardware_concurrency()
+#endif
+
 
 /* ======================= bcomp ======================= */
 void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
     DLOG(INFO) << "BComp input - text size: " << text.size();
     const auto startTime = std::chrono::system_clock::now();
 
-    // TODO(Chris): Implement parallel BComp
+    size_t block_count = 0;
+    size_t substr_len = 0;
+
+    std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> blocks;
+    std::vector<std::pair<variable_t, size_t>> positions;
+
+    const auto startTimeBlock = std::chrono::system_clock::now();
+
+    size_t *bounds;
+#pragma omp parallel num_threads(THREAD_COUNT)
+    {
+        auto thread_id = omp_get_thread_num();
+        auto n_threads = static_cast<size_t>(omp_get_num_threads());
+        variable_t block_len = 1;
+
+#pragma omp single
+        {
+            bounds = new size_t[n_threads + 1];
+            bounds[0] = 0;
+        }
+        std::vector<std::pair<variable_t, size_t>> t_positions;
+        std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> t_blocks;
+        size_t begin = 0;
+        bool add = false;
+
+#pragma omp for schedule(static) nowait reduction(+:block_count) reduction(+:substr_len)
+        for (size_t i = 0; i < text.size() - 1; ++i) {
+            if (begin == 0) {
+                DLOG(INFO) << "begin at " << i << " for thread " << thread_id;
+                begin = i;
+                if (i == 0) {
+                    begin = 1;
+                }
+                add = !(begin > 1 && text[begin - 1] == text[begin]);
+            }
+            while (i < text.size() - 1 && text[i] == text[i + 1]) {
+//            if (text[i - 1] == text[i]) {
+                block_len++;
+                i++;
+//                subtr_len++;
+////                new_text_size--;
+            }
+            if (!add) {
+                DLOG(INFO) << "skipping block (" << text[i] << "," << block_len << ")";
+                block_len = 1;
+                add = true;
+            }
+            if (block_len > 1) {
+//            } else if (block_len > 1) {
+                substr_len += block_len - 1;
+                DLOG(INFO) << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
+                           << " by thread " << thread_id;
+                t_positions.emplace_back(block_len, i - block_len + 1);
+                std::pair<variable_t, variable_t> block = std::make_pair(text[i], block_len);
+                t_blocks[block] = 1;
+                block_count++;
+                block_len = 1;
+            }
+        }
+
+        bounds[thread_id + 1] = t_positions.size();
+
+#pragma omp barrier
+#pragma omp single
+        {
+            for (size_t i = 1; i < n_threads + 1; ++i) {
+                bounds[i] += bounds[i - 1];
+            }
+            positions.resize(positions.size() + bounds[n_threads]);
+        }
+        std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
+
+#ifdef DEBUG
+        std::stringstream block_stream;
+        for (const auto& block : t_blocks) {
+            block_stream << "(" << block.first.first << "," << block.first.second << ")";
+        }
+        DLOG(INFO) << "Inserting blocks " << block_stream.str();
+#endif
+#pragma omp critical
+        blocks.insert(t_blocks.begin(), t_blocks.end());
+    }
+    delete[] bounds;
+
+    DLOG(INFO) << "Blocks found: " << block_count;
+
+#ifdef DEBUG
+    std::stringstream ssstream;
+    for (const auto& block : blocks) {
+        ssstream << "(" << block.first.first << "," << block.first.second << ")";
+    }
+    DLOG(INFO) << "Blocks are " << ssstream.str();
+#endif
+
+    std::vector<std::pair<variable_t, variable_t>> sort_blocks(blocks.size());
+
+#pragma omp parallel num_threads(THREAD_COUNT)
+    {
+        auto iter = blocks.begin();
+
+#pragma omp for schedule(static) nowait
+        for (size_t i = 0; i < blocks.size(); ++i) {
+            if (iter == blocks.begin()) {
+                std::advance(iter, i);
+            }
+            DLOG(INFO) << "Adding block (" << (*iter).first.first << "," << (*iter).first.second << ") at index " << i;
+            sort_blocks[i] = (*iter).first;
+            ++iter;
+        }
+    }
+
+    __gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end());
+
+#ifdef DEBUG
+    std::stringstream sstream;
+    for (const auto& block : sort_blocks) {
+        sstream << "(" << block.first << "," << block.second << ")";
+    }
+    DLOG(INFO) << "Sorted blocks are " << sstream.str();
+#endif
+
+    const auto endTimeBlock = std::chrono::system_clock::now();
+    const auto timeSpanBlock = endTimeBlock - startTimeBlock;
+    DLOG(INFO) << "Time for finding blocks: "
+               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlock).count() << "[ms]";
+
+    block_count = sort_blocks.size();
+    auto nt_count = rlslp.non_terminals.size();
+    rlslp.reserve(nt_count + block_count);
+    rlslp.resize(nt_count + block_count);
+    rlslp.block_count += block_count;
+
+    auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
+    const auto startTimeAss = std::chrono::system_clock::now();
+
+#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
+    for (size_t i = 0; i < sort_blocks.size(); ++i) {
+        DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_blocks[i].first << ","
+                   << sort_blocks[i].second << ") at index " << nt_count + i;
+        blocks[sort_blocks[i]] = next_nt + static_cast<variable_t>(i);
+        auto len = static_cast<size_t>(sort_blocks[i].second);
+        if (sort_blocks[i].first >= static_cast<variable_t>(rlslp.terminals)) {
+            len *= rlslp[sort_blocks[i].first - rlslp.terminals].len;
+        }
+        rlslp[nt_count + i] = rlslp::non_terminal(sort_blocks[i].first, -sort_blocks[i].second, len);
+    }
+
+    const auto endTimeAss = std::chrono::system_clock::now();
+    const auto timeSpanAss = endTimeAss - startTimeAss;
+    DLOG(INFO) << "Time for block nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
+               << "[ms]";
+
+
+    const auto startTimeRep = std::chrono::system_clock::now();
+#ifdef DEBUG
+    std::stringstream pos_stream;
+    for (const auto& pos : positions) {
+        pos_stream << pos.second << " ";
+    }
+    DLOG(INFO) << "Positions are " << pos_stream.str();
+#endif
+
+
+#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
+    for (size_t i = 0; i < positions.size(); ++i) {
+        auto block = std::make_pair(text[positions[i].second], positions[i].first);
+        text[positions[i].second] = blocks[block];
+
+        auto length = static_cast<size_t>(positions[i].first);
+        for (size_t j = 1; j < length; ++j) {
+            text[j + positions[i].second] = -1;
+        }
+    }
+
+    size_t new_text_size = text.size() - substr_len;
+    if (new_text_size > 1 && block_count > 0) {
+        size_t copy_i = positions[0].second + 1;
+        size_t i = positions[0].second + positions[0].first;  // jump to first position to copy
+
+        for (; i < text.size(); ++i) {
+            if (text[i] != -1) {
+                text[copy_i++] = text[i];
+            }
+        }
+    }
+
+    const auto endTimeRep = std::chrono::system_clock::now();
+    const auto timeSpanRep = endTimeRep - startTimeRep;
+    DLOG(INFO) << "Time for replacing blocks: "
+               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
+
+    DLOG(INFO) << "Shrinking text by " << substr_len << " to length " << new_text_size;
+
+    text.resize(new_text_size);
+    text.shrink_to_fit();
 
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
     DLOG(INFO) << "Time for bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                << "[ms]";
+
+#ifdef DEBUG
+    if (text.size() < 30) {
+        std::stringstream text_stream;
+        for (const auto& c : text) {
+            text_stream << c << " ";
+        }
+        DLOG(INFO) << "Text: " << text_stream.str();
+    }
+#endif
+    DLOG(INFO) << "BComp ouput - text size: " << text.size() << " - distinct blocks: " << block_count
+               << " - string length reduce by: " << substr_len;
 }
 
 
