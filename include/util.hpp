@@ -14,11 +14,11 @@ namespace util {
 
 std::string text_vector_to_string(const text_t& text);
 
-std::string blocks_to_string(const std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash>& blocks);
+std::string blocks_to_string(const std::unordered_map<block_t, variable_t, pair_hash>& blocks);
 
-std::string vector_blocks_to_string(const std::vector<std::pair<variable_t, variable_t>>& sort_blocks);
+std::string vector_blocks_to_string(const std::vector<block_t>& sort_blocks);
 
-std::string positions_to_string(const std::vector<std::pair<variable_t, size_t>>& positions);
+std::string positions_to_string(const std::vector<position_t>& positions);
 
 }  // namespace util
 }  // namespace recomp

@@ -37,7 +37,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
 include(Build)
 
 set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp)
-set(HEADERS include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp)
+set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp)
 
 build_library()
 

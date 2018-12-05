@@ -8,9 +8,7 @@
 #include <thread>
 
 #ifdef DEBUG
-
 #include <sstream>
-
 #endif
 
 #include <glog/logging.h>
@@ -30,8 +28,8 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
     size_t block_count = 0;
     size_t substr_len = 0;
 
-    std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> blocks;
-    std::vector<std::pair<variable_t, size_t>> positions;
+    std::unordered_map<block_t, variable_t, pair_hash> blocks;
+    std::vector<position_t> positions;
 
     const auto startTimeBlock = std::chrono::system_clock::now();
 
@@ -47,8 +45,8 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
             bounds = new size_t[n_threads + 1];
             bounds[0] = 0;
         }
-        std::vector<std::pair<variable_t, size_t>> t_positions;
-        std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> t_blocks;
+        std::vector<position_t> t_positions;
+        std::unordered_map<block_t, variable_t, pair_hash> t_blocks;
         size_t begin = 0;
         bool add = false;
 
@@ -80,7 +78,7 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
                 DLOG(INFO) << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
                            << " by thread " << thread_id;
                 t_positions.emplace_back(block_len, i - block_len + 1);
-                std::pair<variable_t, variable_t> block = std::make_pair(text[i], block_len);
+                block_t block = std::make_pair(text[i], block_len);
                 t_blocks[block] = 1;
                 block_count++;
                 block_len = 1;
@@ -110,7 +108,7 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
 
     DLOG(INFO) << "Blocks are " << util::blocks_to_string(blocks);
 
-    std::vector<std::pair<variable_t, variable_t>> sort_blocks(blocks.size());
+    std::vector<block_t> sort_blocks(blocks.size());
 
 #pragma omp parallel num_threads(THREAD_COUNT)
     {

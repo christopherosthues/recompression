@@ -6,10 +6,9 @@
 #include <string>
 #include <vector>
 
-namespace recomp {
+#include "defs.hpp"
 
-typedef std::int32_t variable_t;
-typedef std::uint32_t terminal_count_t;
+namespace recomp {
 
 const terminal_count_t CHAR_ALPHABET = 256;
 
