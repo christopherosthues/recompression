@@ -31,9 +31,11 @@ add_custom_target(external-downloads)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
+
+# includes build_library, build_executable and build_tests macros
 include(Build)
 
-set(SOURCES )
-set(HEADERS )
+set(SOURCES src/rlslp.cpp)
+set(HEADERS include/rlslp.hpp)
 
 build_library()
