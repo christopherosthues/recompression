@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include ""
+#include "parallel_recompression.hpp"
 
 TEST(recomp, empty) {
 
