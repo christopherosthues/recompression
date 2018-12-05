@@ -5,6 +5,7 @@ set(PROJECT_VENDOR "Christopher Osthues")
 set(PROJECT_CONTACT "osthues.christopher@web.de")
 set(PROJECT_URL "https://github.com/christopherosthues/recompression")
 set(PROJECT_DESCRIPTION "Recompression")
+#set(CMAKE_BUILD_TYPE "Release")
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
@@ -35,8 +36,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
 # includes build_library, build_executable and build_tests macros
 include(Build)
 
-set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp)
-set(HEADERS include/rlslp.hpp include/parallel_recompression.hpp)
+set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp)
+set(HEADERS include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp)
 
 build_library()
 
@@ -44,8 +45,8 @@ build_library()
 set(BUILD_TESTS true)
 
 build_tests("bcomp")
-build_tests("pcomp")
-build_tests("multiset")
-build_tests("partition")
-build_tests("recomp")
-build_tests("radix_sort")
+#build_tests("pcomp")
+#build_tests("multiset")
+#build_tests("partition")
+#build_tests("recomp")
+#build_tests("radix_sort")

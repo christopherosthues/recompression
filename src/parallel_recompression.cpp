@@ -15,6 +15,8 @@
 
 #include <glog/logging.h>
 
+#include "util.hpp"
+
 #ifndef THREAD_COUNT
 #define THREAD_COUNT std::thread::hardware_concurrency()
 #endif
@@ -97,13 +99,8 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
         }
         std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-#ifdef DEBUG
-        std::stringstream block_stream;
-        for (const auto& block : t_blocks) {
-            block_stream << "(" << block.first.first << "," << block.first.second << ")";
-        }
-        DLOG(INFO) << "Inserting blocks " << block_stream.str();
-#endif
+    DLOG(INFO) << "Thread " << thread_id << " inserting blocks " << util::blocks_to_string(t_blocks);
+
 #pragma omp critical
         blocks.insert(t_blocks.begin(), t_blocks.end());
     }
@@ -111,13 +108,7 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
 
     DLOG(INFO) << "Blocks found: " << block_count;
 
-#ifdef DEBUG
-    std::stringstream ssstream;
-    for (const auto& block : blocks) {
-        ssstream << "(" << block.first.first << "," << block.first.second << ")";
-    }
-    DLOG(INFO) << "Blocks are " << ssstream.str();
-#endif
+    DLOG(INFO) << "Blocks are " << util::blocks_to_string(blocks);
 
     std::vector<std::pair<variable_t, variable_t>> sort_blocks(blocks.size());
 
@@ -138,13 +129,7 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
 
     __gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end());
 
-#ifdef DEBUG
-    std::stringstream sstream;
-    for (const auto& block : sort_blocks) {
-        sstream << "(" << block.first << "," << block.second << ")";
-    }
-    DLOG(INFO) << "Sorted blocks are " << sstream.str();
-#endif
+    DLOG(INFO) << "Sorted blocks are " << util::vector_blocks_to_string(sort_blocks);
 
     const auto endTimeBlock = std::chrono::system_clock::now();
     const auto timeSpanBlock = endTimeBlock - startTimeBlock;
@@ -179,14 +164,8 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
 
 
     const auto startTimeRep = std::chrono::system_clock::now();
-#ifdef DEBUG
-    std::stringstream pos_stream;
-    for (const auto& pos : positions) {
-        pos_stream << pos.second << " ";
-    }
-    DLOG(INFO) << "Positions are " << pos_stream.str();
-#endif
 
+    DLOG(INFO) << "Positions are " << util::positions_to_string(positions);
 
 #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
     for (size_t i = 0; i < positions.size(); ++i) {
@@ -228,13 +207,10 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
 
 #ifdef DEBUG
     if (text.size() < 30) {
-        std::stringstream text_stream;
-        for (const auto& c : text) {
-            text_stream << c << " ";
-        }
-        DLOG(INFO) << "Text: " << text_stream.str();
+        DLOG(INFO) << "Text: " << util::text_vector_to_string(text);
     }
 #endif
+
     DLOG(INFO) << "BComp ouput - text size: " << text.size() << " - distinct blocks: " << block_count
                << " - string length reduce by: " << substr_len;
 }
