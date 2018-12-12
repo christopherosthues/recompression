@@ -1,0 +1,360 @@
+I1212 23:44:42.283532  3311 util.cpp:9] Reading file: ../../einstein.de.txt
+I1212 23:44:42.505244  3311 util.cpp:24] Read 92758441 bytes
+I1212 23:44:42.505260  3311 util.cpp:25] Finished reading file
+I1212 23:44:42.979831  3311 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:44:42.979856  3311 bcomp_bench.cpp:34] Time for parallel bcomp: 472[ms]
+RESULT dataset=einstein.de.txt time=472
+I1212 23:44:42.991163  3316 util.cpp:9] Reading file: ../../einstein.de.txt
+I1212 23:44:43.211272  3316 util.cpp:24] Read 92758441 bytes
+I1212 23:44:43.211290  3316 util.cpp:25] Finished reading file
+I1212 23:44:43.684286  3316 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:44:43.684312  3316 bcomp_bench.cpp:34] Time for parallel bcomp: 470[ms]
+RESULT dataset=einstein.de.txt time=470
+I1212 23:44:43.695637  3321 util.cpp:9] Reading file: ../../einstein.de.txt
+I1212 23:44:43.915326  3321 util.cpp:24] Read 92758441 bytes
+I1212 23:44:43.915344  3321 util.cpp:25] Finished reading file
+I1212 23:44:44.383512  3321 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:44:44.383535  3321 bcomp_bench.cpp:34] Time for parallel bcomp: 465[ms]
+RESULT dataset=einstein.de.txt time=465
+I1212 23:44:44.394935  3326 util.cpp:9] Reading file: ../../einstein.de.txt
+I1212 23:44:44.615999  3326 util.cpp:24] Read 92758441 bytes
+I1212 23:44:44.616016  3326 util.cpp:25] Finished reading file
+I1212 23:44:45.090508  3326 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:44:45.090533  3326 bcomp_bench.cpp:34] Time for parallel bcomp: 471[ms]
+RESULT dataset=einstein.de.txt time=471
+I1212 23:44:45.101876  3331 util.cpp:9] Reading file: ../../einstein.de.txt
+I1212 23:44:45.326642  3331 util.cpp:24] Read 92758441 bytes
+I1212 23:44:45.326659  3331 util.cpp:25] Finished reading file
+I1212 23:44:45.797135  3331 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:44:45.797160  3331 bcomp_bench.cpp:34] Time for parallel bcomp: 467[ms]
+RESULT dataset=einstein.de.txt time=467
+I1212 23:45:10.424130  3347 util.cpp:9] Reading file: ../../world_leaders
+I1212 23:45:10.761582  3347 util.cpp:24] Read 46968181 bytes
+I1212 23:45:10.761602  3347 util.cpp:25] Finished reading file
+I1212 23:45:10.934640  3347 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:10.934661  3347 bcomp_bench.cpp:34] Time for parallel bcomp: 171[ms]
+RESULT dataset=world\_leaders time=171
+I1212 23:45:10.939183  3352 util.cpp:9] Reading file: ../../world_leaders
+I1212 23:45:11.057117  3352 util.cpp:24] Read 46968181 bytes
+I1212 23:45:11.057134  3352 util.cpp:25] Finished reading file
+I1212 23:45:11.228493  3352 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:11.228515  3352 bcomp_bench.cpp:34] Time for parallel bcomp: 170[ms]
+RESULT dataset=world\_leaders time=170
+I1212 23:45:11.233104  3357 util.cpp:9] Reading file: ../../world_leaders
+I1212 23:45:11.348263  3357 util.cpp:24] Read 46968181 bytes
+I1212 23:45:11.348280  3357 util.cpp:25] Finished reading file
+I1212 23:45:11.519733  3357 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:11.519755  3357 bcomp_bench.cpp:34] Time for parallel bcomp: 170[ms]
+RESULT dataset=world\_leaders time=170
+I1212 23:45:11.524272  3362 util.cpp:9] Reading file: ../../world_leaders
+I1212 23:45:11.640542  3362 util.cpp:24] Read 46968181 bytes
+I1212 23:45:11.640560  3362 util.cpp:25] Finished reading file
+I1212 23:45:11.811866  3362 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:11.811887  3362 bcomp_bench.cpp:34] Time for parallel bcomp: 169[ms]
+RESULT dataset=world\_leaders time=169
+I1212 23:45:11.816474  3367 util.cpp:9] Reading file: ../../world_leaders
+I1212 23:45:11.930402  3367 util.cpp:24] Read 46968181 bytes
+I1212 23:45:11.930420  3367 util.cpp:25] Finished reading file
+I1212 23:45:12.101253  3367 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:12.101275  3367 bcomp_bench.cpp:34] Time for parallel bcomp: 169[ms]
+RESULT dataset=world\_leaders time=169
+I1212 23:45:28.101125  3381 util.cpp:9] Reading file: ../../dblp.xml.50MB
+I1212 23:45:28.451469  3381 util.cpp:24] Read 52428800 bytes
+I1212 23:45:28.451489  3381 util.cpp:25] Finished reading file
+I1212 23:45:28.686499  3381 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:28.686522  3381 bcomp_bench.cpp:34] Time for parallel bcomp: 233[ms]
+RESULT dataset=dblp.xml.50MB time=233
+I1212 23:45:28.693962  3386 util.cpp:9] Reading file: ../../dblp.xml.50MB
+I1212 23:45:28.819634  3386 util.cpp:24] Read 52428800 bytes
+I1212 23:45:28.819653  3386 util.cpp:25] Finished reading file
+I1212 23:45:29.055845  3386 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:29.055869  3386 bcomp_bench.cpp:34] Time for parallel bcomp: 234[ms]
+RESULT dataset=dblp.xml.50MB time=234
+I1212 23:45:29.063243  3391 util.cpp:9] Reading file: ../../dblp.xml.50MB
+I1212 23:45:29.190296  3391 util.cpp:24] Read 52428800 bytes
+I1212 23:45:29.190315  3391 util.cpp:25] Finished reading file
+I1212 23:45:29.430613  3391 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:29.430637  3391 bcomp_bench.cpp:34] Time for parallel bcomp: 238[ms]
+RESULT dataset=dblp.xml.50MB time=238
+I1212 23:45:29.438073  3396 util.cpp:9] Reading file: ../../dblp.xml.50MB
+I1212 23:45:29.565644  3396 util.cpp:24] Read 52428800 bytes
+I1212 23:45:29.565662  3396 util.cpp:25] Finished reading file
+I1212 23:45:29.807173  3396 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:29.807199  3396 bcomp_bench.cpp:34] Time for parallel bcomp: 240[ms]
+RESULT dataset=dblp.xml.50MB time=240
+I1212 23:45:29.814620  3401 util.cpp:9] Reading file: ../../dblp.xml.50MB
+I1212 23:45:29.944257  3401 util.cpp:24] Read 52428800 bytes
+I1212 23:45:29.944273  3401 util.cpp:25] Finished reading file
+I1212 23:45:30.181998  3401 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:30.182018  3401 bcomp_bench.cpp:34] Time for parallel bcomp: 236[ms]
+RESULT dataset=dblp.xml.50MB time=236
+I1212 23:45:46.424232  3419 util.cpp:9] Reading file: ../../dna.50MB
+I1212 23:45:46.845824  3419 util.cpp:24] Read 52428800 bytes
+I1212 23:45:46.845844  3419 util.cpp:25] Finished reading file
+I1212 23:45:47.497323  3419 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:47.497345  3419 bcomp_bench.cpp:34] Time for parallel bcomp: 649[ms]
+RESULT dataset=dna.50MB time=649
+I1212 23:45:47.503379  3424 util.cpp:9] Reading file: ../../dna.50MB
+I1212 23:45:47.630012  3424 util.cpp:24] Read 52428800 bytes
+I1212 23:45:47.630028  3424 util.cpp:25] Finished reading file
+I1212 23:45:48.278911  3424 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:48.278934  3424 bcomp_bench.cpp:34] Time for parallel bcomp: 647[ms]
+RESULT dataset=dna.50MB time=647
+I1212 23:45:48.284958  3429 util.cpp:9] Reading file: ../../dna.50MB
+I1212 23:45:48.412328  3429 util.cpp:24] Read 52428800 bytes
+I1212 23:45:48.412344  3429 util.cpp:25] Finished reading file
+I1212 23:45:49.061728  3429 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:49.061751  3429 bcomp_bench.cpp:34] Time for parallel bcomp: 647[ms]
+RESULT dataset=dna.50MB time=647
+I1212 23:45:49.067811  3434 util.cpp:9] Reading file: ../../dna.50MB
+I1212 23:45:49.195983  3434 util.cpp:24] Read 52428800 bytes
+I1212 23:45:49.195999  3434 util.cpp:25] Finished reading file
+I1212 23:45:49.861254  3434 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:49.861277  3434 bcomp_bench.cpp:34] Time for parallel bcomp: 663[ms]
+RESULT dataset=dna.50MB time=663
+I1212 23:45:49.867377  3439 util.cpp:9] Reading file: ../../dna.50MB
+I1212 23:45:49.995720  3439 util.cpp:24] Read 52428800 bytes
+I1212 23:45:49.995738  3439 util.cpp:25] Finished reading file
+I1212 23:45:50.645242  3439 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:45:50.645264  3439 bcomp_bench.cpp:34] Time for parallel bcomp: 648[ms]
+RESULT dataset=dna.50MB time=648
+I1212 23:46:08.774042  3451 util.cpp:9] Reading file: ../../english.50MB
+I1212 23:46:09.098335  3451 util.cpp:24] Read 52428800 bytes
+I1212 23:46:09.098353  3451 util.cpp:25] Finished reading file
+I1212 23:46:09.348992  3451 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:09.349016  3451 bcomp_bench.cpp:34] Time for parallel bcomp: 249[ms]
+RESULT dataset=english.50MB time=249
+I1212 23:46:09.356429  3456 util.cpp:9] Reading file: ../../english.50MB
+I1212 23:46:09.485117  3456 util.cpp:24] Read 52428800 bytes
+I1212 23:46:09.485136  3456 util.cpp:25] Finished reading file
+I1212 23:46:09.733407  3456 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:09.733429  3456 bcomp_bench.cpp:34] Time for parallel bcomp: 246[ms]
+RESULT dataset=english.50MB time=246
+I1212 23:46:09.740834  3461 util.cpp:9] Reading file: ../../english.50MB
+I1212 23:46:09.868290  3461 util.cpp:24] Read 52428800 bytes
+I1212 23:46:09.868307  3461 util.cpp:25] Finished reading file
+I1212 23:46:10.117051  3461 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:10.117074  3461 bcomp_bench.cpp:34] Time for parallel bcomp: 247[ms]
+RESULT dataset=english.50MB time=247
+I1212 23:46:10.124502  3466 util.cpp:9] Reading file: ../../english.50MB
+I1212 23:46:10.251649  3466 util.cpp:24] Read 52428800 bytes
+I1212 23:46:10.251667  3466 util.cpp:25] Finished reading file
+I1212 23:46:10.498479  3466 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:10.498502  3466 bcomp_bench.cpp:34] Time for parallel bcomp: 245[ms]
+RESULT dataset=english.50MB time=245
+I1212 23:46:10.505944  3471 util.cpp:9] Reading file: ../../english.50MB
+I1212 23:46:10.637099  3471 util.cpp:24] Read 52428800 bytes
+I1212 23:46:10.637116  3471 util.cpp:25] Finished reading file
+I1212 23:46:10.886932  3471 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:10.886955  3471 bcomp_bench.cpp:34] Time for parallel bcomp: 248[ms]
+RESULT dataset=english.50MB time=248
+I1212 23:46:25.662396  3487 util.cpp:9] Reading file: ../../proteins.50MB
+I1212 23:46:26.004815  3487 util.cpp:24] Read 52428800 bytes
+I1212 23:46:26.004835  3487 util.cpp:25] Finished reading file
+I1212 23:46:26.362375  3487 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:26.362397  3487 bcomp_bench.cpp:34] Time for parallel bcomp: 355[ms]
+RESULT dataset=proteins.50MB time=355
+I1212 23:46:26.369572  3492 util.cpp:9] Reading file: ../../proteins.50MB
+I1212 23:46:26.496078  3492 util.cpp:24] Read 52428800 bytes
+I1212 23:46:26.496094  3492 util.cpp:25] Finished reading file
+I1212 23:46:26.847281  3492 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:26.847304  3492 bcomp_bench.cpp:34] Time for parallel bcomp: 349[ms]
+RESULT dataset=proteins.50MB time=349
+I1212 23:46:26.854457  3497 util.cpp:9] Reading file: ../../proteins.50MB
+I1212 23:46:26.980792  3497 util.cpp:24] Read 52428800 bytes
+I1212 23:46:26.980809  3497 util.cpp:25] Finished reading file
+I1212 23:46:27.340692  3497 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:27.340714  3497 bcomp_bench.cpp:34] Time for parallel bcomp: 358[ms]
+RESULT dataset=proteins.50MB time=358
+I1212 23:46:27.348098  3502 util.cpp:9] Reading file: ../../proteins.50MB
+I1212 23:46:27.476420  3502 util.cpp:24] Read 52428800 bytes
+I1212 23:46:27.476439  3502 util.cpp:25] Finished reading file
+I1212 23:46:27.831316  3502 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:27.831341  3502 bcomp_bench.cpp:34] Time for parallel bcomp: 353[ms]
+RESULT dataset=proteins.50MB time=353
+I1212 23:46:27.838495  3507 util.cpp:9] Reading file: ../../proteins.50MB
+I1212 23:46:27.965821  3507 util.cpp:24] Read 52428800 bytes
+I1212 23:46:27.965838  3507 util.cpp:25] Finished reading file
+I1212 23:46:28.321687  3507 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:28.321710  3507 bcomp_bench.cpp:34] Time for parallel bcomp: 354[ms]
+RESULT dataset=proteins.50MB time=354
+I1212 23:46:38.254879  3519 util.cpp:9] Reading file: ../../sources.50MB
+I1212 23:46:38.665350  3519 util.cpp:24] Read 52428800 bytes
+I1212 23:46:38.665369  3519 util.cpp:25] Finished reading file
+I1212 23:46:38.962059  3519 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:38.962081  3519 bcomp_bench.cpp:34] Time for parallel bcomp: 294[ms]
+RESULT dataset=sources.50MB time=294
+I1212 23:46:38.969139  3524 util.cpp:9] Reading file: ../../sources.50MB
+I1212 23:46:39.096144  3524 util.cpp:24] Read 52428800 bytes
+I1212 23:46:39.096163  3524 util.cpp:25] Finished reading file
+I1212 23:46:39.396034  3524 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:39.396055  3524 bcomp_bench.cpp:34] Time for parallel bcomp: 298[ms]
+RESULT dataset=sources.50MB time=298
+I1212 23:46:39.403261  3530 util.cpp:9] Reading file: ../../sources.50MB
+I1212 23:46:39.533521  3530 util.cpp:24] Read 52428800 bytes
+I1212 23:46:39.533537  3530 util.cpp:25] Finished reading file
+I1212 23:46:39.834314  3530 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:39.834337  3530 bcomp_bench.cpp:34] Time for parallel bcomp: 299[ms]
+RESULT dataset=sources.50MB time=299
+I1212 23:46:39.841480  3535 util.cpp:9] Reading file: ../../sources.50MB
+I1212 23:46:39.968057  3535 util.cpp:24] Read 52428800 bytes
+I1212 23:46:39.968075  3535 util.cpp:25] Finished reading file
+I1212 23:46:40.261883  3535 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:40.261905  3535 bcomp_bench.cpp:34] Time for parallel bcomp: 292[ms]
+RESULT dataset=sources.50MB time=292
+I1212 23:46:40.268942  3540 util.cpp:9] Reading file: ../../sources.50MB
+I1212 23:46:40.395455  3540 util.cpp:24] Read 52428800 bytes
+I1212 23:46:40.395473  3540 util.cpp:25] Finished reading file
+I1212 23:46:40.689900  3540 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:46:40.689923  3540 bcomp_bench.cpp:34] Time for parallel bcomp: 292[ms]
+RESULT dataset=sources.50MB time=292
+I1212 23:47:01.047039  3556 util.cpp:9] Reading file: ../../dblp.xml
+I1212 23:47:02.933910  3556 util.cpp:24] Read 296135874 bytes
+I1212 23:47:02.933928  3556 util.cpp:25] Finished reading file
+I1212 23:47:04.354800  3556 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:47:04.354822  3556 bcomp_bench.cpp:34] Time for parallel bcomp: 1413[ms]
+RESULT dataset=dblp.xml time=1413
+I1212 23:47:04.390669  3561 util.cpp:9] Reading file: ../../dblp.xml
+I1212 23:47:05.088712  3561 util.cpp:24] Read 296135874 bytes
+I1212 23:47:05.088730  3561 util.cpp:25] Finished reading file
+I1212 23:47:06.511801  3561 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:47:06.511824  3561 bcomp_bench.cpp:34] Time for parallel bcomp: 1415[ms]
+RESULT dataset=dblp.xml time=1415
+I1212 23:47:06.547629  3566 util.cpp:9] Reading file: ../../dblp.xml
+I1212 23:47:07.248421  3566 util.cpp:24] Read 296135874 bytes
+I1212 23:47:07.248438  3566 util.cpp:25] Finished reading file
+I1212 23:47:08.678437  3566 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:47:08.678462  3566 bcomp_bench.cpp:34] Time for parallel bcomp: 1422[ms]
+RESULT dataset=dblp.xml time=1422
+I1212 23:47:08.713204  3571 util.cpp:9] Reading file: ../../dblp.xml
+I1212 23:47:09.410809  3571 util.cpp:24] Read 296135874 bytes
+I1212 23:47:09.410828  3571 util.cpp:25] Finished reading file
+I1212 23:47:10.842476  3571 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:47:10.842499  3571 bcomp_bench.cpp:34] Time for parallel bcomp: 1423[ms]
+RESULT dataset=dblp.xml time=1423
+I1212 23:47:10.876924  3576 util.cpp:9] Reading file: ../../dblp.xml
+I1212 23:47:11.573456  3576 util.cpp:24] Read 296135874 bytes
+I1212 23:47:11.573474  3576 util.cpp:25] Finished reading file
+I1212 23:47:12.986091  3576 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:47:12.986114  3576 bcomp_bench.cpp:34] Time for parallel bcomp: 1404[ms]
+RESULT dataset=dblp.xml time=1404
+I1212 23:47:29.570752  3587 util.cpp:9] Reading file: ../../dna
+I1212 23:47:32.122648  3587 util.cpp:24] Read 403927746 bytes
+I1212 23:47:32.122665  3587 util.cpp:25] Finished reading file
+I1212 23:47:37.214123  3587 bcomp_bench.cpp:33] Time for parallel bcomp: 5[s]
+I1212 23:47:37.214154  3587 bcomp_bench.cpp:34] Time for parallel bcomp: 5080[ms]
+RESULT dataset=dna time=5080
+I1212 23:47:37.270799  3592 util.cpp:9] Reading file: ../../dna
+I1212 23:47:39.773440  3592 util.cpp:24] Read 403927746 bytes
+I1212 23:47:39.773460  3592 util.cpp:25] Finished reading file
+I1212 23:47:44.721074  3592 bcomp_bench.cpp:33] Time for parallel bcomp: 4[s]
+I1212 23:47:44.721099  3592 bcomp_bench.cpp:34] Time for parallel bcomp: 4936[ms]
+RESULT dataset=dna time=4936
+I1212 23:47:44.757206  3597 util.cpp:9] Reading file: ../../dna
+I1212 23:47:45.711848  3597 util.cpp:24] Read 403927746 bytes
+I1212 23:47:45.711865  3597 util.cpp:25] Finished reading file
+I1212 23:47:50.662739  3597 bcomp_bench.cpp:33] Time for parallel bcomp: 4[s]
+I1212 23:47:50.662762  3597 bcomp_bench.cpp:34] Time for parallel bcomp: 4939[ms]
+RESULT dataset=dna time=4939
+I1212 23:47:50.698882  3602 util.cpp:9] Reading file: ../../dna
+I1212 23:47:51.652964  3602 util.cpp:24] Read 403927746 bytes
+I1212 23:47:51.652984  3602 util.cpp:25] Finished reading file
+I1212 23:47:56.602751  3602 bcomp_bench.cpp:33] Time for parallel bcomp: 4[s]
+I1212 23:47:56.602774  3602 bcomp_bench.cpp:34] Time for parallel bcomp: 4938[ms]
+RESULT dataset=dna time=4938
+I1212 23:47:56.637991  3607 util.cpp:9] Reading file: ../../dna
+I1212 23:47:57.589463  3607 util.cpp:24] Read 403927746 bytes
+I1212 23:47:57.589483  3607 util.cpp:25] Finished reading file
+I1212 23:48:02.555783  3607 bcomp_bench.cpp:33] Time for parallel bcomp: 4[s]
+I1212 23:48:02.555809  3607 bcomp_bench.cpp:34] Time for parallel bcomp: 4955[ms]
+RESULT dataset=dna time=4955
+I1212 23:48:59.870724  3628 util.cpp:9] Reading file: ../../english.200MB
+I1212 23:49:01.172556  3628 util.cpp:24] Read 209715200 bytes
+I1212 23:49:01.172574  3628 util.cpp:25] Finished reading file
+I1212 23:49:02.152372  3628 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:49:02.152393  3628 bcomp_bench.cpp:34] Time for parallel bcomp: 973[ms]
+RESULT dataset=english.200MB time=973
+I1212 23:49:02.178362  3633 util.cpp:9] Reading file: ../../english.200MB
+I1212 23:49:02.679877  3633 util.cpp:24] Read 209715200 bytes
+I1212 23:49:02.679895  3633 util.cpp:25] Finished reading file
+I1212 23:49:03.661041  3633 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:49:03.661064  3633 bcomp_bench.cpp:34] Time for parallel bcomp: 975[ms]
+RESULT dataset=english.200MB time=975
+I1212 23:49:03.685871  3638 util.cpp:9] Reading file: ../../english.200MB
+I1212 23:49:04.185032  3638 util.cpp:24] Read 209715200 bytes
+I1212 23:49:04.185050  3638 util.cpp:25] Finished reading file
+I1212 23:49:05.159374  3638 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:49:05.159396  3638 bcomp_bench.cpp:34] Time for parallel bcomp: 968[ms]
+RESULT dataset=english.200MB time=968
+I1212 23:49:05.184649  3643 util.cpp:9] Reading file: ../../english.200MB
+I1212 23:49:05.679869  3643 util.cpp:24] Read 209715200 bytes
+I1212 23:49:05.679888  3643 util.cpp:25] Finished reading file
+I1212 23:49:06.665273  3643 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:49:06.665297  3643 bcomp_bench.cpp:34] Time for parallel bcomp: 979[ms]
+RESULT dataset=english.200MB time=979
+I1212 23:49:06.690024  3648 util.cpp:9] Reading file: ../../english.200MB
+I1212 23:49:07.189343  3648 util.cpp:24] Read 209715200 bytes
+I1212 23:49:07.189362  3648 util.cpp:25] Finished reading file
+I1212 23:49:08.169459  3648 bcomp_bench.cpp:33] Time for parallel bcomp: 0[s]
+I1212 23:49:08.169482  3648 bcomp_bench.cpp:34] Time for parallel bcomp: 974[ms]
+RESULT dataset=english.200MB time=974
+I1212 23:49:18.422004  3660 util.cpp:9] Reading file: ../../proteins.200MB
+I1212 23:49:19.701946  3660 util.cpp:24] Read 209715200 bytes
+I1212 23:49:19.701966  3660 util.cpp:25] Finished reading file
+I1212 23:49:21.200814  3660 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:21.200837  3660 bcomp_bench.cpp:34] Time for parallel bcomp: 1493[ms]
+RESULT dataset=proteins.200MB time=1493
+I1212 23:49:21.225172  3665 util.cpp:9] Reading file: ../../proteins.200MB
+I1212 23:49:21.723815  3665 util.cpp:24] Read 209715200 bytes
+I1212 23:49:21.723834  3665 util.cpp:25] Finished reading file
+I1212 23:49:23.230123  3665 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:23.230145  3665 bcomp_bench.cpp:34] Time for parallel bcomp: 1500[ms]
+RESULT dataset=proteins.200MB time=1500
+I1212 23:49:23.253115  3670 util.cpp:9] Reading file: ../../proteins.200MB
+I1212 23:49:23.750476  3670 util.cpp:24] Read 209715200 bytes
+I1212 23:49:23.750494  3670 util.cpp:25] Finished reading file
+I1212 23:49:25.260054  3670 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:25.260078  3670 bcomp_bench.cpp:34] Time for parallel bcomp: 1503[ms]
+RESULT dataset=proteins.200MB time=1503
+I1212 23:49:25.283354  3675 util.cpp:9] Reading file: ../../proteins.200MB
+I1212 23:49:25.783548  3675 util.cpp:24] Read 209715200 bytes
+I1212 23:49:25.783566  3675 util.cpp:25] Finished reading file
+I1212 23:49:27.278976  3675 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:27.279000  3675 bcomp_bench.cpp:34] Time for parallel bcomp: 1489[ms]
+RESULT dataset=proteins.200MB time=1489
+I1212 23:49:27.303297  3680 util.cpp:9] Reading file: ../../proteins.200MB
+I1212 23:49:27.800213  3680 util.cpp:24] Read 209715200 bytes
+I1212 23:49:27.800231  3680 util.cpp:25] Finished reading file
+I1212 23:49:29.303562  3680 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:29.303586  3680 bcomp_bench.cpp:34] Time for parallel bcomp: 1497[ms]
+RESULT dataset=proteins.200MB time=1497
+I1212 23:49:36.914713  3691 util.cpp:9] Reading file: ../../sources
+I1212 23:49:38.227329  3691 util.cpp:24] Read 210866607 bytes
+I1212 23:49:38.227349  3691 util.cpp:25] Finished reading file
+I1212 23:49:39.505211  3691 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:39.505235  3691 bcomp_bench.cpp:34] Time for parallel bcomp: 1271[ms]
+RESULT dataset=sources time=1271
+I1212 23:49:39.528615  3696 util.cpp:9] Reading file: ../../sources
+I1212 23:49:40.032040  3696 util.cpp:24] Read 210866607 bytes
+I1212 23:49:40.032059  3696 util.cpp:25] Finished reading file
+I1212 23:49:41.302000  3696 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:41.302022  3696 bcomp_bench.cpp:34] Time for parallel bcomp: 1264[ms]
+RESULT dataset=sources time=1264
+I1212 23:49:41.325454  3701 util.cpp:9] Reading file: ../../sources
+I1212 23:49:41.827239  3701 util.cpp:24] Read 210866607 bytes
+I1212 23:49:41.827255  3701 util.cpp:25] Finished reading file
+I1212 23:49:43.093480  3701 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:43.093502  3701 bcomp_bench.cpp:34] Time for parallel bcomp: 1260[ms]
+RESULT dataset=sources time=1260
+I1212 23:49:43.116719  3706 util.cpp:9] Reading file: ../../sources
+I1212 23:49:43.618024  3706 util.cpp:24] Read 210866607 bytes
+I1212 23:49:43.618042  3706 util.cpp:25] Finished reading file
+I1212 23:49:44.889839  3706 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:44.889861  3706 bcomp_bench.cpp:34] Time for parallel bcomp: 1265[ms]
+RESULT dataset=sources time=1265
+I1212 23:49:44.913200  3711 util.cpp:9] Reading file: ../../sources
+I1212 23:49:45.415292  3711 util.cpp:24] Read 210866607 bytes
+I1212 23:49:45.415309  3711 util.cpp:25] Finished reading file
+I1212 23:49:46.690701  3711 bcomp_bench.cpp:33] Time for parallel bcomp: 1[s]
+I1212 23:49:46.690723  3711 bcomp_bench.cpp:34] Time for parallel bcomp: 1269[ms]
+RESULT dataset=sources time=1269

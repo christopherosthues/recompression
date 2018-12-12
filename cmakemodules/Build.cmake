@@ -27,6 +27,18 @@ macro(build_executable name)
     message(STATUS "Executable '${name}' successfully added")
 endmacro(build_executable)
 
+macro(build_bench name)
+    message(STATUS "Adding executable 'bench_${name}'")
+
+    add_executable(bench_${name} bench/${name}_bench.cpp)
+    target_link_libraries(bench_${name} ${PROJECT_NAME})
+    add_dependency(bench_${name} "OpenMP" REQUIRED)
+    add_dependency(bench_${name} "Glog" REQUIRED)
+
+    install(TARGETS bench_${name} RUNTIME DESTINATION build)
+    message(STATUS "Executable 'bench_${name}' successfully added")
+endmacro(build_bench)
+
 macro(build_executable_mem name)
     message(STATUS "Adding executable '${name}_mem'")
 

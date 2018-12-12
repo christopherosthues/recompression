@@ -12,6 +12,8 @@
 namespace recomp {
 namespace util {
 
+void read_file(const std::string& file_name, text_t& text);
+
 std::string text_vector_to_string(const text_t& text);
 
 std::string blocks_to_string(const std::unordered_map<block_t, variable_t, pair_hash>& blocks);

@@ -50,3 +50,5 @@ build_tests("bcomp")
 #build_tests("partition")
 #build_tests("recomp")
 #build_tests("radix_sort")
+
+build_bench("bcomp")
