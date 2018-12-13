@@ -12,6 +12,7 @@
 #endif
 
 #include <glog/logging.h>
+#include <ips4o.hpp>
 
 #include "util.hpp"
 
@@ -125,6 +126,7 @@ void recomp::bcomp(recomp::text_t& text, recomp::rlslp& rlslp) {
         }
     }
 
+//    ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
     __gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end(), __gnu_parallel::multiway_mergesort_tag());
 
     DLOG(INFO) << "Sorted blocks are " << util::vector_blocks_to_string(sort_blocks);

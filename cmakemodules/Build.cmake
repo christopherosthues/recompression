@@ -11,9 +11,16 @@ macro(build_library)
     add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
     target_link_libraries(${PROJECT_NAME} "-lm")
     #add_dependency(${PROJECT_NAME} "SDSL" REQUIRED)
+    add_dependency(${PROJECT_NAME} "colortext" REQUIRED)
+    add_dependency(${PROJECT_NAME} "IPS4o" REQUIRED)
     add_dependency(${PROJECT_NAME} "OpenMP" REQUIRED)
     add_dependency(${PROJECT_NAME} "Glog" REQUIRED)
     add_definitions(-D_GLIBCXX_PARALLEL)
+
+    find_library(ATOMIC_LIB libatomic.so.1 PATHS /usr/lib64 /usr/lib /usr/lib /usr/lib/x86_64-linux-gnu/)
+    message("Found ${ATOMIC_LIB}")
+    target_link_libraries(${PROJECT_NAME} "${ATOMIC_LIB}")
+
     message(STATUS "Library '${PROJECT_NAME}' successfully added")
 endmacro(build_library)
 

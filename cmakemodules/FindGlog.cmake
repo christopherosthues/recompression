@@ -15,6 +15,9 @@ include(FindPackageHandleStandardArgs)
 set(Glog_DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/tmp/Glog-external")
 set(Glog_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/external/Glog")
 
+message(STATUS)
+message(STATUS "Trying to locate package: Glog")
+
 set(Glog_ROOT_DIR ${Glog_INSTALL_DIR})
 
 if (WIN32)
