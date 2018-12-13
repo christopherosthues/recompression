@@ -45,6 +45,5 @@ if (GTEST_FOUND AND GTEST_MAIN_FOUND)
     message(STATUS "Found all GTest Libraries")
 else ()
     message(STATUS "Could NOT locate GTest on system -- preparing download")
-    include(DownloadGTest.cmake)
+    include(cmakemodules/DownloadGTest.cmake)
 endif ()
-

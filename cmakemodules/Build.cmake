@@ -58,7 +58,7 @@ macro(build_tests name)
         file(GLOB_RECURSE TESTS test/test_driver.cpp test/${name}_test.cpp)
         add_executable(${name}_test ${TESTS})
         target_link_libraries(${name}_test ${PROJECT_NAME})
-        add_dependency(${name}_test GTest)
+        add_dependency(${name}_test "GTest" REQUIRED)
         install(TARGETS ${name}_test RUNTIME DESTINATION build)
 
         message(STATUS "Tests for '${name}' successfully added")
