@@ -18,6 +18,10 @@ set(Glog_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/external/Glog")
 message(STATUS)
 message(STATUS "Trying to locate package: Glog")
 
+# Temporarily disable REQUIRED if set
+set(Glog_FIND_REQUIRED_BACKUP ${Glog_FIND_REQUIRED})
+set(Glog_FIND_REQUIRED 0)
+
 set(Glog_ROOT_DIR ${Glog_INSTALL_DIR})
 
 if (WIN32)
@@ -37,6 +41,9 @@ else ()
 endif ()
 
 find_package_handle_standard_args(Glog DEFAULT_MSG Glog_INCLUDE_DIR Glog_LIBRARY)
+
+# Restore REQUIRED
+set(Glog_FIND_REQUIRED ${GTest_FIND_REQUIRED_BACKUP})
 
 if (Glog_FOUND)
     set(Glog_INCLUDE_DIRS ${Glog_INCLUDE_DIR})
