@@ -59,7 +59,7 @@ endmacro(build_bench)
 #    message(STATUS "Executable '${name}' successfully added")
 #endmacro(build_executable_mem)
 
-macro(build_tests name)
+macro(build_test name)
     message(STATUS "Adding tests for '${name}'")
 
     file(GLOB_RECURSE TESTS test_driver.cpp ${name}_test.cpp)
@@ -68,8 +68,13 @@ macro(build_tests name)
     add_dependency(${name}_test "GTest" REQUIRED)
     install(TARGETS ${name}_test RUNTIME DESTINATION build)
 
+    if (RECOMPRESSION_ENABLE_AUTO_RUN_TESTS)
+#        add_test(${name}_test ${name}_test)
+        add_custom_command(TARGET ${name}_test POST_BUILD COMMAND $<TARGET_FILE:${name}_test>)
+    endif (RECOMPRESSION_ENABLE_AUTO_RUN_TESTS)
+
     message(STATUS "Tests for '${name}' successfully added")
-endmacro(build_tests)
+endmacro(build_test)
 
 #macro(build_target_with_test name)
 #    build_executable(${name})

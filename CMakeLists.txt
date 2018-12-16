@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 
 option(RECOMPRESSION_ENABLE_TESTS "Enable building and running unit tests." ON)
+option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." ON)
 option(RECOMPRESSION_ENABLE_EXPERIMENTS "Set to ON to automatically build all experiments." OFF)
 
 project(recompression)
@@ -44,9 +45,6 @@ set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp)
 set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp)
 
 build_library()
-
-# building tests
-set(BUILD_TESTS true)
 
 add_subdirectory(test)
 
