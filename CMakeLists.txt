@@ -9,10 +9,10 @@ set(PROJECT_VENDOR "Christopher Osthues")
 set(PROJECT_CONTACT "osthues.christopher@web.de")
 set(PROJECT_URL "https://github.com/christopherosthues/recompression")
 set(PROJECT_DESCRIPTION "Recompression")
-#set(CMAKE_BUILD_TYPE "Release")
 
 if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_BUILD_TYPE "Release")
+#    set(CMAKE_BUILD_TYPE "Debug")
 endif ()
 
 message(STATUS "Building in '${CMAKE_BUILD_TYPE}' mode")
