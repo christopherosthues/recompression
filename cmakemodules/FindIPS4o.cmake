@@ -13,7 +13,7 @@ set(IPS4o_FIND_REQUIRED 0)
 set(IPS4o_ROOT_DIR ${IPS4o_INSTALL_DIR})
 
 find_path(IPS4o_INCLUDE_DIR ips4o.hpp
-        PATHS ${IPS4o_ROOT_DIR} ${IPS4o_ROOT_DIR}/ips4o /usr/local/include /usr/include)
+        PATHS ${IPS4o_ROOT_DIR} ${IPS4o_ROOT_DIR}/include /usr/local/include /usr/include)
 
 find_library(IPS4o_LIBRARY ips4o
         PATHS ${IPS4o_ROOT_DIR}/lib /usr/local/lib /usr/lib)
@@ -26,6 +26,7 @@ set(IPS4o_FIND_REQUIRED ${IPS4o_FIND_REQUIRED_BACKUP})
 if (IPS4o_FOUND)
     set(IPS4o_INCLUDE_DIRS ${IPS4o_INCLUDE_DIR})
     set(IPS4o_LIBRARIES ${IPS4o_LIBRARY})
+    message(STATUS "Found ${IPS4o_LIBRARIES}")
 else ()
     message(STATUS "Could NOT locate IPS4o on system -- preparing download")
     include(cmakemodules/DownloadIPS4o.cmake)

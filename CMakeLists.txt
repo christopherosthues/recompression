@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.0.2)
+
+option(RECOMPRESSION_ENABLE_TESTS "Enable building and running unit tests." ON)
+option(RECOMPRESSION_ENABLE_EXPERIMENTS "Set to ON to automatically build all experiments." OFF)
 
 project(recompression)
 set(PROJECT_VENDOR "Christopher Osthues")
@@ -45,11 +48,6 @@ build_library()
 # building tests
 set(BUILD_TESTS true)
 
-build_tests("bcomp")
-#build_tests("pcomp")
-#build_tests("multiset")
-#build_tests("partition")
-#build_tests("recomp")
-#build_tests("radix_sort")
+add_subdirectory(test)
 
-build_bench("bcomp")
+add_subdirectory(bench)

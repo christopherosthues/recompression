@@ -18,7 +18,8 @@ ExternalProject_Add(
         cp "${CMAKE_SOURCE_DIR}/cmakemodules/ips4o/CMakeLists.txt" "." && mkdir build && cd build && cmake .. && make all
         BUILD_IN_SOURCE TRUE
         INSTALL_COMMAND
-        cd build && mv "../ips4o" "${IPS4o_INSTALL_DIR}/ips4o" && mv "../ips4o.hpp" "${IPS4o_INSTALL_DIR}" &&
+        cd build && mkdir "${IPS4o_INSTALL_DIR}/include/" &&
+        mv "../ips4o" "${IPS4o_INSTALL_DIR}/include/ips4o" && mv "../ips4o.hpp" "${IPS4o_INSTALL_DIR}/include" &&
         mkdir "${IPS4o_INSTALL_DIR}/lib" &&
         cp "libips4o.a" "${IPS4o_INSTALL_DIR}/lib/"
         INSTALL_DIR "${IPS4o_INSTALL_DIR}"
