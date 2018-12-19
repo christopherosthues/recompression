@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-option(RECOMPRESSION_ENABLE_TESTS "Enable building and running unit tests." ON)
+option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." ON)
 option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." ON)
-option(RECOMPRESSION_ENABLE_EXPERIMENTS "Set to ON to automatically build all experiments." OFF)
+option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." OFF)
 
 project(recompression)
 set(PROJECT_VENDOR "Christopher Osthues")

@@ -39,7 +39,7 @@ macro(build_bench name)
 
     add_executable(bench_${name} ${name}_bench.cpp)
     target_link_libraries(bench_${name} ${PROJECT_NAME})
-    add_dependency(bench_${name} "Celero" REQUIRED)
+#    add_dependency(bench_${name} "Celero" REQUIRED)
     add_dependency(bench_${name} "OpenMP" REQUIRED)
     add_dependency(bench_${name} "Glog" REQUIRED)
 
