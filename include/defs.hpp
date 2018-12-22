@@ -9,17 +9,19 @@
 
 namespace recomp {
 
-typedef std::int32_t variable_t;
-typedef std::uint32_t terminal_count_t;
-
-typedef std::vector<variable_t> text_t;
-typedef std::vector<variable_t> alphabet_t;
-typedef std::array<std::vector<std::pair<std::pair<variable_t, variable_t>, size_t>>, 2> multiset_t;
-typedef std::unordered_map<variable_t, bool> partition_t;
-
-typedef std::pair<variable_t, variable_t> block_t;
-typedef block_t pair_t;
-typedef std::pair<variable_t, size_t> position_t;
+typedef std::int32_t var_t;
+typedef std::uint32_t term_t;
+//typedef std::int32_t variable_t;
+//typedef std::uint32_t terminal_count_t;
+//
+//typedef std::vector<variable_t> text_t;
+//typedef std::vector<variable_t> alphabet_t;
+//typedef std::array<std::vector<std::pair<std::pair<variable_t, variable_t>, size_t>>, 2> multiset_t;
+//typedef std::unordered_map<variable_t, bool> partition_t;
+//
+//typedef std::pair<variable_t, variable_t> block_t;
+//typedef block_t pair_t;
+//typedef std::pair<variable_t, size_t> position_t;
 
 struct pair_hash {
     template<typename P1, typename P2>

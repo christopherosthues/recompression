@@ -6,18 +6,22 @@
 
 #include <glog/logging.h>
 
+#include "defs.hpp"
+#define private public
 #include "parallel_recompression.hpp"
 #include "util.hpp"
+
 
 int main(int argc, char *argv[]) {
     FLAGS_logtostderr = true;
     google::InitGoogleLogging(argv[0]);
 
-    recomp::text_t text;
+    recomp::recompression<recomp::var_t, recomp::term_t> recompression;
+    recomp::recompression<recomp::var_t, recomp::term_t>::text_t text;
     std::string file_name(argv[1]);
-    recomp::util::read_file(file_name, text);
+//    recomp::util::read_file(file_name, text);
 
-    recomp::rlslp rlslp;
+    recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
 
     if (text.size() < 31) {
         for (size_t i = 0; i < text.size(); ++i) {
@@ -28,7 +32,8 @@ int main(int argc, char *argv[]) {
 
     const auto startTime = std::chrono::system_clock::now();
 
-    recomp::bcomp(text, rlslp);
+    recompression.bcomp(text, rlslp);
+//    recomp::bcomp(text, rlslp);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
     LOG(INFO) << "Time for parallel bcomp: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
