@@ -144,8 +144,21 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
         }
 
         // TODO(Chris): lce queries
-        if (rlslp.is_block(child_i) && rlslp.is_block(child_j) && rlslp[child_i - rlslp.terminals].first() == rlslp[child_j - rlslp.terminals].first() && pos_i % rlslp.len(rlslp[child_i - rlslp.terminals].first()) == pos_j % rlslp.len(rlslp[child_j - rlslp.terminals].first())) {  // access of len is save
+        if (rlslp.is_block(child_i) && rlslp.is_block(child_j) && rlslp[child_i - rlslp.terminals].first() == rlslp[child_j - rlslp.terminals].first() && pos_i % rlslp.len(rlslp[child_i - rlslp.terminals].first()) == pos_j % rlslp.len(rlslp[child_j - rlslp.terminals].first())) {  // access of len is save because terminals cannot derive blocks
+            return std::min(rlslp.len(child_i) - pos_i, rlslp.len(child_j) - pos_j) + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+        } else if (j_visited.visited[]) {
 
+        } else if (i_visited.visited[]) {
+
+        } else if (child_i < rlslp.terminals && child_j < rlslp.terminals) {
+
+            if (child_i == child_j) {
+                return 1 + find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
+            } else {
+                return 0;
+            }
+        } else {
+            return lce_query(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
         }
     }
 }
@@ -179,7 +192,7 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
     i_visited.visited[rlslp.root] = 1;
     j_visited.visited[rlslp.root] = 1;
 
-    return lce_query(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
+    return lce_query(rlslp, i, j, rlslp.root + rlslp.terminals, rlslp.root + rlslp.terminals, i_visited, j_visited, 1);
 }
 
 }  // namespace lce_query
