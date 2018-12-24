@@ -2,6 +2,7 @@
 #pragma once
 
 #include <stack>
+#include <unordered_map>
 #include <vector>
 
 #include "rlslp.hpp"
@@ -16,14 +17,14 @@ namespace lce_query {
  */
 template<typename variable_t = var_t>
 struct vis_node {
-    variable_t nt;
+//    variable_t nt;
     size_t pos;
-//    size_t n_trav;
+    size_t n_trav;
 
-    vis_node(variable_t nt, size_t pos/*, size_t n_trav*/) {
-        this->nt = nt;
+    vis_node(/*variable_t nt, */size_t pos, size_t n_trav) {
+//        this->nt = nt;
         this->pos = pos;
-//        this->n_trav = n_trav;
+        this->n_trav = n_trav;
     }
 };
 
@@ -34,10 +35,15 @@ struct vis_node {
  */
 template<typename variable_t = var_t>
 struct lceq {
-    std::vector<size_t> visited;  // TODO(Chris): replace with bitvector. not important anymore
-    std::stack<vis_node<variable_t>> stack;
+//    std::vector<size_t> visited;  // TODO(Chris): replace with bitvector. not important anymore
+    /**
+     * Maps a non-terminal to its parent, the position in the parent and the number of the traverse.
+     */
+    std::unordered_map<variable_t, vis_node<variable_t>> visited;
+    std::stack<variable_t> parents;
+//    std::stack<vis_node<variable_t>> stack;
 
-    lceq(size_t size) : visited(size, 0), stack() {}
+    lceq() : visited(), parents() {}//: visited(size, 0) {}//, stack() {}
 };
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
@@ -61,6 +67,7 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 size_t find_next(rlslp<variable_t, terminal_count_t>& rlslp, size_t i, size_t j, variable_t nt_i, variable_t nt_j, lceq<variable_t>& i_visited, lceq<variable_t>& j_visited, size_t traverse) {
     // TODO(Chris): find next variable, traverse possibly up and down again
+    
 }
 
 /**
@@ -131,27 +138,34 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
         subtree(rlslp, pos_j, child_j);
 
         if (nt_i != child_i) {
-            if (child_i >= rlslp.terminals) {
-                i_visited.visited[child_i - rlslp.terminals] = traverse;
-            }
-            i_visited.stack.push(child_i, pos_i);//, traverse);
+            i_visited.visited[child_i] = vis_node<variable_t>(/*nt_i, */pos_i, traverse);
+            i_visited.parents.push(nt_i);
+//            if (child_i >= rlslp.terminals) {
+//                i_visited.visited[child_i - rlslp.terminals] = traverse;
+//            }
+//            i_visited.stack.push(child_i, pos_i);//, traverse);
         }
         if (nt_j != child_j) {
-            if (child_j >= rlslp.terminals) {
-                j_visited.visited[child_j - rlslp.terminals] = traverse;
-            }
-            j_visited.stack.push(child_j, pos_j);//, traverse);
+            j_visited.visited[child_j] = vis_node<variable_t>(/*nt_j, */pos_j, traverse);
+            j_visited.parents.push(nt_j);
+//            if (child_j >= rlslp.terminals) {
+//                j_visited.visited[child_j - rlslp.terminals] = traverse;
+//            }
+//            j_visited.stack.push(child_j, pos_j);//, traverse);
         }
 
         // TODO(Chris): lce queries
+        auto found_j = i_visited.visited.find(child_j);
+        auto found_i = j_visited.visited.find(child_i);
         if (rlslp.is_block(child_i) && rlslp.is_block(child_j) && rlslp[child_i - rlslp.terminals].first() == rlslp[child_j - rlslp.terminals].first() && pos_i % rlslp.len(rlslp[child_i - rlslp.terminals].first()) == pos_j % rlslp.len(rlslp[child_j - rlslp.terminals].first())) {  // access of len is save because terminals cannot derive blocks
-            return std::min(rlslp.len(child_i) - pos_i, rlslp.len(child_j) - pos_j) + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
-        } else if (j_visited.visited[]) {
-
-        } else if (i_visited.visited[]) {
-
+            return std::min(rlslp.len(child_i) - pos_i, rlslp.len(child_j) - pos_j) + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse + 1);
+        } else if (found_i != j_visited.visited.end() && (*found_i).pos == pos_i && (*found_i).traverse == traverse) {
+            // TODO(Chris): check if j_visited[child_i] exists
+            return rlslp.len(child_i) - pos_i + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse + 1);
+        } else if (found_j != j_visited.visited.end() && (*found_j).pos == pos_j && (*found_j).traverse == traverse) {
+            // TODO(Chris): check if i_visited[child_j] exists
+            return rlslp.len(child_j) - pos_j + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse + 1);
         } else if (child_i < rlslp.terminals && child_j < rlslp.terminals) {
-
             if (child_i == child_j) {
                 return 1 + find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
             } else {
@@ -185,12 +199,14 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
         return rlslp[rlslp.root].len;
     }
 
-    lceq<variable_t> i_visited(rlslp.size());
-    lceq<variable_t> j_visited(rlslp.size());
-    i_visited.stack.push(rlslp.root + rlslp.terminals, i);//, 1);
-    j_visited.stack.push(rlslp.root + rlslp.terminals, j);//, 1);
-    i_visited.visited[rlslp.root] = 1;
-    j_visited.visited[rlslp.root] = 1;
+    lceq<variable_t> i_visited();
+    lceq<variable_t> j_visited();
+//    lceq<variable_t> i_visited(rlslp.size());
+//    lceq<variable_t> j_visited(rlslp.size());
+//    i_visited.stack.push(rlslp.root + rlslp.terminals, i);//, 1);
+//    j_visited.stack.push(rlslp.root + rlslp.terminals, j);//, 1);
+//    i_visited.visited[rlslp.root] = 1;
+//    j_visited.visited[rlslp.root] = 1;
 
     return lce_query(rlslp, i, j, rlslp.root + rlslp.terminals, rlslp.root + rlslp.terminals, i_visited, j_visited, 1);
 }
