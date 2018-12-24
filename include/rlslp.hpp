@@ -217,6 +217,14 @@ struct rlslp {
         return this->non_terminals[nt - terminals].second() < 0;
     }
 
+    size_t len(variable_t nt) const {
+        if (nt < terminals) {
+            return 1;
+        } else {
+            return this->non_terminals[nt - terminals].len;
+        }
+    }
+
     std::string derive_text() {
         std::stringstream sstream;
         derive(sstream, root);

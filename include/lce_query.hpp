@@ -37,7 +37,7 @@ struct lceq {
     std::vector<size_t> visited;  // TODO(Chris): replace with bitvector. not important anymore
     std::stack<vis_node<variable_t>> stack;
 
-    lceq(size_t size) : visited(size), stack() {}
+    lceq(size_t size) : visited(size, 0), stack() {}
 };
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
@@ -77,11 +77,13 @@ inline void subtree(rlslp<variable_t, terminal_count_t>& rlslp, size_t& pos, var
     if (nt >= rlslp.terminals) {
         auto nt_index = nt - rlslp.terminals;  // compute index of production
         auto left_child = rlslp[nt_index].first();
-        size_t len = 1;
-        if (left_child >= rlslp.terminals) {
-            len = rlslp[left_child - rlslp.terminals].len;
-        }
-        if (rlslp[nt_index].second() < 0) {  // if production derives a block
+//        size_t len = 1;
+//        if (left_child >= rlslp.terminals) {
+//            len = rlslp[left_child - rlslp.terminals].len;
+//        }
+        auto len = rlslp.len(left_child);
+//        if (rlslp[nt_index].second() < 0) {  // if production derives a block
+        if (rlslp.is_block(nt)) {  // if production derives a block
             auto block_len = 0;
             while (block_len + len <= pos) {
                 block_len += len;
@@ -142,6 +144,9 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
         }
 
         // TODO(Chris): lce queries
+        if (rlslp.is_block(child_i) && rlslp.is_block(child_j) && rlslp[child_i - rlslp.terminals].first() == rlslp[child_j - rlslp.terminals].first() && pos_i % rlslp.len(rlslp[child_i - rlslp.terminals].first()) == pos_j % rlslp.len(rlslp[child_j - rlslp.terminals].first())) {  // access of len is save
+
+        }
     }
 }
 
