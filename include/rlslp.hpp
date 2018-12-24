@@ -206,6 +206,10 @@ struct rlslp {
         non_terminals.reserve(size);
     }
 
+    bool operator==(const rlslp& rlslp) const {
+        return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals;
+    }
+
     void resize(size_t size) {
         non_terminals.resize(size);
     }
@@ -237,7 +241,8 @@ namespace std {
  */
 template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
 std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>::non_terminal& nt) {
-    std::stringstream sstream("production: (");
+    std::stringstream sstream;
+    sstream << "production: (";
     sstream << std::to_string(nt.production[0]) << "," << std::to_string(nt.production[1])
             << ") len: " << std::to_string(nt.len);
 
@@ -252,7 +257,9 @@ std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>
  */
 template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
 std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>& rlslp) {
-    std::stringstream sstream("number of terminals: ");
+    std::stringstream sstream;
+    sstream << "root: " << rlslp.root << std::endl;
+    sstream << "number of terminals: ";
     sstream << rlslp.terminals << std::endl;
     sstream << "non-terminals: " << std::endl;
     size_t i = 0;

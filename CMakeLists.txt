@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 
 option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." ON)
 option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." ON)
-option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." OFF)
+option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." ON)
 
 project(recompression)
 set(PROJECT_VENDOR "Christopher Osthues")
@@ -41,8 +41,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
 # includes build_library, build_executable and build_tests macros
 include(Build)
 
-set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp)
-set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp)
+set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp src/radix_sort.cpp)
+set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp include/radix_sort.hpp)
 
 build_library()
 

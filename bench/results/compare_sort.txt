@@ -1,0 +1,1960 @@
+I1216 14:02:31.904844  4946 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:02:31.904899  4946 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:33.004371  4946 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:34.660837  4946 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 1[s]
+I1216 14:02:34.660898  4946 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 1656[ms]
+RESULT algorithm=pprs elements=50000000 time=1656
+I1216 14:02:34.872262  4946 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:02:34.887428  4951 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:02:34.887466  4951 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:35.980105  4951 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:37.635581  4951 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 1[s]
+I1216 14:02:37.635637  4951 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 1655[ms]
+RESULT algorithm=pprs elements=50000000 time=1655
+I1216 14:02:37.847184  4951 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:02:37.862318  4956 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:02:37.862359  4956 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:38.955035  4956 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:40.618665  4956 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 1[s]
+I1216 14:02:40.618722  4956 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 1663[ms]
+RESULT algorithm=pprs elements=50000000 time=1663
+I1216 14:02:40.829582  4956 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:02:40.844622  4961 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:02:40.844662  4961 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:41.935286  4961 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:43.601860  4961 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 1[s]
+I1216 14:02:43.601919  4961 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 1666[ms]
+RESULT algorithm=pprs elements=50000000 time=1666
+I1216 14:02:43.813339  4961 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:02:43.828444  4968 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:02:43.828485  4968 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:44.922461  4968 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:46.580543  4968 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 1[s]
+I1216 14:02:46.580601  4968 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 1658[ms]
+RESULT algorithm=pprs elements=50000000 time=1658
+I1216 14:02:46.793484  4968 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:02:46.807786  4973 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:02:46.807826  4973 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:47.909317  4973 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:50.936935  4973 radix_sort_bench.cpp:82] Time for LSD radix sort: 3[s]
+I1216 14:02:50.936954  4973 radix_sort_bench.cpp:83] Time for LSD radix sort: 3027[ms]
+RESULT algorithm=lsd elements=50000000 time=3027
+I1216 14:02:51.147415  4973 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:02:51.172555  4975 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:02:51.172595  4975 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:52.265844  4975 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:55.292590  4975 radix_sort_bench.cpp:82] Time for LSD radix sort: 3[s]
+I1216 14:02:55.292609  4975 radix_sort_bench.cpp:83] Time for LSD radix sort: 3026[ms]
+RESULT algorithm=lsd elements=50000000 time=3026
+I1216 14:02:55.503067  4975 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:02:55.528053  4977 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:02:55.528093  4977 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:02:56.618793  4977 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:02:59.640347  4977 radix_sort_bench.cpp:82] Time for LSD radix sort: 3[s]
+I1216 14:02:59.640364  4977 radix_sort_bench.cpp:83] Time for LSD radix sort: 3021[ms]
+RESULT algorithm=lsd elements=50000000 time=3021
+I1216 14:02:59.851723  4977 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:02:59.876615  4979 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:02:59.876655  4979 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:00.973783  4979 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:04.003218  4979 radix_sort_bench.cpp:82] Time for LSD radix sort: 3[s]
+I1216 14:03:04.003239  4979 radix_sort_bench.cpp:83] Time for LSD radix sort: 3029[ms]
+RESULT algorithm=lsd elements=50000000 time=3029
+I1216 14:03:04.213821  4979 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:03:04.238693  4982 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:03:04.238734  4982 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:05.330631  4982 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:08.321699  4982 radix_sort_bench.cpp:82] Time for LSD radix sort: 2[s]
+I1216 14:03:08.321719  4982 radix_sort_bench.cpp:83] Time for LSD radix sort: 2991[ms]
+RESULT algorithm=lsd elements=50000000 time=2991
+I1216 14:03:08.532413  4982 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:03:08.557179  4984 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:03:08.557219  4984 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:09.651971  4984 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:11.551571  4984 radix_sort_bench.cpp:97] Time for parallel merge sort: 1[s]
+I1216 14:03:11.551631  4984 radix_sort_bench.cpp:98] Time for parallel merge sort: 1899[ms]
+RESULT algorithm=pms elements=50000000 time=1899
+I1216 14:03:11.763478  4984 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:03:11.778115  4989 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:03:11.778161  4989 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:12.871336  4989 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:14.808392  4989 radix_sort_bench.cpp:97] Time for parallel merge sort: 1[s]
+I1216 14:03:14.808465  4989 radix_sort_bench.cpp:98] Time for parallel merge sort: 1937[ms]
+RESULT algorithm=pms elements=50000000 time=1937
+I1216 14:03:15.021598  4989 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:03:15.035508  4995 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:03:15.035563  4995 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:16.127548  4995 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:18.037358  4995 radix_sort_bench.cpp:97] Time for parallel merge sort: 1[s]
+I1216 14:03:18.037426  4995 radix_sort_bench.cpp:98] Time for parallel merge sort: 1909[ms]
+RESULT algorithm=pms elements=50000000 time=1909
+I1216 14:03:18.249423  4995 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:03:18.264130  5001 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:03:18.264171  5001 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:19.354710  5001 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:21.253967  5001 radix_sort_bench.cpp:97] Time for parallel merge sort: 1[s]
+I1216 14:03:21.254025  5001 radix_sort_bench.cpp:98] Time for parallel merge sort: 1899[ms]
+RESULT algorithm=pms elements=50000000 time=1899
+I1216 14:03:21.465669  5001 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:03:21.480461  5006 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:03:21.480506  5006 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:22.580130  5006 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:24.474272  5006 radix_sort_bench.cpp:97] Time for parallel merge sort: 1[s]
+I1216 14:03:24.474334  5006 radix_sort_bench.cpp:98] Time for parallel merge sort: 1894[ms]
+RESULT algorithm=pms elements=50000000 time=1894
+I1216 14:03:24.686781  5006 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:03:24.701736  5011 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:03:24.701776  5011 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:25.795609  5011 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:28.825325  5011 radix_sort_bench.cpp:112] Time for parallel quick sort: 3[s]
+I1216 14:03:28.825350  5011 radix_sort_bench.cpp:113] Time for parallel quick sort: 3029[ms]
+RESULT algorithm=pqs elements=50000000 time=3029
+I1216 14:03:29.037286  5011 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:03:29.051275  5016 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:03:29.051316  5016 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:30.144543  5016 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:33.168004  5016 radix_sort_bench.cpp:112] Time for parallel quick sort: 3[s]
+I1216 14:03:33.168035  5016 radix_sort_bench.cpp:113] Time for parallel quick sort: 3023[ms]
+RESULT algorithm=pqs elements=50000000 time=3023
+I1216 14:03:33.380455  5016 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:03:33.395400  5021 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:03:33.395442  5021 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:34.489320  5021 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:37.520666  5021 radix_sort_bench.cpp:112] Time for parallel quick sort: 3[s]
+I1216 14:03:37.520692  5021 radix_sort_bench.cpp:113] Time for parallel quick sort: 3031[ms]
+RESULT algorithm=pqs elements=50000000 time=3031
+I1216 14:03:37.731626  5021 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:03:37.746196  5026 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:03:37.746237  5026 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:38.842453  5026 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:41.862411  5026 radix_sort_bench.cpp:112] Time for parallel quick sort: 3[s]
+I1216 14:03:41.862443  5026 radix_sort_bench.cpp:113] Time for parallel quick sort: 3019[ms]
+RESULT algorithm=pqs elements=50000000 time=3019
+I1216 14:03:42.073237  5026 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:03:42.087931  5031 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:03:42.087976  5031 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:43.177857  5031 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:46.215104  5031 radix_sort_bench.cpp:112] Time for parallel quick sort: 3[s]
+I1216 14:03:46.215140  5031 radix_sort_bench.cpp:113] Time for parallel quick sort: 3037[ms]
+RESULT algorithm=pqs elements=50000000 time=3037
+I1216 14:03:46.425540  5031 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:03:46.440280  5036 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:03:46.440321  5036 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:47.532881  5036 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:49.979352  5036 radix_sort_bench.cpp:142] Time for std::stable_sort: 2[s]
+I1216 14:03:49.979409  5036 radix_sort_bench.cpp:143] Time for std::stable_sort: 2446[ms]
+RESULT algorithm=std::stable_sort elements=50000000 time=2446
+I1216 14:03:50.190865  5036 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:03:50.205480  5041 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:03:50.205523  5041 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:51.295214  5041 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:53.745107  5041 radix_sort_bench.cpp:142] Time for std::stable_sort: 2[s]
+I1216 14:03:53.745168  5041 radix_sort_bench.cpp:143] Time for std::stable_sort: 2449[ms]
+RESULT algorithm=std::stable_sort elements=50000000 time=2449
+I1216 14:03:53.956753  5041 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:03:53.971374  5046 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:03:53.971417  5046 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:55.064533  5046 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:03:57.508013  5046 radix_sort_bench.cpp:142] Time for std::stable_sort: 2[s]
+I1216 14:03:57.508071  5046 radix_sort_bench.cpp:143] Time for std::stable_sort: 2443[ms]
+RESULT algorithm=std::stable_sort elements=50000000 time=2443
+I1216 14:03:57.718695  5046 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:03:57.733294  5051 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:03:57.733335  5051 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:03:58.825284  5051 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:01.293187  5051 radix_sort_bench.cpp:142] Time for std::stable_sort: 2[s]
+I1216 14:04:01.293246  5051 radix_sort_bench.cpp:143] Time for std::stable_sort: 2467[ms]
+RESULT algorithm=std::stable_sort elements=50000000 time=2467
+I1216 14:04:01.504195  5051 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:04:01.518748  5056 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:04:01.518790  5056 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:02.609941  5056 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:05.061280  5056 radix_sort_bench.cpp:142] Time for std::stable_sort: 2[s]
+I1216 14:04:05.061339  5056 radix_sort_bench.cpp:143] Time for std::stable_sort: 2451[ms]
+RESULT algorithm=std::stable_sort elements=50000000 time=2451
+I1216 14:04:05.273599  5056 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:04:05.288164  5062 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:04:05.288205  5062 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:06.386852  5062 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:08.290681  5062 radix_sort_bench.cpp:127] Time for std::sort: 1[s]
+I1216 14:04:08.290735  5062 radix_sort_bench.cpp:128] Time for std::sort: 1903[ms]
+RESULT algorithm=std::sort elements=50000000 time=1903
+I1216 14:04:08.504019  5062 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:04:08.517837  5067 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:04:08.517879  5067 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:09.610363  5067 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:11.510658  5067 radix_sort_bench.cpp:127] Time for std::sort: 1[s]
+I1216 14:04:11.510740  5067 radix_sort_bench.cpp:128] Time for std::sort: 1900[ms]
+RESULT algorithm=std::sort elements=50000000 time=1900
+I1216 14:04:11.721881  5067 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:04:11.736917  5072 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:04:11.736960  5072 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:12.830240  5072 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:14.738903  5072 radix_sort_bench.cpp:127] Time for std::sort: 1[s]
+I1216 14:04:14.738965  5072 radix_sort_bench.cpp:128] Time for std::sort: 1908[ms]
+RESULT algorithm=std::sort elements=50000000 time=1908
+I1216 14:04:14.950717  5072 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:04:14.965540  5077 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:04:14.965579  5077 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:16.055367  5077 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:17.954831  5077 radix_sort_bench.cpp:127] Time for std::sort: 1[s]
+I1216 14:04:17.954900  5077 radix_sort_bench.cpp:128] Time for std::sort: 1899[ms]
+RESULT algorithm=std::sort elements=50000000 time=1899
+I1216 14:04:18.167805  5077 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:04:18.181702  5082 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:04:18.181742  5082 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:19.274520  5082 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:21.171715  5082 radix_sort_bench.cpp:127] Time for std::sort: 1[s]
+I1216 14:04:21.171774  5082 radix_sort_bench.cpp:128] Time for std::sort: 1897[ms]
+RESULT algorithm=std::sort elements=50000000 time=1897
+I1216 14:04:21.383838  5082 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:04:21.398821  5087 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:04:21.398864  5087 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:22.492969  5087 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:28.875501  5087 radix_sort_bench.cpp:172] Time for IPS4o: 6[s]
+I1216 14:04:28.875525  5087 radix_sort_bench.cpp:173] Time for IPS4o: 6382[ms]
+RESULT algorithm=ips4o elements=50000000 time=6382
+I1216 14:04:29.087044  5087 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:04:29.100739  5089 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:04:29.100781  5089 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:30.195145  5089 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:36.565284  5089 radix_sort_bench.cpp:172] Time for IPS4o: 6[s]
+I1216 14:04:36.565306  5089 radix_sort_bench.cpp:173] Time for IPS4o: 6370[ms]
+RESULT algorithm=ips4o elements=50000000 time=6370
+I1216 14:04:36.776336  5089 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:04:36.791008  5092 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:04:36.791050  5092 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:37.885107  5092 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:44.263698  5092 radix_sort_bench.cpp:172] Time for IPS4o: 6[s]
+I1216 14:04:44.263718  5092 radix_sort_bench.cpp:173] Time for IPS4o: 6378[ms]
+RESULT algorithm=ips4o elements=50000000 time=6378
+I1216 14:04:44.473515  5092 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:04:44.487449  5094 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:04:44.487491  5094 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:45.578680  5094 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:51.946346  5094 radix_sort_bench.cpp:172] Time for IPS4o: 6[s]
+I1216 14:04:51.946369  5094 radix_sort_bench.cpp:173] Time for IPS4o: 6367[ms]
+RESULT algorithm=ips4o elements=50000000 time=6367
+I1216 14:04:52.157585  5094 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:04:52.172302  5096 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:04:52.172346  5096 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:04:53.265595  5096 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:04:59.642153  5096 radix_sort_bench.cpp:172] Time for IPS4o: 6[s]
+I1216 14:04:59.642175  5096 radix_sort_bench.cpp:173] Time for IPS4o: 6376[ms]
+RESULT algorithm=ips4o elements=50000000 time=6376
+I1216 14:04:59.854121  5096 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:04:59.867974  5098 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:04:59.868013  5098 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:00.961431  5098 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:03.179162  5098 radix_sort_bench.cpp:157] Time for parallel IPS4o: 2[s]
+I1216 14:05:03.179224  5098 radix_sort_bench.cpp:158] Time for parallel IPS4o: 2217[ms]
+RESULT algorithm=pips4o elements=50000000 time=2217
+I1216 14:05:03.390277  5098 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:05:03.405129  5103 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:05:03.405174  5103 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:04.497164  5103 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:06.727422  5103 radix_sort_bench.cpp:157] Time for parallel IPS4o: 2[s]
+I1216 14:05:06.727489  5103 radix_sort_bench.cpp:158] Time for parallel IPS4o: 2230[ms]
+RESULT algorithm=pips4o elements=50000000 time=2230
+I1216 14:05:06.940454  5103 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:05:06.954272  5108 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:05:06.954314  5108 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:08.048058  5108 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:10.264709  5108 radix_sort_bench.cpp:157] Time for parallel IPS4o: 2[s]
+I1216 14:05:10.264782  5108 radix_sort_bench.cpp:158] Time for parallel IPS4o: 2216[ms]
+RESULT algorithm=pips4o elements=50000000 time=2216
+I1216 14:05:10.477324  5108 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:05:10.491111  5113 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:05:10.491152  5113 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:11.583333  5113 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:13.806654  5113 radix_sort_bench.cpp:157] Time for parallel IPS4o: 2[s]
+I1216 14:05:13.806730  5113 radix_sort_bench.cpp:158] Time for parallel IPS4o: 2223[ms]
+RESULT algorithm=pips4o elements=50000000 time=2223
+I1216 14:05:14.018476  5113 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:05:14.032212  5118 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:05:14.032253  5118 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:15.126899  5118 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:17.347431  5118 radix_sort_bench.cpp:157] Time for parallel IPS4o: 2[s]
+I1216 14:05:17.347491  5118 radix_sort_bench.cpp:158] Time for parallel IPS4o: 2220[ms]
+RESULT algorithm=pips4o elements=50000000 time=2220
+I1216 14:05:17.557646  5118 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:05:17.572405  5123 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:05:17.572449  5123 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:19.752704  5123 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:23.125766  5123 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 3[s]
+I1216 14:05:23.125790  5123 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 3373[ms]
+RESULT algorithm=pprs elements=100000000 time=3373
+I1216 14:05:23.553603  5123 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:05:23.580102  5128 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:05:23.580157  5128 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:25.761358  5128 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:29.123946  5128 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 3[s]
+I1216 14:05:29.123967  5128 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 3362[ms]
+RESULT algorithm=pprs elements=100000000 time=3362
+I1216 14:05:29.549356  5128 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:05:29.575799  5133 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:05:29.575845  5133 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:31.753697  5133 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:35.120512  5133 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 3[s]
+I1216 14:05:35.120534  5133 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 3366[ms]
+RESULT algorithm=pprs elements=100000000 time=3366
+I1216 14:05:35.545596  5133 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:05:35.572031  5138 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:05:35.572082  5138 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:37.760798  5138 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:41.136659  5138 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 3[s]
+I1216 14:05:41.136682  5138 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 3375[ms]
+RESULT algorithm=pprs elements=100000000 time=3375
+I1216 14:05:41.562305  5138 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:05:41.588752  5144 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:05:41.588800  5144 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:43.779981  5144 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:47.171924  5144 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 3[s]
+I1216 14:05:47.171947  5144 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 3391[ms]
+RESULT algorithm=pprs elements=100000000 time=3391
+I1216 14:05:47.597358  5144 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:05:47.624157  5149 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:05:47.624217  5149 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:49.808583  5149 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:05:56.082146  5149 radix_sort_bench.cpp:82] Time for LSD radix sort: 6[s]
+I1216 14:05:56.082167  5149 radix_sort_bench.cpp:83] Time for LSD radix sort: 6273[ms]
+RESULT algorithm=lsd elements=100000000 time=6273
+I1216 14:05:56.509640  5149 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:05:56.556637  5151 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:05:56.556676  5151 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:05:58.739042  5151 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:05.011600  5151 radix_sort_bench.cpp:82] Time for LSD radix sort: 6[s]
+I1216 14:06:05.011620  5151 radix_sort_bench.cpp:83] Time for LSD radix sort: 6272[ms]
+RESULT algorithm=lsd elements=100000000 time=6272
+I1216 14:06:05.437845  5151 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:06:05.485556  5153 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:06:05.485595  5153 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:07.668746  5153 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:13.869685  5153 radix_sort_bench.cpp:82] Time for LSD radix sort: 6[s]
+I1216 14:06:13.869704  5153 radix_sort_bench.cpp:83] Time for LSD radix sort: 6200[ms]
+RESULT algorithm=lsd elements=100000000 time=6200
+I1216 14:06:14.296886  5153 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:06:14.345213  5155 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:06:14.345253  5155 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:16.524225  5155 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:22.798382  5155 radix_sort_bench.cpp:82] Time for LSD radix sort: 6[s]
+I1216 14:06:22.798403  5155 radix_sort_bench.cpp:83] Time for LSD radix sort: 6274[ms]
+RESULT algorithm=lsd elements=100000000 time=6274
+I1216 14:06:23.226670  5155 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:06:23.274186  5157 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:06:23.274225  5157 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:25.454283  5157 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:31.716653  5157 radix_sort_bench.cpp:82] Time for LSD radix sort: 6[s]
+I1216 14:06:31.716672  5157 radix_sort_bench.cpp:83] Time for LSD radix sort: 6262[ms]
+RESULT algorithm=lsd elements=100000000 time=6262
+I1216 14:06:32.142323  5157 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:06:32.190146  5159 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:06:32.190186  5159 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:34.371829  5159 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:38.298126  5159 radix_sort_bench.cpp:97] Time for parallel merge sort: 3[s]
+I1216 14:06:38.298187  5159 radix_sort_bench.cpp:98] Time for parallel merge sort: 3926[ms]
+RESULT algorithm=pms elements=100000000 time=3926
+I1216 14:06:38.727715  5159 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:06:38.753288  5164 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:06:38.753327  5164 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:40.934903  5164 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:44.856097  5164 radix_sort_bench.cpp:97] Time for parallel merge sort: 3[s]
+I1216 14:06:44.856153  5164 radix_sort_bench.cpp:98] Time for parallel merge sort: 3921[ms]
+RESULT algorithm=pms elements=100000000 time=3921
+I1216 14:06:45.281808  5164 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:06:45.307005  5169 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:06:45.307045  5169 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:47.487848  5169 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:51.412227  5169 radix_sort_bench.cpp:97] Time for parallel merge sort: 3[s]
+I1216 14:06:51.412286  5169 radix_sort_bench.cpp:98] Time for parallel merge sort: 3924[ms]
+RESULT algorithm=pms elements=100000000 time=3924
+I1216 14:06:51.838699  5169 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:06:51.864121  5174 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:06:51.864164  5174 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:06:54.046228  5174 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:06:57.968606  5174 radix_sort_bench.cpp:97] Time for parallel merge sort: 3[s]
+I1216 14:06:57.968667  5174 radix_sort_bench.cpp:98] Time for parallel merge sort: 3922[ms]
+RESULT algorithm=pms elements=100000000 time=3922
+I1216 14:06:58.397322  5174 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:06:58.422734  5179 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:06:58.422773  5179 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:00.610056  5179 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:04.526118  5179 radix_sort_bench.cpp:97] Time for parallel merge sort: 3[s]
+I1216 14:07:04.526176  5179 radix_sort_bench.cpp:98] Time for parallel merge sort: 3916[ms]
+RESULT algorithm=pms elements=100000000 time=3916
+I1216 14:07:04.953680  5179 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:07:04.978962  5184 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:07:04.979003  5184 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:07.161248  5184 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:13.448102  5184 radix_sort_bench.cpp:112] Time for parallel quick sort: 6[s]
+I1216 14:07:13.448127  5184 radix_sort_bench.cpp:113] Time for parallel quick sort: 6286[ms]
+RESULT algorithm=pqs elements=100000000 time=6286
+I1216 14:07:13.875649  5184 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:07:13.901055  5189 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:07:13.901096  5189 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:16.081830  5189 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:22.402258  5189 radix_sort_bench.cpp:112] Time for parallel quick sort: 6[s]
+I1216 14:07:22.402285  5189 radix_sort_bench.cpp:113] Time for parallel quick sort: 6320[ms]
+RESULT algorithm=pqs elements=100000000 time=6320
+I1216 14:07:22.830082  5189 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:07:22.855464  5194 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:07:22.855505  5194 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:25.032613  5194 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:31.313650  5194 radix_sort_bench.cpp:112] Time for parallel quick sort: 6[s]
+I1216 14:07:31.313675  5194 radix_sort_bench.cpp:113] Time for parallel quick sort: 6280[ms]
+RESULT algorithm=pqs elements=100000000 time=6280
+I1216 14:07:31.740483  5194 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:07:31.765837  5199 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:07:31.765878  5199 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:33.945288  5199 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:40.249596  5199 radix_sort_bench.cpp:112] Time for parallel quick sort: 6[s]
+I1216 14:07:40.249629  5199 radix_sort_bench.cpp:113] Time for parallel quick sort: 6304[ms]
+RESULT algorithm=pqs elements=100000000 time=6304
+I1216 14:07:40.676687  5199 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:07:40.702122  5204 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:07:40.702189  5204 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:42.882297  5204 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:49.207695  5204 radix_sort_bench.cpp:112] Time for parallel quick sort: 6[s]
+I1216 14:07:49.207720  5204 radix_sort_bench.cpp:113] Time for parallel quick sort: 6325[ms]
+RESULT algorithm=pqs elements=100000000 time=6325
+I1216 14:07:49.635547  5204 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:07:49.661052  5209 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:07:49.661099  5209 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:51.844118  5209 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:07:57.079916  5209 radix_sort_bench.cpp:142] Time for std::stable_sort: 5[s]
+I1216 14:07:57.079977  5209 radix_sort_bench.cpp:143] Time for std::stable_sort: 5235[ms]
+RESULT algorithm=std::stable_sort elements=100000000 time=5235
+I1216 14:07:57.506641  5209 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:07:57.532119  5214 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:07:57.532158  5214 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:07:59.714934  5214 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:04.941586  5214 radix_sort_bench.cpp:142] Time for std::stable_sort: 5[s]
+I1216 14:08:04.941649  5214 radix_sort_bench.cpp:143] Time for std::stable_sort: 5226[ms]
+RESULT algorithm=std::stable_sort elements=100000000 time=5226
+I1216 14:08:05.369642  5214 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:08:05.395175  5219 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:08:05.395226  5219 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:07.580667  5219 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:12.808822  5219 radix_sort_bench.cpp:142] Time for std::stable_sort: 5[s]
+I1216 14:08:12.808884  5219 radix_sort_bench.cpp:143] Time for std::stable_sort: 5228[ms]
+RESULT algorithm=std::stable_sort elements=100000000 time=5228
+I1216 14:08:13.237875  5219 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:08:13.263324  5224 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:08:13.263365  5224 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:15.444463  5224 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:20.664281  5224 radix_sort_bench.cpp:142] Time for std::stable_sort: 5[s]
+I1216 14:08:20.664346  5224 radix_sort_bench.cpp:143] Time for std::stable_sort: 5219[ms]
+RESULT algorithm=std::stable_sort elements=100000000 time=5219
+I1216 14:08:21.092041  5224 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:08:21.117560  5230 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:08:21.117602  5230 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:23.300205  5230 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:28.539345  5230 radix_sort_bench.cpp:142] Time for std::stable_sort: 5[s]
+I1216 14:08:28.539407  5230 radix_sort_bench.cpp:143] Time for std::stable_sort: 5239[ms]
+RESULT algorithm=std::stable_sort elements=100000000 time=5239
+I1216 14:08:28.967347  5230 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:08:28.992741  5235 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:08:28.992780  5235 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:31.175464  5235 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:35.083288  5235 radix_sort_bench.cpp:127] Time for std::sort: 3[s]
+I1216 14:08:35.083351  5235 radix_sort_bench.cpp:128] Time for std::sort: 3907[ms]
+RESULT algorithm=std::sort elements=100000000 time=3907
+I1216 14:08:35.511328  5235 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:08:35.536777  5240 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:08:35.536816  5240 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:37.721606  5240 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:41.632071  5240 radix_sort_bench.cpp:127] Time for std::sort: 3[s]
+I1216 14:08:41.632133  5240 radix_sort_bench.cpp:128] Time for std::sort: 3910[ms]
+RESULT algorithm=std::sort elements=100000000 time=3910
+I1216 14:08:42.058159  5240 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:08:42.083583  5245 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:08:42.083623  5245 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:44.265115  5245 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:48.186012  5245 radix_sort_bench.cpp:127] Time for std::sort: 3[s]
+I1216 14:08:48.186077  5245 radix_sort_bench.cpp:128] Time for std::sort: 3920[ms]
+RESULT algorithm=std::sort elements=100000000 time=3920
+I1216 14:08:48.611552  5245 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:08:48.636790  5250 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:08:48.636834  5250 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:50.821636  5250 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:08:54.745405  5250 radix_sort_bench.cpp:127] Time for std::sort: 3[s]
+I1216 14:08:54.745468  5250 radix_sort_bench.cpp:128] Time for std::sort: 3923[ms]
+RESULT algorithm=std::sort elements=100000000 time=3923
+I1216 14:08:55.174856  5250 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:08:55.200258  5255 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:08:55.200297  5255 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:08:57.381546  5255 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:09:01.308564  5255 radix_sort_bench.cpp:127] Time for std::sort: 3[s]
+I1216 14:09:01.308625  5255 radix_sort_bench.cpp:128] Time for std::sort: 3926[ms]
+RESULT algorithm=std::sort elements=100000000 time=3926
+I1216 14:09:01.736986  5255 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:09:01.762356  5260 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:09:01.762394  5260 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:09:03.943712  5260 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:09:17.273084  5260 radix_sort_bench.cpp:172] Time for IPS4o: 13[s]
+I1216 14:09:17.273106  5260 radix_sort_bench.cpp:173] Time for IPS4o: 13329[ms]
+RESULT algorithm=ips4o elements=100000000 time=13329
+I1216 14:09:17.700328  5260 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:09:17.725735  5262 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:09:17.725777  5262 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:09:19.905707  5262 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:09:33.248561  5262 radix_sort_bench.cpp:172] Time for IPS4o: 13[s]
+I1216 14:09:33.248582  5262 radix_sort_bench.cpp:173] Time for IPS4o: 13342[ms]
+RESULT algorithm=ips4o elements=100000000 time=13342
+I1216 14:09:33.675259  5262 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:09:33.700853  5265 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:09:33.700893  5265 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:09:35.880810  5265 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:09:49.206991  5265 radix_sort_bench.cpp:172] Time for IPS4o: 13[s]
+I1216 14:09:49.207015  5265 radix_sort_bench.cpp:173] Time for IPS4o: 13326[ms]
+RESULT algorithm=ips4o elements=100000000 time=13326
+I1216 14:09:49.633348  5265 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:09:49.658697  5267 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:09:49.658738  5267 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:09:51.839381  5267 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:05.154435  5267 radix_sort_bench.cpp:172] Time for IPS4o: 13[s]
+I1216 14:10:05.154455  5267 radix_sort_bench.cpp:173] Time for IPS4o: 13315[ms]
+RESULT algorithm=ips4o elements=100000000 time=13315
+I1216 14:10:05.581691  5267 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:10:05.606995  5269 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:10:05.607038  5269 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:10:07.788740  5269 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:21.086735  5269 radix_sort_bench.cpp:172] Time for IPS4o: 13[s]
+I1216 14:10:21.086757  5269 radix_sort_bench.cpp:173] Time for IPS4o: 13297[ms]
+RESULT algorithm=ips4o elements=100000000 time=13297
+I1216 14:10:21.513679  5269 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:10:21.539258  5271 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:10:21.539296  5271 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:10:23.718067  5271 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:28.358410  5271 radix_sort_bench.cpp:157] Time for parallel IPS4o: 4[s]
+I1216 14:10:28.358477  5271 radix_sort_bench.cpp:158] Time for parallel IPS4o: 4640[ms]
+RESULT algorithm=pips4o elements=100000000 time=4640
+I1216 14:10:28.786130  5271 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:10:28.811509  5276 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:10:28.811559  5276 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:10:30.989667  5276 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:35.614887  5276 radix_sort_bench.cpp:157] Time for parallel IPS4o: 4[s]
+I1216 14:10:35.614946  5276 radix_sort_bench.cpp:158] Time for parallel IPS4o: 4625[ms]
+RESULT algorithm=pips4o elements=100000000 time=4625
+I1216 14:10:36.043313  5276 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:10:36.068850  5282 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:10:36.068892  5282 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:10:38.250382  5282 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:42.868923  5282 radix_sort_bench.cpp:157] Time for parallel IPS4o: 4[s]
+I1216 14:10:42.868993  5282 radix_sort_bench.cpp:158] Time for parallel IPS4o: 4618[ms]
+RESULT algorithm=pips4o elements=100000000 time=4618
+I1216 14:10:43.297053  5282 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:10:43.322578  5287 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:10:43.322623  5287 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:10:45.507761  5287 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:50.129345  5287 radix_sort_bench.cpp:157] Time for parallel IPS4o: 4[s]
+I1216 14:10:50.129410  5287 radix_sort_bench.cpp:158] Time for parallel IPS4o: 4621[ms]
+RESULT algorithm=pips4o elements=100000000 time=4621
+I1216 14:10:50.557878  5287 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:10:50.583071  5292 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:10:50.583112  5292 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:10:52.760654  5292 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:10:57.373235  5292 radix_sort_bench.cpp:157] Time for parallel IPS4o: 4[s]
+I1216 14:10:57.373296  5292 radix_sort_bench.cpp:158] Time for parallel IPS4o: 4612[ms]
+RESULT algorithm=pips4o elements=100000000 time=4612
+I1216 14:10:57.798272  5292 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:17:44.872694  5476 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:17:44.872735  5476 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:17:48.139890  5476 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:17:53.331271  5476 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 5[s]
+I1216 14:17:53.331295  5476 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 5191[ms]
+RESULT algorithm=pprs elements=150000000 time=5191
+I1216 14:17:53.982893  5476 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:17:54.022171  5481 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:17:54.022209  5481 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:17:57.291023  5481 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:18:02.507688  5481 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 5[s]
+I1216 14:18:02.507712  5481 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 5216[ms]
+RESULT algorithm=pprs elements=150000000 time=5216
+I1216 14:18:03.159555  5481 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:18:03.198253  5487 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:18:03.198392  5487 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:18:06.468441  5487 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:18:11.653720  5487 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 5[s]
+I1216 14:18:11.653743  5487 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 5185[ms]
+RESULT algorithm=pprs elements=150000000 time=5185
+I1216 14:18:12.309588  5487 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:18:12.349654  5492 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:18:12.349694  5492 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:18:15.617954  5492 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:18:20.805418  5492 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 5[s]
+I1216 14:18:20.805440  5492 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 5187[ms]
+RESULT algorithm=pprs elements=150000000 time=5187
+I1216 14:18:21.459861  5492 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:18:21.498656  5497 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:18:21.498695  5497 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:18:24.760063  5497 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:18:29.952461  5497 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 5[s]
+I1216 14:18:29.952483  5497 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 5192[ms]
+RESULT algorithm=pprs elements=150000000 time=5192
+I1216 14:18:30.602816  5497 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:18:30.642338  5502 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:18:30.642377  5502 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:18:33.915009  5502 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:18:43.471129  5502 radix_sort_bench.cpp:82] Time for LSD radix sort: 9[s]
+I1216 14:18:43.471150  5502 radix_sort_bench.cpp:83] Time for LSD radix sort: 9556[ms]
+RESULT algorithm=lsd elements=150000000 time=9556
+I1216 14:18:44.125720  5502 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:18:44.194569  5505 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:18:44.194612  5505 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:18:47.461335  5505 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:18:57.150916  5505 radix_sort_bench.cpp:82] Time for LSD radix sort: 9[s]
+I1216 14:18:57.150936  5505 radix_sort_bench.cpp:83] Time for LSD radix sort: 9689[ms]
+RESULT algorithm=lsd elements=150000000 time=9689
+I1216 14:18:57.804715  5505 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:18:57.873152  5507 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:18:57.873193  5507 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:19:01.141448  5507 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:19:10.567643  5507 radix_sort_bench.cpp:82] Time for LSD radix sort: 9[s]
+I1216 14:19:10.567663  5507 radix_sort_bench.cpp:83] Time for LSD radix sort: 9426[ms]
+RESULT algorithm=lsd elements=150000000 time=9426
+I1216 14:19:11.216282  5507 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:19:11.284741  5509 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:19:11.284781  5509 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:19:14.547477  5509 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:19:24.080734  5509 radix_sort_bench.cpp:82] Time for LSD radix sort: 9[s]
+I1216 14:19:24.080755  5509 radix_sort_bench.cpp:83] Time for LSD radix sort: 9533[ms]
+RESULT algorithm=lsd elements=150000000 time=9533
+I1216 14:19:24.729055  5509 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:19:24.797777  5511 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:19:24.797816  5511 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:19:28.060365  5511 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:19:37.478901  5511 radix_sort_bench.cpp:82] Time for LSD radix sort: 9[s]
+I1216 14:19:37.478922  5511 radix_sort_bench.cpp:83] Time for LSD radix sort: 9418[ms]
+RESULT algorithm=lsd elements=150000000 time=9418
+I1216 14:19:38.128506  5511 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:19:38.197105  5513 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:19:38.197149  5513 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:19:41.463937  5513 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:19:47.447011  5513 radix_sort_bench.cpp:97] Time for parallel merge sort: 5[s]
+I1216 14:19:47.447075  5513 radix_sort_bench.cpp:98] Time for parallel merge sort: 5983[ms]
+RESULT algorithm=pms elements=150000000 time=5983
+I1216 14:19:48.101111  5513 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:19:48.138243  5518 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:19:48.138283  5518 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:19:51.407625  5518 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:19:57.384944  5518 radix_sort_bench.cpp:97] Time for parallel merge sort: 5[s]
+I1216 14:19:57.385017  5518 radix_sort_bench.cpp:98] Time for parallel merge sort: 5977[ms]
+RESULT algorithm=pms elements=150000000 time=5977
+I1216 14:19:58.038096  5518 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:19:58.075074  5523 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:19:58.075117  5523 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:20:01.352962  5523 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:20:07.344558  5523 radix_sort_bench.cpp:97] Time for parallel merge sort: 5[s]
+I1216 14:20:07.344624  5523 radix_sort_bench.cpp:98] Time for parallel merge sort: 5991[ms]
+RESULT algorithm=pms elements=150000000 time=5991
+I1216 14:20:07.998967  5523 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:20:08.035917  5528 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:20:08.035959  5528 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:20:11.304203  5528 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:20:17.296079  5528 radix_sort_bench.cpp:97] Time for parallel merge sort: 5[s]
+I1216 14:20:17.296139  5528 radix_sort_bench.cpp:98] Time for parallel merge sort: 5991[ms]
+RESULT algorithm=pms elements=150000000 time=5991
+I1216 14:20:17.951597  5528 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:20:17.989495  5533 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:20:17.989533  5533 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:20:21.255260  5533 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:20:27.235200  5533 radix_sort_bench.cpp:97] Time for parallel merge sort: 5[s]
+I1216 14:20:27.235262  5533 radix_sort_bench.cpp:98] Time for parallel merge sort: 5979[ms]
+RESULT algorithm=pms elements=150000000 time=5979
+I1216 14:20:27.886138  5533 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:20:27.924011  5538 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:20:27.924052  5538 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:20:31.200191  5538 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:20:40.425745  5538 radix_sort_bench.cpp:112] Time for parallel quick sort: 9[s]
+I1216 14:20:40.425776  5538 radix_sort_bench.cpp:113] Time for parallel quick sort: 9225[ms]
+RESULT algorithm=pqs elements=150000000 time=9225
+I1216 14:20:41.078766  5538 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:20:41.116214  5543 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:20:41.116255  5543 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:20:44.387691  5543 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:20:53.647159  5543 radix_sort_bench.cpp:112] Time for parallel quick sort: 9[s]
+I1216 14:20:53.647188  5543 radix_sort_bench.cpp:113] Time for parallel quick sort: 9259[ms]
+RESULT algorithm=pqs elements=150000000 time=9259
+I1216 14:20:54.301744  5543 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:20:54.338618  5548 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:20:54.338660  5548 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:20:57.623764  5548 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:21:06.855983  5548 radix_sort_bench.cpp:112] Time for parallel quick sort: 9[s]
+I1216 14:21:06.856015  5548 radix_sort_bench.cpp:113] Time for parallel quick sort: 9232[ms]
+RESULT algorithm=pqs elements=150000000 time=9232
+I1216 14:21:07.510072  5548 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:21:07.547034  5553 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:21:07.547076  5553 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:21:10.818704  5553 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:21:20.048303  5553 radix_sort_bench.cpp:112] Time for parallel quick sort: 9[s]
+I1216 14:21:20.048332  5553 radix_sort_bench.cpp:113] Time for parallel quick sort: 9229[ms]
+RESULT algorithm=pqs elements=150000000 time=9229
+I1216 14:21:20.702724  5553 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:21:20.739707  5559 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:21:20.739748  5559 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:21:24.010475  5559 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:21:33.252326  5559 radix_sort_bench.cpp:112] Time for parallel quick sort: 9[s]
+I1216 14:21:33.252352  5559 radix_sort_bench.cpp:113] Time for parallel quick sort: 9241[ms]
+RESULT algorithm=pqs elements=150000000 time=9241
+I1216 14:21:33.905913  5559 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:21:33.942906  5564 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:21:33.942945  5564 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:21:37.215415  5564 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:21:45.072101  5564 radix_sort_bench.cpp:142] Time for std::stable_sort: 7[s]
+I1216 14:21:45.072166  5564 radix_sort_bench.cpp:143] Time for std::stable_sort: 7856[ms]
+RESULT algorithm=std::stable_sort elements=150000000 time=7856
+I1216 14:21:45.728149  5564 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:21:45.765564  5569 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:21:45.765604  5569 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:21:49.034648  5569 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:21:56.890668  5569 radix_sort_bench.cpp:142] Time for std::stable_sort: 7[s]
+I1216 14:21:56.890743  5569 radix_sort_bench.cpp:143] Time for std::stable_sort: 7855[ms]
+RESULT algorithm=std::stable_sort elements=150000000 time=7855
+I1216 14:21:57.540791  5569 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:21:57.577878  5574 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:21:57.577920  5574 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:22:00.846639  5574 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:22:08.706367  5574 radix_sort_bench.cpp:142] Time for std::stable_sort: 7[s]
+I1216 14:22:08.706425  5574 radix_sort_bench.cpp:143] Time for std::stable_sort: 7859[ms]
+RESULT algorithm=std::stable_sort elements=150000000 time=7859
+I1216 14:22:09.361587  5574 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:22:09.398880  5580 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:22:09.398932  5580 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:22:12.664227  5580 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:22:20.525928  5580 radix_sort_bench.cpp:142] Time for std::stable_sort: 7[s]
+I1216 14:22:20.525996  5580 radix_sort_bench.cpp:143] Time for std::stable_sort: 7861[ms]
+RESULT algorithm=std::stable_sort elements=150000000 time=7861
+I1216 14:22:21.176421  5580 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:22:21.214982  5585 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:22:21.215023  5585 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:22:24.490437  5585 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:22:32.346546  5585 radix_sort_bench.cpp:142] Time for std::stable_sort: 7[s]
+I1216 14:22:32.346611  5585 radix_sort_bench.cpp:143] Time for std::stable_sort: 7856[ms]
+RESULT algorithm=std::stable_sort elements=150000000 time=7856
+I1216 14:22:32.996923  5585 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:22:33.034018  5590 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:22:33.034060  5590 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:22:36.305436  5590 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:22:42.296244  5590 radix_sort_bench.cpp:127] Time for std::sort: 5[s]
+I1216 14:22:42.296308  5590 radix_sort_bench.cpp:128] Time for std::sort: 5990[ms]
+RESULT algorithm=std::sort elements=150000000 time=5990
+I1216 14:22:42.951743  5590 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:22:42.989503  5595 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:22:42.989543  5595 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:22:46.260740  5595 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:22:52.247753  5595 radix_sort_bench.cpp:127] Time for std::sort: 5[s]
+I1216 14:22:52.247817  5595 radix_sort_bench.cpp:128] Time for std::sort: 5986[ms]
+RESULT algorithm=std::sort elements=150000000 time=5986
+I1216 14:22:52.903252  5595 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:22:52.941037  5600 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:22:52.941077  5600 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:22:56.214033  5600 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:23:02.208298  5600 radix_sort_bench.cpp:127] Time for std::sort: 5[s]
+I1216 14:23:02.208361  5600 radix_sort_bench.cpp:128] Time for std::sort: 5994[ms]
+RESULT algorithm=std::sort elements=150000000 time=5994
+I1216 14:23:02.863713  5600 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:23:02.901499  5606 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:23:02.901538  5606 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:23:06.172793  5606 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:23:12.183099  5606 radix_sort_bench.cpp:127] Time for std::sort: 6[s]
+I1216 14:23:12.183164  5606 radix_sort_bench.cpp:128] Time for std::sort: 6010[ms]
+RESULT algorithm=std::sort elements=150000000 time=6010
+I1216 14:23:12.838654  5606 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:23:12.875638  5611 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:23:12.875677  5611 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:23:16.143748  5611 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:23:22.157411  5611 radix_sort_bench.cpp:127] Time for std::sort: 6[s]
+I1216 14:23:22.157485  5611 radix_sort_bench.cpp:128] Time for std::sort: 6013[ms]
+RESULT algorithm=std::sort elements=150000000 time=6013
+I1216 14:23:22.811419  5611 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:23:22.848392  5617 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:23:22.848433  5617 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:23:26.113020  5617 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:23:46.597177  5617 radix_sort_bench.cpp:172] Time for IPS4o: 20[s]
+I1216 14:23:46.597200  5617 radix_sort_bench.cpp:173] Time for IPS4o: 20484[ms]
+RESULT algorithm=ips4o elements=150000000 time=20484
+I1216 14:23:47.247005  5617 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:23:47.285418  5619 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:23:47.285459  5619 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:23:50.560881  5619 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:24:11.047494  5619 radix_sort_bench.cpp:172] Time for IPS4o: 20[s]
+I1216 14:24:11.047518  5619 radix_sort_bench.cpp:173] Time for IPS4o: 20486[ms]
+RESULT algorithm=ips4o elements=150000000 time=20486
+I1216 14:24:11.702270  5619 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:24:11.739243  5621 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:24:11.739284  5621 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:24:15.011557  5621 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:24:35.475064  5621 radix_sort_bench.cpp:172] Time for IPS4o: 20[s]
+I1216 14:24:35.475086  5621 radix_sort_bench.cpp:173] Time for IPS4o: 20463[ms]
+RESULT algorithm=ips4o elements=150000000 time=20463
+I1216 14:24:36.126075  5621 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:24:36.162755  5623 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:24:36.162793  5623 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:24:39.432317  5623 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:24:59.905537  5623 radix_sort_bench.cpp:172] Time for IPS4o: 20[s]
+I1216 14:24:59.905558  5623 radix_sort_bench.cpp:173] Time for IPS4o: 20473[ms]
+RESULT algorithm=ips4o elements=150000000 time=20473
+I1216 14:25:00.562862  5623 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:25:00.600162  5625 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:25:00.600203  5625 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:25:03.867900  5625 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:25:24.353389  5625 radix_sort_bench.cpp:172] Time for IPS4o: 20[s]
+I1216 14:25:24.353411  5625 radix_sort_bench.cpp:173] Time for IPS4o: 20485[ms]
+RESULT algorithm=ips4o elements=150000000 time=20485
+I1216 14:25:25.006886  5625 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:25:25.043678  5627 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:25:25.043720  5627 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:25:28.315122  5627 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:25:35.405975  5627 radix_sort_bench.cpp:157] Time for parallel IPS4o: 7[s]
+I1216 14:25:35.406039  5627 radix_sort_bench.cpp:158] Time for parallel IPS4o: 7090[ms]
+RESULT algorithm=pips4o elements=150000000 time=7090
+I1216 14:25:36.060873  5627 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:25:36.098855  5632 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:25:36.098896  5632 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:25:39.364307  5632 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:25:46.439019  5632 radix_sort_bench.cpp:157] Time for parallel IPS4o: 7[s]
+I1216 14:25:46.439085  5632 radix_sort_bench.cpp:158] Time for parallel IPS4o: 7074[ms]
+RESULT algorithm=pips4o elements=150000000 time=7074
+I1216 14:25:47.091872  5632 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:25:47.129241  5637 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:25:47.129281  5637 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:25:50.409291  5637 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:25:57.482354  5637 radix_sort_bench.cpp:157] Time for parallel IPS4o: 7[s]
+I1216 14:25:57.482417  5637 radix_sort_bench.cpp:158] Time for parallel IPS4o: 7073[ms]
+RESULT algorithm=pips4o elements=150000000 time=7073
+I1216 14:25:58.138250  5637 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:25:58.175983  5643 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:25:58.176023  5643 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:26:01.465432  5643 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:26:08.590948  5643 radix_sort_bench.cpp:157] Time for parallel IPS4o: 7[s]
+I1216 14:26:08.591012  5643 radix_sort_bench.cpp:158] Time for parallel IPS4o: 7125[ms]
+RESULT algorithm=pips4o elements=150000000 time=7125
+I1216 14:26:09.244436  5643 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:26:09.281455  5649 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:26:09.281499  5649 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:26:12.545564  5649 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:26:19.651130  5649 radix_sort_bench.cpp:157] Time for parallel IPS4o: 7[s]
+I1216 14:26:19.651193  5649 radix_sort_bench.cpp:158] Time for parallel IPS4o: 7105[ms]
+RESULT algorithm=pips4o elements=150000000 time=7105
+I1216 14:26:20.301617  5649 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:26:20.338451  5654 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:26:20.338493  5654 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:26:24.700678  5654 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:26:31.537660  5654 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 6[s]
+I1216 14:26:31.537679  5654 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 6836[ms]
+RESULT algorithm=pprs elements=200000000 time=6836
+I1216 14:26:32.423884  5654 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:26:32.473994  5660 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:26:32.474033  5660 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:26:36.830358  5660 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:26:43.625149  5660 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 6[s]
+I1216 14:26:43.625172  5660 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 6794[ms]
+RESULT algorithm=pprs elements=200000000 time=6794
+I1216 14:26:44.512135  5660 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:26:44.562362  5665 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:26:44.562405  5665 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:26:48.923398  5665 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:26:55.717567  5665 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 6[s]
+I1216 14:26:55.717589  5665 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 6794[ms]
+RESULT algorithm=pprs elements=200000000 time=6794
+I1216 14:26:56.606566  5665 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:26:56.657819  5670 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:26:56.657860  5670 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:27:01.019763  5670 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:27:07.865530  5670 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 6[s]
+I1216 14:27:07.865555  5670 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 6845[ms]
+RESULT algorithm=pprs elements=200000000 time=6845
+I1216 14:27:08.754848  5670 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:27:08.804890  5675 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:27:08.804932  5675 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:27:13.164700  5675 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:27:19.968302  5675 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 6[s]
+I1216 14:27:19.968324  5675 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 6803[ms]
+RESULT algorithm=pprs elements=200000000 time=6803
+I1216 14:27:20.857240  5675 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:27:20.907058  5680 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:27:20.907099  5680 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:27:25.265321  5680 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:27:38.093966  5680 radix_sort_bench.cpp:82] Time for LSD radix sort: 12[s]
+I1216 14:27:38.093987  5680 radix_sort_bench.cpp:83] Time for LSD radix sort: 12828[ms]
+RESULT algorithm=lsd elements=200000000 time=12828
+I1216 14:27:38.976986  5680 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:27:39.065012  5682 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:27:39.065055  5682 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:27:43.423713  5682 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:27:56.217221  5682 radix_sort_bench.cpp:82] Time for LSD radix sort: 12[s]
+I1216 14:27:56.217242  5682 radix_sort_bench.cpp:83] Time for LSD radix sort: 12793[ms]
+RESULT algorithm=lsd elements=200000000 time=12793
+I1216 14:27:57.107409  5682 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:27:57.195317  5684 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:27:57.195356  5684 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:28:01.552409  5684 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:28:14.221981  5684 radix_sort_bench.cpp:82] Time for LSD radix sort: 12[s]
+I1216 14:28:14.221997  5684 radix_sort_bench.cpp:83] Time for LSD radix sort: 12669[ms]
+RESULT algorithm=lsd elements=200000000 time=12669
+I1216 14:28:15.112215  5684 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:28:15.200534  5686 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:28:15.200573  5686 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:28:19.558215  5686 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:28:32.244092  5686 radix_sort_bench.cpp:82] Time for LSD radix sort: 12[s]
+I1216 14:28:32.244112  5686 radix_sort_bench.cpp:83] Time for LSD radix sort: 12685[ms]
+RESULT algorithm=lsd elements=200000000 time=12685
+I1216 14:28:33.132781  5686 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:28:33.220834  5688 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:28:33.220876  5688 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:28:37.580871  5688 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:28:50.466787  5688 radix_sort_bench.cpp:82] Time for LSD radix sort: 12[s]
+I1216 14:28:50.466809  5688 radix_sort_bench.cpp:83] Time for LSD radix sort: 12885[ms]
+RESULT algorithm=lsd elements=200000000 time=12885
+I1216 14:28:51.355780  5688 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:28:51.443845  5690 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:28:51.443886  5690 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:28:55.800693  5690 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:29:03.932080  5690 radix_sort_bench.cpp:97] Time for parallel merge sort: 8[s]
+I1216 14:29:03.932153  5690 radix_sort_bench.cpp:98] Time for parallel merge sort: 8131[ms]
+RESULT algorithm=pms elements=200000000 time=8131
+I1216 14:29:04.822859  5690 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:29:04.871490  5695 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:29:04.871532  5695 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:29:09.232375  5695 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:29:17.336470  5695 radix_sort_bench.cpp:97] Time for parallel merge sort: 8[s]
+I1216 14:29:17.336529  5695 radix_sort_bench.cpp:98] Time for parallel merge sort: 8104[ms]
+RESULT algorithm=pms elements=200000000 time=8104
+I1216 14:29:18.227385  5695 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:29:18.276626  5700 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:29:18.276666  5700 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:29:22.635565  5700 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:29:30.739383  5700 radix_sort_bench.cpp:97] Time for parallel merge sort: 8[s]
+I1216 14:29:30.739459  5700 radix_sort_bench.cpp:98] Time for parallel merge sort: 8103[ms]
+RESULT algorithm=pms elements=200000000 time=8103
+I1216 14:29:31.630571  5700 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:29:31.679112  5705 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:29:31.679150  5705 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:29:36.040834  5705 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:29:44.142603  5705 radix_sort_bench.cpp:97] Time for parallel merge sort: 8[s]
+I1216 14:29:44.142668  5705 radix_sort_bench.cpp:98] Time for parallel merge sort: 8101[ms]
+RESULT algorithm=pms elements=200000000 time=8101
+I1216 14:29:45.032976  5705 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:29:45.081455  5710 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:29:45.081496  5710 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:29:49.444530  5710 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:29:57.551888  5710 radix_sort_bench.cpp:97] Time for parallel merge sort: 8[s]
+I1216 14:29:57.551951  5710 radix_sort_bench.cpp:98] Time for parallel merge sort: 8107[ms]
+RESULT algorithm=pms elements=200000000 time=8107
+I1216 14:29:58.441406  5710 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:29:58.489802  5715 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:29:58.489843  5715 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:30:02.849930  5715 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:30:15.799901  5715 radix_sort_bench.cpp:112] Time for parallel quick sort: 12[s]
+I1216 14:30:15.799927  5715 radix_sort_bench.cpp:113] Time for parallel quick sort: 12949[ms]
+RESULT algorithm=pqs elements=200000000 time=12949
+I1216 14:30:16.689774  5715 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:30:16.738708  5720 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:30:16.738746  5720 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:30:21.098146  5720 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:30:34.072165  5720 radix_sort_bench.cpp:112] Time for parallel quick sort: 12[s]
+I1216 14:30:34.072187  5720 radix_sort_bench.cpp:113] Time for parallel quick sort: 12973[ms]
+RESULT algorithm=pqs elements=200000000 time=12973
+I1216 14:30:34.961302  5720 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:30:35.010074  5725 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:30:35.010113  5725 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:30:39.369319  5725 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:30:52.379182  5725 radix_sort_bench.cpp:112] Time for parallel quick sort: 13[s]
+I1216 14:30:52.379215  5725 radix_sort_bench.cpp:113] Time for parallel quick sort: 13009[ms]
+RESULT algorithm=pqs elements=200000000 time=13009
+I1216 14:30:53.262524  5725 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:30:53.311197  5730 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:30:53.311235  5730 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:30:57.665094  5730 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:31:10.605602  5730 radix_sort_bench.cpp:112] Time for parallel quick sort: 12[s]
+I1216 14:31:10.605624  5730 radix_sort_bench.cpp:113] Time for parallel quick sort: 12940[ms]
+RESULT algorithm=pqs elements=200000000 time=12940
+I1216 14:31:11.487593  5730 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:31:11.536058  5735 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:31:11.536100  5735 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:31:15.895385  5735 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:31:28.873148  5735 radix_sort_bench.cpp:112] Time for parallel quick sort: 12[s]
+I1216 14:31:28.873174  5735 radix_sort_bench.cpp:113] Time for parallel quick sort: 12977[ms]
+RESULT algorithm=pqs elements=200000000 time=12977
+I1216 14:31:29.762495  5735 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:31:29.810899  5741 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:31:29.810937  5741 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:31:34.168493  5741 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:31:44.652384  5741 radix_sort_bench.cpp:142] Time for std::stable_sort: 10[s]
+I1216 14:31:44.652506  5741 radix_sort_bench.cpp:143] Time for std::stable_sort: 10483[ms]
+RESULT algorithm=std::stable_sort elements=200000000 time=10483
+I1216 14:31:45.543766  5741 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:31:45.592257  5747 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:31:45.592298  5747 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:31:49.952759  5747 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:32:00.435099  5747 radix_sort_bench.cpp:142] Time for std::stable_sort: 10[s]
+I1216 14:32:00.435160  5747 radix_sort_bench.cpp:143] Time for std::stable_sort: 10482[ms]
+RESULT algorithm=std::stable_sort elements=200000000 time=10482
+I1216 14:32:01.326776  5747 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:32:01.375138  5752 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:32:01.375177  5752 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:32:05.730984  5752 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:32:16.202386  5752 radix_sort_bench.cpp:142] Time for std::stable_sort: 10[s]
+I1216 14:32:16.202450  5752 radix_sort_bench.cpp:143] Time for std::stable_sort: 10471[ms]
+RESULT algorithm=std::stable_sort elements=200000000 time=10471
+I1216 14:32:17.094274  5752 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:32:17.143034  5757 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:32:17.143074  5757 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:32:21.505836  5757 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:32:31.979998  5757 radix_sort_bench.cpp:142] Time for std::stable_sort: 10[s]
+I1216 14:32:31.980062  5757 radix_sort_bench.cpp:143] Time for std::stable_sort: 10474[ms]
+RESULT algorithm=std::stable_sort elements=200000000 time=10474
+I1216 14:32:32.868227  5757 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:32:32.916605  5762 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:32:32.916647  5762 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:32:37.280395  5762 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:32:47.751190  5762 radix_sort_bench.cpp:142] Time for std::stable_sort: 10[s]
+I1216 14:32:47.751253  5762 radix_sort_bench.cpp:143] Time for std::stable_sort: 10470[ms]
+RESULT algorithm=std::stable_sort elements=200000000 time=10470
+I1216 14:32:48.673869  5762 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:32:48.722575  5767 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:32:48.722620  5767 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:32:53.086458  5767 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:33:01.187000  5767 radix_sort_bench.cpp:127] Time for std::sort: 8[s]
+I1216 14:33:01.187062  5767 radix_sort_bench.cpp:128] Time for std::sort: 8100[ms]
+RESULT algorithm=std::sort elements=200000000 time=8100
+I1216 14:33:02.078905  5767 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:33:02.127997  5772 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:33:02.128038  5772 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:33:06.491328  5772 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:33:14.618580  5772 radix_sort_bench.cpp:127] Time for std::sort: 8[s]
+I1216 14:33:14.618641  5772 radix_sort_bench.cpp:128] Time for std::sort: 8127[ms]
+RESULT algorithm=std::sort elements=200000000 time=8127
+I1216 14:33:15.509606  5772 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:33:15.558377  5779 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:33:15.558418  5779 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:33:19.918062  5779 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:33:28.016113  5779 radix_sort_bench.cpp:127] Time for std::sort: 8[s]
+I1216 14:33:28.016237  5779 radix_sort_bench.cpp:128] Time for std::sort: 8097[ms]
+RESULT algorithm=std::sort elements=200000000 time=8097
+I1216 14:33:28.908290  5779 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:33:28.956794  5784 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:33:28.956833  5784 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:33:33.316926  5784 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:33:41.415278  5784 radix_sort_bench.cpp:127] Time for std::sort: 8[s]
+I1216 14:33:41.415343  5784 radix_sort_bench.cpp:128] Time for std::sort: 8098[ms]
+RESULT algorithm=std::sort elements=200000000 time=8098
+I1216 14:33:42.306069  5784 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:33:42.354354  5789 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:33:42.354393  5789 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:33:46.716315  5789 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:33:54.823554  5789 radix_sort_bench.cpp:127] Time for std::sort: 8[s]
+I1216 14:33:54.823614  5789 radix_sort_bench.cpp:128] Time for std::sort: 8107[ms]
+RESULT algorithm=std::sort elements=200000000 time=8107
+I1216 14:33:55.714313  5789 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:33:55.762712  5794 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:33:55.762754  5794 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:34:00.120882  5794 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:34:27.922610  5794 radix_sort_bench.cpp:172] Time for IPS4o: 27[s]
+I1216 14:34:27.922633  5794 radix_sort_bench.cpp:173] Time for IPS4o: 27801[ms]
+RESULT algorithm=ips4o elements=200000000 time=27801
+I1216 14:34:28.812252  5794 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:34:28.860621  5797 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:34:28.860664  5797 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:34:33.218957  5797 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:35:01.008478  5797 radix_sort_bench.cpp:172] Time for IPS4o: 27[s]
+I1216 14:35:01.008496  5797 radix_sort_bench.cpp:173] Time for IPS4o: 27789[ms]
+RESULT algorithm=ips4o elements=200000000 time=27789
+I1216 14:35:01.897670  5797 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:35:01.946075  5799 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:35:01.946116  5799 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:35:06.303042  5799 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:35:34.113071  5799 radix_sort_bench.cpp:172] Time for IPS4o: 27[s]
+I1216 14:35:34.113093  5799 radix_sort_bench.cpp:173] Time for IPS4o: 27809[ms]
+RESULT algorithm=ips4o elements=200000000 time=27809
+I1216 14:35:35.001322  5799 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:35:35.049752  5801 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:35:35.049791  5801 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:35:39.435657  5801 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:36:07.272725  5801 radix_sort_bench.cpp:172] Time for IPS4o: 27[s]
+I1216 14:36:07.272748  5801 radix_sort_bench.cpp:173] Time for IPS4o: 27837[ms]
+RESULT algorithm=ips4o elements=200000000 time=27837
+I1216 14:36:08.162456  5801 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:36:08.210763  5803 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:36:08.210803  5803 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:36:12.574504  5803 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:36:40.413451  5803 radix_sort_bench.cpp:172] Time for IPS4o: 27[s]
+I1216 14:36:40.413475  5803 radix_sort_bench.cpp:173] Time for IPS4o: 27838[ms]
+RESULT algorithm=ips4o elements=200000000 time=27838
+I1216 14:36:41.302467  5803 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:36:41.351111  5805 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:36:41.351150  5805 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:36:45.709807  5805 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:36:55.332255  5805 radix_sort_bench.cpp:157] Time for parallel IPS4o: 9[s]
+I1216 14:36:55.332320  5805 radix_sort_bench.cpp:158] Time for parallel IPS4o: 9622[ms]
+RESULT algorithm=pips4o elements=200000000 time=9622
+I1216 14:36:56.220110  5805 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:36:56.269062  5810 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:36:56.269101  5810 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:37:00.627748  5810 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:37:10.262977  5810 radix_sort_bench.cpp:157] Time for parallel IPS4o: 9[s]
+I1216 14:37:10.263043  5810 radix_sort_bench.cpp:158] Time for parallel IPS4o: 9635[ms]
+RESULT algorithm=pips4o elements=200000000 time=9635
+I1216 14:37:11.146847  5810 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:37:11.195288  5816 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:37:11.195327  5816 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:37:15.552636  5816 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:37:25.217392  5816 radix_sort_bench.cpp:157] Time for parallel IPS4o: 9[s]
+I1216 14:37:25.217459  5816 radix_sort_bench.cpp:158] Time for parallel IPS4o: 9664[ms]
+RESULT algorithm=pips4o elements=200000000 time=9664
+I1216 14:37:26.108561  5816 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:37:26.156936  5821 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:37:26.156980  5821 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:37:30.515527  5821 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:37:40.136842  5821 radix_sort_bench.cpp:157] Time for parallel IPS4o: 9[s]
+I1216 14:37:40.136904  5821 radix_sort_bench.cpp:158] Time for parallel IPS4o: 9621[ms]
+RESULT algorithm=pips4o elements=200000000 time=9621
+I1216 14:37:41.027359  5821 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:37:41.075731  5826 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:37:41.075773  5826 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:37:45.435459  5826 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:37:55.055052  5826 radix_sort_bench.cpp:157] Time for parallel IPS4o: 9[s]
+I1216 14:37:55.055117  5826 radix_sort_bench.cpp:158] Time for parallel IPS4o: 9619[ms]
+RESULT algorithm=pips4o elements=200000000 time=9619
+I1216 14:37:55.945091  5826 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:37:55.993423  5831 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:37:55.993465  5831 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:38:01.419906  5831 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:38:09.821949  5831 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 8[s]
+I1216 14:38:09.821974  5831 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 8401[ms]
+RESULT algorithm=pprs elements=250000000 time=8401
+I1216 14:38:10.949435  5831 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:38:11.010324  5836 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:38:11.010365  5836 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:38:16.455152  5836 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:38:24.881644  5836 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 8[s]
+I1216 14:38:24.881664  5836 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 8426[ms]
+RESULT algorithm=pprs elements=250000000 time=8426
+I1216 14:38:26.017267  5836 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:38:26.078593  5841 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:38:26.078634  5841 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:38:31.528331  5841 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:38:39.993083  5841 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 8[s]
+I1216 14:38:39.993105  5841 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 8464[ms]
+RESULT algorithm=pprs elements=250000000 time=8464
+I1216 14:38:41.128870  5841 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:38:41.189836  5846 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:38:41.189875  5846 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:38:46.635709  5846 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:38:55.027371  5846 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 8[s]
+I1216 14:38:55.027393  5846 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 8391[ms]
+RESULT algorithm=pprs elements=250000000 time=8391
+I1216 14:38:56.167007  5846 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:38:56.229423  5851 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:38:56.229463  5851 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:39:01.688570  5851 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:39:10.091084  5851 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 8[s]
+I1216 14:39:10.091106  5851 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 8402[ms]
+RESULT algorithm=pprs elements=250000000 time=8402
+I1216 14:39:11.227160  5851 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:39:11.287971  5856 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:39:11.288010  5856 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:39:16.737460  5856 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:39:32.790940  5856 radix_sort_bench.cpp:82] Time for LSD radix sort: 16[s]
+I1216 14:39:32.790961  5856 radix_sort_bench.cpp:83] Time for LSD radix sort: 16053[ms]
+RESULT algorithm=lsd elements=250000000 time=16053
+I1216 14:39:33.929808  5856 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:39:34.037641  5858 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:39:34.037680  5858 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:39:39.485517  5858 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:39:55.361266  5858 radix_sort_bench.cpp:82] Time for LSD radix sort: 15[s]
+I1216 14:39:55.361287  5858 radix_sort_bench.cpp:83] Time for LSD radix sort: 15875[ms]
+RESULT algorithm=lsd elements=250000000 time=15875
+I1216 14:39:56.498680  5858 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:39:56.606794  5860 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:39:56.606834  5860 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:40:02.052780  5860 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:40:17.993090  5860 radix_sort_bench.cpp:82] Time for LSD radix sort: 15[s]
+I1216 14:40:17.993110  5860 radix_sort_bench.cpp:83] Time for LSD radix sort: 15940[ms]
+RESULT algorithm=lsd elements=250000000 time=15940
+I1216 14:40:19.125731  5860 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:40:19.233927  5862 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:40:19.233966  5862 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:40:24.681640  5862 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:40:40.581177  5862 radix_sort_bench.cpp:82] Time for LSD radix sort: 15[s]
+I1216 14:40:40.581197  5862 radix_sort_bench.cpp:83] Time for LSD radix sort: 15899[ms]
+RESULT algorithm=lsd elements=250000000 time=15899
+I1216 14:40:41.718546  5862 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:40:41.825968  5864 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:40:41.826007  5864 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:40:47.270432  5864 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:41:03.583626  5864 radix_sort_bench.cpp:82] Time for LSD radix sort: 16[s]
+I1216 14:41:03.583647  5864 radix_sort_bench.cpp:83] Time for LSD radix sort: 16313[ms]
+RESULT algorithm=lsd elements=250000000 time=16313
+I1216 14:41:04.721487  5864 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:41:04.830098  5867 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:41:04.830137  5867 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:41:10.278858  5867 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:41:20.537969  5867 radix_sort_bench.cpp:97] Time for parallel merge sort: 10[s]
+I1216 14:41:20.538033  5867 radix_sort_bench.cpp:98] Time for parallel merge sort: 10259[ms]
+RESULT algorithm=pms elements=250000000 time=10259
+I1216 14:41:21.665099  5867 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:41:21.724202  5872 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:41:21.724242  5872 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:41:27.173652  5872 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:41:37.422927  5872 radix_sort_bench.cpp:97] Time for parallel merge sort: 10[s]
+I1216 14:41:37.423054  5872 radix_sort_bench.cpp:98] Time for parallel merge sort: 10249[ms]
+RESULT algorithm=pms elements=250000000 time=10249
+I1216 14:41:38.561363  5872 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:41:38.621153  5877 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:41:38.621196  5877 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:41:44.069478  5877 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:41:54.334259  5877 radix_sort_bench.cpp:97] Time for parallel merge sort: 10[s]
+I1216 14:41:54.334322  5877 radix_sort_bench.cpp:98] Time for parallel merge sort: 10264[ms]
+RESULT algorithm=pms elements=250000000 time=10264
+I1216 14:41:55.471957  5877 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:41:55.531008  5882 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:41:55.531046  5882 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:42:00.985605  5882 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:42:11.235054  5882 radix_sort_bench.cpp:97] Time for parallel merge sort: 10[s]
+I1216 14:42:11.235180  5882 radix_sort_bench.cpp:98] Time for parallel merge sort: 10249[ms]
+RESULT algorithm=pms elements=250000000 time=10249
+I1216 14:42:12.371084  5882 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:42:12.430212  5888 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:42:12.430253  5888 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:42:17.882771  5888 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:42:28.134793  5888 radix_sort_bench.cpp:97] Time for parallel merge sort: 10[s]
+I1216 14:42:28.134858  5888 radix_sort_bench.cpp:98] Time for parallel merge sort: 10251[ms]
+RESULT algorithm=pms elements=250000000 time=10251
+I1216 14:42:29.271549  5888 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:42:29.330662  5894 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:42:29.330701  5894 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:42:34.779709  5894 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:42:51.811588  5894 radix_sort_bench.cpp:112] Time for parallel quick sort: 17[s]
+I1216 14:42:51.811612  5894 radix_sort_bench.cpp:113] Time for parallel quick sort: 17031[ms]
+RESULT algorithm=pqs elements=250000000 time=17031
+I1216 14:42:52.946807  5894 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:42:53.005797  5899 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:42:53.005836  5899 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:42:58.444947  5899 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:43:15.534390  5899 radix_sort_bench.cpp:112] Time for parallel quick sort: 17[s]
+I1216 14:43:15.534418  5899 radix_sort_bench.cpp:113] Time for parallel quick sort: 17089[ms]
+RESULT algorithm=pqs elements=250000000 time=17089
+I1216 14:43:16.670064  5899 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:43:16.729187  5905 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:43:16.729229  5905 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:43:22.186343  5905 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:43:39.169404  5905 radix_sort_bench.cpp:112] Time for parallel quick sort: 16[s]
+I1216 14:43:39.169428  5905 radix_sort_bench.cpp:113] Time for parallel quick sort: 16983[ms]
+RESULT algorithm=pqs elements=250000000 time=16983
+I1216 14:43:40.305423  5905 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:43:40.364465  5910 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:43:40.364506  5910 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:43:45.802392  5910 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:44:02.844907  5910 radix_sort_bench.cpp:112] Time for parallel quick sort: 17[s]
+I1216 14:44:02.844936  5910 radix_sort_bench.cpp:113] Time for parallel quick sort: 17042[ms]
+RESULT algorithm=pqs elements=250000000 time=17042
+I1216 14:44:03.981318  5910 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:44:04.040176  5915 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:44:04.040216  5915 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:44:09.488679  5915 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:44:26.519997  5915 radix_sort_bench.cpp:112] Time for parallel quick sort: 17[s]
+I1216 14:44:26.520025  5915 radix_sort_bench.cpp:113] Time for parallel quick sort: 17031[ms]
+RESULT algorithm=pqs elements=250000000 time=17031
+I1216 14:44:27.652911  5915 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:44:27.712256  5921 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:44:27.712299  5921 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:44:33.201104  5921 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:44:47.170493  5921 radix_sort_bench.cpp:142] Time for std::stable_sort: 13[s]
+I1216 14:44:47.170568  5921 radix_sort_bench.cpp:143] Time for std::stable_sort: 13969[ms]
+RESULT algorithm=std::stable_sort elements=250000000 time=13969
+I1216 14:44:48.308737  5921 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:44:48.368540  5926 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:44:48.368580  5926 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:44:53.808611  5926 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:45:07.783702  5926 radix_sort_bench.cpp:142] Time for std::stable_sort: 13[s]
+I1216 14:45:07.783759  5926 radix_sort_bench.cpp:143] Time for std::stable_sort: 13975[ms]
+RESULT algorithm=std::stable_sort elements=250000000 time=13975
+I1216 14:45:08.920927  5926 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:45:08.980610  5931 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:45:08.980653  5931 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:45:14.445830  5931 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:45:28.426812  5931 radix_sort_bench.cpp:142] Time for std::stable_sort: 13[s]
+I1216 14:45:28.426939  5931 radix_sort_bench.cpp:143] Time for std::stable_sort: 13980[ms]
+RESULT algorithm=std::stable_sort elements=250000000 time=13980
+I1216 14:45:29.565946  5931 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:45:29.625025  5936 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:45:29.625064  5936 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:45:35.069869  5936 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:45:49.032083  5936 radix_sort_bench.cpp:142] Time for std::stable_sort: 13[s]
+I1216 14:45:49.032212  5936 radix_sort_bench.cpp:143] Time for std::stable_sort: 13962[ms]
+RESULT algorithm=std::stable_sort elements=250000000 time=13962
+I1216 14:45:50.170121  5936 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:45:50.229408  5941 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 14:45:50.229447  5941 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:45:55.678115  5941 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:46:09.646174  5941 radix_sort_bench.cpp:142] Time for std::stable_sort: 13[s]
+I1216 14:46:09.646234  5941 radix_sort_bench.cpp:143] Time for std::stable_sort: 13968[ms]
+RESULT algorithm=std::stable_sort elements=250000000 time=13968
+I1216 14:46:10.783349  5941 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 14:46:10.842824  5946 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:46:10.842864  5946 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:46:16.301707  5946 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:46:26.560855  5946 radix_sort_bench.cpp:127] Time for std::sort: 10[s]
+I1216 14:46:26.560984  5946 radix_sort_bench.cpp:128] Time for std::sort: 10259[ms]
+RESULT algorithm=std::sort elements=250000000 time=10259
+I1216 14:46:27.692714  5946 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:46:27.752241  5951 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:46:27.752281  5951 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:46:33.202564  5951 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:46:43.461997  5951 radix_sort_bench.cpp:127] Time for std::sort: 10[s]
+I1216 14:46:43.462124  5951 radix_sort_bench.cpp:128] Time for std::sort: 10259[ms]
+RESULT algorithm=std::sort elements=250000000 time=10259
+I1216 14:46:44.592497  5951 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:46:44.651702  5956 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:46:44.651741  5956 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:46:50.099728  5956 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:47:00.382287  5956 radix_sort_bench.cpp:127] Time for std::sort: 10[s]
+I1216 14:47:00.382351  5956 radix_sort_bench.cpp:128] Time for std::sort: 10282[ms]
+RESULT algorithm=std::sort elements=250000000 time=10282
+I1216 14:47:01.520135  5956 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:47:01.579371  5962 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:47:01.579411  5962 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:47:07.032596  5962 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:47:17.287914  5962 radix_sort_bench.cpp:127] Time for std::sort: 10[s]
+I1216 14:47:17.287976  5962 radix_sort_bench.cpp:128] Time for std::sort: 10255[ms]
+RESULT algorithm=std::sort elements=250000000 time=10255
+I1216 14:47:18.424638  5962 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:47:18.483484  5967 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 14:47:18.483522  5967 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:47:23.922690  5967 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:47:34.181041  5967 radix_sort_bench.cpp:127] Time for std::sort: 10[s]
+I1216 14:47:34.181167  5967 radix_sort_bench.cpp:128] Time for std::sort: 10258[ms]
+RESULT algorithm=std::sort elements=250000000 time=10258
+I1216 14:47:35.317879  5967 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 14:47:35.376883  5973 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:47:35.376924  5973 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:47:40.825515  5973 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:48:16.102135  5973 radix_sort_bench.cpp:172] Time for IPS4o: 35[s]
+I1216 14:48:16.102159  5973 radix_sort_bench.cpp:173] Time for IPS4o: 35276[ms]
+RESULT algorithm=ips4o elements=250000000 time=35276
+I1216 14:48:17.237712  5973 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:48:17.296648  5976 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:48:17.296689  5976 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:48:22.746057  5976 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:48:58.059717  5976 radix_sort_bench.cpp:172] Time for IPS4o: 35[s]
+I1216 14:48:58.059736  5976 radix_sort_bench.cpp:173] Time for IPS4o: 35313[ms]
+RESULT algorithm=ips4o elements=250000000 time=35313
+I1216 14:48:59.194926  5976 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:48:59.253949  5978 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:48:59.253993  5978 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:49:04.694584  5978 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:49:39.973721  5978 radix_sort_bench.cpp:172] Time for IPS4o: 35[s]
+I1216 14:49:39.973742  5978 radix_sort_bench.cpp:173] Time for IPS4o: 35279[ms]
+RESULT algorithm=ips4o elements=250000000 time=35279
+I1216 14:49:41.100402  5978 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:49:41.159528  5980 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:49:41.159584  5980 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:49:46.587546  5980 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:50:21.883745  5980 radix_sort_bench.cpp:172] Time for IPS4o: 35[s]
+I1216 14:50:21.883765  5980 radix_sort_bench.cpp:173] Time for IPS4o: 35296[ms]
+RESULT algorithm=ips4o elements=250000000 time=35296
+I1216 14:50:23.010871  5980 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:50:23.070185  5982 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 14:50:23.070228  5982 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:50:28.512990  5982 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:51:03.793177  5982 radix_sort_bench.cpp:172] Time for IPS4o: 35[s]
+I1216 14:51:03.793201  5982 radix_sort_bench.cpp:173] Time for IPS4o: 35280[ms]
+RESULT algorithm=ips4o elements=250000000 time=35280
+I1216 14:51:04.919606  5982 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 14:51:04.978881  5984 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:51:04.978927  5984 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:51:10.425580  5984 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:51:22.642175  5984 radix_sort_bench.cpp:157] Time for parallel IPS4o: 12[s]
+I1216 14:51:22.642240  5984 radix_sort_bench.cpp:158] Time for parallel IPS4o: 12216[ms]
+RESULT algorithm=pips4o elements=250000000 time=12216
+I1216 14:51:23.770041  5984 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:51:23.829787  5989 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:51:23.829826  5989 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:51:29.281947  5989 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:51:41.507385  5989 radix_sort_bench.cpp:157] Time for parallel IPS4o: 12[s]
+I1216 14:51:41.507452  5989 radix_sort_bench.cpp:158] Time for parallel IPS4o: 12225[ms]
+RESULT algorithm=pips4o elements=250000000 time=12225
+I1216 14:51:42.643716  5989 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:51:42.702435  5994 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:51:42.702473  5994 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:51:48.146507  5994 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:52:00.345239  5994 radix_sort_bench.cpp:157] Time for parallel IPS4o: 12[s]
+I1216 14:52:00.345301  5994 radix_sort_bench.cpp:158] Time for parallel IPS4o: 12198[ms]
+RESULT algorithm=pips4o elements=250000000 time=12198
+I1216 14:52:01.482244  5994 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:52:01.541533  5999 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:52:01.541574  5999 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:52:06.992557  5999 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:52:19.222880  5999 radix_sort_bench.cpp:157] Time for parallel IPS4o: 12[s]
+I1216 14:52:19.222949  5999 radix_sort_bench.cpp:158] Time for parallel IPS4o: 12230[ms]
+RESULT algorithm=pips4o elements=250000000 time=12230
+I1216 14:52:20.350656  5999 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:52:20.409622  6004 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 14:52:20.409663  6004 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:52:25.858052  6004 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:52:38.006474  6004 radix_sort_bench.cpp:157] Time for parallel IPS4o: 12[s]
+I1216 14:52:38.006538  6004 radix_sort_bench.cpp:158] Time for parallel IPS4o: 12148[ms]
+RESULT algorithm=pips4o elements=250000000 time=12148
+I1216 14:52:39.143307  6004 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 14:52:39.202494  6011 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:52:39.202535  6011 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:52:45.731976  6011 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:52:56.237694  6011 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 10[s]
+I1216 14:52:56.237720  6011 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 10505[ms]
+RESULT algorithm=pprs elements=300000000 time=10505
+I1216 14:52:57.628932  6011 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:52:57.709326  6018 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:52:57.709368  6018 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:53:04.247895  6018 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:53:14.858424  6018 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 10[s]
+I1216 14:53:14.858446  6018 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 10610[ms]
+RESULT algorithm=pprs elements=300000000 time=10610
+I1216 14:53:16.250118  6018 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:53:16.323205  6024 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:53:16.323246  6024 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:53:22.858094  6024 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:53:33.426687  6024 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 10[s]
+I1216 14:53:33.426708  6024 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 10568[ms]
+RESULT algorithm=pprs elements=300000000 time=10568
+I1216 14:53:34.818516  6024 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:53:34.891499  6029 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:53:34.891551  6029 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:53:41.429354  6029 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:53:51.927918  6029 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 10[s]
+I1216 14:53:51.927939  6029 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 10498[ms]
+RESULT algorithm=pprs elements=300000000 time=10498
+I1216 14:53:53.320858  6029 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:53:53.394029  6034 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 14:53:53.394073  6034 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:53:59.922586  6034 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:54:10.430146  6034 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 10[s]
+I1216 14:54:10.430169  6034 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 10507[ms]
+RESULT algorithm=pprs elements=300000000 time=10507
+I1216 14:54:11.821990  6034 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 14:54:11.895334  6039 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:54:11.895373  6039 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:54:18.435814  6039 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:54:37.690932  6039 radix_sort_bench.cpp:82] Time for LSD radix sort: 19[s]
+I1216 14:54:37.690953  6039 radix_sort_bench.cpp:83] Time for LSD radix sort: 19255[ms]
+RESULT algorithm=lsd elements=300000000 time=19255
+I1216 14:54:39.088460  6039 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:54:39.219966  6041 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:54:39.220005  6041 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:54:45.744724  6041 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:55:05.008594  6041 radix_sort_bench.cpp:82] Time for LSD radix sort: 19[s]
+I1216 14:55:05.008613  6041 radix_sort_bench.cpp:83] Time for LSD radix sort: 19263[ms]
+RESULT algorithm=lsd elements=300000000 time=19263
+I1216 14:55:06.405503  6041 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:55:06.536356  6043 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:55:06.536396  6043 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:55:13.070874  6043 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:55:32.475841  6043 radix_sort_bench.cpp:82] Time for LSD radix sort: 19[s]
+I1216 14:55:32.475860  6043 radix_sort_bench.cpp:83] Time for LSD radix sort: 19404[ms]
+RESULT algorithm=lsd elements=300000000 time=19404
+I1216 14:55:33.874424  6043 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:55:34.006466  6045 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:55:34.006507  6045 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:55:40.545333  6045 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:56:00.087688  6045 radix_sort_bench.cpp:82] Time for LSD radix sort: 19[s]
+I1216 14:56:00.087708  6045 radix_sort_bench.cpp:83] Time for LSD radix sort: 19542[ms]
+RESULT algorithm=lsd elements=300000000 time=19542
+I1216 14:56:01.481336  6045 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:56:01.613145  6048 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 14:56:01.613185  6048 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:56:08.139957  6048 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:56:27.256856  6048 radix_sort_bench.cpp:82] Time for LSD radix sort: 19[s]
+I1216 14:56:27.256876  6048 radix_sort_bench.cpp:83] Time for LSD radix sort: 19116[ms]
+RESULT algorithm=lsd elements=300000000 time=19116
+I1216 14:56:28.654487  6048 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 14:56:28.786165  6050 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:56:28.786206  6050 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:56:35.320264  6050 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:56:47.730868  6050 radix_sort_bench.cpp:97] Time for parallel merge sort: 12[s]
+I1216 14:56:47.730934  6050 radix_sort_bench.cpp:98] Time for parallel merge sort: 12410[ms]
+RESULT algorithm=pms elements=300000000 time=12410
+I1216 14:56:49.119707  6050 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:56:49.190397  6055 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:56:49.190439  6055 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:56:55.720088  6055 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:57:08.142030  6055 radix_sort_bench.cpp:97] Time for parallel merge sort: 12[s]
+I1216 14:57:08.142056  6055 radix_sort_bench.cpp:98] Time for parallel merge sort: 12421[ms]
+RESULT algorithm=pms elements=300000000 time=12421
+I1216 14:57:09.525418  6055 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:57:09.596061  6060 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:57:09.596103  6060 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:57:16.126199  6060 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:57:28.548385  6060 radix_sort_bench.cpp:97] Time for parallel merge sort: 12[s]
+I1216 14:57:28.548450  6060 radix_sort_bench.cpp:98] Time for parallel merge sort: 12422[ms]
+RESULT algorithm=pms elements=300000000 time=12422
+I1216 14:57:29.930469  6060 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:57:30.001624  6065 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:57:30.001664  6065 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:57:36.536995  6065 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:57:48.939045  6065 radix_sort_bench.cpp:97] Time for parallel merge sort: 12[s]
+I1216 14:57:48.939180  6065 radix_sort_bench.cpp:98] Time for parallel merge sort: 12402[ms]
+RESULT algorithm=pms elements=300000000 time=12402
+I1216 14:57:50.324439  6065 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:57:50.395112  6071 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 14:57:50.395151  6071 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:57:56.925186  6071 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:58:09.338196  6071 radix_sort_bench.cpp:97] Time for parallel merge sort: 12[s]
+I1216 14:58:09.338268  6071 radix_sort_bench.cpp:98] Time for parallel merge sort: 12412[ms]
+RESULT algorithm=pms elements=300000000 time=12412
+I1216 14:58:10.721673  6071 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 14:58:10.792893  6078 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:58:10.792934  6078 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:58:17.336200  6078 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:58:35.851944  6078 radix_sort_bench.cpp:112] Time for parallel quick sort: 18[s]
+I1216 14:58:35.851969  6078 radix_sort_bench.cpp:113] Time for parallel quick sort: 18515[ms]
+RESULT algorithm=pqs elements=300000000 time=18515
+I1216 14:58:37.242177  6078 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:58:37.312816  6083 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:58:37.312856  6083 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:58:43.848235  6083 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:59:02.251524  6083 radix_sort_bench.cpp:112] Time for parallel quick sort: 18[s]
+I1216 14:59:02.251554  6083 radix_sort_bench.cpp:113] Time for parallel quick sort: 18403[ms]
+RESULT algorithm=pqs elements=300000000 time=18403
+I1216 14:59:03.634176  6083 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:59:03.705173  6088 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:59:03.705214  6088 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:59:10.235394  6088 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:59:28.749637  6088 radix_sort_bench.cpp:112] Time for parallel quick sort: 18[s]
+I1216 14:59:28.749665  6088 radix_sort_bench.cpp:113] Time for parallel quick sort: 18514[ms]
+RESULT algorithm=pqs elements=300000000 time=18514
+I1216 14:59:30.139178  6088 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:59:30.209969  6093 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:59:30.210012  6093 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 14:59:36.786979  6093 radix_sort_bench.cpp:58] vector not sorted
+I1216 14:59:55.253166  6093 radix_sort_bench.cpp:112] Time for parallel quick sort: 18[s]
+I1216 14:59:55.253196  6093 radix_sort_bench.cpp:113] Time for parallel quick sort: 18466[ms]
+RESULT algorithm=pqs elements=300000000 time=18466
+I1216 14:59:56.643906  6093 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 14:59:56.715205  6098 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 14:59:56.715245  6098 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:00:03.276015  6098 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:00:21.643182  6098 radix_sort_bench.cpp:112] Time for parallel quick sort: 18[s]
+I1216 15:00:21.643210  6098 radix_sort_bench.cpp:113] Time for parallel quick sort: 18367[ms]
+RESULT algorithm=pqs elements=300000000 time=18367
+I1216 15:00:23.035151  6098 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 15:00:23.105901  6103 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:00:23.105943  6103 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:00:29.638638  6103 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:00:46.410733  6103 radix_sort_bench.cpp:142] Time for std::stable_sort: 16[s]
+I1216 15:00:46.410861  6103 radix_sort_bench.cpp:143] Time for std::stable_sort: 16772[ms]
+RESULT algorithm=std::stable_sort elements=300000000 time=16772
+I1216 15:00:47.803859  6103 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:00:47.875131  6108 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:00:47.875171  6108 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:00:54.413260  6108 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:01:11.180616  6108 radix_sort_bench.cpp:142] Time for std::stable_sort: 16[s]
+I1216 15:01:11.180743  6108 radix_sort_bench.cpp:143] Time for std::stable_sort: 16767[ms]
+RESULT algorithm=std::stable_sort elements=300000000 time=16767
+I1216 15:01:12.576483  6108 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:01:12.647137  6114 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:01:12.647177  6114 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:01:19.176749  6114 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:01:35.963677  6114 radix_sort_bench.cpp:142] Time for std::stable_sort: 16[s]
+I1216 15:01:35.963805  6114 radix_sort_bench.cpp:143] Time for std::stable_sort: 16786[ms]
+RESULT algorithm=std::stable_sort elements=300000000 time=16786
+I1216 15:01:37.352831  6114 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:01:37.423705  6119 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:01:37.423744  6119 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:01:43.954988  6119 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:02:00.750123  6119 radix_sort_bench.cpp:142] Time for std::stable_sort: 16[s]
+I1216 15:02:00.750186  6119 radix_sort_bench.cpp:143] Time for std::stable_sort: 16795[ms]
+RESULT algorithm=std::stable_sort elements=300000000 time=16795
+I1216 15:02:02.143203  6119 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:02:02.214030  6124 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:02:02.214071  6124 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:02:08.752683  6124 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:02:25.538278  6124 radix_sort_bench.cpp:142] Time for std::stable_sort: 16[s]
+I1216 15:02:25.538406  6124 radix_sort_bench.cpp:143] Time for std::stable_sort: 16785[ms]
+RESULT algorithm=std::stable_sort elements=300000000 time=16785
+I1216 15:02:26.934159  6124 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:02:27.005722  6130 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:02:27.005760  6130 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:02:33.544116  6130 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:02:45.950099  6130 radix_sort_bench.cpp:127] Time for std::sort: 12[s]
+I1216 15:02:45.950166  6130 radix_sort_bench.cpp:128] Time for std::sort: 12405[ms]
+RESULT algorithm=std::sort elements=300000000 time=12405
+I1216 15:02:47.344468  6130 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:02:47.415954  6135 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:02:47.415994  6135 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:02:53.950673  6135 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:03:06.372170  6135 radix_sort_bench.cpp:127] Time for std::sort: 12[s]
+I1216 15:03:06.372231  6135 radix_sort_bench.cpp:128] Time for std::sort: 12421[ms]
+RESULT algorithm=std::sort elements=300000000 time=12421
+I1216 15:03:07.761976  6135 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:03:07.834076  6141 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:03:07.834120  6141 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:03:14.370604  6141 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:03:26.774654  6141 radix_sort_bench.cpp:127] Time for std::sort: 12[s]
+I1216 15:03:26.774720  6141 radix_sort_bench.cpp:128] Time for std::sort: 12404[ms]
+RESULT algorithm=std::sort elements=300000000 time=12404
+I1216 15:03:28.167439  6141 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:03:28.239221  6147 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:03:28.239261  6147 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:03:34.781838  6147 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:03:47.206724  6147 radix_sort_bench.cpp:127] Time for std::sort: 12[s]
+I1216 15:03:47.206785  6147 radix_sort_bench.cpp:128] Time for std::sort: 12424[ms]
+RESULT algorithm=std::sort elements=300000000 time=12424
+I1216 15:03:48.598932  6147 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:03:48.670150  6152 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:03:48.670189  6152 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:03:55.193938  6152 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:04:07.631433  6152 radix_sort_bench.cpp:127] Time for std::sort: 12[s]
+I1216 15:04:07.631497  6152 radix_sort_bench.cpp:128] Time for std::sort: 12437[ms]
+RESULT algorithm=std::sort elements=300000000 time=12437
+I1216 15:04:09.025696  6152 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:04:09.096904  6157 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:04:09.096945  6157 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:04:15.632576  6157 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:04:58.444548  6157 radix_sort_bench.cpp:172] Time for IPS4o: 42[s]
+I1216 15:04:58.444571  6157 radix_sort_bench.cpp:173] Time for IPS4o: 42811[ms]
+RESULT algorithm=ips4o elements=300000000 time=42811
+I1216 15:04:59.833472  6157 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:04:59.904212  6159 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:04:59.904251  6159 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:05:06.447751  6159 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:05:49.336098  6159 radix_sort_bench.cpp:172] Time for IPS4o: 42[s]
+I1216 15:05:49.336122  6159 radix_sort_bench.cpp:173] Time for IPS4o: 42888[ms]
+RESULT algorithm=ips4o elements=300000000 time=42888
+I1216 15:05:50.728063  6159 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:05:50.799875  6161 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:05:50.799916  6161 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:05:57.333626  6161 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:06:40.165139  6161 radix_sort_bench.cpp:172] Time for IPS4o: 42[s]
+I1216 15:06:40.165159  6161 radix_sort_bench.cpp:173] Time for IPS4o: 42831[ms]
+RESULT algorithm=ips4o elements=300000000 time=42831
+I1216 15:06:41.556332  6161 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:06:41.627343  6164 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:06:41.627382  6164 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:06:48.158715  6164 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:07:30.976229  6164 radix_sort_bench.cpp:172] Time for IPS4o: 42[s]
+I1216 15:07:30.976253  6164 radix_sort_bench.cpp:173] Time for IPS4o: 42817[ms]
+RESULT algorithm=ips4o elements=300000000 time=42817
+I1216 15:07:32.364661  6164 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:07:32.435868  6169 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:07:32.435909  6169 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:07:38.980240  6169 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:08:21.778621  6169 radix_sort_bench.cpp:172] Time for IPS4o: 42[s]
+I1216 15:08:21.778641  6169 radix_sort_bench.cpp:173] Time for IPS4o: 42798[ms]
+RESULT algorithm=ips4o elements=300000000 time=42798
+I1216 15:08:23.170228  6169 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:08:23.241443  6172 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:08:23.241482  6172 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:08:29.768895  6172 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:08:44.600785  6172 radix_sort_bench.cpp:157] Time for parallel IPS4o: 14[s]
+I1216 15:08:44.600852  6172 radix_sort_bench.cpp:158] Time for parallel IPS4o: 14831[ms]
+RESULT algorithm=pips4o elements=300000000 time=14831
+I1216 15:08:45.984948  6172 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:08:46.056138  6177 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:08:46.056177  6177 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:08:52.579115  6177 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:09:07.368775  6177 radix_sort_bench.cpp:157] Time for parallel IPS4o: 14[s]
+I1216 15:09:07.368840  6177 radix_sort_bench.cpp:158] Time for parallel IPS4o: 14789[ms]
+RESULT algorithm=pips4o elements=300000000 time=14789
+I1216 15:09:08.764569  6177 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:09:08.836576  6182 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:09:08.836616  6182 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:09:15.367657  6182 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:09:30.232280  6182 radix_sort_bench.cpp:157] Time for parallel IPS4o: 14[s]
+I1216 15:09:30.232347  6182 radix_sort_bench.cpp:158] Time for parallel IPS4o: 14864[ms]
+RESULT algorithm=pips4o elements=300000000 time=14864
+I1216 15:09:31.624868  6182 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:09:31.696279  6187 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:09:31.696317  6187 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:09:38.236289  6187 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:09:53.006647  6187 radix_sort_bench.cpp:157] Time for parallel IPS4o: 14[s]
+I1216 15:09:53.006711  6187 radix_sort_bench.cpp:158] Time for parallel IPS4o: 14770[ms]
+RESULT algorithm=pips4o elements=300000000 time=14770
+I1216 15:09:54.399082  6187 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:09:54.470317  6192 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:09:54.470357  6192 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:10:01.014719  6192 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:10:15.819193  6192 radix_sort_bench.cpp:157] Time for parallel IPS4o: 14[s]
+I1216 15:10:15.819262  6192 radix_sort_bench.cpp:158] Time for parallel IPS4o: 14804[ms]
+RESULT algorithm=pips4o elements=300000000 time=14804
+I1216 15:10:17.211331  6192 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:11:54.261523  6302 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 15:11:54.261570  6302 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:12:01.887651  6302 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:12:23.353780  6302 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 21[s]
+I1216 15:12:23.355556  6302 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 21462[ms]
+RESULT algorithm=pprs elements=350000000 time=21462
+I1216 15:12:25.014892  6302 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 15:12:25.122915  6308 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 15:12:25.122969  6308 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:12:32.739269  6308 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:12:51.751111  6308 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 19[s]
+I1216 15:12:51.753325  6308 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 19008[ms]
+RESULT algorithm=pprs elements=350000000 time=19008
+I1216 15:12:53.441656  6308 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 15:12:53.548195  6313 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 15:12:53.551445  6313 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:13:01.180434  6313 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:13:24.409082  6313 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 23[s]
+I1216 15:13:24.410672  6313 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 23227[ms]
+RESULT algorithm=pprs elements=350000000 time=23227
+I1216 15:13:26.063663  6313 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 15:13:26.171277  6322 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 15:13:26.171337  6322 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:13:33.798041  6322 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:13:53.291499  6322 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 19[s]
+I1216 15:13:53.293408  6322 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 19489[ms]
+RESULT algorithm=pprs elements=350000000 time=19489
+I1216 15:13:54.955515  6322 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 15:13:55.061305  6328 radix_sort_bench.cpp:40] Using sorting algorithm: pprs
+I1216 15:13:55.064481  6328 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:14:02.746031  6328 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:14:24.285612  6328 radix_sort_bench.cpp:67] Time for partitioned parallel radix sort: 21[s]
+I1216 15:14:24.287565  6328 radix_sort_bench.cpp:68] Time for partitioned parallel radix sort: 21535[ms]
+RESULT algorithm=pprs elements=350000000 time=21535
+I1216 15:14:25.950634  6328 radix_sort_bench.cpp:72] Partitioned parallel radix sort sorted correctly
+I1216 15:14:26.058143  6335 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 15:14:26.058218  6335 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:14:33.687562  6335 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:14:56.057040  6335 radix_sort_bench.cpp:82] Time for LSD radix sort: 22[s]
+I1216 15:14:56.057061  6335 radix_sort_bench.cpp:83] Time for LSD radix sort: 22369[ms]
+RESULT algorithm=lsd elements=350000000 time=22369
+I1216 15:15:00.678472  6335 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 15:15:00.881116  6337 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 15:15:00.884399  6337 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:15:08.518456  6337 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:15:30.964259  6337 radix_sort_bench.cpp:82] Time for LSD radix sort: 22[s]
+I1216 15:15:30.964280  6337 radix_sort_bench.cpp:83] Time for LSD radix sort: 22445[ms]
+RESULT algorithm=lsd elements=350000000 time=22445
+I1216 15:15:36.912187  6337 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 15:15:37.112588  6339 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 15:15:37.117074  6339 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:15:44.768393  6339 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:16:07.208016  6339 radix_sort_bench.cpp:82] Time for LSD radix sort: 22[s]
+I1216 15:16:07.208037  6339 radix_sort_bench.cpp:83] Time for LSD radix sort: 22439[ms]
+RESULT algorithm=lsd elements=350000000 time=22439
+I1216 15:16:10.427637  6339 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 15:16:10.622001  6341 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 15:16:10.625159  6341 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:16:18.264641  6341 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:16:40.636651  6341 radix_sort_bench.cpp:82] Time for LSD radix sort: 22[s]
+I1216 15:16:40.636673  6341 radix_sort_bench.cpp:83] Time for LSD radix sort: 22371[ms]
+RESULT algorithm=lsd elements=350000000 time=22371
+I1216 15:16:44.023871  6341 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 15:16:44.207234  6345 radix_sort_bench.cpp:40] Using sorting algorithm: lsd
+I1216 15:16:44.212576  6345 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:16:51.836985  6345 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:17:14.264317  6345 radix_sort_bench.cpp:82] Time for LSD radix sort: 22[s]
+I1216 15:17:14.264339  6345 radix_sort_bench.cpp:83] Time for LSD radix sort: 22427[ms]
+RESULT algorithm=lsd elements=350000000 time=22427
+I1216 15:17:18.618971  6345 radix_sort_bench.cpp:87] LSD radix sort sorted correctly
+I1216 15:17:18.802363  6351 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 15:17:18.805061  6351 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:17:26.456231  6351 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:17:41.092602  6351 radix_sort_bench.cpp:97] Time for parallel merge sort: 14[s]
+I1216 15:17:41.092725  6351 radix_sort_bench.cpp:98] Time for parallel merge sort: 14636[ms]
+RESULT algorithm=pms elements=350000000 time=14636
+I1216 15:17:42.755245  6351 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 15:17:42.834286  6356 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 15:17:42.834327  6356 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:17:50.460921  6356 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:18:05.089262  6356 radix_sort_bench.cpp:97] Time for parallel merge sort: 14[s]
+I1216 15:18:05.089327  6356 radix_sort_bench.cpp:98] Time for parallel merge sort: 14628[ms]
+RESULT algorithm=pms elements=350000000 time=14628
+I1216 15:18:06.749217  6356 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 15:18:06.828173  6362 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 15:18:06.828215  6362 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:18:14.463434  6362 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:18:29.101838  6362 radix_sort_bench.cpp:97] Time for parallel merge sort: 14[s]
+I1216 15:18:29.101954  6362 radix_sort_bench.cpp:98] Time for parallel merge sort: 14638[ms]
+RESULT algorithm=pms elements=350000000 time=14638
+I1216 15:18:30.761833  6362 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 15:18:30.841050  6367 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 15:18:30.841090  6367 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:18:38.464288  6367 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:18:53.068980  6367 radix_sort_bench.cpp:97] Time for parallel merge sort: 14[s]
+I1216 15:18:53.069111  6367 radix_sort_bench.cpp:98] Time for parallel merge sort: 14604[ms]
+RESULT algorithm=pms elements=350000000 time=14604
+I1216 15:18:54.729858  6367 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 15:18:54.809154  6372 radix_sort_bench.cpp:40] Using sorting algorithm: pms
+I1216 15:18:54.809192  6372 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:19:02.437623  6372 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:19:17.037561  6372 radix_sort_bench.cpp:97] Time for parallel merge sort: 14[s]
+I1216 15:19:17.037624  6372 radix_sort_bench.cpp:98] Time for parallel merge sort: 14599[ms]
+RESULT algorithm=pms elements=350000000 time=14599
+I1216 15:19:18.697540  6372 radix_sort_bench.cpp:102] parallel merge sort sorted correctly
+I1216 15:19:18.777014  6378 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 15:19:18.777053  6378 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:19:26.398273  6378 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:19:48.606719  6378 radix_sort_bench.cpp:112] Time for parallel quick sort: 22[s]
+I1216 15:19:48.606746  6378 radix_sort_bench.cpp:113] Time for parallel quick sort: 22208[ms]
+RESULT algorithm=pqs elements=350000000 time=22208
+I1216 15:19:50.253469  6378 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 15:19:50.332643  6383 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 15:19:50.332685  6383 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:19:57.962371  6383 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:20:20.291534  6383 radix_sort_bench.cpp:112] Time for parallel quick sort: 22[s]
+I1216 15:20:20.291561  6383 radix_sort_bench.cpp:113] Time for parallel quick sort: 22329[ms]
+RESULT algorithm=pqs elements=350000000 time=22329
+I1216 15:20:21.949909  6383 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 15:20:22.029553  6388 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 15:20:22.029592  6388 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:20:29.686899  6388 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:20:52.056269  6388 radix_sort_bench.cpp:112] Time for parallel quick sort: 22[s]
+I1216 15:20:52.056295  6388 radix_sort_bench.cpp:113] Time for parallel quick sort: 22369[ms]
+RESULT algorithm=pqs elements=350000000 time=22369
+I1216 15:20:53.701815  6388 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 15:20:53.781028  6393 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 15:20:53.781071  6393 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:21:01.396296  6393 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:21:23.805181  6393 radix_sort_bench.cpp:112] Time for parallel quick sort: 22[s]
+I1216 15:21:23.805207  6393 radix_sort_bench.cpp:113] Time for parallel quick sort: 22408[ms]
+RESULT algorithm=pqs elements=350000000 time=22408
+I1216 15:21:25.464260  6393 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 15:21:25.543478  6398 radix_sort_bench.cpp:40] Using sorting algorithm: pqs
+I1216 15:21:25.543514  6398 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:21:33.162505  6398 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:21:55.368120  6398 radix_sort_bench.cpp:112] Time for parallel quick sort: 22[s]
+I1216 15:21:55.368142  6398 radix_sort_bench.cpp:113] Time for parallel quick sort: 22205[ms]
+RESULT algorithm=pqs elements=350000000 time=22205
+I1216 15:21:57.014968  6398 radix_sort_bench.cpp:117] parallel quick sort sorted correctly
+I1216 15:21:57.094656  6404 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:21:57.094696  6404 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:22:04.708122  6404 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:22:48.708417  6404 radix_sort_bench.cpp:142] Time for std::stable_sort: 43[s]
+I1216 15:22:48.709323  6404 radix_sort_bench.cpp:143] Time for std::stable_sort: 43999[ms]
+RESULT algorithm=std::stable_sort elements=350000000 time=43999
+I1216 15:22:50.370107  6404 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:22:50.479631  6411 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:22:50.479764  6411 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:22:58.106056  6411 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:23:40.477313  6411 radix_sort_bench.cpp:142] Time for std::stable_sort: 42[s]
+I1216 15:23:40.478221  6411 radix_sort_bench.cpp:143] Time for std::stable_sort: 42370[ms]
+RESULT algorithm=std::stable_sort elements=350000000 time=42370
+I1216 15:23:42.148335  6411 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:23:42.263226  6417 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:23:42.263316  6417 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:23:49.891985  6417 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:24:30.747756  6417 radix_sort_bench.cpp:142] Time for std::stable_sort: 40[s]
+I1216 15:24:30.748131  6417 radix_sort_bench.cpp:143] Time for std::stable_sort: 40855[ms]
+RESULT algorithm=std::stable_sort elements=350000000 time=40855
+I1216 15:24:32.419373  6417 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:24:32.530009  6423 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:24:32.530064  6423 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:24:40.154975  6423 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:25:22.515859  6423 radix_sort_bench.cpp:142] Time for std::stable_sort: 42[s]
+I1216 15:25:22.516355  6423 radix_sort_bench.cpp:143] Time for std::stable_sort: 42359[ms]
+RESULT algorithm=std::stable_sort elements=350000000 time=42359
+I1216 15:25:24.181406  6423 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:25:24.297976  6430 radix_sort_bench.cpp:40] Using sorting algorithm: std::stable_sort
+I1216 15:25:24.298048  6430 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:25:31.919045  6430 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:26:12.566864  6430 radix_sort_bench.cpp:142] Time for std::stable_sort: 40[s]
+I1216 15:26:12.567260  6430 radix_sort_bench.cpp:143] Time for std::stable_sort: 40646[ms]
+RESULT algorithm=std::stable_sort elements=350000000 time=40646
+I1216 15:26:14.220082  6430 radix_sort_bench.cpp:147] std::stable_sort sorted correctly
+I1216 15:26:14.336724  6435 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:26:14.337034  6435 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:26:21.963872  6435 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:26:36.575168  6435 radix_sort_bench.cpp:127] Time for std::sort: 14[s]
+I1216 15:26:36.575233  6435 radix_sort_bench.cpp:128] Time for std::sort: 14611[ms]
+RESULT algorithm=std::sort elements=350000000 time=14611
+I1216 15:26:38.230453  6435 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:26:38.311691  6440 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:26:38.311734  6440 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:26:45.933486  6440 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:27:00.551398  6440 radix_sort_bench.cpp:127] Time for std::sort: 14[s]
+I1216 15:27:00.551527  6440 radix_sort_bench.cpp:128] Time for std::sort: 14617[ms]
+RESULT algorithm=std::sort elements=350000000 time=14617
+I1216 15:27:02.213888  6440 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:27:02.295806  6445 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:27:02.295845  6445 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:27:09.923595  6445 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:27:24.531370  6445 radix_sort_bench.cpp:127] Time for std::sort: 14[s]
+I1216 15:27:24.531450  6445 radix_sort_bench.cpp:128] Time for std::sort: 14607[ms]
+RESULT algorithm=std::sort elements=350000000 time=14607
+I1216 15:27:26.190397  6445 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:27:26.271757  6450 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:27:26.271796  6450 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:27:33.882464  6450 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:27:48.498111  6450 radix_sort_bench.cpp:127] Time for std::sort: 14[s]
+I1216 15:27:48.498175  6450 radix_sort_bench.cpp:128] Time for std::sort: 14615[ms]
+RESULT algorithm=std::sort elements=350000000 time=14615
+I1216 15:27:50.161847  6450 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:27:50.243214  6455 radix_sort_bench.cpp:40] Using sorting algorithm: std::sort
+I1216 15:27:50.243257  6455 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:27:57.872701  6455 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:28:12.486748  6455 radix_sort_bench.cpp:127] Time for std::sort: 14[s]
+I1216 15:28:12.486812  6455 radix_sort_bench.cpp:128] Time for std::sort: 14613[ms]
+RESULT algorithm=std::sort elements=350000000 time=14613
+I1216 15:28:14.146226  6455 radix_sort_bench.cpp:132] std::sort sorted correctly
+I1216 15:28:14.227422  6460 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:28:14.227463  6460 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:28:21.842952  6460 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:29:12.342722  6460 radix_sort_bench.cpp:172] Time for IPS4o: 50[s]
+I1216 15:29:12.342742  6460 radix_sort_bench.cpp:173] Time for IPS4o: 50499[ms]
+RESULT algorithm=ips4o elements=350000000 time=50499
+I1216 15:29:13.988890  6460 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:29:14.070096  6462 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:29:14.070137  6462 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:29:21.725131  6462 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:30:12.293400  6462 radix_sort_bench.cpp:172] Time for IPS4o: 50[s]
+I1216 15:30:12.293416  6462 radix_sort_bench.cpp:173] Time for IPS4o: 50568[ms]
+RESULT algorithm=ips4o elements=350000000 time=50568
+I1216 15:30:13.950913  6462 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:30:14.032225  6466 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:30:14.032265  6466 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:30:21.663343  6466 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:31:12.144635  6466 radix_sort_bench.cpp:172] Time for IPS4o: 50[s]
+I1216 15:31:12.144659  6466 radix_sort_bench.cpp:173] Time for IPS4o: 50481[ms]
+RESULT algorithm=ips4o elements=350000000 time=50481
+I1216 15:31:13.804244  6466 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:31:13.885551  6469 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:31:13.885591  6469 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:31:21.511808  6469 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:32:11.948580  6469 radix_sort_bench.cpp:172] Time for IPS4o: 50[s]
+I1216 15:32:11.948602  6469 radix_sort_bench.cpp:173] Time for IPS4o: 50436[ms]
+RESULT algorithm=ips4o elements=350000000 time=50436
+I1216 15:32:13.605175  6469 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:32:13.686580  6472 radix_sort_bench.cpp:40] Using sorting algorithm: ips4o
+I1216 15:32:13.686620  6472 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:32:21.318629  6472 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:33:11.738008  6472 radix_sort_bench.cpp:172] Time for IPS4o: 50[s]
+I1216 15:33:11.738025  6472 radix_sort_bench.cpp:173] Time for IPS4o: 50419[ms]
+RESULT algorithm=ips4o elements=350000000 time=50419
+I1216 15:33:13.395568  6472 radix_sort_bench.cpp:177] IPS4o sorted correctly
+I1216 15:33:13.478586  6475 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:33:13.478627  6475 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:33:21.098688  6475 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:33:38.537235  6475 radix_sort_bench.cpp:157] Time for parallel IPS4o: 17[s]
+I1216 15:33:38.537298  6475 radix_sort_bench.cpp:158] Time for parallel IPS4o: 17438[ms]
+RESULT algorithm=pips4o elements=350000000 time=17438
+I1216 15:33:40.197590  6475 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:33:40.278985  6480 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:33:40.279026  6480 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:33:47.899020  6480 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:34:05.306258  6480 radix_sort_bench.cpp:157] Time for parallel IPS4o: 17[s]
+I1216 15:34:05.306321  6480 radix_sort_bench.cpp:158] Time for parallel IPS4o: 17407[ms]
+RESULT algorithm=pips4o elements=350000000 time=17407
+I1216 15:34:06.979701  6480 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:34:07.061555  6485 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:34:07.061595  6485 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:34:14.689828  6485 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:34:32.092665  6485 radix_sort_bench.cpp:157] Time for parallel IPS4o: 17[s]
+I1216 15:34:32.092732  6485 radix_sort_bench.cpp:158] Time for parallel IPS4o: 17402[ms]
+RESULT algorithm=pips4o elements=350000000 time=17402
+I1216 15:34:33.753335  6485 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:34:33.834554  6490 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:34:33.834594  6490 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:34:41.456070  6490 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:34:58.897318  6490 radix_sort_bench.cpp:157] Time for parallel IPS4o: 17[s]
+I1216 15:34:58.897378  6490 radix_sort_bench.cpp:158] Time for parallel IPS4o: 17441[ms]
+RESULT algorithm=pips4o elements=350000000 time=17441
+I1216 15:35:00.553629  6490 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
+I1216 15:35:00.635157  6495 radix_sort_bench.cpp:40] Using sorting algorithm: pips4o
+I1216 15:35:00.635200  6495 radix_sort_bench.cpp:46] Using seed: 1544636540
+I1216 15:35:08.255940  6495 radix_sort_bench.cpp:58] vector not sorted
+I1216 15:35:25.652281  6495 radix_sort_bench.cpp:157] Time for parallel IPS4o: 17[s]
+I1216 15:35:25.652345  6495 radix_sort_bench.cpp:158] Time for parallel IPS4o: 17396[ms]
+RESULT algorithm=pips4o elements=350000000 time=17396
+I1216 15:35:27.309214  6495 radix_sort_bench.cpp:162] parallel IPS4o sorted correctly
