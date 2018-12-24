@@ -210,6 +210,13 @@ struct rlslp {
         non_terminals.resize(size);
     }
 
+    bool is_block(variable_t nt) const {
+        if (nt < terminals) {
+            return false;
+        }
+        return this->non_terminals[nt - terminals].second() < 0;
+    }
+
     std::string derive_text() {
         std::stringstream sstream;
         derive(sstream, root);

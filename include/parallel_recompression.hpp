@@ -1,7 +1,6 @@
 
 #pragma once
 
-//#include "defs.hpp"
 #include <omp.h>
 
 #include <parallel/algorithm>
@@ -37,12 +36,6 @@ class recompression {
     typedef block_t pair_t;
     typedef std::pair<variable_t, size_t> position_t;
 
-// private:
-//    void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp);
-//
-//    void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp);
-
-// public:
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
      *
@@ -84,6 +77,7 @@ class recompression {
     void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
         recomp(text, rlslp, recomp::CHAR_ALPHABET);
     }
+
 
  private:
     /**
