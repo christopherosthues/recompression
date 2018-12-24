@@ -6,12 +6,12 @@
 #include <string>
 #include <vector>
 
-//#include "defs.hpp"
+#include "defs.hpp"
 
 namespace recomp {
 
 //const terminal_count_t CHAR_ALPHABET = 256;
-const std::uint32_t CHAR_ALPHABET = 256;
+const term_t CHAR_ALPHABET = 256;
 
 /**
  * @brief A structure to represent a rlslp.
@@ -19,7 +19,7 @@ const std::uint32_t CHAR_ALPHABET = 256;
  * A run-length Straight-line program is a context free grammar in Chomsky normal form that is extended by production
  * rules of the form X^d where X is a non-terminal and d is the number of repeats of the non-terminal.
  */
-template<typename variable_t = std::int32_t, typename terminal_count_t = std::uint32_t>
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
 struct rlslp {
  private:
     void derive(std::stringstream& sstream, variable_t& nt) {
@@ -235,7 +235,7 @@ namespace std {
  * @param nt The non-terminal
  * @return A string representation of the non-terminal
  */
-template<typename variable_t = std::int32_t, typename terminal_count_t = std::uint32_t>
+template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
 std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>::non_terminal& nt) {
     std::stringstream sstream("production: (");
     sstream << std::to_string(nt.production[0]) << "," << std::to_string(nt.production[1])
@@ -250,7 +250,7 @@ std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>
  * @param rlslp The non-terminal
  * @return A string representation of the rlslp
  */
-template<typename variable_t = std::int32_t, typename terminal_count_t = std::uint32_t>
+template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
 std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>& rlslp) {
     std::stringstream sstream("number of terminals: ");
     sstream << rlslp.terminals << std::endl;

@@ -25,7 +25,7 @@
 
 namespace recomp {
 
-template<typename variable_t = std::int32_t, typename terminal_count_t = std::uint32_t>
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class recompression {
  public:
     typedef std::vector<variable_t> text_t;

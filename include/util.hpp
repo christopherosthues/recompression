@@ -9,8 +9,6 @@
 
 #include <glog/logging.h>
 
-//#include "parallel_recompression.hpp"
-//#include "rlslp.hpp"
 #include "defs.hpp"
 
 namespace recomp {
