@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <omp.h>
+
 #include <stack>
 #include <unordered_map>
 #include <vector>
@@ -66,8 +68,35 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
  */
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 size_t find_next(rlslp<variable_t, terminal_count_t>& rlslp, size_t i, size_t j, variable_t nt_i, variable_t nt_j, lceq<variable_t>& i_visited, lceq<variable_t>& j_visited, size_t traverse) {
-    // TODO(Chris): find next variable, traverse possibly up and down again
-    
+    auto parent_i = nt_i;
+    auto comp_i_len = rlslp.len(nt_i) - i;
+    while (i + comp_i_len >= rlslp.len(parent_i) && parent_i != rlslp.root + rlslp.terminals) {
+        i_visited.visited.erase(parent_i);
+        comp_i_len = rlslp.len(parent_i) - i;  // TODO(Chris): check correctness
+        parent_i = i_visited.parents.top();
+        i_visited.parents.pop();
+        i = i_visited.visited[parent_i].pos;
+    }
+    i_visited.visited[parent_i].pos = i + comp_i_len;
+    i_visited.visited[parent_i].traverse = traverse;
+
+    auto parent_j = nt_j;
+    auto comp_j_len = rlslp.len(nt_j) - j;
+    while (j + comp_j_len >= rlslp.len(parent_j) && parent_j != rlslp.root + rlslp.terminals) {
+        j_visited.visited.erase(parent_j);
+        comp_j_len = rlslp.len(parent_j) - j;  // TODO(Chris): check correctness
+        parent_j = j_visited.parents.top();
+        j_visited.parents.pop();
+        j = j_visited.visited[parent_j].pos;
+    }
+    j_visited.visited[parent_j].pos = j + comp_j_len;
+    j_visited.visited[parent_j].traverse = traverse;
+
+    if ((parent_i == rlslp.root + rlslp.terminals && i + comp_i_len >= rlslp.len(parent_i)) || (parent_j == rlslp.root + rlslp.terminals && j + comp_j_len >= rlslp.len(parent_j))) {
+        return 0;
+    } else {
+        return lce_query(rlslp, i + comp_i_len, j + comp_j_len, parent_i, parent_j, i_visited, j_visited, traverse);
+    }
 }
 
 /**
