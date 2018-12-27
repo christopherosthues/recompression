@@ -203,7 +203,8 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
             return rlslp.len(child_j) - pos_j + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse + 1);
         } else if (child_i < rlslp.terminals && child_j < rlslp.terminals) {
             if (child_i == child_j) {
-                return 1 + find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
+                return 1 + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+//                return 1 + find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
             } else {
                 return 0;
             }
@@ -233,7 +234,7 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
         return 0;
     }
     if (i == j) {
-        return rlslp[rlslp.root].len;
+        return rlslp[rlslp.root].len - i;
     }
 
     lceq<variable_t> i_visited;
