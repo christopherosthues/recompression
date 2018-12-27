@@ -60,7 +60,9 @@ class recompression {
             }
         }
 
-        rlslp.root = static_cast<variable_t>(rlslp.non_terminals.size() - 1);
+        if (!rlslp.empty()) {
+            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
+        }
 
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;

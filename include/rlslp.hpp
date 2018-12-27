@@ -202,6 +202,10 @@ struct rlslp {
         return size() == 0;
     }
 
+    bool operator==(const rlslp& rlslp) const {
+        return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals;
+    }
+
     void reserve(size_t size) {
         non_terminals.reserve(size);
     }
