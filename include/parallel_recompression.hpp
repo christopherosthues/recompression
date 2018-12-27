@@ -1,7 +1,6 @@
 
 #pragma once
 
-//#include "defs.hpp"
 #include <omp.h>
 
 #include <parallel/algorithm>
@@ -39,12 +38,6 @@ class recompression {
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-// private:
-//    void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp);
-//
-//    void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp);
-
-// public:
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
      *
@@ -69,7 +62,9 @@ class recompression {
             }
         }
 
-        rlslp.root = static_cast<variable_t>(rlslp.non_terminals.size() - 1);
+        if (!rlslp.empty()) {
+            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
+        }
 
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
@@ -86,6 +81,7 @@ class recompression {
     void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
         recomp(text, rlslp, recomp::CHAR_ALPHABET);
     }
+
 
  private:
     /**

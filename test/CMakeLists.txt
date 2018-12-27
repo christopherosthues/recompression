@@ -7,3 +7,4 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("recomp")
     build_test("radix_sort")
 endif (RECOMPRESSION_ENABLE_TESTS)
+

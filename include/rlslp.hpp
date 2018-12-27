@@ -202,16 +202,23 @@ struct rlslp {
         return size() == 0;
     }
 
-    void reserve(size_t size) {
-        non_terminals.reserve(size);
-    }
-
     bool operator==(const rlslp& rlslp) const {
         return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals;
     }
 
+    void reserve(size_t size) {
+        non_terminals.reserve(size);
+    }
+
     void resize(size_t size) {
         non_terminals.resize(size);
+    }
+
+    bool is_block(variable_t nt) const {
+        if (nt < terminals) {
+            return false;
+        }
+        return this->non_terminals[nt - terminals].second() < 0;
     }
 
     std::string derive_text() {
