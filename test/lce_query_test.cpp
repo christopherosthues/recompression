@@ -20,7 +20,7 @@ TEST(lcequery, lcequery_empty) {
 }
 
 TEST(lcequery, lcequery_zero) {
-    text_t text{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp);

@@ -10,7 +10,6 @@
 
 namespace recomp {
 
-//const terminal_count_t CHAR_ALPHABET = 256;
 const term_t CHAR_ALPHABET = 256;
 
 /**
@@ -59,8 +58,7 @@ struct rlslp {
                     first_len = non_terminals[first - terminals].len;
                 }
 
-                // Block
-                if (second < 0) {
+                if (is_block(nt)) {  // Block
                     auto b_len = first_len;
                     auto idx = 0;
 
@@ -238,7 +236,7 @@ struct rlslp {
     std::string extract(size_t i, size_t len) const {
         std::stringstream sstream;
         if (!empty() && i < non_terminals[root].len && len > 0) {
-            extract(sstream, i, len, root);
+            extract(sstream, i, len, root + terminals);
         }
         return sstream.str();
     }
