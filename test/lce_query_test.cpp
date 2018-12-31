@@ -56,7 +56,6 @@ TEST(lcequery, lcequery) {
     recomp.recomp(text, rlslp, 5);
 
     auto lceq = lce_query::lce_query(rlslp, 6, 14);
-//    ASSERT_EQ(1, lceq);
     ASSERT_EQ(4, lceq);
 }
 
@@ -67,7 +66,6 @@ TEST(lcequery, lcequery_long) {
     recomp.recomp(text, rlslp, 5);
 
     auto lceq = lce_query::lce_query(rlslp, 6, 19);
-//    ASSERT_EQ(1, lceq);
     ASSERT_EQ(11, lceq);
 }
 
@@ -80,7 +78,6 @@ TEST(lcequery, lcequery_asso) {
     auto lceq_ij = lce_query::lce_query(rlslp, 6, 14);
     auto lceq_ji = lce_query::lce_query(rlslp, 14, 6);
     ASSERT_EQ(4, lceq_ji);
-//    ASSERT_EQ(1, lceq_ji);
     ASSERT_EQ(lceq_ij, lceq_ji);
 }
 
@@ -192,12 +189,8 @@ TEST(lcequery, lcequery_complete) {
 
     for (size_t i = 0; i < text.size(); ++i) {
         for (size_t j = 0; j < text.size(); ++j) {
-//            std::cout << "recompression_list" << std::endl;
             auto lceq = lce_query::lce_query(rlslp, i, j);
-//            std::cout << "recompression_list finished" << std::endl;
-//            std::cout << "naive" << std::endl;
             size_t naive = lce_query_naive(i, j, text_naive);
-//            std::cout << "naive finished" << std::endl;
             ASSERT_EQ(naive, lceq);
         }
     }
