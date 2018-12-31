@@ -9,6 +9,7 @@
 #include "defs.hpp"
 #include "lce_query.hpp"
 #include "parallel_recompression.hpp"
+#include "util.hpp"
 
 
 int str_to_int(std::string s) {
@@ -22,6 +23,9 @@ int str_to_int(std::string s) {
         return -1;
     }
     return n;
+
+//    sscanf(input.c_str(), "%zu", &index); // for size_t
+//    ss >> size_t
 }
 
 int main(int argc, char *argv[]) {
@@ -41,7 +45,7 @@ int main(int argc, char *argv[]) {
     text_t text;
     size_t i = str_to_int(argv[3]);
     size_t j = str_to_int(argv[4]);
-    // TODO(Chris): Read in file to std::vector<recomp::var_t>
+    recomp::util::read_file(file_name, text);
     if (algo == "recomp") {
         recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
         recomp::recompression<recomp::var_t, recomp::term_t> recompression;
