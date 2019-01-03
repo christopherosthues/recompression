@@ -96,6 +96,8 @@ struct rlslp {
     }
 
  public:
+    typedef std::vector<bool> block_t;
+
     /**
      * @brief A structure to represent a non-terminal.
      *
@@ -184,6 +186,11 @@ struct rlslp {
      */
     size_t block_count = 0;
 
+    /**
+     * Bitvector marking which productions derive blocks.
+     */
+    block_t blocks;
+
     non_terminal& operator[](size_t i) {
         return this->non_terminals[i];
     }
@@ -206,17 +213,20 @@ struct rlslp {
 
     void reserve(size_t size) {
         non_terminals.reserve(size);
+        blocks.reserve(size);
     }
 
     void resize(size_t size) {
         non_terminals.resize(size);
+        blocks.resize(size, false);
     }
 
     bool is_block(variable_t nt) const {
         if (nt < terminals) {
             return false;
         }
-        return this->non_terminals[nt - terminals].second() < 0;
+//        return this->non_terminals[nt - terminals].second() < 0;
+        return this->blocks[nt - terminals];
     }
 
     size_t len(variable_t nt) const {
