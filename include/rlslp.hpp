@@ -208,7 +208,7 @@ struct rlslp {
     }
 
     bool operator==(const rlslp& rlslp) const {
-        return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals;
+        return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals && blocks == rlslp.blocks;
     }
 
     void reserve(size_t size) {
@@ -216,9 +216,9 @@ struct rlslp {
         blocks.reserve(size);
     }
 
-    void resize(size_t size) {
+    void resize(size_t size, bool block = false) {
         non_terminals.resize(size);
-        blocks.resize(size, false);
+        blocks.resize(size, block);
     }
 
     bool is_block(variable_t nt) const {
@@ -289,6 +289,11 @@ std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>
     for (const auto& nt : rlslp.non_terminals) {
         sstream << i++ << ": " << to_string(nt) << std::endl;
     }
+    sstream << "blocks: ";
+    for (const auto& block : rlslp.blocks) {
+        sstream << block;
+    }
+    sstream << std::endl;
 
     return sstream.str();
 }
