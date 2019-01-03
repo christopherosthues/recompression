@@ -25,7 +25,7 @@ int str_to_int(std::string s) {
     return n;
 
 //    sscanf(input.c_str(), "%zu", &index); // for size_t
-//    ss >> size_t
+//    ss(stringstream) >> size_t
 }
 
 int main(int argc, char *argv[]) {
