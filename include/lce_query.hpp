@@ -58,6 +58,39 @@ size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, siz
                  lceq<variable_t>& i_visited, lceq<variable_t>& j_visited, size_t traverse);
 
 /**
+ * @brief Computes the subtree to be traverse downwards from the given variable.
+ *
+ * @tparam variable_t The type of variables
+ * @tparam terminal_count_t The type of terminals
+ * @param[in] rlslp The rlslp
+ * @param[in,out] pos The position inside the variable to be looked for
+ * @param[in,out] nt The variable to be compared
+ */
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
+inline void subtree(const rlslp<variable_t, terminal_count_t>& rlslp, size_t& pos, variable_t& nt) {
+    if (nt >= rlslp.terminals) {
+        auto nt_index = nt - rlslp.terminals;  // compute index of production
+        auto left_child = rlslp[nt_index].first();
+        auto len = rlslp.len(left_child);
+        if (rlslp.is_block(nt)) {  // if variable derives a block
+            auto block_len = 0;
+            while (block_len + len <= pos) {
+                block_len += len;
+            }
+            pos -= block_len;
+            nt = rlslp[nt_index].first();
+        } else {
+            if (pos < len) {  // follow left child
+                nt = left_child;
+            } else {  // follow right child
+                pos -= len;
+                nt = rlslp[nt_index].second();
+            }
+        }
+    }
+}
+
+/**
  * @brief Finds the next node in the derivation tree to compare its children by possibly traversing upwards the tree.
  *
  * @tparam variable_t The type of variables
@@ -144,39 +177,6 @@ size_t find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
         return 0;
     } else {
         return lce_query(rlslp, i, j, parent_i, parent_j, i_visited, j_visited, traverse);
-    }
-}
-
-/**
- * @brief Computes the subtree to be traverse downwards from the given variable.
- *
- * @tparam variable_t The type of variables
- * @tparam terminal_count_t The type of terminals
- * @param[in] rlslp The rlslp
- * @param[in,out] pos The position inside the variable to be looked for
- * @param[in,out] nt The variable to be compared
- */
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-inline void subtree(const rlslp<variable_t, terminal_count_t>& rlslp, size_t& pos, variable_t& nt) {
-    if (nt >= rlslp.terminals) {
-        auto nt_index = nt - rlslp.terminals;  // compute index of production
-        auto left_child = rlslp[nt_index].first();
-        auto len = rlslp.len(left_child);
-        if (rlslp.is_block(nt)) {  // if variable derives a block
-            auto block_len = 0;
-            while (block_len + len <= pos) {
-                block_len += len;
-            }
-            pos -= block_len;
-            nt = rlslp[nt_index].first();
-        } else {
-            if (pos < len) {  // follow left child
-                nt = left_child;
-            } else {  // follow right child
-                pos -= len;
-                nt = rlslp[nt_index].second();
-            }
-        }
     }
 }
 
@@ -316,6 +316,33 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp, size_t i, si
     return lce_query<variable_t, terminal_count_t>(rlslp, i, j, static_cast<variable_t>(rlslp.root + rlslp.terminals),
                                                    static_cast<variable_t>(rlslp.root + rlslp.terminals), i_visited,
                                                    j_visited, 1);
+}
+
+
+/**
+ * @brief Naive computation of a longest common extension query for two suffices.
+ *
+ * @tparam text_t The type of text
+ * @param text The text
+ * @param i The start position of the first suffix
+ * @param j The start position of the second suffix
+ * @return The length of the longest common prefix of the two given suffices
+ */
+template<typename text_t>
+size_t lce_query_naive(text_t& text, size_t i, size_t j) {
+    if (text.size() <= i || text.size() <= j) {
+        return 0;
+    }
+
+    if (i == j) {
+        return text.size() - i;
+    }
+
+    size_t lce = 0;
+    while (i < text.size() && j < text.size() && text[i++] == text[j++]) {
+        lce++;
+    }
+    return lce;
 }
 
 }  // namespace lce_query

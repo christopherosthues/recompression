@@ -61,11 +61,8 @@ int main(int argc, char *argv[]) {
         LOG(INFO) << "Time for LCE query on RLSLP: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
         LOG(INFO) << "LCE query for RLSLP: " << lce;
     } else if (algo == "naive") {
-        size_t lce = 0;
         const auto startTime = std::chrono::system_clock::now();
-        while (i < text.size() && j < text.size() && text[i++] == text[j++]) {
-            lce++;
-        }
+        size_t lce = recomp::lce_query::lce_query_naive(text, i, j);
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
         LOG(INFO) << "Time for naive LCE query: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
