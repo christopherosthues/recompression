@@ -1,4 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.0.2)
+
+option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." ON)
+option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." ON)
+option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." OFF)
+option(RECOMPRESSION_GENERATE_DOC "Set ON to generate doxygen API reference in build/doc directory" ON)
 
 project(recompression)
 set(PROJECT_VENDOR "Christopher Osthues")
@@ -38,6 +43,13 @@ include(Build)
 set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp)
 set(HEADERS include/rlslp.hpp include/parallel_recompression.hpp)
 
+find_package(Git)
+if(GIT_FOUND)
+    message("git found at: ${GIT_EXECUTABLE}")
+else()
+    message(WARNING "Could not find git. Cloning of submodules will not work.")
+endif()
+
 build_library()
 
 # building tests
@@ -49,3 +61,5 @@ build_tests("multiset")
 build_tests("partition")
 build_tests("recomp")
 build_tests("radix_sort")
+
+add_subdirectory(docs)
