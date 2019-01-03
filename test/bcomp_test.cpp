@@ -36,10 +36,11 @@ TEST(bcomp, 21214441332311413334133231141321) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(1, -2, 2);
-    exp_rlslp.non_terminals.emplace_back(3, -2, 2);
-    exp_rlslp.non_terminals.emplace_back(3, -3, 3);
-    exp_rlslp.non_terminals.emplace_back(4, -3, 3);
+    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
+    exp_rlslp.non_terminals.emplace_back(3, 2, 2);
+    exp_rlslp.non_terminals.emplace_back(3, 3, 3);
+    exp_rlslp.non_terminals.emplace_back(4, 3, 3);
+    exp_rlslp.blocks = {true, true, true, true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -57,7 +58,8 @@ TEST(bcomp, 222222222222222222222) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(2, -21, 21);
+    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
+    exp_rlslp.blocks = {true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -75,9 +77,10 @@ TEST(bcomp, 22222222211111112222) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(1, -7, 7);
-    exp_rlslp.non_terminals.emplace_back(2, -4, 4);
-    exp_rlslp.non_terminals.emplace_back(2, -9, 9);
+    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
+    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
+    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
+    exp_rlslp.blocks = {true, true, true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -95,10 +98,11 @@ TEST(bcomp, 2222222221111111222200) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(0, -2, 2);
-    exp_rlslp.non_terminals.emplace_back(1, -7, 7);
-    exp_rlslp.non_terminals.emplace_back(2, -4, 4);
-    exp_rlslp.non_terminals.emplace_back(2, -9, 9);
+    exp_rlslp.non_terminals.emplace_back(0, 2, 2);
+    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
+    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
+    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
+    exp_rlslp.blocks = {true, true, true, true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
