@@ -207,7 +207,7 @@ class recompression {
         block_count = sort_blocks.size();
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + block_count);
-        rlslp.resize(nt_count + block_count);
+        rlslp.resize(nt_count + block_count, true);
         rlslp.block_count += block_count;
 
         auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
@@ -222,7 +222,8 @@ class recompression {
             if (sort_blocks[i].first >= static_cast<variable_t>(rlslp.terminals)) {
                 len *= rlslp[sort_blocks[i].first - rlslp.terminals].len;
             }
-            rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_blocks[i].first, -sort_blocks[i].second, len);
+            rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_blocks[i].first, sort_blocks[i].second, len);
+//            rlslp.blocks[nt_count + i] = true;
         }
 
         const auto endTimeAss = std::chrono::system_clock::now();
