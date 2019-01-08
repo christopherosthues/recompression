@@ -8,7 +8,9 @@
 #include <thread>
 
 #ifdef DEBUG
+
 #include <sstream>
+
 #endif
 
 #include <glog/logging.h>
@@ -46,7 +48,8 @@ class recompression {
      * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
      */
     void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, const terminal_count_t& alphabet_size) {
-        DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: " << std::to_string(alphabet_size);
+        DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: "
+                   << std::to_string(alphabet_size);
         const auto startTime = std::chrono::system_clock::now();
 
         bool not_finished = text.size() > 1;
@@ -78,7 +81,7 @@ class recompression {
      * @param text The text
      * @param rlslp The rlslp
      */
-    void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    void recomp(text_t& text, rlslp <variable_t, terminal_count_t>& rlslp) {
         recomp(text, rlslp, recomp::CHAR_ALPHABET);
     }
 
@@ -166,7 +169,8 @@ class recompression {
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-            DLOG(INFO) << "Thread " << thread_id << " inserting blocks " << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
+            DLOG(INFO) << "Thread " << thread_id << " inserting blocks "
+                       << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
 
 #pragma omp critical
             blocks.insert(t_blocks.begin(), t_blocks.end());
@@ -188,7 +192,8 @@ class recompression {
                 if (iter == blocks.begin()) {
                     std::advance(iter, i);
                 }
-                DLOG(INFO) << "Adding block (" << (*iter).first.first << "," << (*iter).first.second << ") at index " << i;
+                DLOG(INFO) << "Adding block (" << (*iter).first.first << "," << (*iter).first.second << ") at index "
+                           << i;
                 sort_blocks[i] = (*iter).first;
                 ++iter;
             }
@@ -228,7 +233,8 @@ class recompression {
 
         const auto endTimeAss = std::chrono::system_clock::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
-        DLOG(INFO) << "Time for block nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
+        DLOG(INFO) << "Time for block nts: "
+                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
                    << "[ms]";
 
 
@@ -347,21 +353,25 @@ class recompression {
         DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
 
-    //    const auto startTimeCount = std::chrono::system_clock::now();
+        //    const auto startTimeCount = std::chrono::system_clock::now();
         l_count = 0;
         r_count = 0;
-    #pragma omp parallel for num_threads(THREAD_COUNT) schedule(dynamic) reduction(+:l_count) reduction(+:r_count)
+#pragma omp parallel for num_threads(THREAD_COUNT) schedule(dynamic) reduction(+:l_count) reduction(+:r_count)
         for (size_t i = 0; i < multiset.size(); ++i) {
             if (std::get<2>(multiset[i])) {
-                if (!partition[std::get<0>(multiset[i])] && partition[std::get<1>(multiset[i])]) {  // bc in text and b in right set and c in left
+                if (!partition[std::get<0>(multiset[i])] &&
+                    partition[std::get<1>(multiset[i])]) {  // bc in text and b in right set and c in left
                     r_count++;
-                } else if (partition[std::get<0>(multiset[i])] && !partition[std::get<1>(multiset[i])]) {  // bc in text and b in left set and c in right
+                } else if (partition[std::get<0>(multiset[i])] &&
+                           !partition[std::get<1>(multiset[i])]) {  // bc in text and b in left set and c in right
                     l_count++;
                 }
             } else {
-                if (!partition[std::get<0>(multiset[i])] && partition[std::get<1>(multiset[i])]) {  // cb in text and c in left set and b in right
+                if (!partition[std::get<0>(multiset[i])] &&
+                    partition[std::get<1>(multiset[i])]) {  // cb in text and c in left set and b in right
                     l_count++;
-                } else if (partition[std::get<0>(multiset[i])] && !partition[std::get<1>(multiset[i])]) {  // cb in text and c in right set and b in left
+                } else if (partition[std::get<0>(multiset[i])] &&
+                           !partition[std::get<1>(multiset[i])]) {  // cb in text and c in right set and b in left
                     r_count++;
                 }
             }
@@ -369,207 +379,221 @@ class recompression {
 
         if (r_count > l_count) {
             DLOG(INFO) << "Swap partition sets";
-            auto iter = partition.begin();
-            for (size_t i = 0; i < partition.size(); ++i) {
-    //            if (iter == partition.begin()) {
-    //                std::advance(iter, i);
-    //            }
-                (*iter).second = !(*iter).second;
-                ++iter;
-            }
-            DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
+//            auto iter = partition.begin();
+#pragma omp parallel num_threads(THREAD_COUNT)
+            {
+#pragma omp single
+                {
+                    for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
+#pragma omp task
+                        {
+                            DLOG(INFO) << "swapping";
+                            (*iter).second = !(*iter).second;
+                            ++iter;
+                        }
+                    }
+                }
         }
-
-        const auto endTime = std::chrono::system_clock::now();
-        const auto timeSpan = endTime - startTime;
-        DLOG(INFO) << "Time for computing partition: "
-                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+//            for (size_t i = 0; i < partition.size(); ++i) {
+//    //            if (iter == partition.begin()) {
+//    //                std::advance(iter, i);
+//    //            }
+//                (*iter).second = !(*iter).second;
+//                ++iter;
+//            }
+        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
     }
 
-    /**
-     * @brief Replaces all pairs in the text based on a partition of the symbols with new non-terminals.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     */
-    void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-        DLOG(INFO) << "PComp input - text size: " << text.size();
-        const auto startTime = std::chrono::system_clock::now();
+    const auto endTime = std::chrono::system_clock::now();
+    const auto timeSpan = endTime - startTime;
+    DLOG(INFO) << "Time for computing partition: "
+               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+}
 
-        multiset_t multiset(text.size() - 1);
-        compute_multiset(text, multiset);
-        __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
+/**
+ * @brief Replaces all pairs in the text based on a partition of the symbols with new non-terminals.
+ *
+ * @param text The text
+ * @param rlslp The rlslp
+ */
+void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    DLOG(INFO) << "PComp input - text size: " << text.size();
+    const auto startTime = std::chrono::system_clock::now();
+
+    multiset_t multiset(text.size() - 1);
+    compute_multiset(text, multiset);
+    __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
 
 
-        size_t pair_count = 0;
+    size_t pair_count = 0;
 
-        partition_t partition;
-        for (size_t i = 0; i < text.size(); ++i) {
-            partition[text[i]] = false;
-        }
-        alphabet_t alphabet(partition.size());
-        auto iter = partition.begin();
-        for (size_t i = 0; i < partition.size(); ++i, ++iter) {
-            alphabet[i] = (*iter).first;
-        }
-        __gnu_parallel::sort(alphabet.begin(), alphabet.end(), __gnu_parallel::multiway_mergesort_tag());
-        compute_partition(multiset, alphabet, partition);
+    partition_t partition;
+    for (size_t i = 0; i < text.size(); ++i) {
+        partition[text[i]] = false;
+    }
+    alphabet_t alphabet(partition.size());
+    auto iter = partition.begin();
+    for (size_t i = 0; i < partition.size(); ++i, ++iter) {
+        alphabet[i] = (*iter).first;
+    }
+    __gnu_parallel::sort(alphabet.begin(), alphabet.end(), __gnu_parallel::multiway_mergesort_tag());
+    compute_partition(multiset, alphabet, partition);
 
-        std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
-        std::vector<pair_position_t> positions;
+    std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
+    std::vector<pair_position_t> positions;
 
-        size_t *bounds;
-    #pragma omp parallel num_threads(THREAD_COUNT)
+    size_t *bounds;
+#pragma omp parallel num_threads(THREAD_COUNT)
+    {
+        auto thread_id = omp_get_thread_num();
+        auto n_threads = static_cast<size_t>(omp_get_num_threads());
+
+#pragma omp single
         {
-            auto thread_id = omp_get_thread_num();
-            auto n_threads = static_cast<size_t>(omp_get_num_threads());
+            bounds = new size_t[n_threads + 1];
+            bounds[0] = 0;
+        }
+        std::vector<pair_position_t> t_positions;
+        std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> t_pairs;
+        //        size_t begin = 0;
+        //        bool add = false;
 
-    #pragma omp single
-            {
-                bounds = new size_t[n_threads + 1];
-                bounds[0] = 0;
+#pragma omp for schedule(static) nowait reduction(+:pair_count)
+        for (size_t i = 0; i < text.size() - 1; ++i) {
+            if (!partition[text[i]] && partition[text[i + 1]]) {
+                DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
+                           << thread_id;
+                // TODO(Chris): use private data structures???
+                auto pair = std::make_pair(text[i], text[i + 1]);
+                t_pairs[pair] = 1;
+                t_positions.emplace_back(i);
+                pair_count++;
             }
-            std::vector<pair_position_t> t_positions;
-            std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> t_pairs;
-    //        size_t begin = 0;
-    //        bool add = false;
-
-    #pragma omp for schedule(static) nowait reduction(+:pair_count)
-            for (size_t i = 0; i < text.size() - 1; ++i) {
-                if (!partition[text[i]] && partition[text[i + 1]]) {
-                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
-                               << thread_id;
-                    // TODO(Chris): use private data structures???
-                    auto pair = std::make_pair(text[i], text[i + 1]);
-                    t_pairs[pair] = 1;
-                    t_positions.emplace_back(i);
-                    pair_count++;
-                }
-            }
-
-            bounds[thread_id + 1] = t_positions.size();
-
-    #pragma omp barrier
-    #pragma omp single
-            {
-                for (size_t i = 1; i < n_threads + 1; ++i) {
-                    bounds[i] += bounds[i - 1];
-                }
-                positions.resize(positions.size() + bounds[n_threads]);
-            }
-            std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
-
-            DLOG(INFO) << "Inserting pairs " << util::blocks_to_string(t_pairs);
-
-    #pragma omp critical
-            pairs.insert(t_pairs.begin(), t_pairs.end());
         }
 
-        DLOG(INFO) << "Pairs found: " << pair_count;
+        bounds[thread_id + 1] = t_positions.size();
 
-        DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
-
-        std::vector<std::pair<variable_t, variable_t>> sort_pairs(pairs.size());
-
-    #pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp barrier
+#pragma omp single
         {
-            auto iter = pairs.begin();
-
-    #pragma omp for schedule(static) nowait
-            for (size_t i = 0; i < pairs.size(); ++i) {
-                if (iter == pairs.begin()) {
-                    std::advance(iter, i);
-                }
-                DLOG(INFO) << "Adding pair (" << (*iter).first.first << "," << (*iter).first.second << ") at index " << i;
-                sort_pairs[i] = (*iter).first;
-                ++iter;
+            for (size_t i = 1; i < n_threads + 1; ++i) {
+                bounds[i] += bounds[i - 1];
             }
+            positions.resize(positions.size() + bounds[n_threads]);
         }
+        std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-        __gnu_parallel::sort(sort_pairs.begin(), sort_pairs.end(), __gnu_parallel::multiway_mergesort_tag());
+        DLOG(INFO) << "Inserting pairs " << util::blocks_to_string(t_pairs);
+
+#pragma omp critical
+        pairs.insert(t_pairs.begin(), t_pairs.end());
+    }
+
+    DLOG(INFO) << "Pairs found: " << pair_count;
+
+    DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
+
+    std::vector<std::pair<variable_t, variable_t>> sort_pairs(pairs.size());
+
+#pragma omp parallel num_threads(THREAD_COUNT)
+    {
+        auto iter = pairs.begin();
+
+#pragma omp for schedule(static) nowait
+        for (size_t i = 0; i < pairs.size(); ++i) {
+            if (iter == pairs.begin()) {
+                std::advance(iter, i);
+            }
+            DLOG(INFO) << "Adding pair (" << (*iter).first.first << "," << (*iter).first.second << ") at index " << i;
+            sort_pairs[i] = (*iter).first;
+            ++iter;
+        }
+    }
+
+    __gnu_parallel::sort(sort_pairs.begin(), sort_pairs.end(), __gnu_parallel::multiway_mergesort_tag());
     //    std::sort(sort_pairs.begin(), sort_pairs.end());
 
-        DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
+    DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
 
-        pair_count = sort_pairs.size();
-        auto nt_count = rlslp.non_terminals.size();
-        rlslp.reserve(nt_count + pair_count);
-        rlslp.resize(nt_count + pair_count);
+    pair_count = sort_pairs.size();
+    auto nt_count = rlslp.non_terminals.size();
+    rlslp.reserve(nt_count + pair_count);
+    rlslp.resize(nt_count + pair_count);
 
-        variable_t next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
-        const auto startTimeAss = std::chrono::system_clock::now();
+    variable_t next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
+    const auto startTimeAss = std::chrono::system_clock::now();
 
-    #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
-        for (size_t i = 0; i < sort_pairs.size(); ++i) {
-            DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_pairs[i].first << ","
-                       << sort_pairs[i].second << ") at index " << nt_count + i;
-            pairs[sort_pairs[i]] = next_nt + static_cast<variable_t>(i);
-            size_t len = 0;
-            if (sort_pairs[i].first >= static_cast<variable_t>(rlslp.terminals)) {
-                len = rlslp[sort_pairs[i].first - rlslp.terminals].len;
-            } else {
-                len = 1;
-            }
-            if (sort_pairs[i].second >= static_cast<variable_t>(rlslp.terminals)) {
-                len += rlslp[sort_pairs[i].second - rlslp.terminals].len;
-            } else {
-                len += 1;
-            }
-            rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_pairs[i].first, sort_pairs[i].second, len);
+#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
+    for (size_t i = 0; i < sort_pairs.size(); ++i) {
+        DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_pairs[i].first << ","
+                   << sort_pairs[i].second << ") at index " << nt_count + i;
+        pairs[sort_pairs[i]] = next_nt + static_cast<variable_t>(i);
+        size_t len = 0;
+        if (sort_pairs[i].first >= static_cast<variable_t>(rlslp.terminals)) {
+            len = rlslp[sort_pairs[i].first - rlslp.terminals].len;
+        } else {
+            len = 1;
         }
-
-        const auto endTimeAss = std::chrono::system_clock::now();
-        const auto timeSpanAss = endTimeAss - startTimeAss;
-        DLOG(INFO) << "Time for pair nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-                   << "[ms]";
-
-
-        const auto startTimeRep = std::chrono::system_clock::now();
-        DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
-
-    #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
-        for (size_t i = 0; i < positions.size(); ++i) {
-            auto pos = positions[i];
-            auto pair = std::make_pair(text[pos], text[pos + 1]);
-            text[pos] = pairs[pair];
-
-            text[pos + 1] = -1;
+        if (sort_pairs[i].second >= static_cast<variable_t>(rlslp.terminals)) {
+            len += rlslp[sort_pairs[i].second - rlslp.terminals].len;
+        } else {
+            len += 1;
         }
-
-        size_t new_text_size = text.size() - positions.size();
-        if (new_text_size > 1 && pair_count > 0) {
-            size_t copy_i = positions[0] + 1;
-            size_t i = positions[0] + 2;  // jump to first position to copy
-
-            for (; i < text.size(); ++i) {
-                if (text[i] != -1) {
-                    text[copy_i++] = text[i];
-                }
-            }
-        }
-
-        const auto endTimeRep = std::chrono::system_clock::now();
-        const auto timeSpanRep = endTimeRep - startTimeRep;
-        DLOG(INFO) << "Time for replacing pairs: "
-                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
-
-        DLOG(INFO) << "Shrinking text by " << positions.size() << " to length " << new_text_size;
-
-        text.resize(new_text_size);
-        text.shrink_to_fit();
-
-        const auto endTime = std::chrono::system_clock::now();
-        const auto timeSpan = endTime - startTime;
-        DLOG(INFO) << "Time for pcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
-                   << "[ms]";
-    #ifdef DEBUG
-        if (text.size() < 30) {
-            DLOG(INFO) << "Text: " << util::text_vector_to_string(text);
-        }
-    #endif
-        DLOG(INFO) << "PComp ouput - text size: " << text.size() << " - distinct pairs: " << pair_count
-                   << " - string length reduce by: " << positions.size();
+        rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_pairs[i].first, sort_pairs[i].second, len);
     }
+
+    const auto endTimeAss = std::chrono::system_clock::now();
+    const auto timeSpanAss = endTimeAss - startTimeAss;
+    DLOG(INFO) << "Time for pair nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
+               << "[ms]";
+
+
+    const auto startTimeRep = std::chrono::system_clock::now();
+    DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
+
+#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
+    for (size_t i = 0; i < positions.size(); ++i) {
+        auto pos = positions[i];
+        auto pair = std::make_pair(text[pos], text[pos + 1]);
+        text[pos] = pairs[pair];
+
+        text[pos + 1] = -1;
+    }
+
+    size_t new_text_size = text.size() - positions.size();
+    if (new_text_size > 1 && pair_count > 0) {
+        size_t copy_i = positions[0] + 1;
+        size_t i = positions[0] + 2;  // jump to first position to copy
+
+        for (; i < text.size(); ++i) {
+            if (text[i] != -1) {
+                text[copy_i++] = text[i];
+            }
+        }
+    }
+
+    const auto endTimeRep = std::chrono::system_clock::now();
+    const auto timeSpanRep = endTimeRep - startTimeRep;
+    DLOG(INFO) << "Time for replacing pairs: "
+               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
+
+    DLOG(INFO) << "Shrinking text by " << positions.size() << " to length " << new_text_size;
+
+    text.resize(new_text_size);
+    text.shrink_to_fit();
+
+    const auto endTime = std::chrono::system_clock::now();
+    const auto timeSpan = endTime - startTime;
+    DLOG(INFO) << "Time for pcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
+               << "[ms]";
+#ifdef DEBUG
+    if (text.size() < 30) {
+        DLOG(INFO) << "Text: " << util::text_vector_to_string(text);
+    }
+#endif
+    DLOG(INFO) << "PComp ouput - text size: " << text.size() << " - distinct pairs: " << pair_count
+               << " - string length reduce by: " << positions.size();
+}
 };
 
 }  // namespace recomp
