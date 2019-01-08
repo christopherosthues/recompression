@@ -49,7 +49,7 @@ value_t digits(value_t value, std::uint8_t digits, value_t mask) {
     return value & mask;
 }
 
-template<typename variable_t = std::int32_t, std::uint8_t D = 4>
+template<typename variable_t = recomp::var_t, std::uint8_t D = 4>
 void lsd_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec) {
     const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;
     const auto n_buckets = (1 << D);
@@ -165,7 +165,7 @@ namespace parallel {
  * @tparam D The number of digits to use for one radix sort run (default = 4 bits)
  * @param vec The vector to sort
  */
-template<typename variable_t = std::int32_t, std::uint8_t D = 4>
+template<typename variable_t = recomp::var_t, std::uint8_t D = 4>
 void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec) {
     const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;  // assumed that the number of bits is integer-divisible by D
     int n_blocks = lsd_blocks;
@@ -351,7 +351,7 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec)
     }
 }
 
-template<typename variable_t = std::int32_t, std::uint8_t D = 4>
+template<typename variable_t = recomp::var_t, std::uint8_t D = 4>
 void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>>& vec) {
     const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;  // assumed that the number of bits is integer-divisible by D
     int n_blocks = lsd_blocks;
@@ -394,7 +394,7 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
             for (size_t i = 0; i < t_buckets.size(); ++i) {
                 if (!t_buckets[i].empty()) {
                     DLOG(INFO) << "Bucket " << i << " of thread " << thread_id << ": "
-                               << util::vector_blocks_to_string(t_buckets[i]);
+                               << util::multiset_to_string(t_buckets[i]);
                 }
             }
 #endif
@@ -463,7 +463,7 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 #ifdef DEBUG
     for (size_t i = 0; i < buckets.size(); ++i) {
         if (!buckets[i].empty()) {
-            DLOG(INFO) << "Bucket " << i << " after MSD radix sort step(s): " << util::vector_blocks_to_string(buckets[i]);
+            DLOG(INFO) << "Bucket " << i << " after MSD radix sort step(s): " << util::multiset_to_string(buckets[i]);
         }
     }
 
