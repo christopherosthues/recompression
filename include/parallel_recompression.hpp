@@ -296,17 +296,35 @@ class recompression {
      * @param text The text
      * @param multiset The multiset
      */
-    inline void compute_multiset(const text_t& text, multiset_t& multiset) {
+    inline void compute_multiset(const text_t& text, multiset_t& multiset, std::unordered_map<variable_t, size_t >& hist) {
         const auto startTime = std::chrono::system_clock::now();
 
-#pragma omp parallel for num_threads(THREAD_COUNT) schedule(static)
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            if (text[i] > text[i + 1]) {
-                multiset[i] = std::make_tuple(text[i], text[i + 1], false);
-            } else {
-                multiset[i] = std::make_tuple(text[i + 1], text[i], true);
+#pragma omp parallel num_threads(THREAD_COUNT)
+        {
+//            auto thread_id = omp_get_thread_num();
+//            auto n_threads = static_cast<size_t>(omp_get_num_threads());
+            std::unordered_map<variable_t, size_t> t_hist;
+
+#pragma omp for schedule(static) nowait
+            for (size_t i = 0; i < multiset.size(); ++i) {
+                if (text[i] > text[i + 1]) {
+                    multiset[i] = std::make_tuple(text[i], text[i + 1], false);
+                    t_hist[text[i]]++;
+                } else {
+                    multiset[i] = std::make_tuple(text[i + 1], text[i], true);
+                    t_hist[text[i + 1]]++;
+                }
+            }
+
+#pragma omp critical
+            {
+                for (const auto& t_h : t_hist) {
+                    hist[t_h.first] += t_h.second;
+                }
             }
         }
+
+
 
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
@@ -321,7 +339,7 @@ class recompression {
      * @param alphabet
      * @param partition
      */
-    inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet, partition_t& partition) {
+    inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet, partition_t& partition, std::vector<std::pair<variable_t, size_t>>& starts) {
         const auto startTime = std::chrono::system_clock::now();
 
         DLOG(INFO) << util::text_vector_to_string(alphabet);
@@ -329,6 +347,22 @@ class recompression {
         // is assigned to a partition all entries in the multiset that depend on this symbol can compute a partial
         // result and must wait for the next symbol that is not assigned to a partition -> locks only on symbols that
         // are not fully processed
+
+//        std::vector<size_t> buckets(alphabet.size(), 0);
+//        for (size_t i = 0; i < alphabet.size(); ++i) {
+////            while ()
+//        }
+        std::unordered_map<variable_t, omp_lock_t> locks;
+        for (size_t i = 0; i < alphabet.size(); ++i) {
+            omp_lock_t lock;
+            locks[alphabet[i]] = lock;
+            omp_init_lock(&locks[alphabet[i]]);
+        }
+
+#pragma omp parallel num_threads(THREAD_COUNT)
+        {
+            std::vector<std::pair<variable_t, size_t>>
+        }
 
         // TODO(Chris): parallelize partition computation
         int l_count = 0;
@@ -379,7 +413,6 @@ class recompression {
 
         if (r_count > l_count) {
             DLOG(INFO) << "Swap partition sets";
-//            auto iter = partition.begin();
 #pragma omp parallel num_threads(THREAD_COUNT)
             {
 #pragma omp single
@@ -387,13 +420,13 @@ class recompression {
                     for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
 #pragma omp task
                         {
-                            DLOG(INFO) << "swapping";
                             (*iter).second = !(*iter).second;
                             ++iter;
                         }
                     }
                 }
         }
+//            auto iter = partition.begin();
 //            for (size_t i = 0; i < partition.size(); ++i) {
 //    //            if (iter == partition.begin()) {
 //    //                std::advance(iter, i);
@@ -420,13 +453,6 @@ void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
     DLOG(INFO) << "PComp input - text size: " << text.size();
     const auto startTime = std::chrono::system_clock::now();
 
-    multiset_t multiset(text.size() - 1);
-    compute_multiset(text, multiset);
-    __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-
-
-    size_t pair_count = 0;
-
     partition_t partition;
     for (size_t i = 0; i < text.size(); ++i) {
         partition[text[i]] = false;
@@ -437,6 +463,17 @@ void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
         alphabet[i] = (*iter).first;
     }
     __gnu_parallel::sort(alphabet.begin(), alphabet.end(), __gnu_parallel::multiway_mergesort_tag());
+
+
+    multiset_t multiset(text.size() - 1);
+    std::unordered_map<variable_t, size_t> hist;
+    compute_multiset(text, multiset, hist);
+    __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
+
+
+    size_t pair_count = 0;
+
+
     compute_partition(multiset, alphabet, partition);
 
     std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
