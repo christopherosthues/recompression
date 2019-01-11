@@ -5,6 +5,7 @@
 
 #include <parallel/algorithm>
 #include <chrono>
+#include <iostream>
 #include <thread>
 
 #ifdef DEBUG
@@ -19,6 +20,7 @@
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
+#include "radix_sort.hpp"
 
 #ifndef THREAD_COUNT
 #define THREAD_COUNT std::thread::hardware_concurrency()
@@ -201,8 +203,14 @@ class recompression {
             }
         }
 
+        const auto startTimeSort = std::chrono::system_clock::now();
 //    ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
-        __gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end(), __gnu_parallel::multiway_mergesort_tag());
+        //__gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end(), __gnu_parallel::multiway_mergesort_tag());
+        
+        parallel::partitioned_radix_sort(sort_blocks);
+        const auto endTimeSort = std::chrono::system_clock::now();
+        const auto timeSpanSort = endTimeSort - startTimeSort;
+        std::cout << " sort=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count()) << " elements=" << sort_blocks.size();
 
         DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
 
@@ -298,14 +306,13 @@ class recompression {
      * @param text The text
      * @param multiset The multiset
      */
-    inline void
-    compute_multiset(const text_t& text, multiset_t& multiset/*, std::unordered_map<variable_t, size_t >& hist*/) {
+    inline void compute_multiset(const text_t& text, multiset_t& multiset/*, std::unordered_map<variable_t, size_t >& hist*/) {
         const auto startTime = std::chrono::system_clock::now();
 
 #pragma omp parallel num_threads(THREAD_COUNT)
         {
-//            auto thread_id = omp_get_thread_num();
-//            auto n_threads = static_cast<size_t>(omp_get_num_threads());
+////            auto thread_id = omp_get_thread_num();
+////            auto n_threads = static_cast<size_t>(omp_get_num_threads());
 //            std::unordered_map<variable_t, size_t> t_hist;
 
 #pragma omp for schedule(static)// nowait
@@ -341,8 +348,7 @@ class recompression {
      * @param alphabet
      * @param partition
      */
-    inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet,
-                                  partition_t& partition/*, std::vector<std::pair<variable_t, size_t>>& starts*/) {
+    inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet, partition_t& partition/*, std::vector<std::pair<variable_t, size_t>>& starts*/) {
         const auto startTime = std::chrono::system_clock::now();
 
         DLOG(INFO) << util::text_vector_to_string(alphabet);
@@ -468,12 +474,10 @@ class recompression {
         }
         __gnu_parallel::sort(alphabet.begin(), alphabet.end(), __gnu_parallel::multiway_mergesort_tag());
 
-
         multiset_t multiset(text.size() - 1);
 //    std::unordered_map<variable_t, size_t> hist;
         compute_multiset(text, multiset/*, hist*/);
         __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-
 
         size_t pair_count = 0;
 
@@ -553,8 +557,15 @@ class recompression {
             }
         }
 
-        __gnu_parallel::sort(sort_pairs.begin(), sort_pairs.end(), __gnu_parallel::multiway_mergesort_tag());
-        //    std::sort(sort_pairs.begin(), sort_pairs.end());
+        const auto startTimeSort = std::chrono::system_clock::now();
+
+        //ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
+        //__gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end(), __gnu_parallel::multiway_mergesort_tag());
+        parallel::partitioned_radix_sort(sort_pairs);
+
+        const auto endTimeSort = std::chrono::system_clock::now();
+        const auto timeSpanSort = endTimeSort - startTimeSort;
+        std::cout << " sort=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count()) << " elements=" << sort_pairs.size();
 
         DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
 

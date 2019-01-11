@@ -34,14 +34,6 @@ int main(int argc, char *argv[]) {
         std::cout << std::endl;
     }
 
-    const auto startTime = std::chrono::system_clock::now();
-
-    recompression.bcomp(text, rlslp);
-    const auto endTime = std::chrono::system_clock::now();
-    const auto timeSpan = endTime - startTime;
-    LOG(INFO) << "Time for sequential bcomp: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-    LOG(INFO) << "Time for sequential bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
-
     size_t pos = file_name.find_last_of('/');
     std::string dataset;
     if (pos != std::string::npos) {
@@ -53,5 +45,15 @@ int main(int argc, char *argv[]) {
     std::regex reg("_");
     std::regex_replace(dataset, reg, "\\_");
 
-    std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+    const auto startTime = std::chrono::system_clock::now();
+    
+    std::cout << "RESULT dataset=" << dataset << " algo=sequential_bcomp";
+    recompression.bcomp(text, rlslp);
+    const auto endTime = std::chrono::system_clock::now();
+    const auto timeSpan = endTime - startTime;
+    LOG(INFO) << "Time for sequential bcomp: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
+    LOG(INFO) << "Time for sequential bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+
+    std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+    //std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 }
