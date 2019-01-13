@@ -45,6 +45,9 @@ int main(int argc, char *argv[]) {
     std::regex reg("_");
     std::regex_replace(dataset, reg, "\\_");
     
+    recompression.bcomp(text, rlslp);
+    std::cout << std::endl;
+    
     const auto startTime = std::chrono::system_clock::now();
 
     std::cout << "RESULT dataset=" << dataset << " algo=parallel_pcomp";

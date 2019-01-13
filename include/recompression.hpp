@@ -88,15 +88,15 @@ class recompression {
      */
     void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
         DLOG(INFO) << "BComp input - text size: " << text.size();
+        std::cout << " text=" << text.size();// << " alphabet=" << alphabet.size();
         const auto startTime = std::chrono::system_clock::now();
 
         size_t block_count = 0;
         size_t substr_len = 0;
 
+        const auto startTimeBlocks = std::chrono::system_clock::now();
         std::unordered_map<block_t, variable_t, pair_hash> blocks;
         std::vector<position_t> positions;
-
-        const auto startTimeBlock = std::chrono::system_clock::now();
 
         variable_t block_len = 1;
 
@@ -115,11 +115,15 @@ class recompression {
                 block_len = 1;
             }
         }
+        const auto endTimeBlocks = std::chrono::system_clock::now();
+        const auto timeSpanBlocks = endTimeBlocks - startTimeBlocks;
+        std::cout << " find_blocks=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 
         DLOG(INFO) << "Blocks found: " << block_count;
 
         DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
 
+        const auto startTimeCopy = std::chrono::system_clock::now();
         std::vector<block_t> sort_blocks(blocks.size());
 
         auto iter = blocks.begin();
@@ -130,16 +134,19 @@ class recompression {
             sort_blocks[i] = (*iter).first;
             ++iter;
         }
+        const auto endTimeCopy = std::chrono::system_clock::now();
+        const auto timeSpanCopy = endTimeCopy - startTimeCopy;
+        std::cout << " copy_blocks=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
 
+        const auto startTimeSort = std::chrono::system_clock::now();
         lsd_radix_sort(sort_blocks);
+        const auto endTimeSort = std::chrono::system_clock::now();
+        const auto timeSpanSort = endTimeSort - startTimeSort;
+        std::cout << " sort=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count()) << " elements=" << sort_blocks.size() << " hits=" << block_count;
 
         DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
 
-        const auto endTimeBlock = std::chrono::system_clock::now();
-        const auto timeSpanBlock = endTimeBlock - startTimeBlock;
-        DLOG(INFO) << "Time for finding blocks: "
-                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlock).count() << "[ms]";
-
+        const auto startTimeAss = std::chrono::system_clock::now();
         block_count = sort_blocks.size();
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + block_count);
@@ -147,7 +154,7 @@ class recompression {
         rlslp.block_count += block_count;
 
         auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
-        const auto startTimeAss = std::chrono::system_clock::now();
+        
 
         for (size_t i = 0; i < sort_blocks.size(); ++i) {
             DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_blocks[i].first << ","
@@ -162,6 +169,7 @@ class recompression {
 
         const auto endTimeAss = std::chrono::system_clock::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
+        std::cout << " block_rules=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
         DLOG(INFO) << "Time for block nts: "
                    << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
                    << "[ms]";
@@ -180,7 +188,13 @@ class recompression {
                 text[j + positions[i].second] = -1;
             }
         }
+        const auto endTimeRep = std::chrono::system_clock::now();
+        const auto timeSpanRep = endTimeRep - startTimeRep;
+        std::cout << " replace_blocks=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
+        DLOG(INFO) << "Time for replacing blocks: "
+                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
 
+        const auto startTimeCompact = std::chrono::system_clock::now();
         size_t new_text_size = text.size() - substr_len;
         if (new_text_size > 1 && block_count > 0) {
             size_t copy_i = positions[0].second + 1;
@@ -192,11 +206,10 @@ class recompression {
                 }
             }
         }
-
-        const auto endTimeRep = std::chrono::system_clock::now();
-        const auto timeSpanRep = endTimeRep - startTimeRep;
-        DLOG(INFO) << "Time for replacing blocks: "
-                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
+        const auto endTimeCompact = std::chrono::system_clock::now();
+        const auto timeSpanCompact = endTimeCompact - startTimeCompact;
+        std::cout << " compact_text=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
+        
 
         DLOG(INFO) << "Shrinking text by " << substr_len << " to length " << new_text_size;
 
@@ -214,6 +227,7 @@ class recompression {
         }
 #endif
 
+        std::cout << " comp_text=" << text.size();
         DLOG(INFO) << "BComp ouput - text size: " << text.size() << " - distinct blocks: " << block_count
                    << " - string length reduce by: " << substr_len;
     }
@@ -237,6 +251,7 @@ class recompression {
 
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
+        std::cout << " multiset=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         DLOG(INFO) << "Time for computing multiset: "
                    << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
     }
@@ -275,11 +290,14 @@ class recompression {
             }
         }
         partition[alphabet[j]] = l_count > r_count;
+        const auto endTimePar = std::chrono::system_clock::now();
+        const auto timeSpanPar = endTimePar - startTime;
+        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
         DLOG(INFO) << "j: " << j;
         DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
 
-        //    const auto startTimeCount = std::chrono::system_clock::now();
+        const auto startTimeCount = std::chrono::system_clock::now();
         l_count = 0;
         r_count = 0;
         for (size_t i = 0; i < multiset.size(); ++i) {
@@ -301,6 +319,9 @@ class recompression {
                 }
             }
         }
+        const auto endTimeCount = std::chrono::system_clock::now();
+        const auto timeSpanCount = endTimeCount - startTimeCount;
+        std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
 
         if (r_count > l_count) {
             DLOG(INFO) << "Swap partition sets";
@@ -312,6 +333,7 @@ class recompression {
 
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
+        std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         DLOG(INFO) << "Time for computing partition: "
                    << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
     }
@@ -337,6 +359,7 @@ class recompression {
         }
         std::sort(alphabet.begin(), alphabet.end());
 
+        std::cout << " text=" << text.size() << " alphabet=" << alphabet.size();
 
         multiset_t multiset(text.size() - 1);
         compute_multiset(text, multiset);
@@ -346,10 +369,12 @@ class recompression {
         size_t pair_count = 0;
 
         compute_partition(multiset, alphabet, partition);
-
+        
+        const auto startTimePairs = std::chrono::system_clock::now();
         std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
         std::vector<pair_position_t> positions;
 
+        
         for (size_t i = 0; i < text.size() - 1; ++i) {
             if (!partition[text[i]] && partition[text[i + 1]]) {
                 DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i;
@@ -359,11 +384,15 @@ class recompression {
                 pair_count++;
             }
         }
+        const auto endTimePairs = std::chrono::system_clock::now();
+        const auto timeSpanPairs = endTimePairs - startTimePairs;
+        std::cout << " find_pairs=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 
         DLOG(INFO) << "Pairs found: " << pair_count;
 
         DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
 
+        const auto startTimeCopy = std::chrono::system_clock::now();
         std::vector<std::pair<variable_t, variable_t>> sort_pairs(pairs.size());
 
         auto iter = pairs.begin();
@@ -373,18 +402,25 @@ class recompression {
             sort_pairs[i] = (*iter).first;
             ++iter;
         }
-
+        const auto endTimeCopy = std::chrono::system_clock::now();
+        const auto timeSpanCopy = endTimeCopy - startTimeCopy;
+        std::cout << " copy_pairs=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
+        
+        const auto startTimeSort = std::chrono::system_clock::now();
         lsd_radix_sort(sort_pairs);
+        const auto endTimeSort = std::chrono::system_clock::now();
+        const auto timeSpanSort = endTimeSort - startTimeSort;
+        std::cout << " sort=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count()) << " elements=" << sort_pairs.size() << " hits=" << pair_count;
 
         DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
 
+        const auto startTimeAss = std::chrono::system_clock::now();
         pair_count = sort_pairs.size();
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + pair_count);
         rlslp.resize(nt_count + pair_count);
 
         variable_t next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
-        const auto startTimeAss = std::chrono::system_clock::now();
 
         for (size_t i = 0; i < sort_pairs.size(); ++i) {
             DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_pairs[i].first << ","
@@ -406,6 +442,7 @@ class recompression {
 
         const auto endTimeAss = std::chrono::system_clock::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
+        std::cout << " pair_rules=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
         DLOG(INFO) << "Time for pair nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
                    << "[ms]";
 
@@ -420,7 +457,13 @@ class recompression {
 
             text[pos + 1] = -1;
         }
+        const auto endTimeRep = std::chrono::system_clock::now();
+        const auto timeSpanRep = endTimeRep - startTimeRep;
+        std::cout << " replace_pairs=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
+        DLOG(INFO) << "Time for replacing pairs: "
+                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
 
+        const auto startTimeCompact = std::chrono::system_clock::now();
         size_t new_text_size = text.size() - positions.size();
         if (new_text_size > 1 && pair_count > 0) {
             size_t copy_i = positions[0] + 1;
@@ -432,11 +475,10 @@ class recompression {
                 }
             }
         }
-
-        const auto endTimeRep = std::chrono::system_clock::now();
-        const auto timeSpanRep = endTimeRep - startTimeRep;
-        DLOG(INFO) << "Time for replacing pairs: "
-                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
+        const auto endTimeCompact = std::chrono::system_clock::now();
+        const auto timeSpanCompact = endTimeCompact - startTimeCompact;
+        std::cout << " compact_text=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
+        
 
         DLOG(INFO) << "Shrinking text by " << positions.size() << " to length " << new_text_size;
 
@@ -452,6 +494,7 @@ class recompression {
         DLOG(INFO) << "Text: " << util::text_vector_to_string(text);
     }
 #endif
+        std::cout << " comp_text=" << text.size();
         DLOG(INFO) << "PComp ouput - text size: " << text.size() << " - distinct pairs: " << pair_count
                    << " - string length reduce by: " << positions.size();
     }

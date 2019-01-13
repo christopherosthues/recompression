@@ -32,7 +32,7 @@ struct rlslp {
             if (second >= 0) {
                 derive(sstream, second);
             } else {  // block
-                variable_t b_len = -second - 1;
+                variable_t b_len = second - 1;
                 while (b_len--) {
                     derive(sstream, non_terminals[nt - terminals].first());
                 }

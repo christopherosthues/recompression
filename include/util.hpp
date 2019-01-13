@@ -83,6 +83,12 @@ void read_file(const std::string& file_name, text_t& text) {
 //    std::copy(input, std::istream_iterator<recomp::var_t>(), std::back_inserter(text));
 }
 
+void read_text_file(const std::string& file_name, std::string& text) {
+    std::ifstream ifs(file_name.c_str());
+    std::istream_iterator<char> input(ifs);
+    std::copy(input, std::istream_iterator<char>(), std::back_inserter(text));
+}
+
 template<typename block_t, typename variable_t>
 std::string blocks_to_string(const std::unordered_map<block_t, variable_t, pair_hash>& blocks) {
     std::stringstream block_stream;
