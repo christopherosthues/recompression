@@ -242,6 +242,9 @@ struct rlslp {
     std::string extract(size_t i, size_t len) const {
         std::stringstream sstream;
         if (!empty() && i < non_terminals[root].len && len > 0) {
+            if (len > non_terminals[root].len) {
+                len = non_terminals[root].len;
+            }
             extract(sstream, i, len, root + terminals);
         }
         return sstream.str();
