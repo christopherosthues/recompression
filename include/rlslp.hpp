@@ -22,20 +22,21 @@ const term_t CHAR_ALPHABET = 256;
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 struct rlslp {
  private:
-    void derive(std::stringstream& sstream, variable_t& nt) {
+    void derive(std::stringstream& sstream, variable_t nt) {
         if (nt < static_cast<variable_t>(terminals)) {
             sstream << static_cast<char>(nt);
         } else {
-            derive(sstream, non_terminals[nt - terminals].first());
+            auto first = non_terminals[nt - terminals].first();
             auto second = non_terminals[nt - terminals].second();
-            // pair
-            if (second >= 0) {
-                derive(sstream, second);
-            } else {  // block
-                variable_t b_len = second - 1;
+
+            if (is_block(nt)) {  // block
+                variable_t b_len = second;// - 1;
                 while (b_len--) {
-                    derive(sstream, non_terminals[nt - terminals].first());
+                    derive(sstream, first);
                 }
+            } else {  // pair
+                derive(sstream, first);
+                derive(sstream, second);
             }
         }
     }
@@ -59,8 +60,7 @@ struct rlslp {
                     first_len = non_terminals[first - terminals].len;
                 }
 
-                // Block
-                if (second < 0) {
+                if (is_block(nt)) {  // Block
                     auto b_len = first_len;
                     auto idx = 0;
 
@@ -233,14 +233,16 @@ struct rlslp {
 
     std::string derive_text() {
         std::stringstream sstream;
-        derive(sstream, root);
+        if (!empty()) {
+            derive(sstream, root + terminals);
+        }
         return sstream.str();
     }
 
     std::string extract(size_t i, size_t len) const {
         std::stringstream sstream;
         if (!empty() && i < non_terminals[root].len && len > 0) {
-            extract(sstream, i, len, root);
+            extract(sstream, i, len, root + terminals);
         }
         return sstream.str();
     }
@@ -281,7 +283,8 @@ std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>
     sstream << "non-terminals: " << std::endl;
     size_t i = 0;
     for (const auto& nt : rlslp.non_terminals) {
-        sstream << i++ << ": " << to_string(nt) << std::endl;
+        sstream << i << " (" << (i + rlslp.terminals) << "): " << to_string(nt) << std::endl;
+        i++;
     }
     sstream << "blocks: ";
     for (const auto& block : rlslp.blocks) {

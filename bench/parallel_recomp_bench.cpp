@@ -53,10 +53,11 @@ int main(int argc, char *argv[]) {
     LOG(INFO) << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
     LOG(INFO) << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
-    std::cout << "RESULT dataset=" << dataset << " algo=parallel_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+    std::cout << "RESULT dataset=" << dataset << " algo=parallel_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) 
+              << " rlslp_size=" << rlslp.size() << " terminals=" << rlslp.terminals << std::endl;
     
-    rlslp.resize(0);
     std::string res = rlslp.derive_text();
+    rlslp.resize(0);
     std::string c_text;
     recomp::util::read_text_file(file_name, c_text);
     if (res == c_text) {
@@ -64,6 +65,7 @@ int main(int argc, char *argv[]) {
     } else {
         std::cerr << "Failure" << std::endl;
     }
-    
-    std::cout << res << std::endl;
+
+//    std::cout << std::to_string(rlslp) << std::endl;
+//    std::cout << c_text;
 }

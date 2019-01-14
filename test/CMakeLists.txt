@@ -6,5 +6,6 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("partition")
     build_test("recomp")
     build_test("radix_sort")
+    build_test("derive_text")
 endif (RECOMPRESSION_ENABLE_TESTS)
 

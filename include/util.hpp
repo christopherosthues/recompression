@@ -4,6 +4,7 @@
 #include <array>
 #include <fstream>
 #include <iterator>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -38,6 +39,7 @@ void read_file_fast(const std::string& file_name, text_t& text) {
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     auto file_size = ifs.tellg();
     if (file_size < 0) {
+        LOG(ERROR) << "Failed to read file " << file_name;
         return;
     }
     ifs.seekg(0, std::ios::beg);
@@ -65,14 +67,19 @@ void read_file(const std::string& file_name, text_t& text) {
     }
     ifs.seekg(0, std::ios::beg);
 
-    text.resize(static_cast<size_t>(file_size), '\0');
+    text.resize(static_cast<size_t>(file_size), 0);
 
     char c;
     auto index = 0;
     while (ifs.get(c)) {
-        text[index++] = static_cast<typename text_t::value_type>(c);
+        text[index++] = static_cast<typename text_t::value_type>((unsigned char)c);
     }
     ifs.close();
+
+//    for (size_t i = 0; i < text.size(); ++i) {
+//        std::cout << static_cast<char>(text[i]);
+//    }
+//    std::cout << std::endl;
 
     LOG(INFO) << "Read " << file_size << " bytes";
     LOG(INFO) << "Finished reading file";
@@ -84,9 +91,26 @@ void read_file(const std::string& file_name, text_t& text) {
 }
 
 void read_text_file(const std::string& file_name, std::string& text) {
-    std::ifstream ifs(file_name.c_str());
-    std::istream_iterator<char> input(ifs);
-    std::copy(input, std::istream_iterator<char>(), std::back_inserter(text));
+    LOG(INFO) << "Reading file: " << file_name;
+    std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+    auto file_size = ifs.tellg();
+    if (file_size < 0) {
+        LOG(ERROR) << "Failed to read file " << file_name;
+        return;
+    }
+    ifs.seekg(0, std::ios::beg);
+
+    //std::vector<char> bytes(((size_t)file_size)+1);
+    text.resize(static_cast<size_t>(file_size), '\0');
+    ifs.read((char*)text.data(), file_size);
+    //bytes.data()[file_size] = '$';
+    ifs.close();
+    LOG(INFO) << "Read " << file_size << " bytes";
+    LOG(INFO) << "Finished reading file";
+    //return std::string(bytes.data(), file_size);
+//    std::ifstream ifs(file_name.c_str());
+//    std::istream_iterator<char> input(ifs);
+//    std::copy(input, std::istream_iterator<char>(), std::back_inserter(text));
 }
 
 template<typename block_t, typename variable_t>

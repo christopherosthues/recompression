@@ -42,6 +42,7 @@ class recompression {
     typedef std::pair<variable_t, variable_t> block_t;
     typedef block_t pair_t;
     typedef std::pair<variable_t, size_t> position_t;
+//    typedef size_t position_t;
     typedef size_t pair_position_t;
 
     /**
@@ -60,11 +61,15 @@ class recompression {
         rlslp.terminals = alphabet_size;
 
         while (not_finished) {
+            std::cout << "bcomp" << std::endl;
             bcomp(text, rlslp);
+            std::cout << "bcomp finished" << std::endl;
             not_finished = text.size() > 1;
 
             if (not_finished) {
+                std::cout << "pcomp" << std::endl;
                 pcomp(text, rlslp);
+                std::cout << "pcomp finished" << std::endl;
                 not_finished = text.size() > 1;
             }
         }
@@ -91,6 +96,8 @@ class recompression {
 
 
  private:
+    const variable_t DELETED = UINT_MAX;
+
     /**
      * @brief Replaces all block in the text with new non-terminals.
      *
@@ -99,6 +106,7 @@ class recompression {
      */
     void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
         DLOG(INFO) << "BComp input - text size: " << text.size();
+//        DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
         //std::cout << " text=" << text.size();// << " alphabet=" << alphabet.size();
         const auto startTime = std::chrono::system_clock::now();
 
@@ -129,7 +137,7 @@ class recompression {
 #pragma omp for schedule(static) nowait reduction(+:block_count) reduction(+:substr_len)
             for (size_t i = 0; i < text.size() - 1; ++i) {
                 if (begin == 0) {
-                    DLOG(INFO) << "begin at " << i << " for thread " << thread_id;
+//                    DLOG(INFO) << "begin at " << i << " for thread " << thread_id;
                     begin = i;
                     if (i == 0) {
                         begin = 1;
@@ -140,24 +148,28 @@ class recompression {
 //            if (text[i - 1] == text[i]) {
                     block_len++;
                     i++;
+//                    text[i] = DELETED;
 //                subtr_len++;
 ////                new_text_size--;
                 }
                 if (!add) {
-                    DLOG(INFO) << "skipping block (" << text[i] << "," << block_len << ")";
+//                    DLOG(INFO) << "skipping block (" << text[i] << "," << block_len << ")";
                     block_len = 1;
                     add = true;
                 }
                 if (block_len > 1) {
 //            } else if (block_len > 1) {
                     substr_len += block_len - 1;
-                    DLOG(INFO) << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
-                               << " by thread " << thread_id;
+//                    DLOG(INFO) << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
+//                               << " by thread " << thread_id;
                     t_positions.emplace_back(block_len, i - block_len + 1);
+//                    t_positions.emplace_back(i - block_len + 1);
                     block_t block = std::make_pair(text[i], block_len);
                     t_blocks[block] = 1;
                     block_count++;
                     block_len = 1;
+
+//                    text[i - block_len + 2] = block_len;
                 }
             }
 
@@ -173,8 +185,8 @@ class recompression {
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-            DLOG(INFO) << "Thread " << thread_id << " inserting blocks "
-                       << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
+//            DLOG(INFO) << "Thread " << thread_id << " inserting blocks "
+//                       << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
 
 #pragma omp critical
             blocks.insert(t_blocks.begin(), t_blocks.end());
@@ -186,7 +198,7 @@ class recompression {
 
         DLOG(INFO) << "Blocks found: " << block_count;
 
-        DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
+//        DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
 
         const auto startTimeCopy = std::chrono::system_clock::now();
         std::vector<block_t> sort_blocks(blocks.size());
@@ -195,13 +207,13 @@ class recompression {
         {
             auto iter = blocks.begin();
 
-#pragma omp for schedule(static) nowait
+#pragma omp for schedule(static)
             for (size_t i = 0; i < blocks.size(); ++i) {
                 if (iter == blocks.begin()) {
                     std::advance(iter, i);
                 }
-                DLOG(INFO) << "Adding block (" << (*iter).first.first << "," << (*iter).first.second << ") at index "
-                           << i;
+//                DLOG(INFO) << "Adding block (" << (*iter).first.first << "," << (*iter).first.second << ") at index "
+//                           << i;
                 sort_blocks[i] = (*iter).first;
                 ++iter;
             }
@@ -219,7 +231,8 @@ class recompression {
         const auto timeSpanSort = endTimeSort - startTimeSort;
         //std::cout << " sort=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count()) << " elements=" << sort_blocks.size() << " hits=" << block_count;;
 
-        DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
+//        DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
+        DLOG(INFO) << "Number of different blocks: " << sort_blocks.size();
 
         const auto startTimeAss = std::chrono::system_clock::now();
         block_count = sort_blocks.size();
@@ -232,8 +245,8 @@ class recompression {
 
 #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
         for (size_t i = 0; i < sort_blocks.size(); ++i) {
-            DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_blocks[i].first << ","
-                       << sort_blocks[i].second << ") at index " << nt_count + i;
+//            DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_blocks[i].first << ","
+//                       << sort_blocks[i].second << ") at index " << nt_count + i;
             blocks[sort_blocks[i]] = next_nt + static_cast<variable_t>(i);
             auto len = static_cast<size_t>(sort_blocks[i].second);
             if (sort_blocks[i].first >= static_cast<variable_t>(rlslp.terminals)) {
@@ -253,16 +266,25 @@ class recompression {
 
         const auto startTimeRep = std::chrono::system_clock::now();
 
-        DLOG(INFO) << "Positions are " << recomp::util::block_positions_to_string<position_t>(positions);
+//        DLOG(INFO) << "Positions are " << recomp::util::block_positions_to_string<position_t>(positions);
 
 #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
         for (size_t i = 0; i < positions.size(); ++i) {
+//            auto block = std::make_pair(text[positions[i]], text[positions[i] + 1]);
+//            text[positions[i]] = blocks[block];
+////            text[positions[i].second + 1] = DELETED;
+//
+//            auto length = static_cast<size_t>(text[positions[i] + 1]);
+//            for (size_t j = 1; j < length; ++j) {
+//                text[j + positions[i]] = DELETED;
+//            }
             auto block = std::make_pair(text[positions[i].second], positions[i].first);
             text[positions[i].second] = blocks[block];
+//            text[positions[i].second + 1] = DELETED;
 
             auto length = static_cast<size_t>(positions[i].first);
             for (size_t j = 1; j < length; ++j) {
-                text[j + positions[i].second] = -1;
+                text[j + positions[i].second] = DELETED;
             }
         }
         const auto endTimeRep = std::chrono::system_clock::now();
@@ -274,11 +296,13 @@ class recompression {
         const auto startTimeCompact = std::chrono::system_clock::now();
         size_t new_text_size = text.size() - substr_len;
         if (new_text_size > 1 && block_count > 0) {
+//            size_t copy_i = positions[0] + 1;
+//            size_t i = positions[0] + text[positions[0] + 1];  // jump to first position to copy
             size_t copy_i = positions[0].second + 1;
             size_t i = positions[0].second + positions[0].first;  // jump to first position to copy
 
             for (; i < text.size(); ++i) {
-                if (text[i] != -1) {
+                if (text[i] != DELETED) {
                     text[copy_i++] = text[i];
                 }
             }
@@ -287,7 +311,7 @@ class recompression {
         const auto timeSpanCompact = endTimeCompact - startTimeCompact;
         //std::cout << " compact_text=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 
-        DLOG(INFO) << "Shrinking text by " << substr_len << " to length " << new_text_size;
+        DLOG(INFO) << "Shrinking text by " << substr_len << " from length " << text.size() << " to length " << new_text_size;
 
         text.resize(new_text_size);
         text.shrink_to_fit();
@@ -297,11 +321,11 @@ class recompression {
         DLOG(INFO) << "Time for bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                    << "[ms]";
 
-#ifdef DEBUG
-        if (text.size() < 30) {
-            DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
-        }
-#endif
+//#ifdef DEBUG
+//        if (text.size() < 30) {
+//            DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
+//        }
+//#endif
 
         //std::cout << " comp_text=" << text.size();
         DLOG(INFO) << "BComp ouput - text size: " << text.size() << " - distinct blocks: " << block_count
@@ -315,6 +339,7 @@ class recompression {
      * @param multiset The multiset
      */
     inline void compute_multiset(const text_t& text, multiset_t& multiset/*, std::unordered_map<variable_t, size_t >& hist*/) {
+        std::cout << "multiset" << std::endl;
         const auto startTime = std::chrono::system_clock::now();
 
 #pragma omp parallel num_threads(THREAD_COUNT)
@@ -348,6 +373,7 @@ class recompression {
         //std::cout << " multiset=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         DLOG(INFO) << "Time for computing multiset: "
                    << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "multiset finished" << std::endl;
     }
 
     /**
@@ -358,9 +384,10 @@ class recompression {
      * @param partition
      */
     inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet, partition_t& partition/*, std::vector<std::pair<variable_t, size_t>>& starts*/) {
+        std::cout << "partition" << std::endl;
         const auto startTime = std::chrono::system_clock::now();
 
-        DLOG(INFO) << util::text_vector_to_string(alphabet);
+//        DLOG(INFO) << util::text_vector_to_string(alphabet);
         // TODO(Chris): have to wait for those symbols which are not yet assigned to a partition -> if first letter
         // is assigned to a partition all entries in the multiset that depend on this symbol can compute a partial
         // result and must wait for the next symbol that is not assigned to a partition -> locks only on symbols that
@@ -390,7 +417,7 @@ class recompression {
         for (size_t i = 0; i < multiset.size(); ++i) {
             while (j < alphabet.size() && std::get<0>(multiset[i]) > alphabet[j]) {
                 partition[alphabet[j]] = l_count > r_count;
-                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
+//                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
                 j++;
                 l_count = 0;
                 r_count = 0;
@@ -406,7 +433,7 @@ class recompression {
         const auto timeSpanPar = endTimePar - startTime;
         //std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
         DLOG(INFO) << "j: " << j;
-        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
+//        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
 
         const auto startTimeCount = std::chrono::system_clock::now();
@@ -459,7 +486,7 @@ class recompression {
 //                (*iter).second = !(*iter).second;
 //                ++iter;
 //            }
-            DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
+//            DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
         }
 
         const auto endTime = std::chrono::system_clock::now();
@@ -467,6 +494,8 @@ class recompression {
         //std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         DLOG(INFO) << "Time for computing partition: "
                    << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+
+        std::cout << "partition finished" << std::endl;
     }
 
 /**
@@ -527,9 +556,8 @@ class recompression {
 #pragma omp for schedule(static) nowait reduction(+:pair_count)
             for (size_t i = 0; i < text.size() - 1; ++i) {
                 if (!partition[text[i]] && partition[text[i + 1]]) {
-                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
-                               << thread_id;
-                    // TODO(Chris): use private data structures???
+//                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
+//                               << thread_id;
                     auto pair = std::make_pair(text[i], text[i + 1]);
                     t_pairs[pair] = 1;
                     t_positions.emplace_back(i);
@@ -549,7 +577,7 @@ class recompression {
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-            DLOG(INFO) << "Inserting pairs " << util::blocks_to_string(t_pairs);
+//            DLOG(INFO) << "Inserting pairs " << util::blocks_to_string(t_pairs);
 
 #pragma omp critical
             pairs.insert(t_pairs.begin(), t_pairs.end());
@@ -561,7 +589,7 @@ class recompression {
 
         DLOG(INFO) << "Pairs found: " << pair_count;
 
-        DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
+//        DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
 
         const auto startTimeCopy = std::chrono::system_clock::now();
         std::vector<std::pair<variable_t, variable_t>> sort_pairs(pairs.size());
@@ -570,13 +598,13 @@ class recompression {
         {
             auto iter = pairs.begin();
 
-#pragma omp for schedule(static) nowait
+#pragma omp for schedule(static)
             for (size_t i = 0; i < pairs.size(); ++i) {
                 if (iter == pairs.begin()) {
                     std::advance(iter, i);
                 }
-                DLOG(INFO) << "Adding pair (" << (*iter).first.first << "," << (*iter).first.second << ") at index "
-                           << i;
+//                DLOG(INFO) << "Adding pair (" << (*iter).first.first << "," << (*iter).first.second << ") at index "
+//                           << i;
                 sort_pairs[i] = (*iter).first;
                 ++iter;
             }
@@ -595,7 +623,9 @@ class recompression {
         const auto timeSpanSort = endTimeSort - startTimeSort;
         //std::cout << " sort=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count()) << " elements=" << sort_pairs.size() << " hits=" << pair_count;
 
-        DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
+//        DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
+
+        DLOG(INFO) << "Number of different pairs: " << sort_pairs.size();
 
         const auto startTimeAss = std::chrono::system_clock::now();
         pair_count = sort_pairs.size();
@@ -607,8 +637,8 @@ class recompression {
 
 #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
         for (size_t i = 0; i < sort_pairs.size(); ++i) {
-            DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_pairs[i].first << ","
-                       << sort_pairs[i].second << ") at index " << nt_count + i;
+//            DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_pairs[i].first << ","
+//                       << sort_pairs[i].second << ") at index " << nt_count + i;
             pairs[sort_pairs[i]] = next_nt + static_cast<variable_t>(i);
             size_t len = 0;
             if (sort_pairs[i].first >= static_cast<variable_t>(rlslp.terminals)) {
@@ -633,7 +663,7 @@ class recompression {
 
 
         const auto startTimeRep = std::chrono::system_clock::now();
-        DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
+//        DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
 
 #pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
         for (size_t i = 0; i < positions.size(); ++i) {
@@ -641,7 +671,7 @@ class recompression {
             auto pair = std::make_pair(text[pos], text[pos + 1]);
             text[pos] = pairs[pair];
 
-            text[pos + 1] = -1;
+            text[pos + 1] = DELETED;
         }
         const auto endTimeRep = std::chrono::system_clock::now();
         const auto timeSpanRep = endTimeRep - startTimeRep;
@@ -656,7 +686,7 @@ class recompression {
             size_t i = positions[0] + 2;  // jump to first position to copy
 
             for (; i < text.size(); ++i) {
-                if (text[i] != -1) {
+                if (text[i] != DELETED) {
                     text[copy_i++] = text[i];
                 }
             }
@@ -665,7 +695,7 @@ class recompression {
         const auto timeSpanCompact = endTimeCompact - startTimeCompact;
         //std::cout << " compact_text=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 
-        DLOG(INFO) << "Shrinking text by " << positions.size() << " to length " << new_text_size;
+        DLOG(INFO) << "Shrinking text by " << positions.size() << " from length " << text.size() << " to length " << new_text_size;
 
         text.resize(new_text_size);
         text.shrink_to_fit();

@@ -80,6 +80,8 @@ class recompression {
 
 
  private:
+    const variable_t DELETED = UINT_MAX;
+
     /**
      * @brief Replaces all block in the text with new non-terminals.
      *
@@ -185,7 +187,7 @@ class recompression {
 
             auto length = static_cast<size_t>(positions[i].first);
             for (size_t j = 1; j < length; ++j) {
-                text[j + positions[i].second] = -1;
+                text[j + positions[i].second] = DELETED;
             }
         }
         const auto endTimeRep = std::chrono::system_clock::now();
@@ -201,7 +203,7 @@ class recompression {
             size_t i = positions[0].second + positions[0].first;  // jump to first position to copy
 
             for (; i < text.size(); ++i) {
-                if (text[i] != -1) {
+                if (text[i] != DELETED) {
                     text[copy_i++] = text[i];
                 }
             }
@@ -455,7 +457,7 @@ class recompression {
             auto pair = std::make_pair(text[pos], text[pos + 1]);
             text[pos] = pairs[pair];
 
-            text[pos + 1] = -1;
+            text[pos + 1] = DELETED;
         }
         const auto endTimeRep = std::chrono::system_clock::now();
         const auto timeSpanRep = endTimeRep - startTimeRep;
@@ -470,7 +472,7 @@ class recompression {
             size_t i = positions[0] + 2;  // jump to first position to copy
 
             for (; i < text.size(); ++i) {
-                if (text[i] != -1) {
+                if (text[i] != DELETED) {
                     text[copy_i++] = text[i];
                 }
             }
