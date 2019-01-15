@@ -10,7 +10,6 @@
 
 namespace recomp {
 
-//const terminal_count_t CHAR_ALPHABET = 256;
 const term_t CHAR_ALPHABET = 256;
 
 /**
@@ -121,13 +120,6 @@ struct rlslp {
          */
         non_terminal() = default;
 
-//        /**
-//         * @brief Constructs a non-terminal that derives a single terminal.
-//         *
-//         * @param terminal
-//         */
-//        inline non_terminal(variable_t terminal);
-
         /**
          * @brief Constructs a non-terminal that maps to a pair or a block of non-terminals.
          *
@@ -227,7 +219,6 @@ struct rlslp {
         if (nt < terminals) {
             return false;
         }
-//        return this->non_terminals[nt - terminals].second() < 0;
         return this->blocks[nt - terminals];
     }
 
@@ -242,8 +233,8 @@ struct rlslp {
     std::string extract(size_t i, size_t len) const {
         std::stringstream sstream;
         if (!empty() && i < non_terminals[root].len && len > 0) {
-            if (len > non_terminals[root].len) {
-                len = non_terminals[root].len;
+            if (i + len > non_terminals[root].len) {
+                len = non_terminals[root].len - i;
             }
             extract(sstream, i, len, root + terminals);
         }

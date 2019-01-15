@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <gtest/gtest.h>
 
 #include "defs.hpp"
@@ -38,8 +36,6 @@ TEST(extract, recompression) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-//            std::cout << i << ", " << len << std::endl;
-//            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
@@ -62,8 +58,6 @@ TEST(extract, short_block) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-            std::cout << i << ", " << len << std::endl;
-            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
@@ -86,8 +80,6 @@ TEST(extract, one_block) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-            std::cout << i << ", " << len << std::endl;
-            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
@@ -110,8 +102,6 @@ TEST(extract, two_blocks) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-//            std::cout << i << ", " << len << std::endl;
-//            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
@@ -134,8 +124,6 @@ TEST(extract, three_blocks) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-//            std::cout << i << ", " << len << std::endl;
-//            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
@@ -158,8 +146,6 @@ TEST(extract, four_blocks) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-//            std::cout << i << ", " << len << std::endl;
-//            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
@@ -182,8 +168,6 @@ TEST(extract, pairs) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
             std::string extr = rlslp.extract(i, len);
             std::string expected = exp_string.substr(i, len);
-//            std::cout << i << ", " << len << std::endl;
-//            std::cout << exp_string.size() << ", " << expected.size() << ", " << extr.size() << std::endl;
             ASSERT_EQ(expected, extr);
         }
     }
