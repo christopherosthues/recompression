@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cerr << "./pcomp_bench [file name]" << std::endl;
+        std::cerr << "./recomp_bench [file name]" << std::endl;
     }
     FLAGS_logtostderr = true;
     google::InitGoogleLogging(argv[0]);
@@ -44,19 +44,14 @@ int main(int argc, char *argv[]) {
 
     std::regex reg("_");
     std::regex_replace(dataset, reg, "\\_");
-    
-    recompression.bcomp(text, rlslp);
-    std::cout << std::endl;
 
     const auto startTime = std::chrono::system_clock::now();
 
-    std::cout << "RESULT dataset=" << dataset << " algo=sequential_pcomp";
-    recompression.pcomp(text, rlslp);
+    recompression.recomp(text, rlslp);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
-    LOG(INFO) << "Time for sequential pcomp: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-    LOG(INFO) << "Time for sequential pcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+    LOG(INFO) << "Time for sequential recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
+    LOG(INFO) << "Time for sequential recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
-    //std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
-    std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+    std::cout << "RESULT dataset=" << dataset << " algo=sequential_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 }

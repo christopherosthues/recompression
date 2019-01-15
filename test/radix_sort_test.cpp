@@ -13,7 +13,7 @@
 using namespace recomp;
 
 typedef var_t variable_t;
-typedef recompression<var_t, term_t>::multiset_t multiset_t;
+typedef parallel::recompression<var_t, term_t>::multiset_t multiset_t;
 
 
 TEST(digits, output_digits) {

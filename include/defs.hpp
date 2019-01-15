@@ -10,7 +10,7 @@
 
 namespace recomp {
 
-typedef std::int32_t var_t;
+typedef std::uint32_t var_t;
 typedef std::uint32_t term_t;
 //typedef std::int32_t variable_t;
 //typedef std::uint32_t terminal_count_t;
