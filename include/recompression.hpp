@@ -1,9 +1,14 @@
 
 #pragma once
 
-
+#include <algorithm>
 #include <chrono>
+#include <iostream>
 #include <thread>
+#include <tuple>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #ifdef DEBUG
 
@@ -90,7 +95,7 @@ class recompression {
      */
     void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
         DLOG(INFO) << "BComp input - text size: " << text.size();
-        std::cout << " text=" << text.size();// << " alphabet=" << alphabet.size();
+        std::cout << " text=" << text.size();  // << " alphabet=" << alphabet.size();
         const auto startTime = std::chrono::system_clock::now();
 
         size_t block_count = 0;
@@ -156,7 +161,7 @@ class recompression {
         rlslp.block_count += block_count;
 
         auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
-        
+
 
         for (size_t i = 0; i < sort_blocks.size(); ++i) {
             DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_blocks[i].first << ","
@@ -211,7 +216,7 @@ class recompression {
         const auto endTimeCompact = std::chrono::system_clock::now();
         const auto timeSpanCompact = endTimeCompact - startTimeCompact;
         std::cout << " compact_text=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
-        
+
 
         DLOG(INFO) << "Shrinking text by " << substr_len << " to length " << new_text_size;
 
@@ -269,10 +274,6 @@ class recompression {
         const auto startTime = std::chrono::system_clock::now();
 
         DLOG(INFO) << util::text_vector_to_string(alphabet);
-        // TODO(Chris): have to wait for those symbols which are not yet assigned to a partition -> if first letter
-        // is assigned to a partition all entries in the multiset that depend on this symbol can compute a partial
-        // result and must wait for the next symbol that is not assigned to a partition -> locks only on symbols that
-        // are not fully processed
 
         int l_count = 0;
         int r_count = 0;
@@ -371,12 +372,12 @@ class recompression {
         size_t pair_count = 0;
 
         compute_partition(multiset, alphabet, partition);
-        
+
         const auto startTimePairs = std::chrono::system_clock::now();
         std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
         std::vector<pair_position_t> positions;
 
-        
+
         for (size_t i = 0; i < text.size() - 1; ++i) {
             if (!partition[text[i]] && partition[text[i + 1]]) {
                 DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i;
@@ -407,7 +408,7 @@ class recompression {
         const auto endTimeCopy = std::chrono::system_clock::now();
         const auto timeSpanCopy = endTimeCopy - startTimeCopy;
         std::cout << " copy_pairs=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
-        
+
         const auto startTimeSort = std::chrono::system_clock::now();
         lsd_radix_sort(sort_pairs);
         const auto endTimeSort = std::chrono::system_clock::now();
@@ -480,7 +481,7 @@ class recompression {
         const auto endTimeCompact = std::chrono::system_clock::now();
         const auto timeSpanCompact = endTimeCompact - startTimeCompact;
         std::cout << " compact_text=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
-        
+
 
         DLOG(INFO) << "Shrinking text by " << positions.size() << " to length " << new_text_size;
 

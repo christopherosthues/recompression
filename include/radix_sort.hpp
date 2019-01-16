@@ -3,6 +3,7 @@
 
 #include <omp.h>
 
+#include <algorithm>
 #include <array>
 #include <climits>
 #include <queue>
@@ -11,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include <iostream>
 #include <glog/logging.h>
 #include "util.hpp"
 
@@ -105,56 +105,6 @@ void lsd_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec) {
             queues[j].pop();
         }
     }
-    
-//    for (std::uint8_t j = 0; j < lsd_blocks; ++j) {
-//        DLOG(INFO) << "Block: " << std::to_string(j);
-//        std::array<std::vector<std::pair<variable_t, variable_t>>, n_buckets> sub_buckets;
-//        for (size_t b = 0; b < vec.size(); ++b) {
-//            sub_buckets[digits<variable_t, D>(vec[b].second, j, mask)].emplace_back(vec[b]);
-//        }
-//
-//#ifdef DEBUG
-//        for (size_t b = 0; b < sub_buckets.size(); ++b) {
-//            if (sub_buckets[b].size() > 0) {
-//                DLOG(INFO) << "Sub buckets of LSD radix sort step for second: " << b << " "
-//                           << util::vector_blocks_to_string(sub_buckets[b]);
-//            }
-//        }
-//#endif
-//
-//        size_t pos = 0;
-//        for (size_t b = 0; b < sub_buckets.size(); ++b) {
-//            for (size_t sb = 0; sb < sub_buckets[b].size(); ++sb) {
-//                vec[pos++] = sub_buckets[b][sb];
-//            }
-//        }
-//        DLOG(INFO) << "Vector in iteration for second " << j << ": " << util::vector_blocks_to_string(vec);
-//    }
-//
-//    for (std::uint8_t j = 0; j < lsd_blocks; ++j) {
-//        DLOG(INFO) << "Block: " << std::to_string(j);
-//        std::array<std::vector<std::pair<variable_t, variable_t>>, n_buckets> sub_buckets;
-//        for (size_t b = 0; b < vec.size(); ++b) {
-//            sub_buckets[digits<variable_t, D>(vec[b].first, j, mask)].emplace_back(vec[b]);
-//        }
-//
-//#ifdef DEBUG
-//        for (size_t b = 0; b < sub_buckets.size(); ++b) {
-//            if (sub_buckets[b].size() > 0) {
-//                DLOG(INFO) << "Sub buckets of LSD radix sort step for first: " << b << " "
-//                           << util::vector_blocks_to_string(sub_buckets[b]);
-//            }
-//        }
-//#endif
-//
-//        size_t pos = 0;
-//        for (size_t b = 0; b < sub_buckets.size(); ++b) {
-//            for (size_t sb = 0; sb < sub_buckets[b].size(); ++sb) {
-//                vec[pos++] = sub_buckets[b][sb];
-//            }
-//        }
-//        DLOG(INFO) << "Vector in Iteration for first " << j << ": " << util::vector_blocks_to_string(vec);
-//    }
 }
 
 namespace parallel {
@@ -171,7 +121,7 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec)
     int n_blocks = lsd_blocks;
     const auto n_buckets = (1 << D);
     bool insuff_key = true;
-    
+
     variable_t mask = n_buckets - 1;
 
     std::array<std::vector<std::pair<variable_t, variable_t>>, n_buckets> buckets;

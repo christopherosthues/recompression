@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-#include <iostream>
-
 #include "defs.hpp"
 
 namespace recomp {
@@ -185,7 +183,8 @@ struct rlslp {
     }
 
     bool operator==(const rlslp& rlslp) const {
-        return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals && blocks == rlslp.blocks;
+        return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals &&
+               blocks == rlslp.blocks;
     }
 
     void reserve(size_t size) {
@@ -206,22 +205,18 @@ struct rlslp {
     }
 
     void derive(std::stringstream& sstream, variable_t nt) {
-        //std::cout << "variable: " << nt << std::endl;
         if (nt < static_cast<variable_t>(terminals)) {
-            //std::cout << "terminal: " << nt << std::endl;
             sstream << static_cast<char>(nt);
         } else {
             auto first = non_terminals[nt - terminals].first();
             auto second = non_terminals[nt - terminals].second();
 
             if (is_block(nt)) {  // block
-                //std::cout << "block: " << first << ", " << second << std::endl;
-                variable_t b_len = second;// - 1;
+                variable_t b_len = second;
                 while (b_len--) {
                     derive(sstream, first);
                 }
             } else {  // pair
-                //std::cout << "pair: " << first << ", " << second << std::endl;
                 derive(sstream, first);
                 derive(sstream, second);
             }
