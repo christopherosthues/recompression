@@ -1,0 +1,47 @@
+\documentclass[10pt,a4paper]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+\begin{document}
+	
+	% IMPORT-DATA bcomp bcomp_bench.txt
+	% IMPORT-DATA pcomp pcomp_bench.txt
+	% IMPORT-DATA naive naive_b_p_comp_bench.txt
+	
+	\begin{tabular}{l|r|r|r}
+		Datensatz & Seq\_PComp & Par\_PComp (4 Threads) & naive\_PComp \\ \hline
+		%% TABULAR REFORMAT()
+		%% SELECT s.dataset AS x,
+		%% (SELECT (SUM(time) / 5) FROM pcomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "sequential_pcomp" GROUP BY s1.dataset),
+		%% (SELECT (SUM(time) / 5) FROM pcomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "parallel_pcomp" GROUP BY s1.dataset),
+		%% (SELECT (SUM(time) / 5) FROM naive n1 WHERE n1.dataset = s.dataset AND n1.algo = "naive_pcomp" GROUP BY n1.dataset)
+		%% FROM pcomp s, naive n GROUP BY s.dataset
+  Escherichia\_Coli & 13804 &  9560 &  6794 \\
+          coreutils & 31394 & 20027 & 41496 \\
+           dblp.xml & 69727 & 44789 & 49675 \\
+     dblp.xml.200MB & 38910 & 25765 & 35684 \\
+      dblp.xml.50MB &  8089 &  5587 &  8273 \\
+                dna & 63348 & 41053 & 26682 \\
+          dna.200MB & 20184 & 14446 & 13931 \\
+           dna.50MB &  5544 &  3754 &  3416 \\
+    einstein.de.txt & 13103 &  8878 & 14880 \\
+      english.200MB & 32700 & 21339 & 36441 \\
+       english.50MB &  7775 &  5285 &  8343 \\
+             kernel & 38023 & 25438 & 49222 \\
+     proteins.200MB & 36163 & 24278 & 39426 \\
+      proteins.50MB &  7219 &  5038 &  9042 \\
+            sources & 32270 & 20508 & 40409 \\
+      sources.200MB & 32078 & 20383 & 40540 \\
+       sources.50MB &  7799 &  5153 &  9655 \\
+     world\_leaders &  4457 &  3016 &  3986 \\
+  % END TABULAR SELECT s.dataset AS x, (SELECT (SUM(time) / 5) FROM pcomp s1 W...)
+	\end{tabular}
+\end{document}

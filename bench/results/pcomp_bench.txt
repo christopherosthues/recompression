@@ -1748,113 +1748,113 @@ I0115 22:37:00.730298  3732 util.hpp:61] Reading file: ../../data/einstein.en.tx
 I0115 22:37:05.360808  3732 util.hpp:84] Read 467626544 bytes
 I0115 22:37:05.360827  3732 util.hpp:85] Finished reading file
  text=467626544 find_blocks=920 copy_blocks=0 sort=0 elements=336 hits=19048357 block_rules=0 replace_blocks=265 compact_text=479 comp_text=445780724
-I0115 22:37:22.899245  3782 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:37:22.899245  3782 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:37:24.082288  3782 util.hpp:84] Read 112689515 bytes
 I0115 22:37:24.082305  3782 util.hpp:85] Finished reading file
  text=112689515 find_blocks=1245 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=655 compact_text=343 comp_text=83033889
 I0115 22:37:40.304690  3782 pcomp_bench.cpp:57] Time for sequential pcomp: 13[s]
 I0115 22:37:40.304710  3782 pcomp_bench.cpp:58] Time for sequential pcomp: 13813[ms]
-RESULT dataset=Escherichia_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=327 undir_cut=1389 dir_cut=2889 partition=4279 find_pairs=3515 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13813
-I0115 22:37:42.557708  3782 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=327 undir_cut=1389 dir_cut=2889 partition=4279 find_pairs=3515 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13813
+I0115 22:37:42.557708  3782 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:37:42.624063  3782 util.hpp:108] Read 112689515 bytes
 I0115 22:37:42.624080  3782 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:37:42.713083  3842 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:37:42.713083  3842 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:37:43.706828  3842 util.hpp:84] Read 112689515 bytes
 I0115 22:37:43.706845  3842 util.hpp:85] Finished reading file
  text=112689515 find_blocks=668 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=170 compact_text=359 comp_text=83033889
 I0115 22:37:54.679214  3842 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 9[s]
 I0115 22:37:54.679234  3842 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 9610[ms]
-RESULT dataset=Escherichia_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=178 undir_cut=1462 dir_cut=1146 partition=2608 find_pairs=1303 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=300 compact_text=263 comp_text=53801242 time=9610
-I0115 22:37:56.919710  3842 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=178 undir_cut=1462 dir_cut=1146 partition=2608 find_pairs=1303 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=300 compact_text=263 comp_text=53801242 time=9610
+I0115 22:37:56.919710  3842 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:37:56.984663  3842 util.hpp:108] Read 112689515 bytes
 I0115 22:37:56.984683  3842 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:37:57.074434  3884 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:37:57.074434  3884 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:37:58.063124  3884 util.hpp:84] Read 112689515 bytes
 I0115 22:37:58.063140  3884 util.hpp:85] Finished reading file
  text=112689515 find_blocks=1245 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=655 compact_text=347 comp_text=83033889
 I0115 22:38:14.280215  3884 pcomp_bench.cpp:57] Time for sequential pcomp: 13[s]
 I0115 22:38:14.280234  3884 pcomp_bench.cpp:58] Time for sequential pcomp: 13804[ms]
-RESULT dataset=Escherichia_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=326 undir_cut=1386 dir_cut=2885 partition=4271 find_pairs=3514 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13804
-I0115 22:38:16.532433  3884 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=326 undir_cut=1386 dir_cut=2885 partition=4271 find_pairs=3514 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13804
+I0115 22:38:16.532433  3884 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:38:16.597254  3884 util.hpp:108] Read 112689515 bytes
 I0115 22:38:16.597272  3884 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:38:16.683612  3930 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:38:16.683612  3930 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:38:17.688877  3930 util.hpp:84] Read 112689515 bytes
 I0115 22:38:17.688894  3930 util.hpp:85] Finished reading file
  text=112689515 find_blocks=660 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=223 compact_text=360 comp_text=83033889
 I0115 22:38:28.653277  3930 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 9[s]
 I0115 22:38:28.653296  3930 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 9557[ms]
-RESULT dataset=Escherichia_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=175 undir_cut=1463 dir_cut=1176 partition=2639 find_pairs=1300 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=232 compact_text=263 comp_text=53801242 time=9557
-I0115 22:38:30.895951  3930 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=175 undir_cut=1463 dir_cut=1176 partition=2639 find_pairs=1300 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=232 compact_text=263 comp_text=53801242 time=9557
+I0115 22:38:30.895951  3930 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:38:30.960501  3930 util.hpp:108] Read 112689515 bytes
 I0115 22:38:30.960522  3930 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:38:31.051337  3976 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:38:31.051337  3976 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:38:32.037329  3976 util.hpp:84] Read 112689515 bytes
 I0115 22:38:32.037344  3976 util.hpp:85] Finished reading file
  text=112689515 find_blocks=1247 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=655 compact_text=344 comp_text=83033889
 I0115 22:38:48.250576  3976 pcomp_bench.cpp:57] Time for sequential pcomp: 13[s]
 I0115 22:38:48.250596  3976 pcomp_bench.cpp:58] Time for sequential pcomp: 13803[ms]
-RESULT dataset=Escherichia_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=326 undir_cut=1387 dir_cut=2889 partition=4277 find_pairs=3513 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13803
-I0115 22:38:50.503314  3976 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=326 undir_cut=1387 dir_cut=2889 partition=4277 find_pairs=3513 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13803
+I0115 22:38:50.503314  3976 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:38:50.567698  3976 util.hpp:108] Read 112689515 bytes
 I0115 22:38:50.567716  3976 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:38:50.653486  4023 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:38:50.653486  4023 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:38:51.641777  4023 util.hpp:84] Read 112689515 bytes
 I0115 22:38:51.641791  4023 util.hpp:85] Finished reading file
  text=112689515 find_blocks=670 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=199 compact_text=359 comp_text=83033889
 I0115 22:39:02.671710  4023 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 9[s]
 I0115 22:39:02.671728  4023 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 9638[ms]
-RESULT dataset=Escherichia_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=176 undir_cut=1461 dir_cut=1187 partition=2649 find_pairs=1307 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=294 compact_text=264 comp_text=53801242 time=9638
-I0115 22:39:04.913162  4023 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=176 undir_cut=1461 dir_cut=1187 partition=2649 find_pairs=1307 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=294 compact_text=264 comp_text=53801242 time=9638
+I0115 22:39:04.913162  4023 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:04.978394  4023 util.hpp:108] Read 112689515 bytes
 I0115 22:39:04.978410  4023 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:39:05.068135  4059 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:39:05.068135  4059 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:06.132412  4059 util.hpp:84] Read 112689515 bytes
 I0115 22:39:06.132429  4059 util.hpp:85] Finished reading file
  text=112689515 find_blocks=1245 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=656 compact_text=342 comp_text=83033889
 I0115 22:39:22.340162  4059 pcomp_bench.cpp:57] Time for sequential pcomp: 13[s]
 I0115 22:39:22.340183  4059 pcomp_bench.cpp:58] Time for sequential pcomp: 13801[ms]
-RESULT dataset=Escherichia_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=327 undir_cut=1384 dir_cut=2886 partition=4270 find_pairs=3515 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13801
-I0115 22:39:24.601513  4059 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=327 undir_cut=1384 dir_cut=2886 partition=4270 find_pairs=3515 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=472 compact_text=256 comp_text=53801242 time=13801
+I0115 22:39:24.601513  4059 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:24.666195  4059 util.hpp:108] Read 112689515 bytes
 I0115 22:39:24.666216  4059 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:39:24.752596  4125 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:39:24.752596  4125 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:25.739619  4125 util.hpp:84] Read 112689515 bytes
 I0115 22:39:25.739634  4125 util.hpp:85] Finished reading file
  text=112689515 find_blocks=662 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=171 compact_text=366 comp_text=83033889
 I0115 22:39:36.595993  4125 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 9[s]
 I0115 22:39:36.596012  4125 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 9492[ms]
-RESULT dataset=Escherichia_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=177 undir_cut=1460 dir_cut=1169 partition=2630 find_pairs=1295 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=183 compact_text=264 comp_text=53801242 time=9492
-I0115 22:39:38.840857  4125 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=177 undir_cut=1460 dir_cut=1169 partition=2630 find_pairs=1295 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=183 compact_text=264 comp_text=53801242 time=9492
+I0115 22:39:38.840857  4125 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:38.906040  4125 util.hpp:108] Read 112689515 bytes
 I0115 22:39:38.906059  4125 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:39:38.996618  4152 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:39:38.996618  4152 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:39.984769  4152 util.hpp:84] Read 112689515 bytes
 I0115 22:39:39.984786  4152 util.hpp:85] Finished reading file
  text=112689515 find_blocks=1244 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=656 compact_text=343 comp_text=83033889
 I0115 22:39:56.195673  4152 pcomp_bench.cpp:57] Time for sequential pcomp: 13[s]
 I0115 22:39:56.195693  4152 pcomp_bench.cpp:58] Time for sequential pcomp: 13803[ms]
-RESULT dataset=Escherichia_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=326 undir_cut=1386 dir_cut=2885 partition=4271 find_pairs=3513 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=473 compact_text=256 comp_text=53801242 time=13803
-I0115 22:39:58.446911  4152 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=sequential_pcomp text=83033889 alphabet=76 multiset=326 undir_cut=1386 dir_cut=2885 partition=4271 find_pairs=3513 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=473 compact_text=256 comp_text=53801242 time=13803
+I0115 22:39:58.446911  4152 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:58.511502  4152 util.hpp:108] Read 112689515 bytes
 I0115 22:39:58.511518  4152 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:39:58.597986  4210 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 22:39:58.597986  4210 util.hpp:61] Reading file: ../../data/Escherichia\_Coli
 I0115 22:39:59.585032  4210 util.hpp:84] Read 112689515 bytes
 I0115 22:39:59.585047  4210 util.hpp:85] Finished reading file
  text=112689515 find_blocks=686 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=200 compact_text=360 comp_text=83033889
 I0115 22:40:10.497442  4210 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 9[s]
 I0115 22:40:10.497462  4210 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 9503[ms]
-RESULT dataset=Escherichia_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=175 undir_cut=1463 dir_cut=1173 partition=2637 find_pairs=1297 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=179 compact_text=264 comp_text=53801242 time=9503
-I0115 22:40:12.740124  4210 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+RESULT dataset=Escherichia\_Coli algo=parallel_pcomp text=83033889 alphabet=76 multiset=175 undir_cut=1463 dir_cut=1173 partition=2637 find_pairs=1297 copy_pairs=0 sort=0 elements=347 hits=29232647 pair_rules=0 replace_pairs=179 compact_text=264 comp_text=53801242 time=9503
+I0115 22:40:12.740124  4210 util.hpp:94] Reading file: ../../data/Escherichia\_Coli
 I0115 22:40:12.805603  4210 util.hpp:108] Read 112689515 bytes
 I0115 22:40:12.805621  4210 util.hpp:109] Finished reading file
 PComp Correct
@@ -1968,113 +1968,113 @@ I0115 22:46:59.913985  5203 util.hpp:94] Reading file: ../../data/kernel
 I0115 22:47:00.063943  5203 util.hpp:108] Read 257961616 bytes
 I0115 22:47:00.063961  5203 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:00.264700  5302 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:00.264700  5302 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:00.693743  5302 util.hpp:84] Read 46968181 bytes
 I0115 22:47:00.693760  5302 util.hpp:85] Finished reading file
  text=46968181 find_blocks=84 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=32 compact_text=43 comp_text=24143359
 I0115 22:47:05.353927  5302 pcomp_bench.cpp:57] Time for sequential pcomp: 4[s]
 I0115 22:47:05.353947  5302 pcomp_bench.cpp:58] Time for sequential pcomp: 4453[ms]
-RESULT dataset=world_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=427 dir_cut=949 partition=1376 find_pairs=1074 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=278 compact_text=66 comp_text=15521110 time=4453
-I0115 22:47:06.106212  5302 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=427 dir_cut=949 partition=1376 find_pairs=1074 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=278 compact_text=66 comp_text=15521110 time=4453
+I0115 22:47:06.106212  5302 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:06.134093  5302 util.hpp:108] Read 46968181 bytes
 I0115 22:47:06.134110  5302 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:06.174235  5311 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:06.174235  5311 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:06.590391  5311 util.hpp:84] Read 46968181 bytes
 I0115 22:47:06.590407  5311 util.hpp:85] Finished reading file
  text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=58 comp_text=24143359
 I0115 22:47:09.792714  5311 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 3[s]
 I0115 22:47:09.792737  5311 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 3012[ms]
-RESULT dataset=world_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=52 undir_cut=446 dir_cut=397 partition=843 find_pairs=395 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=88 compact_text=71 comp_text=15521110 time=3012
-I0115 22:47:10.545505  5311 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=52 undir_cut=446 dir_cut=397 partition=843 find_pairs=395 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=88 compact_text=71 comp_text=15521110 time=3012
+I0115 22:47:10.545505  5311 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:10.571516  5311 util.hpp:108] Read 46968181 bytes
 I0115 22:47:10.571535  5311 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:10.612545  5338 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:10.612545  5338 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:11.026863  5338 util.hpp:84] Read 46968181 bytes
 I0115 22:47:11.026878  5338 util.hpp:85] Finished reading file
  text=46968181 find_blocks=82 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=30 compact_text=43 comp_text=24143359
 I0115 22:47:15.690708  5338 pcomp_bench.cpp:57] Time for sequential pcomp: 4[s]
 I0115 22:47:15.690727  5338 pcomp_bench.cpp:58] Time for sequential pcomp: 4459[ms]
-RESULT dataset=world_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=428 dir_cut=949 partition=1377 find_pairs=1073 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=277 compact_text=67 comp_text=15521110 time=4459
-I0115 22:47:16.443029  5338 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=428 dir_cut=949 partition=1377 find_pairs=1073 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=277 compact_text=67 comp_text=15521110 time=4459
+I0115 22:47:16.443029  5338 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:16.469172  5338 util.hpp:108] Read 46968181 bytes
 I0115 22:47:16.469195  5338 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:16.509852  5358 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:16.509852  5358 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:16.923367  5358 util.hpp:84] Read 46968181 bytes
 I0115 22:47:16.923382  5358 util.hpp:85] Finished reading file
  text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=59 comp_text=24143359
 I0115 22:47:20.129488  5358 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 3[s]
 I0115 22:47:20.129509  5358 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 3015[ms]
-RESULT dataset=world_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=52 undir_cut=448 dir_cut=397 partition=845 find_pairs=396 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=86 compact_text=71 comp_text=15521110 time=3015
-I0115 22:47:20.882612  5358 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=52 undir_cut=448 dir_cut=397 partition=845 find_pairs=396 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=86 compact_text=71 comp_text=15521110 time=3015
+I0115 22:47:20.882612  5358 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:20.910207  5358 util.hpp:108] Read 46968181 bytes
 I0115 22:47:20.910228  5358 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:20.951539  5365 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:20.951539  5365 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:21.368234  5365 util.hpp:84] Read 46968181 bytes
 I0115 22:47:21.368250  5365 util.hpp:85] Finished reading file
  text=46968181 find_blocks=83 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=30 compact_text=43 comp_text=24143359
 I0115 22:47:26.033202  5365 pcomp_bench.cpp:57] Time for sequential pcomp: 4[s]
 I0115 22:47:26.033221  5365 pcomp_bench.cpp:58] Time for sequential pcomp: 4458[ms]
-RESULT dataset=world_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=429 dir_cut=949 partition=1379 find_pairs=1073 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=277 compact_text=67 comp_text=15521110 time=4458
-I0115 22:47:26.786113  5365 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=429 dir_cut=949 partition=1379 find_pairs=1073 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=277 compact_text=67 comp_text=15521110 time=4458
+I0115 22:47:26.786113  5365 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:26.813017  5365 util.hpp:108] Read 46968181 bytes
 I0115 22:47:26.813038  5365 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:26.853926  5392 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:26.853926  5392 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:27.279101  5392 util.hpp:84] Read 46968181 bytes
 I0115 22:47:27.279116  5392 util.hpp:85] Finished reading file
  text=46968181 find_blocks=61 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=27 compact_text=58 comp_text=24143359
 I0115 22:47:30.505736  5392 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 3[s]
 I0115 22:47:30.505760  5392 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 3024[ms]
-RESULT dataset=world_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=51 undir_cut=448 dir_cut=411 partition=860 find_pairs=394 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=86 compact_text=71 comp_text=15521110 time=3024
-I0115 22:47:31.258602  5392 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=51 undir_cut=448 dir_cut=411 partition=860 find_pairs=394 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=86 compact_text=71 comp_text=15521110 time=3024
+I0115 22:47:31.258602  5392 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:31.286689  5392 util.hpp:108] Read 46968181 bytes
 I0115 22:47:31.286703  5392 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:31.327203  5410 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:31.327203  5410 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:31.740747  5410 util.hpp:84] Read 46968181 bytes
 I0115 22:47:31.740762  5410 util.hpp:85] Finished reading file
  text=46968181 find_blocks=82 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=30 compact_text=43 comp_text=24143359
 I0115 22:47:36.402165  5410 pcomp_bench.cpp:57] Time for sequential pcomp: 4[s]
 I0115 22:47:36.402185  5410 pcomp_bench.cpp:58] Time for sequential pcomp: 4457[ms]
-RESULT dataset=world_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=428 dir_cut=946 partition=1375 find_pairs=1072 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=278 compact_text=67 comp_text=15521110 time=4457
-I0115 22:47:37.154333  5410 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=428 dir_cut=946 partition=1375 find_pairs=1072 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=278 compact_text=67 comp_text=15521110 time=4457
+I0115 22:47:37.154333  5410 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:37.180904  5410 util.hpp:108] Read 46968181 bytes
 I0115 22:47:37.180920  5410 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:37.220970  5419 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:37.220970  5419 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:37.635135  5419 util.hpp:84] Read 46968181 bytes
 I0115 22:47:37.635149  5419 util.hpp:85] Finished reading file
  text=46968181 find_blocks=59 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=59 comp_text=24143359
 I0115 22:47:40.837095  5419 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 3[s]
 I0115 22:47:40.837113  5419 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 3008[ms]
-RESULT dataset=world_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=50 undir_cut=445 dir_cut=394 partition=840 find_pairs=394 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=86 compact_text=71 comp_text=15521110 time=3008
-I0115 22:47:41.590359  5419 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=50 undir_cut=445 dir_cut=394 partition=840 find_pairs=394 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=86 compact_text=71 comp_text=15521110 time=3008
+I0115 22:47:41.590359  5419 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:41.617633  5419 util.hpp:108] Read 46968181 bytes
 I0115 22:47:41.617651  5419 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:41.657992  5438 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:41.657992  5438 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:42.072456  5438 util.hpp:84] Read 46968181 bytes
 I0115 22:47:42.072473  5438 util.hpp:85] Finished reading file
  text=46968181 find_blocks=82 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=30 compact_text=44 comp_text=24143359
 I0115 22:47:46.736037  5438 pcomp_bench.cpp:57] Time for sequential pcomp: 4[s]
 I0115 22:47:46.736055  5438 pcomp_bench.cpp:58] Time for sequential pcomp: 4458[ms]
-RESULT dataset=world_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=428 dir_cut=949 partition=1378 find_pairs=1071 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=278 compact_text=67 comp_text=15521110 time=4458
-I0115 22:47:47.488584  5438 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=sequential_pcomp text=24143359 alphabet=273 multiset=89 undir_cut=428 dir_cut=949 partition=1378 find_pairs=1071 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=278 compact_text=67 comp_text=15521110 time=4458
+I0115 22:47:47.488584  5438 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:47.515825  5438 util.hpp:108] Read 46968181 bytes
 I0115 22:47:47.515843  5438 util.hpp:109] Finished reading file
 PComp Correct
-I0115 22:47:47.555521  5461 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 22:47:47.555521  5461 util.hpp:61] Reading file: ../../data/world\_leaders
 I0115 22:47:47.970023  5461 util.hpp:84] Read 46968181 bytes
 I0115 22:47:47.970039  5461 util.hpp:85] Finished reading file
  text=46968181 find_blocks=58 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=58 comp_text=24143359
 I0115 22:47:51.184271  5461 parallel_pcomp_bench.cpp:57] Time for parallel pcomp: 3[s]
 I0115 22:47:51.184291  5461 parallel_pcomp_bench.cpp:58] Time for parallel pcomp: 3023[ms]
-RESULT dataset=world_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=53 undir_cut=447 dir_cut=398 partition=845 find_pairs=409 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=83 compact_text=71 comp_text=15521110 time=3023
-I0115 22:47:51.938103  5461 util.hpp:94] Reading file: ../../data/world_leaders
+RESULT dataset=world\_leaders algo=parallel_pcomp text=24143359 alphabet=273 multiset=53 undir_cut=447 dir_cut=398 partition=845 find_pairs=409 copy_pairs=0 sort=0 elements=1129 hits=8622249 pair_rules=0 replace_pairs=83 compact_text=71 comp_text=15521110 time=3023
+I0115 22:47:51.938103  5461 util.hpp:94] Reading file: ../../data/world\_leaders
 I0115 22:47:51.965553  5461 util.hpp:108] Read 46968181 bytes
 I0115 22:47:51.965576  5461 util.hpp:109] Finished reading file
 PComp Correct
