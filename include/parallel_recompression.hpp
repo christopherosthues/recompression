@@ -338,33 +338,17 @@ class recompression {
      * @param text The text
      * @param multiset The multiset
      */
-    inline void compute_multiset(const text_t& text, multiset_t& multiset/*, std::unordered_map<variable_t, size_t >& hist*/) {
+    inline void compute_multiset(const text_t& text, multiset_t& multiset) {
 //        std::cout << "multiset" << std::endl;
         const auto startTime = std::chrono::system_clock::now();
 
-#pragma omp parallel num_threads(THREAD_COUNT)
-        {
-////            auto thread_id = omp_get_thread_num();
-////            auto n_threads = static_cast<size_t>(omp_get_num_threads());
-//            std::unordered_map<variable_t, size_t> t_hist;
-
-#pragma omp for schedule(static)// nowait
-            for (size_t i = 0; i < multiset.size(); ++i) {
-                if (text[i] > text[i + 1]) {
-                    multiset[i] = std::make_tuple(text[i], text[i + 1], false);
-//                    t_hist[text[i]]++;
-                } else {
-                    multiset[i] = std::make_tuple(text[i + 1], text[i], true);
-//                    t_hist[text[i + 1]]++;
-                }
+#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
+        for (size_t i = 0; i < multiset.size(); ++i) {
+            if (text[i] > text[i + 1]) {
+                multiset[i] = std::make_tuple(text[i], text[i + 1], false);
+            } else {
+                multiset[i] = std::make_tuple(text[i + 1], text[i], true);
             }
-
-//#pragma omp critical
-//            {
-//                for (const auto& t_h : t_hist) {
-//                    hist[t_h.first] += t_h.second;
-//                }
-//            }
         }
 
 
@@ -383,42 +367,41 @@ class recompression {
      * @param alphabet
      * @param partition
      */
-    inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet, partition_t& partition/*, std::vector<std::pair<variable_t, size_t>>& starts*/) {
+    inline void compute_partition(const multiset_t& multiset, const alphabet_t& alphabet, partition_t& partition) {
 //        std::cout << "partition" << std::endl;
         const auto startTime = std::chrono::system_clock::now();
 
 //        DLOG(INFO) << util::text_vector_to_string(alphabet);
-        // TODO(Chris): have to wait for those symbols which are not yet assigned to a partition -> if first letter
-        // is assigned to a partition all entries in the multiset that depend on this symbol can compute a partial
-        // result and must wait for the next symbol that is not assigned to a partition -> locks only on symbols that
-        // are not fully processed
 
         std::unordered_map<variable_t, size_t> mapping;
         std::unordered_map<variable_t, bool> locks;
-#pragma omp parallel for
+#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
         for (size_t i = 0; i < alphabet.size(); ++i) {
-            mapping[alphabet[i]] = i;
-            locks[alphabet[i]] = false;
+#pragma omp critical
+            {
+                mapping[alphabet[i]] = i;
+                locks[alphabet[i]] = false;
+            }
         }
 
-        std::cout << "Locks: " << std::endl;
-        for (const auto& lock : locks) {
-            std::cout << lock.first << ", " << lock.second << std::endl;
-        }
+//        std::cout << "Locks: " << std::endl;
+//        for (const auto& lock : locks) {
+//            std::cout << lock.first << ", " << lock.second << std::endl;
+//        }
 
-        std::cout << std::endl;
+//        std::cout << std::endl;
         // TODO(Chris): parallelize histgram
         std::vector<size_t> hist(alphabet.size() + 1, 0);
         for (size_t i = 0; i < multiset.size(); ++i) {
-            std::cout << std::get<0>(multiset[i]) << " ";
+//            std::cout << std::get<0>(multiset[i]) << " ";
             hist[mapping[std::get<0>(multiset[i])]]++;
         }
-        std::cout << std::endl;
-
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            std::cout << std::get<1>(multiset[i]) << " ";
-        }
-        std::cout << std::endl;
+//        std::cout << std::endl;
+//
+//        for (size_t i = 0; i < multiset.size(); ++i) {
+//            std::cout << std::get<1>(multiset[i]) << " ";
+//        }
+//        std::cout << std::endl;
 
         std::vector<size_t> starts;
         starts.push_back(0);
@@ -429,18 +412,18 @@ class recompression {
             }
         }
 
-        std::cout << "starts: " << starts[0] << ", ";
+//        std::cout << "starts: " << starts[0] << ", ";
         for (size_t i = 1; i < starts.size(); ++i) {
-            std::cout << starts[i] << ", ";
+//            std::cout << starts[i] << ", ";
             starts[i] += starts[i - 1];
         }
-        std::cout << std::endl;
-
-        std::cout << "starts: ";
-        for (size_t i = 0; i < starts.size(); ++i) {
-            std::cout << starts[i] << ", ";
-        }
-        std::cout << std::endl;
+//        std::cout << std::endl;
+//
+//        std::cout << "starts: ";
+//        for (size_t i = 0; i < starts.size(); ++i) {
+//            std::cout << starts[i] << ", ";
+//        }
+//        std::cout << std::endl;
 //
 //
 //
@@ -451,29 +434,32 @@ class recompression {
 ////            omp_init_lock(&locks[alphabet[i]]);
 ////        }
 
-        size_t *bounds;
+        std::vector<size_t> bounds;
 #pragma omp parallel num_threads(THREAD_COUNT)
         {
             auto thread_id = omp_get_thread_num();
-            const auto n_threads = static_cast<size_t>(omp_get_num_threads());
+            auto n_threads = static_cast<size_t>(omp_get_num_threads());
 
 #pragma omp barrier
 #pragma omp single
             {
-                bounds = new size_t[n_threads + 1];
-                bounds[0] = 0;
-                std::cout << "bounds: 0, ";
+                bounds.reserve(n_threads + 1);
+                bounds.resize(n_threads + 1, starts.size() - 1);
+
                 size_t step = starts.size() / n_threads;
-                if (starts.size() > n_threads) {
-//                    size_t step
+                if (starts.size() < n_threads) {
+                    step = 1;
+                    n_threads = starts.size();
                 }
                 // TODO(Chris): more threads than elements
+                bounds[0] = 0;
+                std::cout << "bounds: 0, ";
                 for (size_t i = 1; i < n_threads; ++i) {
                     bounds[i] = bounds[i-1] + step;
                     std::cout << bounds[i] << ", ";
                 }
-                bounds[n_threads] = starts.size() - 1;
-                std::cout << bounds[n_threads] << ", " << std::endl;
+//                bounds[n_threads] = starts.size() - 1;
+                std::cout << bounds[omp_get_num_threads()] << ", " << std::endl;
             }
 
             for (size_t i = bounds[thread_id]; i < bounds[thread_id + 1]; ++i) {
@@ -481,7 +467,9 @@ class recompression {
 //                {
 //                    std::cout << "Locking: " << std::get<0>(multiset[starts[i]]) << " by thread " << thread_id << " i: " << i << std::endl;
 //                }
-                locks[std::get<0>(multiset[starts[i]])] = true;
+                auto found = locks.find(std::get<0>(multiset[starts[i]]));
+                (*found).second = !(*found).second;
+//                locks[std::get<0>(multiset[starts[i]])] = true;
 
 //                omp_set_lock(&locks[std::get<0>(multiset[starts[i]])]);
             }
@@ -506,18 +494,36 @@ class recompression {
 //                        std::cout << "Test for: " << std::get<1>(multiset[index]) << " by thread " << thread_id
 //                                  << std::endl;
 //                    }
-                    while (locks[std::get<1>(multiset[index])]);
+                    bool locked = false;
+#pragma omp critical
+                    {
+                        locked = locks[std::get<1>(multiset[index])];
+                    }
+                    while (locked) {
+#pragma omp critical
+                        {
+                            locked = locks[std::get<1>(multiset[index])];
+                        }
+                    };
 //                    while (!omp_test_lock(&locks[std::get<1>(multiset[index])])) {
 //                        std::cout << "Waiting thread: " << thread_id << std::endl;
 //                    }
-                    if (partition[std::get<1>(multiset[index])]) {
+                    bool check = false;
+#pragma omp critical
+                    {
+                        check = partition[std::get<1>(multiset[index])];
+                    }
+                    if (check) {
                         r_count++;
                     } else {
                         l_count++;
                     }
                     index++;
                 }
-                partition[std::get<0>(multiset[index - 1])] = l_count > r_count;
+#pragma omp critical
+                {
+                    partition[std::get<0>(multiset[index - 1])] = l_count > r_count;
+                }
                 l_count = 0;
                 r_count = 0;
 //#pragma omp critical
@@ -525,20 +531,16 @@ class recompression {
 //                    std::cout << "Releasing: " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id
 //                              << std::endl;
 //                }
-                locks[std::get<0>(multiset[index - 1])] = false;
+#pragma omp critical
+                {
+                    locks[std::get<0>(multiset[index - 1])] = false;
+                }
 //                omp_unset_lock(&locks[std::get<0>(multiset[index - 1])]);
             }
 
 #pragma omp barrier
-//            if (thread_id == n_threads - 1) {
-//                partition[alphabet[symbol_index]] = l_count > r_count;
-//            }
-
-//            std::vector<std::pair<variable_t, size_t>>
         }
-        std::cout << "delete bounds" << std::endl;
-        delete[] bounds;
-        std::cout << "bounds deleted" << std::endl;
+//        delete[] bounds;
 
 //        for (size_t i = 0; i < alphabet.size(); ++i) {
 //            omp_destroy_lock(&locks[alphabet[i]]);
@@ -661,7 +663,8 @@ class recompression {
         }
         std::cout << std::endl;
 
-        std::cout << "Text: " << util::text_vector_to_string(text);
+        std::cout << "Text: ";
+        std::cout << util::text_vector_to_string(text);
 
         std::cout << " text=" << text.size() << " alphabet=" << alphabet.size();
 
