@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     
     const auto startTime = std::chrono::system_clock::now();
 
-    std::cout << "RESULT dataset=" << dataset << " algo=parallel_pcomp";
+    std::cout << "RESULT dataset=" << dataset << " algo=parallel_pcomp_part";
     recompression.pcomp(text, rlslp);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
