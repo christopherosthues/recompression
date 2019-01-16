@@ -3,3 +3,5 @@
 !*.tex
 !*.txt
 !radix_sort.pdf
+!benchmark_bcomp.pdf
+!benchmark_pcomp.pdf
