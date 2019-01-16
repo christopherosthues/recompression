@@ -1,0 +1,2000 @@
+I0115 20:45:19.988818 17969 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:20.452759 17969 util.hpp:84] Read 52428800 bytes
+I0115 20:45:20.452774 17969 util.hpp:85] Finished reading file
+I0115 20:45:20.744895 17969 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:45:20.744913 17969 bcomp_bench.cpp:55] Time for sequential bcomp: 292[ms]
+RESULT dataset=dblp.xml.50MB algo=sequential_bcomp text=52428800 find_blocks=110 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=42 compact_text=44 comp_text=51231774 time=292
+I0115 20:45:21.476953 17969 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:21.506599 17969 util.hpp:108] Read 52428800 bytes
+I0115 20:45:21.506618 17969 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:21.552358 17988 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:22.013244 17988 util.hpp:84] Read 52428800 bytes
+I0115 20:45:22.013260 17988 util.hpp:85] Finished reading file
+I0115 20:45:22.259316 17988 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:22.259332 17988 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 246[ms]
+RESULT dataset=dblp.xml.50MB algo=parallel_bcomp text=52428800 find_blocks=85 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=20 compact_text=45 comp_text=51231774 time=246
+I0115 20:45:22.994493 17988 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:23.023922 17988 util.hpp:108] Read 52428800 bytes
+I0115 20:45:23.023941 17988 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:23.070238 17993 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:23.530254 17993 util.hpp:84] Read 52428800 bytes
+I0115 20:45:23.530269 17993 util.hpp:85] Finished reading file
+I0115 20:45:23.821362 17993 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:45:23.821377 17993 bcomp_bench.cpp:55] Time for sequential bcomp: 291[ms]
+RESULT dataset=dblp.xml.50MB algo=sequential_bcomp text=52428800 find_blocks=111 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=42 compact_text=44 comp_text=51231774 time=291
+I0115 20:45:24.552078 17993 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:24.581691 17993 util.hpp:108] Read 52428800 bytes
+I0115 20:45:24.581708 17993 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:24.627333 17998 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:25.090342 17998 util.hpp:84] Read 52428800 bytes
+I0115 20:45:25.090358 17998 util.hpp:85] Finished reading file
+I0115 20:45:25.336477 17998 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:25.336494 17998 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 246[ms]
+RESULT dataset=dblp.xml.50MB algo=parallel_bcomp text=52428800 find_blocks=85 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=21 compact_text=45 comp_text=51231774 time=246
+I0115 20:45:26.069429 17998 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:26.101012 17998 util.hpp:108] Read 52428800 bytes
+I0115 20:45:26.101032 17998 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:26.149214 18003 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:26.610381 18003 util.hpp:84] Read 52428800 bytes
+I0115 20:45:26.610397 18003 util.hpp:85] Finished reading file
+I0115 20:45:26.902560 18003 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:45:26.902577 18003 bcomp_bench.cpp:55] Time for sequential bcomp: 292[ms]
+RESULT dataset=dblp.xml.50MB algo=sequential_bcomp text=52428800 find_blocks=112 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=42 compact_text=44 comp_text=51231774 time=292
+I0115 20:45:27.637116 18003 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:27.669128 18003 util.hpp:108] Read 52428800 bytes
+I0115 20:45:27.669148 18003 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:27.717931 18008 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:28.179807 18008 util.hpp:84] Read 52428800 bytes
+I0115 20:45:28.179822 18008 util.hpp:85] Finished reading file
+I0115 20:45:28.440091 18008 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:28.440109 18008 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 260[ms]
+RESULT dataset=dblp.xml.50MB algo=parallel_bcomp text=52428800 find_blocks=89 copy_blocks=0 sort=10 elements=172 hits=1127332 block_rules=0 replace_blocks=21 compact_text=45 comp_text=51231774 time=260
+I0115 20:45:29.172889 18008 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:29.204229 18008 util.hpp:108] Read 52428800 bytes
+I0115 20:45:29.204247 18008 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:29.252694 18023 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:29.714568 18023 util.hpp:84] Read 52428800 bytes
+I0115 20:45:29.714584 18023 util.hpp:85] Finished reading file
+I0115 20:45:30.007474 18023 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:45:30.007493 18023 bcomp_bench.cpp:55] Time for sequential bcomp: 292[ms]
+RESULT dataset=dblp.xml.50MB algo=sequential_bcomp text=52428800 find_blocks=113 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=42 compact_text=43 comp_text=51231774 time=292
+I0115 20:45:30.772060 18023 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:30.804589 18023 util.hpp:108] Read 52428800 bytes
+I0115 20:45:30.804605 18023 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:30.852620 18027 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:31.314051 18027 util.hpp:84] Read 52428800 bytes
+I0115 20:45:31.314067 18027 util.hpp:85] Finished reading file
+I0115 20:45:31.561914 18027 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:31.561930 18027 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 247[ms]
+RESULT dataset=dblp.xml.50MB algo=parallel_bcomp text=52428800 find_blocks=84 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=21 compact_text=48 comp_text=51231774 time=247
+I0115 20:45:32.294987 18027 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:32.326525 18027 util.hpp:108] Read 52428800 bytes
+I0115 20:45:32.326545 18027 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:32.375393 18034 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:32.836639 18034 util.hpp:84] Read 52428800 bytes
+I0115 20:45:32.836654 18034 util.hpp:85] Finished reading file
+I0115 20:45:33.127823 18034 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:45:33.127840 18034 bcomp_bench.cpp:55] Time for sequential bcomp: 291[ms]
+RESULT dataset=dblp.xml.50MB algo=sequential_bcomp text=52428800 find_blocks=111 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=42 compact_text=44 comp_text=51231774 time=291
+I0115 20:45:33.859675 18034 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:33.888844 18034 util.hpp:108] Read 52428800 bytes
+I0115 20:45:33.888864 18034 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:33.939659 18036 util.hpp:61] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:34.400513 18036 util.hpp:84] Read 52428800 bytes
+I0115 20:45:34.400528 18036 util.hpp:85] Finished reading file
+I0115 20:45:34.652906 18036 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:34.652925 18036 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 252[ms]
+RESULT dataset=dblp.xml.50MB algo=parallel_bcomp text=52428800 find_blocks=91 copy_blocks=0 sort=0 elements=172 hits=1127332 block_rules=0 replace_blocks=21 compact_text=45 comp_text=51231774 time=252
+I0115 20:45:35.384193 18036 util.hpp:94] Reading file: ../../data/dblp.xml.50MB
+I0115 20:45:35.416436 18036 util.hpp:108] Read 52428800 bytes
+I0115 20:45:35.416457 18036 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:35.464787 18043 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:35.926002 18043 util.hpp:84] Read 52428800 bytes
+I0115 20:45:35.926015 18043 util.hpp:85] Finished reading file
+I0115 20:45:37.075244 18043 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:45:37.075263 18043 bcomp_bench.cpp:55] Time for sequential bcomp: 1149[ms]
+RESULT dataset=dna.50MB algo=sequential_bcomp text=52428800 find_blocks=595 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=298 compact_text=181 comp_text=36782123 time=1149
+I0115 20:45:38.058158 18043 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:38.088938 18043 util.hpp:108] Read 52428800 bytes
+I0115 20:45:38.089015 18043 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:38.137557 18057 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:38.598839 18057 util.hpp:84] Read 52428800 bytes
+I0115 20:45:38.598855 18057 util.hpp:85] Finished reading file
+I0115 20:45:39.268589 18057 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:39.268606 18057 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 669[ms]
+RESULT dataset=dna.50MB algo=parallel_bcomp text=52428800 find_blocks=319 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=100 compact_text=174 comp_text=36782123 time=669
+I0115 20:45:40.255187 18057 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:40.288905 18057 util.hpp:108] Read 52428800 bytes
+I0115 20:45:40.288926 18057 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:40.334815 18064 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:40.795845 18064 util.hpp:84] Read 52428800 bytes
+I0115 20:45:40.795859 18064 util.hpp:85] Finished reading file
+I0115 20:45:41.948879 18064 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:45:41.948897 18064 bcomp_bench.cpp:55] Time for sequential bcomp: 1152[ms]
+RESULT dataset=dna.50MB algo=sequential_bcomp text=52428800 find_blocks=596 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=299 compact_text=182 comp_text=36782123 time=1152
+I0115 20:45:42.919642 18064 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:42.953352 18064 util.hpp:108] Read 52428800 bytes
+I0115 20:45:42.953371 18064 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:42.999152 18066 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:43.460130 18066 util.hpp:84] Read 52428800 bytes
+I0115 20:45:43.460144 18066 util.hpp:85] Finished reading file
+I0115 20:45:44.127745 18066 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:44.127765 18066 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 667[ms]
+RESULT dataset=dna.50MB algo=parallel_bcomp text=52428800 find_blocks=321 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=96 compact_text=174 comp_text=36782123 time=667
+I0115 20:45:45.118196 18066 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:45.150490 18066 util.hpp:108] Read 52428800 bytes
+I0115 20:45:45.150512 18066 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:45.197213 18087 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:45.660178 18087 util.hpp:84] Read 52428800 bytes
+I0115 20:45:45.660193 18087 util.hpp:85] Finished reading file
+I0115 20:45:46.808449 18087 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:45:46.808465 18087 bcomp_bench.cpp:55] Time for sequential bcomp: 1148[ms]
+RESULT dataset=dna.50MB algo=sequential_bcomp text=52428800 find_blocks=595 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=297 compact_text=180 comp_text=36782123 time=1148
+I0115 20:45:47.777855 18087 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:47.809103 18087 util.hpp:108] Read 52428800 bytes
+I0115 20:45:47.809144 18087 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:47.856029 18095 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:48.317878 18095 util.hpp:84] Read 52428800 bytes
+I0115 20:45:48.317893 18095 util.hpp:85] Finished reading file
+I0115 20:45:48.991477 18095 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:48.991495 18095 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 673[ms]
+RESULT dataset=dna.50MB algo=parallel_bcomp text=52428800 find_blocks=325 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=101 compact_text=172 comp_text=36782123 time=673
+I0115 20:45:49.978019 18095 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:50.010200 18095 util.hpp:108] Read 52428800 bytes
+I0115 20:45:50.010221 18095 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:50.056988 18100 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:50.518604 18100 util.hpp:84] Read 52428800 bytes
+I0115 20:45:50.518618 18100 util.hpp:85] Finished reading file
+I0115 20:45:51.670038 18100 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:45:51.670058 18100 bcomp_bench.cpp:55] Time for sequential bcomp: 1151[ms]
+RESULT dataset=dna.50MB algo=sequential_bcomp text=52428800 find_blocks=596 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=298 compact_text=182 comp_text=36782123 time=1151
+I0115 20:45:52.642123 18100 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:52.674654 18100 util.hpp:108] Read 52428800 bytes
+I0115 20:45:52.674671 18100 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:52.721385 18115 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:53.188920 18115 util.hpp:84] Read 52428800 bytes
+I0115 20:45:53.188935 18115 util.hpp:85] Finished reading file
+I0115 20:45:53.869261 18115 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:53.869280 18115 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 680[ms]
+RESULT dataset=dna.50MB algo=parallel_bcomp text=52428800 find_blocks=322 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=109 compact_text=172 comp_text=36782123 time=680
+I0115 20:45:54.855774 18115 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:54.888094 18115 util.hpp:108] Read 52428800 bytes
+I0115 20:45:54.888114 18115 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:54.934798 18122 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:55.396200 18122 util.hpp:84] Read 52428800 bytes
+I0115 20:45:55.396215 18122 util.hpp:85] Finished reading file
+I0115 20:45:56.547945 18122 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:45:56.547964 18122 bcomp_bench.cpp:55] Time for sequential bcomp: 1151[ms]
+RESULT dataset=dna.50MB algo=sequential_bcomp text=52428800 find_blocks=595 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=299 compact_text=181 comp_text=36782123 time=1151
+I0115 20:45:57.518281 18122 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:57.547986 18122 util.hpp:108] Read 52428800 bytes
+I0115 20:45:57.548004 18122 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:57.596606 18126 util.hpp:61] Reading file: ../../data/dna.50MB
+I0115 20:45:58.058617 18126 util.hpp:84] Read 52428800 bytes
+I0115 20:45:58.058634 18126 util.hpp:85] Finished reading file
+I0115 20:45:58.734390 18126 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:45:58.734411 18126 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 675[ms]
+RESULT dataset=dna.50MB algo=parallel_bcomp text=52428800 find_blocks=325 copy_blocks=0 sort=0 elements=145 hits=10336208 block_rules=0 replace_blocks=101 compact_text=174 comp_text=36782123 time=675
+I0115 20:45:59.719697 18126 util.hpp:94] Reading file: ../../data/dna.50MB
+I0115 20:45:59.752240 18126 util.hpp:108] Read 52428800 bytes
+I0115 20:45:59.752259 18126 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:45:59.798216 18133 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:00.279379 18133 util.hpp:84] Read 52428800 bytes
+I0115 20:46:00.279393 18133 util.hpp:85] Finished reading file
+I0115 20:46:00.605092 18133 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:00.605108 18133 bcomp_bench.cpp:55] Time for sequential bcomp: 325[ms]
+RESULT dataset=english.50MB algo=sequential_bcomp text=52428800 find_blocks=124 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=61 compact_text=46 comp_text=50949095 time=325
+I0115 20:46:01.340041 18133 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:01.372030 18133 util.hpp:108] Read 52428800 bytes
+I0115 20:46:01.372046 18133 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:01.419929 18152 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:01.881188 18152 util.hpp:84] Read 52428800 bytes
+I0115 20:46:01.881203 18152 util.hpp:85] Finished reading file
+I0115 20:46:02.133821 18152 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:02.133839 18152 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 252[ms]
+RESULT dataset=english.50MB algo=parallel_bcomp text=52428800 find_blocks=87 copy_blocks=0 sort=1 elements=290 hits=1220117 block_rules=0 replace_blocks=23 compact_text=47 comp_text=50949095 time=252
+I0115 20:46:02.870028 18152 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:02.900516 18152 util.hpp:108] Read 52428800 bytes
+I0115 20:46:02.900539 18152 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:02.949292 18157 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:03.411973 18157 util.hpp:84] Read 52428800 bytes
+I0115 20:46:03.411988 18157 util.hpp:85] Finished reading file
+I0115 20:46:03.734705 18157 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:03.734722 18157 bcomp_bench.cpp:55] Time for sequential bcomp: 322[ms]
+RESULT dataset=english.50MB algo=sequential_bcomp text=52428800 find_blocks=123 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=60 compact_text=46 comp_text=50949095 time=322
+I0115 20:46:04.469761 18157 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:04.501438 18157 util.hpp:108] Read 52428800 bytes
+I0115 20:46:04.501459 18157 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:04.549625 18162 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:05.010803 18162 util.hpp:84] Read 52428800 bytes
+I0115 20:46:05.010818 18162 util.hpp:85] Finished reading file
+I0115 20:46:05.265645 18162 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:05.265661 18162 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 254[ms]
+RESULT dataset=english.50MB algo=parallel_bcomp text=52428800 find_blocks=88 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=24 compact_text=48 comp_text=50949095 time=254
+I0115 20:46:06.000547 18162 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:06.031419 18162 util.hpp:108] Read 52428800 bytes
+I0115 20:46:06.031461 18162 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:06.080036 18167 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:06.543175 18167 util.hpp:84] Read 52428800 bytes
+I0115 20:46:06.543190 18167 util.hpp:85] Finished reading file
+I0115 20:46:06.867372 18167 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:06.867388 18167 bcomp_bench.cpp:55] Time for sequential bcomp: 324[ms]
+RESULT dataset=english.50MB algo=sequential_bcomp text=52428800 find_blocks=124 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=60 compact_text=46 comp_text=50949095 time=324
+I0115 20:46:07.605798 18167 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:07.637513 18167 util.hpp:108] Read 52428800 bytes
+I0115 20:46:07.637533 18167 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:07.685283 18172 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:08.147047 18172 util.hpp:84] Read 52428800 bytes
+I0115 20:46:08.147063 18172 util.hpp:85] Finished reading file
+I0115 20:46:08.410442 18172 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:08.410459 18172 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 263[ms]
+RESULT dataset=english.50MB algo=parallel_bcomp text=52428800 find_blocks=94 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=25 compact_text=49 comp_text=50949095 time=263
+I0115 20:46:09.146914 18172 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:09.180996 18172 util.hpp:108] Read 52428800 bytes
+I0115 20:46:09.181013 18172 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:09.228643 18190 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:09.706009 18190 util.hpp:84] Read 52428800 bytes
+I0115 20:46:09.706024 18190 util.hpp:85] Finished reading file
+I0115 20:46:10.033284 18190 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:10.033300 18190 bcomp_bench.cpp:55] Time for sequential bcomp: 327[ms]
+RESULT dataset=english.50MB algo=sequential_bcomp text=52428800 find_blocks=125 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=60 compact_text=48 comp_text=50949095 time=327
+I0115 20:46:10.766579 18190 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:10.797585 18190 util.hpp:108] Read 52428800 bytes
+I0115 20:46:10.797629 18190 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:10.846156 18194 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:11.308857 18194 util.hpp:84] Read 52428800 bytes
+I0115 20:46:11.308871 18194 util.hpp:85] Finished reading file
+I0115 20:46:11.563452 18194 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:11.563467 18194 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 254[ms]
+RESULT dataset=english.50MB algo=parallel_bcomp text=52428800 find_blocks=89 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=24 compact_text=47 comp_text=50949095 time=254
+I0115 20:46:12.322480 18194 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:12.354568 18194 util.hpp:108] Read 52428800 bytes
+I0115 20:46:12.354586 18194 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:12.402973 18201 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:12.864462 18201 util.hpp:84] Read 52428800 bytes
+I0115 20:46:12.864476 18201 util.hpp:85] Finished reading file
+I0115 20:46:13.188709 18201 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:13.188727 18201 bcomp_bench.cpp:55] Time for sequential bcomp: 324[ms]
+RESULT dataset=english.50MB algo=sequential_bcomp text=52428800 find_blocks=125 copy_blocks=0 sort=0 elements=290 hits=1220117 block_rules=0 replace_blocks=60 compact_text=46 comp_text=50949095 time=324
+I0115 20:46:13.923864 18201 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:13.955260 18201 util.hpp:108] Read 52428800 bytes
+I0115 20:46:13.955276 18201 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:14.004000 18203 util.hpp:61] Reading file: ../../data/english.50MB
+I0115 20:46:14.466102 18203 util.hpp:84] Read 52428800 bytes
+I0115 20:46:14.466118 18203 util.hpp:85] Finished reading file
+I0115 20:46:14.722041 18203 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:14.722059 18203 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 255[ms]
+RESULT dataset=english.50MB algo=parallel_bcomp text=52428800 find_blocks=89 copy_blocks=0 sort=1 elements=290 hits=1220117 block_rules=0 replace_blocks=23 compact_text=47 comp_text=50949095 time=255
+I0115 20:46:15.457343 18203 util.hpp:94] Reading file: ../../data/english.50MB
+I0115 20:46:15.489787 18203 util.hpp:108] Read 52428800 bytes
+I0115 20:46:15.489806 18203 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:15.538261 18210 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:16.009958 18210 util.hpp:84] Read 52428800 bytes
+I0115 20:46:16.009974 18210 util.hpp:85] Finished reading file
+I0115 20:46:16.618135 18210 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:16.618154 18210 bcomp_bench.cpp:55] Time for sequential bcomp: 608[ms]
+RESULT dataset=proteins.50MB algo=sequential_bcomp text=52428800 find_blocks=287 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=161 compact_text=68 comp_text=48587766 time=608
+I0115 20:46:17.394822 18210 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:17.424760 18210 util.hpp:108] Read 52428800 bytes
+I0115 20:46:17.424779 18210 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:17.474225 18224 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:17.935127 18224 util.hpp:84] Read 52428800 bytes
+I0115 20:46:17.935143 18224 util.hpp:85] Finished reading file
+I0115 20:46:18.288012 18224 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:18.288027 18224 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 352[ms]
+RESULT dataset=proteins.50MB algo=parallel_bcomp text=52428800 find_blocks=152 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=45 compact_text=64 comp_text=48587766 time=352
+I0115 20:46:19.066282 18224 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:19.098048 18224 util.hpp:108] Read 52428800 bytes
+I0115 20:46:19.098067 18224 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:19.145336 18229 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:19.607482 18229 util.hpp:84] Read 52428800 bytes
+I0115 20:46:19.607497 18229 util.hpp:85] Finished reading file
+I0115 20:46:20.216169 18229 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:20.216187 18229 bcomp_bench.cpp:55] Time for sequential bcomp: 608[ms]
+RESULT dataset=proteins.50MB algo=sequential_bcomp text=52428800 find_blocks=288 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=161 compact_text=68 comp_text=48587766 time=608
+I0115 20:46:20.992511 18229 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:21.023977 18229 util.hpp:108] Read 52428800 bytes
+I0115 20:46:21.023998 18229 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:21.071951 18233 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:21.533874 18233 util.hpp:84] Read 52428800 bytes
+I0115 20:46:21.533890 18233 util.hpp:85] Finished reading file
+I0115 20:46:21.886550 18233 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:21.886567 18233 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 352[ms]
+RESULT dataset=proteins.50MB algo=parallel_bcomp text=52428800 find_blocks=152 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=45 compact_text=65 comp_text=48587766 time=352
+I0115 20:46:22.690279 18233 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:22.722498 18233 util.hpp:108] Read 52428800 bytes
+I0115 20:46:22.722517 18233 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:22.770850 18239 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:23.231981 18239 util.hpp:84] Read 52428800 bytes
+I0115 20:46:23.231997 18239 util.hpp:85] Finished reading file
+I0115 20:46:23.841503 18239 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:23.841521 18239 bcomp_bench.cpp:55] Time for sequential bcomp: 609[ms]
+RESULT dataset=proteins.50MB algo=sequential_bcomp text=52428800 find_blocks=288 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=161 compact_text=68 comp_text=48587766 time=609
+I0115 20:46:24.619163 18239 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:24.650876 18239 util.hpp:108] Read 52428800 bytes
+I0115 20:46:24.650894 18239 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:24.698292 18257 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:25.159437 18257 util.hpp:84] Read 52428800 bytes
+I0115 20:46:25.159452 18257 util.hpp:85] Finished reading file
+I0115 20:46:25.516736 18257 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:25.516753 18257 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 357[ms]
+RESULT dataset=proteins.50MB algo=parallel_bcomp text=52428800 find_blocks=154 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=46 compact_text=65 comp_text=48587766 time=357
+I0115 20:46:26.297093 18257 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:26.329183 18257 util.hpp:108] Read 52428800 bytes
+I0115 20:46:26.329202 18257 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:26.377063 18265 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:26.837839 18265 util.hpp:84] Read 52428800 bytes
+I0115 20:46:26.837853 18265 util.hpp:85] Finished reading file
+I0115 20:46:27.446668 18265 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:27.446688 18265 bcomp_bench.cpp:55] Time for sequential bcomp: 608[ms]
+RESULT dataset=proteins.50MB algo=sequential_bcomp text=52428800 find_blocks=287 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=162 compact_text=68 comp_text=48587766 time=608
+I0115 20:46:28.222517 18265 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:28.254998 18265 util.hpp:108] Read 52428800 bytes
+I0115 20:46:28.255017 18265 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:28.303081 18270 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:28.764678 18270 util.hpp:84] Read 52428800 bytes
+I0115 20:46:28.764693 18270 util.hpp:85] Finished reading file
+I0115 20:46:29.125581 18270 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:29.125599 18270 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 360[ms]
+RESULT dataset=proteins.50MB algo=parallel_bcomp text=52428800 find_blocks=152 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=53 compact_text=64 comp_text=48587766 time=360
+I0115 20:46:29.905755 18270 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:29.937438 18270 util.hpp:108] Read 52428800 bytes
+I0115 20:46:29.937460 18270 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:29.984799 18275 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:30.446430 18275 util.hpp:84] Read 52428800 bytes
+I0115 20:46:30.446445 18275 util.hpp:85] Finished reading file
+I0115 20:46:31.054584 18275 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:31.054602 18275 bcomp_bench.cpp:55] Time for sequential bcomp: 608[ms]
+RESULT dataset=proteins.50MB algo=sequential_bcomp text=52428800 find_blocks=287 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=161 compact_text=68 comp_text=48587766 time=608
+I0115 20:46:31.831801 18275 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:31.864300 18275 util.hpp:108] Read 52428800 bytes
+I0115 20:46:31.864317 18275 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:31.912107 18280 util.hpp:61] Reading file: ../../data/proteins.50MB
+I0115 20:46:32.374084 18280 util.hpp:84] Read 52428800 bytes
+I0115 20:46:32.374099 18280 util.hpp:85] Finished reading file
+I0115 20:46:32.735988 18280 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:32.736006 18280 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 361[ms]
+RESULT dataset=proteins.50MB algo=parallel_bcomp text=52428800 find_blocks=151 copy_blocks=0 sort=0 elements=339 hits=3425881 block_rules=0 replace_blocks=55 compact_text=65 comp_text=48587766 time=361
+I0115 20:46:33.516810 18280 util.hpp:94] Reading file: ../../data/proteins.50MB
+I0115 20:46:33.548104 18280 util.hpp:108] Read 52428800 bytes
+I0115 20:46:33.548122 18280 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:33.594765 18297 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:34.073534 18297 util.hpp:84] Read 52428800 bytes
+I0115 20:46:34.073549 18297 util.hpp:85] Finished reading file
+I0115 20:46:34.512688 18297 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:34.512704 18297 bcomp_bench.cpp:55] Time for sequential bcomp: 439[ms]
+RESULT dataset=sources.50MB algo=sequential_bcomp text=52428800 find_blocks=196 copy_blocks=0 sort=0 elements=781 hits=2273501 block_rules=0 replace_blocks=94 compact_text=60 comp_text=47590449 time=439
+I0115 20:46:35.280956 18297 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:35.312688 18297 util.hpp:108] Read 52428800 bytes
+I0115 20:46:35.312707 18297 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:35.360102 18301 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:35.820603 18301 util.hpp:84] Read 52428800 bytes
+I0115 20:46:35.820618 18301 util.hpp:85] Finished reading file
+I0115 20:46:36.123198 18301 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:36.123212 18301 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 302[ms]
+RESULT dataset=sources.50MB algo=parallel_bcomp text=52428800 find_blocks=119 copy_blocks=0 sort=1 elements=781 hits=2273501 block_rules=0 replace_blocks=35 compact_text=59 comp_text=47590449 time=302
+I0115 20:46:36.895292 18301 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:36.926331 18301 util.hpp:108] Read 52428800 bytes
+I0115 20:46:36.926383 18301 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:36.972800 18306 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:37.434496 18306 util.hpp:84] Read 52428800 bytes
+I0115 20:46:37.434512 18306 util.hpp:85] Finished reading file
+I0115 20:46:37.873661 18306 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:37.873678 18306 bcomp_bench.cpp:55] Time for sequential bcomp: 439[ms]
+RESULT dataset=sources.50MB algo=sequential_bcomp text=52428800 find_blocks=196 copy_blocks=0 sort=0 elements=781 hits=2273501 block_rules=0 replace_blocks=94 compact_text=60 comp_text=47590449 time=439
+I0115 20:46:38.639545 18306 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:38.671258 18306 util.hpp:108] Read 52428800 bytes
+I0115 20:46:38.671275 18306 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:38.718272 18308 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:39.180007 18308 util.hpp:84] Read 52428800 bytes
+I0115 20:46:39.180022 18308 util.hpp:85] Finished reading file
+I0115 20:46:39.489572 18308 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:39.489590 18308 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 309[ms]
+RESULT dataset=sources.50MB algo=parallel_bcomp text=52428800 find_blocks=126 copy_blocks=0 sort=1 elements=781 hits=2273501 block_rules=0 replace_blocks=35 compact_text=59 comp_text=47590449 time=309
+I0115 20:46:40.262084 18308 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:40.294530 18308 util.hpp:108] Read 52428800 bytes
+I0115 20:46:40.294550 18308 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:40.341490 18329 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:40.803012 18329 util.hpp:84] Read 52428800 bytes
+I0115 20:46:40.803027 18329 util.hpp:85] Finished reading file
+I0115 20:46:41.243399 18329 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:41.243417 18329 bcomp_bench.cpp:55] Time for sequential bcomp: 440[ms]
+RESULT dataset=sources.50MB algo=sequential_bcomp text=52428800 find_blocks=196 copy_blocks=0 sort=0 elements=781 hits=2273501 block_rules=0 replace_blocks=95 compact_text=60 comp_text=47590449 time=440
+I0115 20:46:42.009905 18329 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:42.042191 18329 util.hpp:108] Read 52428800 bytes
+I0115 20:46:42.042210 18329 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:42.090035 18334 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:42.552119 18334 util.hpp:84] Read 52428800 bytes
+I0115 20:46:42.552135 18334 util.hpp:85] Finished reading file
+I0115 20:46:42.857283 18334 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:42.857300 18334 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 305[ms]
+RESULT dataset=sources.50MB algo=parallel_bcomp text=52428800 find_blocks=121 copy_blocks=0 sort=1 elements=781 hits=2273501 block_rules=0 replace_blocks=34 compact_text=59 comp_text=47590449 time=305
+I0115 20:46:43.629642 18334 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:43.661140 18334 util.hpp:108] Read 52428800 bytes
+I0115 20:46:43.661159 18334 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:43.708250 18342 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:44.170804 18342 util.hpp:84] Read 52428800 bytes
+I0115 20:46:44.170817 18342 util.hpp:85] Finished reading file
+I0115 20:46:44.610538 18342 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:44.610556 18342 bcomp_bench.cpp:55] Time for sequential bcomp: 439[ms]
+RESULT dataset=sources.50MB algo=sequential_bcomp text=52428800 find_blocks=196 copy_blocks=0 sort=0 elements=781 hits=2273501 block_rules=0 replace_blocks=94 compact_text=60 comp_text=47590449 time=439
+I0115 20:46:45.377069 18342 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:45.408583 18342 util.hpp:108] Read 52428800 bytes
+I0115 20:46:45.408644 18342 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:45.456224 18344 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:45.917253 18344 util.hpp:84] Read 52428800 bytes
+I0115 20:46:45.917268 18344 util.hpp:85] Finished reading file
+I0115 20:46:46.219125 18344 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:46.219143 18344 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 301[ms]
+RESULT dataset=sources.50MB algo=parallel_bcomp text=52428800 find_blocks=118 copy_blocks=0 sort=1 elements=781 hits=2273501 block_rules=0 replace_blocks=34 compact_text=59 comp_text=47590449 time=301
+I0115 20:46:46.989307 18344 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:47.021647 18344 util.hpp:108] Read 52428800 bytes
+I0115 20:46:47.021667 18344 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:47.067996 18349 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:47.529978 18349 util.hpp:84] Read 52428800 bytes
+I0115 20:46:47.529992 18349 util.hpp:85] Finished reading file
+I0115 20:46:47.970861 18349 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 20:46:47.970880 18349 bcomp_bench.cpp:55] Time for sequential bcomp: 440[ms]
+RESULT dataset=sources.50MB algo=sequential_bcomp text=52428800 find_blocks=198 copy_blocks=0 sort=0 elements=781 hits=2273501 block_rules=0 replace_blocks=94 compact_text=60 comp_text=47590449 time=440
+I0115 20:46:48.740831 18349 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:48.772717 18349 util.hpp:108] Read 52428800 bytes
+I0115 20:46:48.772735 18349 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:48.820557 18364 util.hpp:61] Reading file: ../../data/sources.50MB
+I0115 20:46:49.283414 18364 util.hpp:84] Read 52428800 bytes
+I0115 20:46:49.283428 18364 util.hpp:85] Finished reading file
+I0115 20:46:49.595962 18364 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:46:49.595979 18364 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 312[ms]
+RESULT dataset=sources.50MB algo=parallel_bcomp text=52428800 find_blocks=129 copy_blocks=0 sort=1 elements=781 hits=2273501 block_rules=0 replace_blocks=35 compact_text=59 comp_text=47590449 time=312
+I0115 20:46:50.366245 18364 util.hpp:94] Reading file: ../../data/sources.50MB
+I0115 20:46:50.400372 18364 util.hpp:108] Read 52428800 bytes
+I0115 20:46:50.400388 18364 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:50.447598 18371 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:46:52.323465 18371 util.hpp:84] Read 209715200 bytes
+I0115 20:46:52.323482 18371 util.hpp:85] Finished reading file
+I0115 20:46:53.583478 18371 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:46:53.583494 18371 bcomp_bench.cpp:55] Time for sequential bcomp: 1259[ms]
+RESULT dataset=dblp.xml.200MB algo=sequential_bcomp text=209715200 find_blocks=501 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=201 compact_text=192 comp_text=203332254 time=1259
+I0115 20:46:56.536105 18371 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:46:56.655669 18371 util.hpp:108] Read 209715200 bytes
+I0115 20:46:56.655684 18371 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:46:56.822149 18387 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:46:58.655716 18387 util.hpp:84] Read 209715200 bytes
+I0115 20:46:58.655732 18387 util.hpp:85] Finished reading file
+I0115 20:46:59.663239 18387 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:46:59.663256 18387 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1007[ms]
+RESULT dataset=dblp.xml.200MB algo=parallel_bcomp text=209715200 find_blocks=348 copy_blocks=0 sort=1 elements=227 hits=6034880 block_rules=0 replace_blocks=103 compact_text=189 comp_text=203332254 time=1007
+I0115 20:47:02.630038 18387 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:02.747637 18387 util.hpp:108] Read 209715200 bytes
+I0115 20:47:02.747656 18387 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:02.914480 18398 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:04.748754 18398 util.hpp:84] Read 209715200 bytes
+I0115 20:47:04.748769 18398 util.hpp:85] Finished reading file
+I0115 20:47:06.006433 18398 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:47:06.006449 18398 bcomp_bench.cpp:55] Time for sequential bcomp: 1257[ms]
+RESULT dataset=dblp.xml.200MB algo=sequential_bcomp text=209715200 find_blocks=500 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=200 compact_text=192 comp_text=203332254 time=1257
+I0115 20:47:08.970806 18398 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:09.086737 18398 util.hpp:108] Read 209715200 bytes
+I0115 20:47:09.086755 18398 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:09.253662 18422 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:11.085892 18422 util.hpp:84] Read 209715200 bytes
+I0115 20:47:11.085908 18422 util.hpp:85] Finished reading file
+I0115 20:47:12.092047 18422 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:47:12.092064 18422 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1006[ms]
+RESULT dataset=dblp.xml.200MB algo=parallel_bcomp text=209715200 find_blocks=348 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=101 compact_text=191 comp_text=203332254 time=1006
+I0115 20:47:15.052409 18422 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:15.170372 18422 util.hpp:108] Read 209715200 bytes
+I0115 20:47:15.170392 18422 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:15.336527 18447 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:17.168614 18447 util.hpp:84] Read 209715200 bytes
+I0115 20:47:17.168629 18447 util.hpp:85] Finished reading file
+I0115 20:47:18.426535 18447 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:47:18.426553 18447 bcomp_bench.cpp:55] Time for sequential bcomp: 1257[ms]
+RESULT dataset=dblp.xml.200MB algo=sequential_bcomp text=209715200 find_blocks=499 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=201 compact_text=192 comp_text=203332254 time=1257
+I0115 20:47:21.380530 18447 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:21.496361 18447 util.hpp:108] Read 209715200 bytes
+I0115 20:47:21.496379 18447 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:21.663461 18468 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:23.494935 18468 util.hpp:84] Read 209715200 bytes
+I0115 20:47:23.494951 18468 util.hpp:85] Finished reading file
+I0115 20:47:24.504438 18468 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:47:24.504456 18468 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1009[ms]
+RESULT dataset=dblp.xml.200MB algo=parallel_bcomp text=209715200 find_blocks=351 copy_blocks=0 sort=1 elements=227 hits=6034880 block_rules=0 replace_blocks=101 compact_text=191 comp_text=203332254 time=1009
+I0115 20:47:27.478608 18468 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:27.595031 18468 util.hpp:108] Read 209715200 bytes
+I0115 20:47:27.595049 18468 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:27.762881 18479 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:29.598304 18479 util.hpp:84] Read 209715200 bytes
+I0115 20:47:29.598320 18479 util.hpp:85] Finished reading file
+I0115 20:47:30.858448 18479 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:47:30.858465 18479 bcomp_bench.cpp:55] Time for sequential bcomp: 1260[ms]
+RESULT dataset=dblp.xml.200MB algo=sequential_bcomp text=209715200 find_blocks=500 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=201 compact_text=192 comp_text=203332254 time=1260
+I0115 20:47:33.951011 18479 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:34.068018 18479 util.hpp:108] Read 209715200 bytes
+I0115 20:47:34.068037 18479 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:34.235301 18495 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:36.067080 18495 util.hpp:84] Read 209715200 bytes
+I0115 20:47:36.067095 18495 util.hpp:85] Finished reading file
+I0115 20:47:37.074106 18495 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:47:37.074123 18495 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1006[ms]
+RESULT dataset=dblp.xml.200MB algo=parallel_bcomp text=209715200 find_blocks=348 copy_blocks=0 sort=1 elements=227 hits=6034880 block_rules=0 replace_blocks=102 compact_text=191 comp_text=203332254 time=1006
+I0115 20:47:40.035979 18495 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:40.152221 18495 util.hpp:108] Read 209715200 bytes
+I0115 20:47:40.152240 18495 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:40.317942 18516 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:42.303123 18516 util.hpp:84] Read 209715200 bytes
+I0115 20:47:42.303138 18516 util.hpp:85] Finished reading file
+I0115 20:47:43.562088 18516 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:47:43.562104 18516 bcomp_bench.cpp:55] Time for sequential bcomp: 1258[ms]
+RESULT dataset=dblp.xml.200MB algo=sequential_bcomp text=209715200 find_blocks=501 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=200 compact_text=192 comp_text=203332254 time=1258
+I0115 20:47:46.515738 18516 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:46.632133 18516 util.hpp:108] Read 209715200 bytes
+I0115 20:47:46.632151 18516 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:46.799741 18537 util.hpp:61] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:48.653106 18537 util.hpp:84] Read 209715200 bytes
+I0115 20:47:48.653121 18537 util.hpp:85] Finished reading file
+I0115 20:47:49.664028 18537 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:47:49.664046 18537 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1010[ms]
+RESULT dataset=dblp.xml.200MB algo=parallel_bcomp text=209715200 find_blocks=352 copy_blocks=0 sort=0 elements=227 hits=6034880 block_rules=0 replace_blocks=101 compact_text=191 comp_text=203332254 time=1010
+I0115 20:47:52.620558 18537 util.hpp:94] Reading file: ../../data/dblp.xml.200MB
+I0115 20:47:52.736510 18537 util.hpp:108] Read 209715200 bytes
+I0115 20:47:52.736529 18537 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:47:52.902426 18558 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:47:54.776226 18558 util.hpp:84] Read 209715200 bytes
+I0115 20:47:54.776242 18558 util.hpp:85] Finished reading file
+I0115 20:47:59.435432 18558 bcomp_bench.cpp:54] Time for sequential bcomp: 4[s]
+I0115 20:47:59.435452 18558 bcomp_bench.cpp:55] Time for sequential bcomp: 4659[ms]
+RESULT dataset=dna.200MB algo=sequential_bcomp text=209715200 find_blocks=2381 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=1265 compact_text=727 comp_text=146748050 time=4659
+I0115 20:48:03.318560 18558 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:48:03.436290 18558 util.hpp:108] Read 209715200 bytes
+I0115 20:48:03.436307 18558 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:48:03.596170 18587 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:48:05.430130 18587 util.hpp:84] Read 209715200 bytes
+I0115 20:48:05.430146 18587 util.hpp:85] Finished reading file
+I0115 20:48:08.096446 18587 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 20:48:08.096467 18587 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2666[ms]
+RESULT dataset=dna.200MB algo=parallel_bcomp text=209715200 find_blocks=1263 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=415 compact_text=700 comp_text=146748050 time=2666
+I0115 20:48:12.041260 18587 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:48:12.157655 18587 util.hpp:108] Read 209715200 bytes
+I0115 20:48:12.157675 18587 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:48:12.318447 18609 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:48:15.668443 18609 util.hpp:84] Read 209715200 bytes
+I0115 20:48:15.668459 18609 util.hpp:85] Finished reading file
+I0115 20:48:20.333837 18609 bcomp_bench.cpp:54] Time for sequential bcomp: 4[s]
+I0115 20:48:20.333858 18609 bcomp_bench.cpp:55] Time for sequential bcomp: 4665[ms]
+RESULT dataset=dna.200MB algo=sequential_bcomp text=209715200 find_blocks=2381 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=1266 compact_text=731 comp_text=146748050 time=4665
+I0115 20:48:24.215029 18609 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:48:24.331463 18609 util.hpp:108] Read 209715200 bytes
+I0115 20:48:24.331480 18609 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:48:24.492310 18646 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:48:26.328728 18646 util.hpp:84] Read 209715200 bytes
+I0115 20:48:26.328744 18646 util.hpp:85] Finished reading file
+I0115 20:48:29.001946 18646 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 20:48:29.001967 18646 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2673[ms]
+RESULT dataset=dna.200MB algo=parallel_bcomp text=209715200 find_blocks=1261 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=424 compact_text=699 comp_text=146748050 time=2673
+I0115 20:48:32.950340 18646 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:48:33.066773 18646 util.hpp:108] Read 209715200 bytes
+I0115 20:48:33.066793 18646 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:48:33.228271 18670 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:48:35.060968 18670 util.hpp:84] Read 209715200 bytes
+I0115 20:48:35.060984 18670 util.hpp:85] Finished reading file
+I0115 20:48:39.718789 18670 bcomp_bench.cpp:54] Time for sequential bcomp: 4[s]
+I0115 20:48:39.718809 18670 bcomp_bench.cpp:55] Time for sequential bcomp: 4657[ms]
+RESULT dataset=dna.200MB algo=sequential_bcomp text=209715200 find_blocks=2378 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=1264 compact_text=729 comp_text=146748050 time=4657
+I0115 20:48:43.601516 18670 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:48:43.717738 18670 util.hpp:108] Read 209715200 bytes
+I0115 20:48:43.717757 18670 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:48:43.878645 18698 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:48:45.709357 18698 util.hpp:84] Read 209715200 bytes
+I0115 20:48:45.709372 18698 util.hpp:85] Finished reading file
+I0115 20:48:48.368194 18698 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 20:48:48.368214 18698 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2658[ms]
+RESULT dataset=dna.200MB algo=parallel_bcomp text=209715200 find_blocks=1263 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=409 compact_text=697 comp_text=146748050 time=2658
+I0115 20:48:52.319785 18698 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:48:52.435426 18698 util.hpp:108] Read 209715200 bytes
+I0115 20:48:52.435446 18698 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:48:52.595979 18720 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:48:54.428691 18720 util.hpp:84] Read 209715200 bytes
+I0115 20:48:54.428706 18720 util.hpp:85] Finished reading file
+I0115 20:48:59.084395 18720 bcomp_bench.cpp:54] Time for sequential bcomp: 4[s]
+I0115 20:48:59.084414 18720 bcomp_bench.cpp:55] Time for sequential bcomp: 4655[ms]
+RESULT dataset=dna.200MB algo=sequential_bcomp text=209715200 find_blocks=2381 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=1263 compact_text=725 comp_text=146748050 time=4655
+I0115 20:49:02.973696 18720 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:49:03.089887 18720 util.hpp:108] Read 209715200 bytes
+I0115 20:49:03.089908 18720 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:03.249526 18738 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:49:05.084374 18738 util.hpp:84] Read 209715200 bytes
+I0115 20:49:05.084390 18738 util.hpp:85] Finished reading file
+I0115 20:49:07.752187 18738 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 20:49:07.752207 18738 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2667[ms]
+RESULT dataset=dna.200MB algo=parallel_bcomp text=209715200 find_blocks=1269 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=410 compact_text=699 comp_text=146748050 time=2667
+I0115 20:49:11.697593 18738 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:49:11.814009 18738 util.hpp:108] Read 209715200 bytes
+I0115 20:49:11.814029 18738 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:11.975580 18768 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:49:13.810091 18768 util.hpp:84] Read 209715200 bytes
+I0115 20:49:13.810106 18768 util.hpp:85] Finished reading file
+I0115 20:49:18.473232 18768 bcomp_bench.cpp:54] Time for sequential bcomp: 4[s]
+I0115 20:49:18.473253 18768 bcomp_bench.cpp:55] Time for sequential bcomp: 4663[ms]
+RESULT dataset=dna.200MB algo=sequential_bcomp text=209715200 find_blocks=2379 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=1266 compact_text=731 comp_text=146748050 time=4663
+I0115 20:49:22.358031 18768 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:49:22.474160 18768 util.hpp:108] Read 209715200 bytes
+I0115 20:49:22.474179 18768 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:22.634457 18806 util.hpp:61] Reading file: ../../data/dna.200MB
+I0115 20:49:24.469821 18806 util.hpp:84] Read 209715200 bytes
+I0115 20:49:24.469838 18806 util.hpp:85] Finished reading file
+I0115 20:49:27.128459 18806 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 20:49:27.128479 18806 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2658[ms]
+RESULT dataset=dna.200MB algo=parallel_bcomp text=209715200 find_blocks=1262 copy_blocks=0 sort=0 elements=186 hits=41343110 block_rules=0 replace_blocks=412 compact_text=696 comp_text=146748050 time=2658
+I0115 20:49:31.094547 18806 util.hpp:94] Reading file: ../../data/dna.200MB
+I0115 20:49:31.210505 18806 util.hpp:108] Read 209715200 bytes
+I0115 20:49:31.210525 18806 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:31.371371 18831 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:49:33.261154 18831 util.hpp:84] Read 209715200 bytes
+I0115 20:49:33.261169 18831 util.hpp:85] Finished reading file
+I0115 20:49:34.589169 18831 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:49:34.589184 18831 bcomp_bench.cpp:55] Time for sequential bcomp: 1327[ms]
+RESULT dataset=english.200MB algo=sequential_bcomp text=209715200 find_blocks=508 copy_blocks=0 sort=0 elements=477 hits=4989863 block_rules=0 replace_blocks=262 compact_text=192 comp_text=203637947 time=1327
+I0115 20:49:37.527550 18831 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:49:37.645318 18831 util.hpp:108] Read 209715200 bytes
+I0115 20:49:37.645334 18831 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:37.811573 18847 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:49:39.798648 18847 util.hpp:84] Read 209715200 bytes
+I0115 20:49:39.798662 18847 util.hpp:85] Finished reading file
+I0115 20:49:40.795712 18847 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:49:40.795728 18847 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 997[ms]
+RESULT dataset=english.200MB algo=parallel_bcomp text=209715200 find_blocks=339 copy_blocks=0 sort=1 elements=477 hits=4989863 block_rules=0 replace_blocks=98 compact_text=193 comp_text=203637947 time=997
+I0115 20:49:43.745437 18847 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:49:43.861871 18847 util.hpp:108] Read 209715200 bytes
+I0115 20:49:43.861888 18847 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:44.030010 18856 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:49:45.865449 18856 util.hpp:84] Read 209715200 bytes
+I0115 20:49:45.865463 18856 util.hpp:85] Finished reading file
+I0115 20:49:47.194914 18856 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:49:47.194933 18856 bcomp_bench.cpp:55] Time for sequential bcomp: 1329[ms]
+RESULT dataset=english.200MB algo=sequential_bcomp text=209715200 find_blocks=509 copy_blocks=0 sort=0 elements=477 hits=4989863 block_rules=0 replace_blocks=262 compact_text=192 comp_text=203637947 time=1329
+I0115 20:49:50.132833 18856 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:49:50.249008 18856 util.hpp:108] Read 209715200 bytes
+I0115 20:49:50.249027 18856 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:50.414625 18878 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:49:52.248503 18878 util.hpp:84] Read 209715200 bytes
+I0115 20:49:52.248520 18878 util.hpp:85] Finished reading file
+I0115 20:49:53.246594 18878 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:49:53.246611 18878 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 998[ms]
+RESULT dataset=english.200MB algo=parallel_bcomp text=209715200 find_blocks=340 copy_blocks=0 sort=1 elements=477 hits=4989863 block_rules=0 replace_blocks=96 compact_text=193 comp_text=203637947 time=998
+I0115 20:49:56.189442 18878 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:49:56.305960 18878 util.hpp:108] Read 209715200 bytes
+I0115 20:49:56.305979 18878 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:49:56.472193 18900 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:49:58.302045 18900 util.hpp:84] Read 209715200 bytes
+I0115 20:49:58.302059 18900 util.hpp:85] Finished reading file
+I0115 20:49:59.630981 18900 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:49:59.630998 18900 bcomp_bench.cpp:55] Time for sequential bcomp: 1328[ms]
+RESULT dataset=english.200MB algo=sequential_bcomp text=209715200 find_blocks=508 copy_blocks=0 sort=0 elements=477 hits=4989863 block_rules=0 replace_blocks=262 compact_text=192 comp_text=203637947 time=1328
+I0115 20:50:02.576807 18900 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:50:02.692636 18900 util.hpp:108] Read 209715200 bytes
+I0115 20:50:02.692654 18900 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:02.859050 18921 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:50:04.693138 18921 util.hpp:84] Read 209715200 bytes
+I0115 20:50:04.693153 18921 util.hpp:85] Finished reading file
+I0115 20:50:05.689246 18921 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:50:05.689265 18921 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 996[ms]
+RESULT dataset=english.200MB algo=parallel_bcomp text=209715200 find_blocks=338 copy_blocks=0 sort=1 elements=477 hits=4989863 block_rules=0 replace_blocks=98 compact_text=193 comp_text=203637947 time=996
+I0115 20:50:08.718791 18921 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:50:08.834949 18921 util.hpp:108] Read 209715200 bytes
+I0115 20:50:08.834967 18921 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:09.002857 18943 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:50:10.835692 18943 util.hpp:84] Read 209715200 bytes
+I0115 20:50:10.835708 18943 util.hpp:85] Finished reading file
+I0115 20:50:12.165287 18943 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:50:12.165303 18943 bcomp_bench.cpp:55] Time for sequential bcomp: 1329[ms]
+RESULT dataset=english.200MB algo=sequential_bcomp text=209715200 find_blocks=509 copy_blocks=0 sort=0 elements=477 hits=4989863 block_rules=0 replace_blocks=262 compact_text=192 comp_text=203637947 time=1329
+I0115 20:50:15.105334 18943 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:50:15.221536 18943 util.hpp:108] Read 209715200 bytes
+I0115 20:50:15.221556 18943 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:15.388092 18951 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:50:17.222196 18951 util.hpp:84] Read 209715200 bytes
+I0115 20:50:17.222213 18951 util.hpp:85] Finished reading file
+I0115 20:50:18.219458 18951 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:50:18.219475 18951 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 997[ms]
+RESULT dataset=english.200MB algo=parallel_bcomp text=209715200 find_blocks=339 copy_blocks=0 sort=1 elements=477 hits=4989863 block_rules=0 replace_blocks=98 compact_text=193 comp_text=203637947 time=997
+I0115 20:50:21.160331 18951 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:50:21.275794 18951 util.hpp:108] Read 209715200 bytes
+I0115 20:50:21.275813 18951 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:21.442371 18970 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:50:23.297274 18970 util.hpp:84] Read 209715200 bytes
+I0115 20:50:23.297289 18970 util.hpp:85] Finished reading file
+I0115 20:50:24.627789 18970 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:50:24.627806 18970 bcomp_bench.cpp:55] Time for sequential bcomp: 1330[ms]
+RESULT dataset=english.200MB algo=sequential_bcomp text=209715200 find_blocks=509 copy_blocks=0 sort=0 elements=477 hits=4989863 block_rules=0 replace_blocks=262 compact_text=192 comp_text=203637947 time=1330
+I0115 20:50:27.566304 18970 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:50:27.682606 18970 util.hpp:108] Read 209715200 bytes
+I0115 20:50:27.682626 18970 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:27.850517 18997 util.hpp:61] Reading file: ../../data/english.200MB
+I0115 20:50:29.738123 18997 util.hpp:84] Read 209715200 bytes
+I0115 20:50:29.738140 18997 util.hpp:85] Finished reading file
+I0115 20:50:30.731078 18997 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 20:50:30.731094 18997 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 992[ms]
+RESULT dataset=english.200MB algo=parallel_bcomp text=209715200 find_blocks=335 copy_blocks=0 sort=1 elements=477 hits=4989863 block_rules=0 replace_blocks=98 compact_text=193 comp_text=203637947 time=992
+I0115 20:50:33.689469 18997 util.hpp:94] Reading file: ../../data/english.200MB
+I0115 20:50:33.805327 18997 util.hpp:108] Read 209715200 bytes
+I0115 20:50:33.805346 18997 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:33.971987 19017 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:50:35.847762 19017 util.hpp:84] Read 209715200 bytes
+I0115 20:50:35.847779 19017 util.hpp:85] Finished reading file
+I0115 20:50:38.506846 19017 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:50:38.506863 19017 bcomp_bench.cpp:55] Time for sequential bcomp: 2659[ms]
+RESULT dataset=proteins.200MB algo=sequential_bcomp text=209715200 find_blocks=1240 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=782 compact_text=284 comp_text=193395416 time=2659
+I0115 20:50:41.627815 19017 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:50:41.745579 19017 util.hpp:108] Read 209715200 bytes
+I0115 20:50:41.745596 19017 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:41.910148 19040 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:50:43.744102 19040 util.hpp:84] Read 209715200 bytes
+I0115 20:50:43.744118 19040 util.hpp:85] Finished reading file
+I0115 20:50:45.265362 19040 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:50:45.265380 19040 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1521[ms]
+RESULT dataset=proteins.200MB algo=parallel_bcomp text=209715200 find_blocks=651 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=250 compact_text=267 comp_text=193395416 time=1521
+I0115 20:50:48.397848 19040 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:50:48.513821 19040 util.hpp:108] Read 209715200 bytes
+I0115 20:50:48.513839 19040 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:48.680099 19063 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:50:50.513044 19063 util.hpp:84] Read 209715200 bytes
+I0115 20:50:50.513061 19063 util.hpp:85] Finished reading file
+I0115 20:50:53.171002 19063 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:50:53.171021 19063 bcomp_bench.cpp:55] Time for sequential bcomp: 2657[ms]
+RESULT dataset=proteins.200MB algo=sequential_bcomp text=209715200 find_blocks=1239 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=782 compact_text=284 comp_text=193395416 time=2657
+I0115 20:50:56.288918 19063 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:50:56.405186 19063 util.hpp:108] Read 209715200 bytes
+I0115 20:50:56.405205 19063 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:50:56.569144 19081 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:50:58.401314 19081 util.hpp:84] Read 209715200 bytes
+I0115 20:50:58.401329 19081 util.hpp:85] Finished reading file
+I0115 20:50:59.913777 19081 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:50:59.913795 19081 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1512[ms]
+RESULT dataset=proteins.200MB algo=parallel_bcomp text=209715200 find_blocks=645 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=248 compact_text=266 comp_text=193395416 time=1512
+I0115 20:51:03.054018 19081 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:03.170076 19081 util.hpp:108] Read 209715200 bytes
+I0115 20:51:03.170096 19081 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:03.335136 19092 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:51:05.168153 19092 util.hpp:84] Read 209715200 bytes
+I0115 20:51:05.168169 19092 util.hpp:85] Finished reading file
+I0115 20:51:07.826651 19092 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:51:07.826669 19092 bcomp_bench.cpp:55] Time for sequential bcomp: 2658[ms]
+RESULT dataset=proteins.200MB algo=sequential_bcomp text=209715200 find_blocks=1240 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=782 compact_text=284 comp_text=193395416 time=2658
+I0115 20:51:10.940632 19092 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:11.056751 19092 util.hpp:108] Read 209715200 bytes
+I0115 20:51:11.056771 19092 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:11.220661 19114 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:51:13.055816 19114 util.hpp:84] Read 209715200 bytes
+I0115 20:51:13.055832 19114 util.hpp:85] Finished reading file
+I0115 20:51:14.573101 19114 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:51:14.573118 19114 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1517[ms]
+RESULT dataset=proteins.200MB algo=parallel_bcomp text=209715200 find_blocks=653 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=244 compact_text=266 comp_text=193395416 time=1517
+I0115 20:51:17.715939 19114 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:17.832114 19114 util.hpp:108] Read 209715200 bytes
+I0115 20:51:17.832134 19114 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:17.997323 19136 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:51:19.830597 19136 util.hpp:84] Read 209715200 bytes
+I0115 20:51:19.830612 19136 util.hpp:85] Finished reading file
+I0115 20:51:22.491328 19136 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:51:22.491344 19136 bcomp_bench.cpp:55] Time for sequential bcomp: 2660[ms]
+RESULT dataset=proteins.200MB algo=sequential_bcomp text=209715200 find_blocks=1241 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=782 compact_text=285 comp_text=193395416 time=2660
+I0115 20:51:25.608276 19136 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:25.724700 19136 util.hpp:108] Read 209715200 bytes
+I0115 20:51:25.724719 19136 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:25.888804 19160 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:51:27.721508 19160 util.hpp:84] Read 209715200 bytes
+I0115 20:51:27.721524 19160 util.hpp:85] Finished reading file
+I0115 20:51:29.240355 19160 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:51:29.240372 19160 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1518[ms]
+RESULT dataset=proteins.200MB algo=parallel_bcomp text=209715200 find_blocks=654 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=246 compact_text=265 comp_text=193395416 time=1518
+I0115 20:51:32.374562 19160 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:32.490947 19160 util.hpp:108] Read 209715200 bytes
+I0115 20:51:32.490963 19160 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:32.656095 19185 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:51:34.487965 19185 util.hpp:84] Read 209715200 bytes
+I0115 20:51:34.487980 19185 util.hpp:85] Finished reading file
+I0115 20:51:37.144640 19185 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:51:37.144659 19185 bcomp_bench.cpp:55] Time for sequential bcomp: 2656[ms]
+RESULT dataset=proteins.200MB algo=sequential_bcomp text=209715200 find_blocks=1239 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=782 compact_text=283 comp_text=193395416 time=2656
+I0115 20:51:40.264289 19185 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:40.380746 19185 util.hpp:108] Read 209715200 bytes
+I0115 20:51:40.380765 19185 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:40.545486 19203 util.hpp:61] Reading file: ../../data/proteins.200MB
+I0115 20:51:42.378866 19203 util.hpp:84] Read 209715200 bytes
+I0115 20:51:42.378882 19203 util.hpp:85] Finished reading file
+I0115 20:51:43.900009 19203 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:51:43.900028 19203 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1521[ms]
+RESULT dataset=proteins.200MB algo=parallel_bcomp text=209715200 find_blocks=652 copy_blocks=0 sort=0 elements=561 hits=14231864 block_rules=0 replace_blocks=250 compact_text=266 comp_text=193395416 time=1521
+I0115 20:51:47.032115 19203 util.hpp:94] Reading file: ../../data/proteins.200MB
+I0115 20:51:47.147872 19203 util.hpp:108] Read 209715200 bytes
+I0115 20:51:47.147889 19203 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:47.313345 19231 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:51:49.192831 19231 util.hpp:84] Read 209715200 bytes
+I0115 20:51:49.192847 19231 util.hpp:85] Finished reading file
+I0115 20:51:51.251391 19231 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:51:51.251408 19231 bcomp_bench.cpp:55] Time for sequential bcomp: 2058[ms]
+RESULT dataset=sources.200MB algo=sequential_bcomp text=209715200 find_blocks=889 copy_blocks=0 sort=0 elements=1168 hits=9416499 block_rules=0 replace_blocks=575 compact_text=249 comp_text=190364930 time=2058
+I0115 20:51:54.320225 19231 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:51:54.437340 19231 util.hpp:108] Read 209715200 bytes
+I0115 20:51:54.437358 19231 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:51:54.602380 19248 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:51:56.511735 19248 util.hpp:84] Read 209715200 bytes
+I0115 20:51:56.511751 19248 util.hpp:85] Finished reading file
+I0115 20:51:57.796259 19248 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:51:57.796277 19248 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1284[ms]
+RESULT dataset=sources.200MB algo=parallel_bcomp text=209715200 find_blocks=497 copy_blocks=0 sort=1 elements=1168 hits=9416499 block_rules=0 replace_blocks=199 compact_text=243 comp_text=190364930 time=1284
+I0115 20:52:00.892352 19248 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:01.009415 19248 util.hpp:108] Read 209715200 bytes
+I0115 20:52:01.009434 19248 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:01.174360 19271 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:03.010200 19271 util.hpp:84] Read 209715200 bytes
+I0115 20:52:03.010217 19271 util.hpp:85] Finished reading file
+I0115 20:52:05.073365 19271 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:52:05.073385 19271 bcomp_bench.cpp:55] Time for sequential bcomp: 2063[ms]
+RESULT dataset=sources.200MB algo=sequential_bcomp text=209715200 find_blocks=890 copy_blocks=0 sort=0 elements=1168 hits=9416499 block_rules=0 replace_blocks=576 compact_text=251 comp_text=190364930 time=2063
+I0115 20:52:08.146800 19271 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:08.263283 19271 util.hpp:108] Read 209715200 bytes
+I0115 20:52:08.263301 19271 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:08.430162 19292 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:10.261735 19292 util.hpp:84] Read 209715200 bytes
+I0115 20:52:10.261750 19292 util.hpp:85] Finished reading file
+I0115 20:52:11.540797 19292 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:52:11.540817 19292 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1279[ms]
+RESULT dataset=sources.200MB algo=parallel_bcomp text=209715200 find_blocks=489 copy_blocks=0 sort=1 elements=1168 hits=9416499 block_rules=0 replace_blocks=200 compact_text=242 comp_text=190364930 time=1279
+I0115 20:52:14.636548 19292 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:14.752840 19292 util.hpp:108] Read 209715200 bytes
+I0115 20:52:14.752858 19292 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:14.918141 19301 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:16.751359 19301 util.hpp:84] Read 209715200 bytes
+I0115 20:52:16.751374 19301 util.hpp:85] Finished reading file
+I0115 20:52:18.813287 19301 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:52:18.813305 19301 bcomp_bench.cpp:55] Time for sequential bcomp: 2061[ms]
+RESULT dataset=sources.200MB algo=sequential_bcomp text=209715200 find_blocks=890 copy_blocks=0 sort=0 elements=1168 hits=9416499 block_rules=0 replace_blocks=576 compact_text=250 comp_text=190364930 time=2061
+I0115 20:52:21.882796 19301 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:21.999168 19301 util.hpp:108] Read 209715200 bytes
+I0115 20:52:21.999188 19301 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:22.163990 19319 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:23.998072 19319 util.hpp:84] Read 209715200 bytes
+I0115 20:52:23.998087 19319 util.hpp:85] Finished reading file
+I0115 20:52:25.276844 19319 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:52:25.276861 19319 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1278[ms]
+RESULT dataset=sources.200MB algo=parallel_bcomp text=209715200 find_blocks=491 copy_blocks=0 sort=1 elements=1168 hits=9416499 block_rules=0 replace_blocks=198 compact_text=242 comp_text=190364930 time=1278
+I0115 20:52:28.358533 19319 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:28.475659 19319 util.hpp:108] Read 209715200 bytes
+I0115 20:52:28.475677 19319 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:28.643903 19347 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:30.476104 19347 util.hpp:84] Read 209715200 bytes
+I0115 20:52:30.476119 19347 util.hpp:85] Finished reading file
+I0115 20:52:32.538967 19347 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:52:32.538985 19347 bcomp_bench.cpp:55] Time for sequential bcomp: 2062[ms]
+RESULT dataset=sources.200MB algo=sequential_bcomp text=209715200 find_blocks=889 copy_blocks=0 sort=0 elements=1168 hits=9416499 block_rules=0 replace_blocks=577 compact_text=250 comp_text=190364930 time=2062
+I0115 20:52:35.607573 19347 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:35.724447 19347 util.hpp:108] Read 209715200 bytes
+I0115 20:52:35.724465 19347 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:35.889338 19369 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:37.723645 19369 util.hpp:84] Read 209715200 bytes
+I0115 20:52:37.723661 19369 util.hpp:85] Finished reading file
+I0115 20:52:38.994273 19369 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:52:38.994292 19369 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1270[ms]
+RESULT dataset=sources.200MB algo=parallel_bcomp text=209715200 find_blocks=484 copy_blocks=0 sort=1 elements=1168 hits=9416499 block_rules=0 replace_blocks=197 compact_text=242 comp_text=190364930 time=1270
+I0115 20:52:42.088495 19369 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:42.204932 19369 util.hpp:108] Read 209715200 bytes
+I0115 20:52:42.204951 19369 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:42.370051 19393 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:44.206192 19393 util.hpp:84] Read 209715200 bytes
+I0115 20:52:44.206208 19393 util.hpp:85] Finished reading file
+I0115 20:52:46.266723 19393 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 20:52:46.266741 19393 bcomp_bench.cpp:55] Time for sequential bcomp: 2060[ms]
+RESULT dataset=sources.200MB algo=sequential_bcomp text=209715200 find_blocks=889 copy_blocks=0 sort=0 elements=1168 hits=9416499 block_rules=0 replace_blocks=576 compact_text=251 comp_text=190364930 time=2060
+I0115 20:52:49.339681 19393 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:49.456229 19393 util.hpp:108] Read 209715200 bytes
+I0115 20:52:49.456248 19393 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:49.620219 19413 util.hpp:61] Reading file: ../../data/sources.200MB
+I0115 20:52:51.453609 19413 util.hpp:84] Read 209715200 bytes
+I0115 20:52:51.453625 19413 util.hpp:85] Finished reading file
+I0115 20:52:52.732726 19413 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:52:52.732743 19413 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1279[ms]
+RESULT dataset=sources.200MB algo=parallel_bcomp text=209715200 find_blocks=490 copy_blocks=0 sort=1 elements=1168 hits=9416499 block_rules=0 replace_blocks=200 compact_text=242 comp_text=190364930 time=1279
+I0115 20:52:55.814936 19413 util.hpp:94] Reading file: ../../data/sources.200MB
+I0115 20:52:55.932023 19413 util.hpp:108] Read 209715200 bytes
+I0115 20:52:55.932039 19413 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:52:56.097478 19422 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:52:58.742010 19422 util.hpp:84] Read 296135874 bytes
+I0115 20:52:58.742025 19422 util.hpp:85] Finished reading file
+I0115 20:53:00.594060 19422 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:53:00.594079 19422 bcomp_bench.cpp:55] Time for sequential bcomp: 1852[ms]
+RESULT dataset=dblp.xml algo=sequential_bcomp text=296135874 find_blocks=761 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=292 compact_text=285 comp_text=286407290 time=1852
+I0115 20:53:04.843627 19422 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:05.007197 19422 util.hpp:108] Read 296135874 bytes
+I0115 20:53:05.007215 19422 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:05.236953 19454 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:53:07.826669 19454 util.hpp:84] Read 296135874 bytes
+I0115 20:53:07.826685 19454 util.hpp:85] Finished reading file
+I0115 20:53:09.280478 19454 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:53:09.280496 19454 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1453[ms]
+RESULT dataset=dblp.xml algo=parallel_bcomp text=296135874 find_blocks=508 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=162 compact_text=268 comp_text=286407290 time=1453
+I0115 20:53:13.537473 19454 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:13.698997 19454 util.hpp:108] Read 296135874 bytes
+I0115 20:53:13.699017 19454 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:13.930224 19480 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:53:16.519268 19480 util.hpp:84] Read 296135874 bytes
+I0115 20:53:16.519284 19480 util.hpp:85] Finished reading file
+I0115 20:53:18.363181 19480 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:53:18.363199 19480 bcomp_bench.cpp:55] Time for sequential bcomp: 1843[ms]
+RESULT dataset=dblp.xml algo=sequential_bcomp text=296135874 find_blocks=760 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=294 compact_text=274 comp_text=286407290 time=1843
+I0115 20:53:22.612393 19480 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:22.774359 19480 util.hpp:108] Read 296135874 bytes
+I0115 20:53:22.774379 19480 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:23.006003 19504 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:53:25.594786 19504 util.hpp:84] Read 296135874 bytes
+I0115 20:53:25.594801 19504 util.hpp:85] Finished reading file
+I0115 20:53:27.047637 19504 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:53:27.047655 19504 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1452[ms]
+RESULT dataset=dblp.xml algo=parallel_bcomp text=296135874 find_blocks=508 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=161 compact_text=268 comp_text=286407290 time=1452
+I0115 20:53:31.312033 19504 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:31.473819 19504 util.hpp:108] Read 296135874 bytes
+I0115 20:53:31.473839 19504 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:31.703663 19530 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:53:34.290827 19530 util.hpp:84] Read 296135874 bytes
+I0115 20:53:34.290843 19530 util.hpp:85] Finished reading file
+I0115 20:53:36.135685 19530 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:53:36.135704 19530 bcomp_bench.cpp:55] Time for sequential bcomp: 1844[ms]
+RESULT dataset=dblp.xml algo=sequential_bcomp text=296135874 find_blocks=759 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=292 compact_text=277 comp_text=286407290 time=1844
+I0115 20:53:40.389837 19530 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:40.551270 19530 util.hpp:108] Read 296135874 bytes
+I0115 20:53:40.551287 19530 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:40.782392 19551 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:53:43.372123 19551 util.hpp:84] Read 296135874 bytes
+I0115 20:53:43.372139 19551 util.hpp:85] Finished reading file
+I0115 20:53:44.832329 19551 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:53:44.832348 19551 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1460[ms]
+RESULT dataset=dblp.xml algo=parallel_bcomp text=296135874 find_blocks=515 copy_blocks=0 sort=1 elements=237 hits=9261898 block_rules=0 replace_blocks=161 compact_text=269 comp_text=286407290 time=1460
+I0115 20:53:49.093729 19551 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:49.255538 19551 util.hpp:108] Read 296135874 bytes
+I0115 20:53:49.255558 19551 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:49.485143 19578 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:53:52.071749 19578 util.hpp:84] Read 296135874 bytes
+I0115 20:53:52.071764 19578 util.hpp:85] Finished reading file
+I0115 20:53:53.916136 19578 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:53:53.916157 19578 bcomp_bench.cpp:55] Time for sequential bcomp: 1844[ms]
+RESULT dataset=dblp.xml algo=sequential_bcomp text=296135874 find_blocks=761 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=292 compact_text=277 comp_text=286407290 time=1844
+I0115 20:53:58.171941 19578 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:53:58.333286 19578 util.hpp:108] Read 296135874 bytes
+I0115 20:53:58.333305 19578 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:53:58.562885 19597 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:54:01.152905 19597 util.hpp:84] Read 296135874 bytes
+I0115 20:54:01.152920 19597 util.hpp:85] Finished reading file
+I0115 20:54:02.605051 19597 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:54:02.605068 19597 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1452[ms]
+RESULT dataset=dblp.xml algo=parallel_bcomp text=296135874 find_blocks=509 copy_blocks=0 sort=1 elements=237 hits=9261898 block_rules=0 replace_blocks=160 compact_text=268 comp_text=286407290 time=1452
+I0115 20:54:06.864140 19597 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:54:07.026243 19597 util.hpp:108] Read 296135874 bytes
+I0115 20:54:07.026263 19597 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:54:07.257825 19624 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:54:09.843605 19624 util.hpp:84] Read 296135874 bytes
+I0115 20:54:09.843619 19624 util.hpp:85] Finished reading file
+I0115 20:54:11.686343 19624 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 20:54:11.686362 19624 bcomp_bench.cpp:55] Time for sequential bcomp: 1842[ms]
+RESULT dataset=dblp.xml algo=sequential_bcomp text=296135874 find_blocks=759 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=294 compact_text=274 comp_text=286407290 time=1842
+I0115 20:54:15.935650 19624 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:54:16.097252 19624 util.hpp:108] Read 296135874 bytes
+I0115 20:54:16.097272 19624 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:54:16.328814 19655 util.hpp:61] Reading file: ../../data/dblp.xml
+I0115 20:54:18.915560 19655 util.hpp:84] Read 296135874 bytes
+I0115 20:54:18.915575 19655 util.hpp:85] Finished reading file
+I0115 20:54:20.375573 19655 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 20:54:20.375591 19655 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1459[ms]
+RESULT dataset=dblp.xml algo=parallel_bcomp text=296135874 find_blocks=517 copy_blocks=0 sort=0 elements=237 hits=9261898 block_rules=0 replace_blocks=159 compact_text=267 comp_text=286407290 time=1459
+I0115 20:54:24.640061 19655 util.hpp:94] Reading file: ../../data/dblp.xml
+I0115 20:54:24.801874 19655 util.hpp:108] Read 296135874 bytes
+I0115 20:54:24.801894 19655 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:54:25.031836 19680 util.hpp:61] Reading file: ../../data/dna
+I0115 20:54:28.641680 19680 util.hpp:84] Read 403927746 bytes
+I0115 20:54:28.641695 19680 util.hpp:85] Finished reading file
+I0115 20:54:37.631291 19680 bcomp_bench.cpp:54] Time for sequential bcomp: 8[s]
+I0115 20:54:37.631309 19680 bcomp_bench.cpp:55] Time for sequential bcomp: 8989[ms]
+RESULT dataset=dna algo=sequential_bcomp text=403927746 find_blocks=4610 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=2426 compact_text=1400 comp_text=283110639 time=8989
+I0115 20:54:45.191673 19680 util.hpp:94] Reading file: ../../data/dna
+I0115 20:54:45.413751 19680 util.hpp:108] Read 403927746 bytes
+I0115 20:54:45.413769 19680 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:54:45.720211 19730 util.hpp:61] Reading file: ../../data/dna
+I0115 20:54:49.253880 19730 util.hpp:84] Read 403927746 bytes
+I0115 20:54:49.253895 19730 util.hpp:85] Finished reading file
+I0115 20:54:54.365751 19730 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 5[s]
+I0115 20:54:54.365774 19730 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 5111[ms]
+RESULT dataset=dna algo=parallel_bcomp text=403927746 find_blocks=2428 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=789 compact_text=1338 comp_text=283110639 time=5111
+I0115 20:55:01.973523 19730 util.hpp:94] Reading file: ../../data/dna
+I0115 20:55:02.193229 19730 util.hpp:108] Read 403927746 bytes
+I0115 20:55:02.193249 19730 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:55:02.499626 19768 util.hpp:61] Reading file: ../../data/dna
+I0115 20:55:06.138415 19768 util.hpp:84] Read 403927746 bytes
+I0115 20:55:06.138432 19768 util.hpp:85] Finished reading file
+I0115 20:55:15.118314 19768 bcomp_bench.cpp:54] Time for sequential bcomp: 8[s]
+I0115 20:55:15.118333 19768 bcomp_bench.cpp:55] Time for sequential bcomp: 8979[ms]
+RESULT dataset=dna algo=sequential_bcomp text=403927746 find_blocks=4600 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=2424 compact_text=1402 comp_text=283110639 time=8979
+I0115 20:55:22.594795 19768 util.hpp:94] Reading file: ../../data/dna
+I0115 20:55:22.814141 19768 util.hpp:108] Read 403927746 bytes
+I0115 20:55:22.814159 19768 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:55:23.118173 19828 util.hpp:61] Reading file: ../../data/dna
+I0115 20:55:26.647361 19828 util.hpp:84] Read 403927746 bytes
+I0115 20:55:26.647377 19828 util.hpp:85] Finished reading file
+I0115 20:55:31.751711 19828 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 5[s]
+I0115 20:55:31.751731 19828 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 5104[ms]
+RESULT dataset=dna algo=parallel_bcomp text=403927746 find_blocks=2409 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=798 compact_text=1340 comp_text=283110639 time=5104
+I0115 20:55:39.377209 19828 util.hpp:94] Reading file: ../../data/dna
+I0115 20:55:39.596385 19828 util.hpp:108] Read 403927746 bytes
+I0115 20:55:39.596405 19828 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:55:39.903898 19869 util.hpp:61] Reading file: ../../data/dna
+I0115 20:55:43.435961 19869 util.hpp:84] Read 403927746 bytes
+I0115 20:55:43.435977 19869 util.hpp:85] Finished reading file
+I0115 20:55:52.424015 19869 bcomp_bench.cpp:54] Time for sequential bcomp: 8[s]
+I0115 20:55:52.424033 19869 bcomp_bench.cpp:55] Time for sequential bcomp: 8988[ms]
+RESULT dataset=dna algo=sequential_bcomp text=403927746 find_blocks=4610 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=2425 compact_text=1399 comp_text=283110639 time=8988
+I0115 20:55:59.933789 19869 util.hpp:94] Reading file: ../../data/dna
+I0115 20:56:00.158092 19869 util.hpp:108] Read 403927746 bytes
+I0115 20:56:00.158112 19869 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:56:00.462354 19930 util.hpp:61] Reading file: ../../data/dna
+I0115 20:56:03.993206 19930 util.hpp:84] Read 403927746 bytes
+I0115 20:56:03.993221 19930 util.hpp:85] Finished reading file
+I0115 20:56:09.105329 19930 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 5[s]
+I0115 20:56:09.105350 19930 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 5112[ms]
+RESULT dataset=dna algo=parallel_bcomp text=403927746 find_blocks=2434 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=782 compact_text=1339 comp_text=283110639 time=5112
+I0115 20:56:16.740140 19930 util.hpp:94] Reading file: ../../data/dna
+I0115 20:56:16.959713 19930 util.hpp:108] Read 403927746 bytes
+I0115 20:56:16.959731 19930 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:56:17.265321 19971 util.hpp:61] Reading file: ../../data/dna
+I0115 20:56:20.796087 19971 util.hpp:84] Read 403927746 bytes
+I0115 20:56:20.796103 19971 util.hpp:85] Finished reading file
+I0115 20:56:29.776042 19971 bcomp_bench.cpp:54] Time for sequential bcomp: 8[s]
+I0115 20:56:29.776062 19971 bcomp_bench.cpp:55] Time for sequential bcomp: 8979[ms]
+RESULT dataset=dna algo=sequential_bcomp text=403927746 find_blocks=4609 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=2424 compact_text=1393 comp_text=283110639 time=8979
+I0115 20:56:37.334147 19971 util.hpp:94] Reading file: ../../data/dna
+I0115 20:56:37.553589 19971 util.hpp:108] Read 403927746 bytes
+I0115 20:56:37.553608 19971 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:56:37.857594 20016 util.hpp:61] Reading file: ../../data/dna
+I0115 20:56:41.429854 20016 util.hpp:84] Read 403927746 bytes
+I0115 20:56:41.429870 20016 util.hpp:85] Finished reading file
+I0115 20:56:46.518924 20016 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 5[s]
+I0115 20:56:46.518945 20016 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 5089[ms]
+RESULT dataset=dna algo=parallel_bcomp text=403927746 find_blocks=2410 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=783 compact_text=1339 comp_text=283110639 time=5089
+I0115 20:56:54.125749 20016 util.hpp:94] Reading file: ../../data/dna
+I0115 20:56:54.345604 20016 util.hpp:108] Read 403927746 bytes
+I0115 20:56:54.345623 20016 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:56:54.651185 20063 util.hpp:61] Reading file: ../../data/dna
+I0115 20:56:58.183308 20063 util.hpp:84] Read 403927746 bytes
+I0115 20:56:58.183323 20063 util.hpp:85] Finished reading file
+I0115 20:57:07.162436 20063 bcomp_bench.cpp:54] Time for sequential bcomp: 8[s]
+I0115 20:57:07.162457 20063 bcomp_bench.cpp:55] Time for sequential bcomp: 8979[ms]
+RESULT dataset=dna algo=sequential_bcomp text=403927746 find_blocks=4608 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=2426 compact_text=1391 comp_text=283110639 time=8979
+I0115 20:57:14.713923 20063 util.hpp:94] Reading file: ../../data/dna
+I0115 20:57:14.933377 20063 util.hpp:108] Read 403927746 bytes
+I0115 20:57:14.933396 20063 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:57:15.237429 20118 util.hpp:61] Reading file: ../../data/dna
+I0115 20:57:18.768828 20118 util.hpp:84] Read 403927746 bytes
+I0115 20:57:18.768843 20118 util.hpp:85] Finished reading file
+I0115 20:57:23.871450 20118 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 5[s]
+I0115 20:57:23.871469 20118 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 5102[ms]
+RESULT dataset=dna algo=parallel_bcomp text=403927746 find_blocks=2436 copy_blocks=0 sort=0 elements=216 hits=79504294 block_rules=0 replace_blocks=776 compact_text=1333 comp_text=283110639 time=5102
+I0115 20:57:31.473942 20118 util.hpp:94] Reading file: ../../data/dna
+I0115 20:57:31.693650 20118 util.hpp:108] Read 403927746 bytes
+I0115 20:57:31.693668 20118 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:57:31.999281 20164 util.hpp:61] Reading file: ../../data/proteins
+I0115 20:57:42.608515 20164 util.hpp:84] Read 1184051855 bytes
+I0115 20:57:42.608532 20164 util.hpp:85] Finished reading file
+I0115 20:57:55.184674 20164 bcomp_bench.cpp:54] Time for sequential bcomp: 12[s]
+I0115 20:57:55.184696 20164 bcomp_bench.cpp:55] Time for sequential bcomp: 12575[ms]
+RESULT dataset=proteins algo=sequential_bcomp text=1184051855 find_blocks=7086 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=3903 compact_text=1549 comp_text=1096784622 time=12575
+I0115 20:58:12.948818 20164 util.hpp:94] Reading file: ../../data/proteins
+I0115 20:58:17.045646 20164 util.hpp:108] Read 1184051855 bytes
+I0115 20:58:17.045691 20164 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:58:20.810626 20276 util.hpp:61] Reading file: ../../data/proteins
+I0115 20:58:31.712368 20276 util.hpp:84] Read 1184051855 bytes
+I0115 20:58:31.712384 20276 util.hpp:85] Finished reading file
+I0115 20:58:38.205704 20276 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 6[s]
+I0115 20:58:38.205730 20276 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 6493[ms]
+RESULT dataset=proteins algo=parallel_bcomp text=1184051855 find_blocks=3760 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=1241 compact_text=1451 comp_text=1096784622 time=6493
+I0115 20:58:56.048842 20276 util.hpp:94] Reading file: ../../data/proteins
+I0115 20:59:00.412797 20276 util.hpp:108] Read 1184051855 bytes
+I0115 20:59:00.412871 20276 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:59:03.367291 20383 util.hpp:61] Reading file: ../../data/proteins
+I0115 20:59:14.312741 20383 util.hpp:84] Read 1184051855 bytes
+I0115 20:59:14.312757 20383 util.hpp:85] Finished reading file
+I0115 20:59:26.836766 20383 bcomp_bench.cpp:54] Time for sequential bcomp: 12[s]
+I0115 20:59:26.836788 20383 bcomp_bench.cpp:55] Time for sequential bcomp: 12523[ms]
+RESULT dataset=proteins algo=sequential_bcomp text=1184051855 find_blocks=7043 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=3890 compact_text=1551 comp_text=1096784622 time=12523
+I0115 20:59:44.569725 20383 util.hpp:94] Reading file: ../../data/proteins
+I0115 20:59:48.825937 20383 util.hpp:108] Read 1184051855 bytes
+I0115 20:59:48.825984 20383 util.hpp:109] Finished reading file
+BComp Correct
+I0115 20:59:52.954447 20502 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:00:03.922546 20502 util.hpp:84] Read 1184051855 bytes
+I0115 21:00:03.922564 20502 util.hpp:85] Finished reading file
+I0115 21:00:10.418642 20502 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 6[s]
+I0115 21:00:10.418666 20502 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 6496[ms]
+RESULT dataset=proteins algo=parallel_bcomp text=1184051855 find_blocks=3755 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=1247 compact_text=1454 comp_text=1096784622 time=6496
+I0115 21:00:28.241463 20502 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:00:32.506459 20502 util.hpp:108] Read 1184051855 bytes
+I0115 21:00:32.506511 20502 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:00:37.468978 20606 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:00:48.757984 20606 util.hpp:84] Read 1184051855 bytes
+I0115 21:00:48.758002 20606 util.hpp:85] Finished reading file
+I0115 21:01:01.290264 20606 bcomp_bench.cpp:54] Time for sequential bcomp: 12[s]
+I0115 21:01:01.290285 20606 bcomp_bench.cpp:55] Time for sequential bcomp: 12532[ms]
+RESULT dataset=proteins algo=sequential_bcomp text=1184051855 find_blocks=7047 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=3885 compact_text=1560 comp_text=1096784622 time=12532
+I0115 21:01:19.099607 20606 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:01:23.333734 20606 util.hpp:108] Read 1184051855 bytes
+I0115 21:01:23.333786 20606 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:01:27.463506 20720 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:01:38.975512 20720 util.hpp:84] Read 1184051855 bytes
+I0115 21:01:38.975529 20720 util.hpp:85] Finished reading file
+I0115 21:01:45.497318 20720 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 6[s]
+I0115 21:01:45.497340 20720 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 6521[ms]
+RESULT dataset=proteins algo=parallel_bcomp text=1184051855 find_blocks=3756 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=1261 compact_text=1450 comp_text=1096784622 time=6521
+I0115 21:02:04.005478 20720 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:02:08.297201 20720 util.hpp:108] Read 1184051855 bytes
+I0115 21:02:08.297252 20720 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:02:12.293329 20837 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:02:23.191079 20837 util.hpp:84] Read 1184051855 bytes
+I0115 21:02:23.191095 20837 util.hpp:85] Finished reading file
+I0115 21:02:35.743551 20837 bcomp_bench.cpp:54] Time for sequential bcomp: 12[s]
+I0115 21:02:35.743573 20837 bcomp_bench.cpp:55] Time for sequential bcomp: 12552[ms]
+RESULT dataset=proteins algo=sequential_bcomp text=1184051855 find_blocks=7072 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=3887 compact_text=1554 comp_text=1096784622 time=12552
+I0115 21:02:53.496024 20837 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:02:57.719573 20837 util.hpp:108] Read 1184051855 bytes
+I0115 21:02:57.719625 20837 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:03:00.716118 20957 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:03:11.546846 20957 util.hpp:84] Read 1184051855 bytes
+I0115 21:03:11.546862 20957 util.hpp:85] Finished reading file
+I0115 21:03:18.159132 20957 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 6[s]
+I0115 21:03:18.159153 20957 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 6612[ms]
+RESULT dataset=proteins algo=parallel_bcomp text=1184051855 find_blocks=3758 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=1364 compact_text=1449 comp_text=1096784622 time=6612
+I0115 21:03:36.001745 20957 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:03:40.252055 20957 util.hpp:108] Read 1184051855 bytes
+I0115 21:03:40.252105 20957 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:03:43.232194 21062 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:03:54.247332 21062 util.hpp:84] Read 1184051855 bytes
+I0115 21:03:54.247349 21062 util.hpp:85] Finished reading file
+I0115 21:04:06.788086 21062 bcomp_bench.cpp:54] Time for sequential bcomp: 12[s]
+I0115 21:04:06.788110 21062 bcomp_bench.cpp:55] Time for sequential bcomp: 12540[ms]
+RESULT dataset=proteins algo=sequential_bcomp text=1184051855 find_blocks=7060 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=3890 compact_text=1551 comp_text=1096784622 time=12540
+I0115 21:04:24.536278 21062 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:04:28.770030 21062 util.hpp:108] Read 1184051855 bytes
+I0115 21:04:28.770084 21062 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:04:32.675966 21179 util.hpp:61] Reading file: ../../data/proteins
+I0115 21:04:43.521706 21179 util.hpp:84] Read 1184051855 bytes
+I0115 21:04:43.521723 21179 util.hpp:85] Finished reading file
+I0115 21:04:50.045792 21179 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 6[s]
+I0115 21:04:50.045819 21179 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 6524[ms]
+RESULT dataset=proteins algo=parallel_bcomp text=1184051855 find_blocks=3751 copy_blocks=0 sort=0 elements=899 hits=77171228 block_rules=0 replace_blocks=1289 compact_text=1444 comp_text=1096784622 time=6524
+I0115 21:05:07.882434 21179 util.hpp:94] Reading file: ../../data/proteins
+I0115 21:05:12.120348 21179 util.hpp:108] Read 1184051855 bytes
+I0115 21:05:12.120370 21179 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:16.368381 21279 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:18.363798 21279 util.hpp:84] Read 210866607 bytes
+I0115 21:05:18.363813 21279 util.hpp:85] Finished reading file
+I0115 21:05:20.438246 21279 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:05:20.438262 21279 bcomp_bench.cpp:55] Time for sequential bcomp: 2074[ms]
+RESULT dataset=sources algo=sequential_bcomp text=210866607 find_blocks=896 copy_blocks=0 sort=0 elements=1169 hits=9474800 block_rules=0 replace_blocks=580 compact_text=250 comp_text=191406341 time=2074
+I0115 21:05:23.530894 21279 util.hpp:94] Reading file: ../../data/sources
+I0115 21:05:23.649147 21279 util.hpp:108] Read 210866607 bytes
+I0115 21:05:23.649165 21279 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:23.818359 21304 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:25.692461 21304 util.hpp:84] Read 210866607 bytes
+I0115 21:05:25.692477 21304 util.hpp:85] Finished reading file
+I0115 21:05:26.984846 21304 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:05:26.984864 21304 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1289[ms]
+RESULT dataset=sources algo=parallel_bcomp text=210866607 find_blocks=492 copy_blocks=0 sort=1 elements=1169 hits=9474800 block_rules=0 replace_blocks=205 compact_text=244 comp_text=191406341 time=1289
+I0115 21:05:30.090175 21304 util.hpp:94] Reading file: ../../data/sources
+I0115 21:05:30.207342 21304 util.hpp:108] Read 210866607 bytes
+I0115 21:05:30.207360 21304 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:30.371898 21326 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:32.213431 21326 util.hpp:84] Read 210866607 bytes
+I0115 21:05:32.213448 21326 util.hpp:85] Finished reading file
+I0115 21:05:34.287371 21326 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:05:34.287389 21326 bcomp_bench.cpp:55] Time for sequential bcomp: 2073[ms]
+RESULT dataset=sources algo=sequential_bcomp text=210866607 find_blocks=896 copy_blocks=0 sort=0 elements=1169 hits=9474800 block_rules=0 replace_blocks=580 compact_text=250 comp_text=191406341 time=2073
+I0115 21:05:37.373679 21326 util.hpp:94] Reading file: ../../data/sources
+I0115 21:05:37.490578 21326 util.hpp:108] Read 210866607 bytes
+I0115 21:05:37.490598 21326 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:37.656636 21350 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:39.497637 21350 util.hpp:84] Read 210866607 bytes
+I0115 21:05:39.497653 21350 util.hpp:85] Finished reading file
+I0115 21:05:40.782830 21350 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:05:40.782848 21350 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1285[ms]
+RESULT dataset=sources algo=parallel_bcomp text=210866607 find_blocks=483 copy_blocks=0 sort=1 elements=1169 hits=9474800 block_rules=0 replace_blocks=210 compact_text=243 comp_text=191406341 time=1285
+I0115 21:05:43.884920 21350 util.hpp:94] Reading file: ../../data/sources
+I0115 21:05:44.001711 21350 util.hpp:108] Read 210866607 bytes
+I0115 21:05:44.001729 21350 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:44.167832 21372 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:46.008086 21372 util.hpp:84] Read 210866607 bytes
+I0115 21:05:46.008102 21372 util.hpp:85] Finished reading file
+I0115 21:05:48.082340 21372 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:05:48.082357 21372 bcomp_bench.cpp:55] Time for sequential bcomp: 2074[ms]
+RESULT dataset=sources algo=sequential_bcomp text=210866607 find_blocks=895 copy_blocks=0 sort=0 elements=1169 hits=9474800 block_rules=0 replace_blocks=580 compact_text=252 comp_text=191406341 time=2074
+I0115 21:05:51.165601 21372 util.hpp:94] Reading file: ../../data/sources
+I0115 21:05:51.282990 21372 util.hpp:108] Read 210866607 bytes
+I0115 21:05:51.283010 21372 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:51.449151 21390 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:53.292385 21390 util.hpp:84] Read 210866607 bytes
+I0115 21:05:53.292400 21390 util.hpp:85] Finished reading file
+I0115 21:05:54.579319 21390 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:05:54.579336 21390 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1286[ms]
+RESULT dataset=sources algo=parallel_bcomp text=210866607 find_blocks=489 copy_blocks=0 sort=1 elements=1169 hits=9474800 block_rules=0 replace_blocks=205 compact_text=244 comp_text=191406341 time=1286
+I0115 21:05:57.677412 21390 util.hpp:94] Reading file: ../../data/sources
+I0115 21:05:57.793944 21390 util.hpp:108] Read 210866607 bytes
+I0115 21:05:57.793962 21390 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:05:57.960382 21414 util.hpp:61] Reading file: ../../data/sources
+I0115 21:05:59.803102 21414 util.hpp:84] Read 210866607 bytes
+I0115 21:05:59.803117 21414 util.hpp:85] Finished reading file
+I0115 21:06:01.879578 21414 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:06:01.879596 21414 bcomp_bench.cpp:55] Time for sequential bcomp: 2076[ms]
+RESULT dataset=sources algo=sequential_bcomp text=210866607 find_blocks=898 copy_blocks=0 sort=0 elements=1169 hits=9474800 block_rules=0 replace_blocks=580 compact_text=252 comp_text=191406341 time=2076
+I0115 21:06:04.966267 21414 util.hpp:94] Reading file: ../../data/sources
+I0115 21:06:05.082896 21414 util.hpp:108] Read 210866607 bytes
+I0115 21:06:05.082916 21414 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:05.249028 21433 util.hpp:61] Reading file: ../../data/sources
+I0115 21:06:07.092293 21433 util.hpp:84] Read 210866607 bytes
+I0115 21:06:07.092308 21433 util.hpp:85] Finished reading file
+I0115 21:06:08.378285 21433 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:06:08.378304 21433 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1285[ms]
+RESULT dataset=sources algo=parallel_bcomp text=210866607 find_blocks=488 copy_blocks=0 sort=1 elements=1169 hits=9474800 block_rules=0 replace_blocks=206 compact_text=244 comp_text=191406341 time=1285
+I0115 21:06:11.477329 21433 util.hpp:94] Reading file: ../../data/sources
+I0115 21:06:11.593915 21433 util.hpp:108] Read 210866607 bytes
+I0115 21:06:11.593933 21433 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:11.759416 21444 util.hpp:61] Reading file: ../../data/sources
+I0115 21:06:13.603488 21444 util.hpp:84] Read 210866607 bytes
+I0115 21:06:13.603502 21444 util.hpp:85] Finished reading file
+I0115 21:06:15.679540 21444 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:06:15.679556 21444 bcomp_bench.cpp:55] Time for sequential bcomp: 2075[ms]
+RESULT dataset=sources algo=sequential_bcomp text=210866607 find_blocks=896 copy_blocks=0 sort=0 elements=1169 hits=9474800 block_rules=0 replace_blocks=581 compact_text=252 comp_text=191406341 time=2075
+I0115 21:06:18.764709 21444 util.hpp:94] Reading file: ../../data/sources
+I0115 21:06:18.881438 21444 util.hpp:108] Read 210866607 bytes
+I0115 21:06:18.881458 21444 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:19.046422 21466 util.hpp:61] Reading file: ../../data/sources
+I0115 21:06:20.890552 21466 util.hpp:84] Read 210866607 bytes
+I0115 21:06:20.890568 21466 util.hpp:85] Finished reading file
+I0115 21:06:22.174875 21466 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:06:22.174891 21466 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1284[ms]
+RESULT dataset=sources algo=parallel_bcomp text=210866607 find_blocks=484 copy_blocks=0 sort=1 elements=1169 hits=9474800 block_rules=0 replace_blocks=209 compact_text=243 comp_text=191406341 time=1284
+I0115 21:06:25.298808 21466 util.hpp:94] Reading file: ../../data/sources
+I0115 21:06:25.415400 21466 util.hpp:108] Read 210866607 bytes
+I0115 21:06:25.415417 21466 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:25.579469 21488 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:06:27.416316 21488 util.hpp:84] Read 205281778 bytes
+I0115 21:06:27.416332 21488 util.hpp:85] Finished reading file
+I0115 21:06:29.105171 21488 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 21:06:29.105190 21488 bcomp_bench.cpp:55] Time for sequential bcomp: 1688[ms]
+RESULT dataset=coreutils algo=sequential_bcomp text=205281778 find_blocks=710 copy_blocks=0 sort=0 elements=634 hits=7937674 block_rules=0 replace_blocks=409 compact_text=231 comp_text=186701038 time=1688
+I0115 21:06:32.094316 21488 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:06:32.209123 21488 util.hpp:108] Read 205281778 bytes
+I0115 21:06:32.209141 21488 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:32.370698 21509 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:06:34.166280 21509 util.hpp:84] Read 205281778 bytes
+I0115 21:06:34.166296 21509 util.hpp:85] Finished reading file
+I0115 21:06:35.272044 21509 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:06:35.272060 21509 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1105[ms]
+RESULT dataset=coreutils algo=parallel_bcomp text=205281778 find_blocks=415 copy_blocks=0 sort=1 elements=634 hits=7937674 block_rules=0 replace_blocks=129 compact_text=222 comp_text=186701038 time=1105
+I0115 21:06:38.271018 21509 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:06:38.384676 21509 util.hpp:108] Read 205281778 bytes
+I0115 21:06:38.384694 21509 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:38.544577 21533 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:06:40.339629 21533 util.hpp:84] Read 205281778 bytes
+I0115 21:06:40.339644 21533 util.hpp:85] Finished reading file
+I0115 21:06:42.029955 21533 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 21:06:42.029973 21533 bcomp_bench.cpp:55] Time for sequential bcomp: 1690[ms]
+RESULT dataset=coreutils algo=sequential_bcomp text=205281778 find_blocks=712 copy_blocks=0 sort=0 elements=634 hits=7937674 block_rules=0 replace_blocks=408 compact_text=231 comp_text=186701038 time=1690
+I0115 21:06:45.013485 21533 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:06:45.128073 21533 util.hpp:108] Read 205281778 bytes
+I0115 21:06:45.128093 21533 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:45.289268 21553 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:06:47.085671 21553 util.hpp:84] Read 205281778 bytes
+I0115 21:06:47.085686 21553 util.hpp:85] Finished reading file
+I0115 21:06:48.196662 21553 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:06:48.196681 21553 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1110[ms]
+RESULT dataset=coreutils algo=parallel_bcomp text=205281778 find_blocks=419 copy_blocks=0 sort=1 elements=634 hits=7937674 block_rules=0 replace_blocks=130 compact_text=221 comp_text=186701038 time=1110
+I0115 21:06:51.192055 21553 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:06:51.305922 21553 util.hpp:108] Read 205281778 bytes
+I0115 21:06:51.305943 21553 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:51.466670 21562 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:06:53.261740 21562 util.hpp:84] Read 205281778 bytes
+I0115 21:06:53.261757 21562 util.hpp:85] Finished reading file
+I0115 21:06:54.955456 21562 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 21:06:54.955476 21562 bcomp_bench.cpp:55] Time for sequential bcomp: 1693[ms]
+RESULT dataset=coreutils algo=sequential_bcomp text=205281778 find_blocks=715 copy_blocks=0 sort=0 elements=634 hits=7937674 block_rules=0 replace_blocks=408 compact_text=231 comp_text=186701038 time=1693
+I0115 21:06:57.939303 21562 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:06:58.052812 21562 util.hpp:108] Read 205281778 bytes
+I0115 21:06:58.052831 21562 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:06:58.214440 21584 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:07:00.010960 21584 util.hpp:84] Read 205281778 bytes
+I0115 21:07:00.010984 21584 util.hpp:85] Finished reading file
+I0115 21:07:01.129353 21584 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:07:01.129369 21584 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1118[ms]
+RESULT dataset=coreutils algo=parallel_bcomp text=205281778 find_blocks=427 copy_blocks=0 sort=1 elements=634 hits=7937674 block_rules=0 replace_blocks=129 compact_text=221 comp_text=186701038 time=1118
+I0115 21:07:04.129112 21584 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:07:04.242734 21584 util.hpp:108] Read 205281778 bytes
+I0115 21:07:04.242750 21584 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:04.405756 21606 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:07:06.200045 21606 util.hpp:84] Read 205281778 bytes
+I0115 21:07:06.200062 21606 util.hpp:85] Finished reading file
+I0115 21:07:07.888881 21606 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 21:07:07.888900 21606 bcomp_bench.cpp:55] Time for sequential bcomp: 1688[ms]
+RESULT dataset=coreutils algo=sequential_bcomp text=205281778 find_blocks=711 copy_blocks=0 sort=0 elements=634 hits=7937674 block_rules=0 replace_blocks=408 compact_text=231 comp_text=186701038 time=1688
+I0115 21:07:10.872315 21606 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:07:10.986616 21606 util.hpp:108] Read 205281778 bytes
+I0115 21:07:10.986635 21606 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:11.147354 21622 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:07:12.942287 21622 util.hpp:84] Read 205281778 bytes
+I0115 21:07:12.942302 21622 util.hpp:85] Finished reading file
+I0115 21:07:14.051893 21622 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:07:14.051911 21622 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1109[ms]
+RESULT dataset=coreutils algo=parallel_bcomp text=205281778 find_blocks=418 copy_blocks=0 sort=1 elements=634 hits=7937674 block_rules=0 replace_blocks=129 compact_text=221 comp_text=186701038 time=1109
+I0115 21:07:17.056620 21622 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:07:17.170434 21622 util.hpp:108] Read 205281778 bytes
+I0115 21:07:17.170454 21622 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:17.332196 21648 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:07:19.126749 21648 util.hpp:84] Read 205281778 bytes
+I0115 21:07:19.126765 21648 util.hpp:85] Finished reading file
+I0115 21:07:20.815423 21648 bcomp_bench.cpp:54] Time for sequential bcomp: 1[s]
+I0115 21:07:20.815439 21648 bcomp_bench.cpp:55] Time for sequential bcomp: 1688[ms]
+RESULT dataset=coreutils algo=sequential_bcomp text=205281778 find_blocks=711 copy_blocks=0 sort=0 elements=634 hits=7937674 block_rules=0 replace_blocks=408 compact_text=231 comp_text=186701038 time=1688
+I0115 21:07:23.806970 21648 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:07:23.920614 21648 util.hpp:108] Read 205281778 bytes
+I0115 21:07:23.920631 21648 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:24.082371 21656 util.hpp:61] Reading file: ../../data/coreutils
+I0115 21:07:25.878176 21656 util.hpp:84] Read 205281778 bytes
+I0115 21:07:25.878190 21656 util.hpp:85] Finished reading file
+I0115 21:07:26.997478 21656 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:07:26.997496 21656 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1119[ms]
+RESULT dataset=coreutils algo=parallel_bcomp text=205281778 find_blocks=418 copy_blocks=0 sort=1 elements=634 hits=7937674 block_rules=0 replace_blocks=139 compact_text=221 comp_text=186701038 time=1119
+I0115 21:07:29.997901 21656 util.hpp:94] Reading file: ../../data/coreutils
+I0115 21:07:30.111268 21656 util.hpp:108] Read 205281778 bytes
+I0115 21:07:30.111286 21656 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:30.271981 21675 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:31.107802 21675 util.hpp:84] Read 92758441 bytes
+I0115 21:07:31.107820 21675 util.hpp:85] Finished reading file
+I0115 21:07:31.734920 21675 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:07:31.734938 21675 bcomp_bench.cpp:55] Time for sequential bcomp: 627[ms]
+RESULT dataset=einstein.de.txt algo=sequential_bcomp text=92758441 find_blocks=263 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=108 compact_text=94 comp_text=88334964 time=627
+I0115 21:07:33.130319 21675 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:33.185078 21675 util.hpp:108] Read 92758441 bytes
+I0115 21:07:33.185096 21675 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:33.262780 21696 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:34.076655 21696 util.hpp:84] Read 92758441 bytes
+I0115 21:07:34.076673 21696 util.hpp:85] Finished reading file
+I0115 21:07:34.563295 21696 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:07:34.563313 21696 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 486[ms]
+RESULT dataset=einstein.de.txt algo=parallel_bcomp text=92758441 find_blocks=186 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=47 compact_text=92 comp_text=88334964 time=486
+I0115 21:07:35.901836 21696 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:35.955830 21696 util.hpp:108] Read 92758441 bytes
+I0115 21:07:35.955847 21696 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:36.030925 21707 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:36.843770 21707 util.hpp:84] Read 92758441 bytes
+I0115 21:07:36.843786 21707 util.hpp:85] Finished reading file
+I0115 21:07:37.471725 21707 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:07:37.471742 21707 bcomp_bench.cpp:55] Time for sequential bcomp: 627[ms]
+RESULT dataset=einstein.de.txt algo=sequential_bcomp text=92758441 find_blocks=262 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=108 compact_text=96 comp_text=88334964 time=627
+I0115 21:07:38.804405 21707 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:38.858173 21707 util.hpp:108] Read 92758441 bytes
+I0115 21:07:38.858191 21707 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:38.934541 21709 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:39.749697 21709 util.hpp:84] Read 92758441 bytes
+I0115 21:07:39.749712 21709 util.hpp:85] Finished reading file
+I0115 21:07:40.233711 21709 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:07:40.233727 21709 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 483[ms]
+RESULT dataset=einstein.de.txt algo=parallel_bcomp text=92758441 find_blocks=181 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=48 compact_text=91 comp_text=88334964 time=483
+I0115 21:07:41.570438 21709 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:41.624403 21709 util.hpp:108] Read 92758441 bytes
+I0115 21:07:41.624423 21709 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:41.700757 21729 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:42.514737 21729 util.hpp:84] Read 92758441 bytes
+I0115 21:07:42.514753 21729 util.hpp:85] Finished reading file
+I0115 21:07:43.140775 21729 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:07:43.140794 21729 bcomp_bench.cpp:55] Time for sequential bcomp: 625[ms]
+RESULT dataset=einstein.de.txt algo=sequential_bcomp text=92758441 find_blocks=261 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=109 compact_text=94 comp_text=88334964 time=625
+I0115 21:07:44.475123 21729 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:44.529464 21729 util.hpp:108] Read 92758441 bytes
+I0115 21:07:44.529484 21729 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:44.608323 21733 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:45.421808 21733 util.hpp:84] Read 92758441 bytes
+I0115 21:07:45.421823 21733 util.hpp:85] Finished reading file
+I0115 21:07:45.908838 21733 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:07:45.908854 21733 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 486[ms]
+RESULT dataset=einstein.de.txt algo=parallel_bcomp text=92758441 find_blocks=184 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=48 compact_text=92 comp_text=88334964 time=486
+I0115 21:07:47.249249 21733 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:47.303484 21733 util.hpp:108] Read 92758441 bytes
+I0115 21:07:47.303503 21733 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:47.378993 21740 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:48.192448 21740 util.hpp:84] Read 92758441 bytes
+I0115 21:07:48.192488 21740 util.hpp:85] Finished reading file
+I0115 21:07:48.819604 21740 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:07:48.819620 21740 bcomp_bench.cpp:55] Time for sequential bcomp: 627[ms]
+RESULT dataset=einstein.de.txt algo=sequential_bcomp text=92758441 find_blocks=262 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=108 compact_text=94 comp_text=88334964 time=627
+I0115 21:07:50.151759 21740 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:50.205564 21740 util.hpp:108] Read 92758441 bytes
+I0115 21:07:50.205583 21740 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:50.282059 21754 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:51.094790 21754 util.hpp:84] Read 92758441 bytes
+I0115 21:07:51.094806 21754 util.hpp:85] Finished reading file
+I0115 21:07:51.577498 21754 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:07:51.577517 21754 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 482[ms]
+RESULT dataset=einstein.de.txt algo=parallel_bcomp text=92758441 find_blocks=181 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=47 compact_text=92 comp_text=88334964 time=482
+I0115 21:07:52.914995 21754 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:52.968813 21754 util.hpp:108] Read 92758441 bytes
+I0115 21:07:52.968833 21754 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:53.045519 21761 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:53.858878 21761 util.hpp:84] Read 92758441 bytes
+I0115 21:07:53.858894 21761 util.hpp:85] Finished reading file
+I0115 21:07:54.484071 21761 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:07:54.484088 21761 bcomp_bench.cpp:55] Time for sequential bcomp: 625[ms]
+RESULT dataset=einstein.de.txt algo=sequential_bcomp text=92758441 find_blocks=261 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=109 compact_text=94 comp_text=88334964 time=625
+I0115 21:07:55.815304 21761 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:55.869529 21761 util.hpp:108] Read 92758441 bytes
+I0115 21:07:55.869547 21761 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:55.945937 21765 util.hpp:61] Reading file: ../../data/einstein.de.txt
+I0115 21:07:56.763182 21765 util.hpp:84] Read 92758441 bytes
+I0115 21:07:56.763197 21765 util.hpp:85] Finished reading file
+I0115 21:07:57.247929 21765 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:07:57.247947 21765 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 484[ms]
+RESULT dataset=einstein.de.txt algo=parallel_bcomp text=92758441 find_blocks=182 copy_blocks=0 sort=0 elements=119 hits=3718361 block_rules=0 replace_blocks=48 compact_text=92 comp_text=88334964 time=484
+I0115 21:07:58.585618 21765 util.hpp:94] Reading file: ../../data/einstein.de.txt
+I0115 21:07:58.638984 21765 util.hpp:108] Read 92758441 bytes
+I0115 21:07:58.639009 21765 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:07:58.715559 21787 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:08:02.897136 21787 util.hpp:84] Read 467626544 bytes
+I0115 21:08:02.897153 21787 util.hpp:85] Finished reading file
+I0115 21:08:06.409984 21787 bcomp_bench.cpp:54] Time for sequential bcomp: 3[s]
+I0115 21:08:06.410003 21787 bcomp_bench.cpp:55] Time for sequential bcomp: 3512[ms]
+RESULT dataset=einstein.en.txt algo=sequential_bcomp text=467626544 find_blocks=1479 copy_blocks=0 sort=0 elements=336 hits=19048357 block_rules=0 replace_blocks=761 compact_text=475 comp_text=445780724 time=3512
+I0115 21:08:13.058814 21787 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:08:13.314600 21787 util.hpp:108] Read 467626544 bytes
+I0115 21:08:13.314620 21787 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:08:13.669523 21830 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:08:17.748011 21830 util.hpp:84] Read 467626544 bytes
+I0115 21:08:17.748028 21830 util.hpp:85] Finished reading file
+I0115 21:08:20.193665 21830 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 21:08:20.193686 21830 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2445[ms]
+RESULT dataset=einstein.en.txt algo=parallel_bcomp text=467626544 find_blocks=912 copy_blocks=0 sort=1 elements=336 hits=19048357 block_rules=0 replace_blocks=272 compact_text=462 comp_text=445780724 time=2445
+I0115 21:08:26.869233 21830 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:08:27.121119 21830 util.hpp:108] Read 467626544 bytes
+I0115 21:08:27.121136 21830 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:08:27.476919 21857 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:08:31.561345 21857 util.hpp:84] Read 467626544 bytes
+I0115 21:08:31.561360 21857 util.hpp:85] Finished reading file
+I0115 21:08:35.090761 21857 bcomp_bench.cpp:54] Time for sequential bcomp: 3[s]
+I0115 21:08:35.090780 21857 bcomp_bench.cpp:55] Time for sequential bcomp: 3529[ms]
+RESULT dataset=einstein.en.txt algo=sequential_bcomp text=467626544 find_blocks=1497 copy_blocks=0 sort=0 elements=336 hits=19048357 block_rules=0 replace_blocks=762 compact_text=475 comp_text=445780724 time=3529
+I0115 21:08:41.761831 21857 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:08:42.013759 21857 util.hpp:108] Read 467626544 bytes
+I0115 21:08:42.013777 21857 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:08:42.367352 21898 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:08:46.442422 21898 util.hpp:84] Read 467626544 bytes
+I0115 21:08:46.442436 21898 util.hpp:85] Finished reading file
+I0115 21:08:48.872853 21898 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 21:08:48.872874 21898 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2430[ms]
+RESULT dataset=einstein.en.txt algo=parallel_bcomp text=467626544 find_blocks=902 copy_blocks=0 sort=1 elements=336 hits=19048357 block_rules=0 replace_blocks=266 compact_text=462 comp_text=445780724 time=2430
+I0115 21:08:55.551405 21898 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:08:55.803196 21898 util.hpp:108] Read 467626544 bytes
+I0115 21:08:55.803215 21898 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:08:56.158202 21943 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:09:00.243204 21943 util.hpp:84] Read 467626544 bytes
+I0115 21:09:00.243221 21943 util.hpp:85] Finished reading file
+I0115 21:09:03.760732 21943 bcomp_bench.cpp:54] Time for sequential bcomp: 3[s]
+I0115 21:09:03.760752 21943 bcomp_bench.cpp:55] Time for sequential bcomp: 3517[ms]
+RESULT dataset=einstein.en.txt algo=sequential_bcomp text=467626544 find_blocks=1483 copy_blocks=0 sort=0 elements=336 hits=19048357 block_rules=0 replace_blocks=761 compact_text=476 comp_text=445780724 time=3517
+I0115 21:09:10.416133 21943 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:09:10.670049 21943 util.hpp:108] Read 467626544 bytes
+I0115 21:09:10.670068 21943 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:09:11.023957 21976 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:09:15.100131 21976 util.hpp:84] Read 467626544 bytes
+I0115 21:09:15.100147 21976 util.hpp:85] Finished reading file
+I0115 21:09:17.544536 21976 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 21:09:17.544559 21976 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2444[ms]
+RESULT dataset=einstein.en.txt algo=parallel_bcomp text=467626544 find_blocks=916 copy_blocks=0 sort=1 elements=336 hits=19048357 block_rules=0 replace_blocks=266 compact_text=464 comp_text=445780724 time=2444
+I0115 21:09:24.217214 21976 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:09:24.469660 21976 util.hpp:108] Read 467626544 bytes
+I0115 21:09:24.469678 21976 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:09:24.825574 22019 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:09:28.901686 22019 util.hpp:84] Read 467626544 bytes
+I0115 21:09:28.901703 22019 util.hpp:85] Finished reading file
+I0115 21:09:32.417266 22019 bcomp_bench.cpp:54] Time for sequential bcomp: 3[s]
+I0115 21:09:32.417286 22019 bcomp_bench.cpp:55] Time for sequential bcomp: 3515[ms]
+RESULT dataset=einstein.en.txt algo=sequential_bcomp text=467626544 find_blocks=1483 copy_blocks=0 sort=0 elements=336 hits=19048357 block_rules=0 replace_blocks=761 compact_text=476 comp_text=445780724 time=3515
+I0115 21:09:39.078974 22019 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:09:39.331584 22019 util.hpp:108] Read 467626544 bytes
+I0115 21:09:39.331601 22019 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:09:39.686290 22050 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:09:43.763236 22050 util.hpp:84] Read 467626544 bytes
+I0115 21:09:43.763252 22050 util.hpp:85] Finished reading file
+I0115 21:09:46.200127 22050 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 21:09:46.200146 22050 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2436[ms]
+RESULT dataset=einstein.en.txt algo=parallel_bcomp text=467626544 find_blocks=908 copy_blocks=0 sort=1 elements=336 hits=19048357 block_rules=0 replace_blocks=266 compact_text=462 comp_text=445780724 time=2436
+I0115 21:09:52.873612 22050 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:09:53.125301 22050 util.hpp:108] Read 467626544 bytes
+I0115 21:09:53.125319 22050 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:09:53.479621 22088 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:09:57.556370 22088 util.hpp:84] Read 467626544 bytes
+I0115 21:09:57.556386 22088 util.hpp:85] Finished reading file
+I0115 21:10:01.082043 22088 bcomp_bench.cpp:54] Time for sequential bcomp: 3[s]
+I0115 21:10:01.082062 22088 bcomp_bench.cpp:55] Time for sequential bcomp: 3525[ms]
+RESULT dataset=einstein.en.txt algo=sequential_bcomp text=467626544 find_blocks=1482 copy_blocks=0 sort=0 elements=336 hits=19048357 block_rules=0 replace_blocks=763 compact_text=484 comp_text=445780724 time=3525
+I0115 21:10:07.735574 22088 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:10:07.988277 22088 util.hpp:108] Read 467626544 bytes
+I0115 21:10:07.988298 22088 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:08.344007 22129 util.hpp:61] Reading file: ../../data/einstein.en.txt
+I0115 21:10:12.474845 22129 util.hpp:84] Read 467626544 bytes
+I0115 21:10:12.474860 22129 util.hpp:85] Finished reading file
+I0115 21:10:14.913445 22129 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 2[s]
+I0115 21:10:14.913466 22129 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 2438[ms]
+RESULT dataset=einstein.en.txt algo=parallel_bcomp text=467626544 find_blocks=911 copy_blocks=0 sort=1 elements=336 hits=19048357 block_rules=0 replace_blocks=264 compact_text=463 comp_text=445780724 time=2438
+I0115 21:10:21.588881 22129 util.hpp:94] Reading file: ../../data/einstein.en.txt
+I0115 21:10:21.840740 22129 util.hpp:108] Read 467626544 bytes
+I0115 21:10:21.840759 22129 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:22.197456 22171 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:23.233456 22171 util.hpp:84] Read 112689515 bytes
+I0115 21:10:23.233472 22171 util.hpp:85] Finished reading file
+I0115 21:10:25.692405 22171 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:10:25.692425 22171 bcomp_bench.cpp:55] Time for sequential bcomp: 2458[ms]
+RESULT dataset=Escherichia_Coli algo=sequential_bcomp text=112689515 find_blocks=1265 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=668 compact_text=362 comp_text=83033889 time=2458
+I0115 21:10:27.714689 22171 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:27.779412 22171 util.hpp:108] Read 112689515 bytes
+I0115 21:10:27.779428 22171 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:27.870034 22180 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:28.857830 22180 util.hpp:84] Read 112689515 bytes
+I0115 21:10:28.857846 22180 util.hpp:85] Finished reading file
+I0115 21:10:30.191746 22180 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:10:30.191766 22180 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1333[ms]
+RESULT dataset=Escherichia_Coli algo=parallel_bcomp text=112689515 find_blocks=661 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=168 compact_text=342 comp_text=83033889 time=1333
+I0115 21:10:32.248711 22180 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:32.314435 22180 util.hpp:108] Read 112689515 bytes
+I0115 21:10:32.314455 22180 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:32.407035 22199 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:33.394881 22199 util.hpp:84] Read 112689515 bytes
+I0115 21:10:33.394897 22199 util.hpp:85] Finished reading file
+I0115 21:10:35.849588 22199 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:10:35.849606 22199 bcomp_bench.cpp:55] Time for sequential bcomp: 2454[ms]
+RESULT dataset=Escherichia_Coli algo=sequential_bcomp text=112689515 find_blocks=1263 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=669 compact_text=359 comp_text=83033889 time=2454
+I0115 21:10:37.872366 22199 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:37.937027 22199 util.hpp:108] Read 112689515 bytes
+I0115 21:10:37.937045 22199 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:38.026824 22223 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:39.015528 22223 util.hpp:84] Read 112689515 bytes
+I0115 21:10:39.015544 22223 util.hpp:85] Finished reading file
+I0115 21:10:40.345959 22223 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:10:40.345980 22223 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1330[ms]
+RESULT dataset=Escherichia_Coli algo=parallel_bcomp text=112689515 find_blocks=654 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=171 compact_text=342 comp_text=83033889 time=1330
+I0115 21:10:42.400725 22223 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:42.466301 22223 util.hpp:108] Read 112689515 bytes
+I0115 21:10:42.466321 22223 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:42.556651 22231 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:43.545181 22231 util.hpp:84] Read 112689515 bytes
+I0115 21:10:43.545197 22231 util.hpp:85] Finished reading file
+I0115 21:10:46.006383 22231 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:10:46.006402 22231 bcomp_bench.cpp:55] Time for sequential bcomp: 2461[ms]
+RESULT dataset=Escherichia_Coli algo=sequential_bcomp text=112689515 find_blocks=1269 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=669 compact_text=360 comp_text=83033889 time=2461
+I0115 21:10:48.027318 22231 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:48.091549 22231 util.hpp:108] Read 112689515 bytes
+I0115 21:10:48.091567 22231 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:48.181380 22256 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:49.168088 22256 util.hpp:84] Read 112689515 bytes
+I0115 21:10:49.168103 22256 util.hpp:85] Finished reading file
+I0115 21:10:50.531219 22256 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:10:50.531239 22256 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1362[ms]
+RESULT dataset=Escherichia_Coli algo=parallel_bcomp text=112689515 find_blocks=657 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=197 compact_text=344 comp_text=83033889 time=1362
+I0115 21:10:52.594363 22256 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:52.659417 22256 util.hpp:108] Read 112689515 bytes
+I0115 21:10:52.659435 22256 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:52.749895 22277 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:53.739509 22277 util.hpp:84] Read 112689515 bytes
+I0115 21:10:53.739526 22277 util.hpp:85] Finished reading file
+I0115 21:10:56.204861 22277 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:10:56.204881 22277 bcomp_bench.cpp:55] Time for sequential bcomp: 2465[ms]
+RESULT dataset=Escherichia_Coli algo=sequential_bcomp text=112689515 find_blocks=1266 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=669 compact_text=367 comp_text=83033889 time=2465
+I0115 21:10:58.225389 22277 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:58.289806 22277 util.hpp:108] Read 112689515 bytes
+I0115 21:10:58.289825 22277 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:10:58.380241 22288 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:10:59.367627 22288 util.hpp:84] Read 112689515 bytes
+I0115 21:10:59.367642 22288 util.hpp:85] Finished reading file
+I0115 21:11:00.742275 22288 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:11:00.742295 22288 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1374[ms]
+RESULT dataset=Escherichia_Coli algo=parallel_bcomp text=112689515 find_blocks=671 copy_blocks=0 sort=1 elements=61 hits=21965860 block_rules=0 replace_blocks=199 compact_text=341 comp_text=83033889 time=1374
+I0115 21:11:02.800886 22288 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:11:02.865881 22288 util.hpp:108] Read 112689515 bytes
+I0115 21:11:02.865900 22288 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:02.955391 22308 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:11:03.942422 22308 util.hpp:84] Read 112689515 bytes
+I0115 21:11:03.942438 22308 util.hpp:85] Finished reading file
+I0115 21:11:06.399732 22308 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:11:06.399750 22308 bcomp_bench.cpp:55] Time for sequential bcomp: 2457[ms]
+RESULT dataset=Escherichia_Coli algo=sequential_bcomp text=112689515 find_blocks=1266 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=668 compact_text=361 comp_text=83033889 time=2457
+I0115 21:11:08.454457 22308 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:11:08.519903 22308 util.hpp:108] Read 112689515 bytes
+I0115 21:11:08.519922 22308 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:08.609916 22327 util.hpp:61] Reading file: ../../data/Escherichia_Coli
+I0115 21:11:09.598496 22327 util.hpp:84] Read 112689515 bytes
+I0115 21:11:09.598511 22327 util.hpp:85] Finished reading file
+I0115 21:11:10.936105 22327 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:11:10.936125 22327 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1337[ms]
+RESULT dataset=Escherichia_Coli algo=parallel_bcomp text=112689515 find_blocks=659 copy_blocks=0 sort=0 elements=61 hits=21965860 block_rules=0 replace_blocks=171 compact_text=345 comp_text=83033889 time=1337
+I0115 21:11:13.004415 22327 util.hpp:94] Reading file: ../../data/Escherichia_Coli
+I0115 21:11:13.069308 22327 util.hpp:108] Read 112689515 bytes
+I0115 21:11:13.069327 22327 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:13.159972 22337 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:11:15.466780 22337 util.hpp:84] Read 257961616 bytes
+I0115 21:11:15.466795 22337 util.hpp:85] Finished reading file
+I0115 21:11:17.629669 22337 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:11:17.629688 22337 bcomp_bench.cpp:55] Time for sequential bcomp: 2162[ms]
+RESULT dataset=kernel algo=sequential_bcomp text=257961616 find_blocks=944 copy_blocks=0 sort=0 elements=496 hits=11003730 block_rules=0 replace_blocks=486 compact_text=306 comp_text=235583173 time=2162
+I0115 21:11:21.364362 22337 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:11:21.508525 22337 util.hpp:108] Read 257961616 bytes
+I0115 21:11:21.508544 22337 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:21.706928 22361 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:11:23.961199 22361 util.hpp:84] Read 257961616 bytes
+I0115 21:11:23.961213 22361 util.hpp:85] Finished reading file
+I0115 21:11:25.408923 22361 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:11:25.408942 22361 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1447[ms]
+RESULT dataset=kernel algo=parallel_bcomp text=257961616 find_blocks=557 copy_blocks=0 sort=1 elements=496 hits=11003730 block_rules=0 replace_blocks=166 compact_text=298 comp_text=235583173 time=1447
+I0115 21:11:29.168670 22361 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:11:29.309839 22361 util.hpp:108] Read 257961616 bytes
+I0115 21:11:29.309857 22361 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:29.511710 22384 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:11:31.764966 22384 util.hpp:84] Read 257961616 bytes
+I0115 21:11:31.764981 22384 util.hpp:85] Finished reading file
+I0115 21:11:33.928726 22384 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:11:33.928745 22384 bcomp_bench.cpp:55] Time for sequential bcomp: 2163[ms]
+RESULT dataset=kernel algo=sequential_bcomp text=257961616 find_blocks=944 copy_blocks=0 sort=0 elements=496 hits=11003730 block_rules=0 replace_blocks=485 compact_text=306 comp_text=235583173 time=2163
+I0115 21:11:37.661644 22384 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:11:37.802353 22384 util.hpp:108] Read 257961616 bytes
+I0115 21:11:37.802369 22384 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:38.005013 22408 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:11:40.259027 22408 util.hpp:84] Read 257961616 bytes
+I0115 21:11:40.259042 22408 util.hpp:85] Finished reading file
+I0115 21:11:41.713551 22408 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:11:41.713568 22408 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1454[ms]
+RESULT dataset=kernel algo=parallel_bcomp text=257961616 find_blocks=557 copy_blocks=0 sort=1 elements=496 hits=11003730 block_rules=0 replace_blocks=170 compact_text=300 comp_text=235583173 time=1454
+I0115 21:11:45.483119 22408 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:11:45.622633 22408 util.hpp:108] Read 257961616 bytes
+I0115 21:11:45.622651 22408 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:45.821471 22431 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:11:48.076521 22431 util.hpp:84] Read 257961616 bytes
+I0115 21:11:48.076539 22431 util.hpp:85] Finished reading file
+I0115 21:11:50.238785 22431 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:11:50.238804 22431 bcomp_bench.cpp:55] Time for sequential bcomp: 2162[ms]
+RESULT dataset=kernel algo=sequential_bcomp text=257961616 find_blocks=945 copy_blocks=0 sort=0 elements=496 hits=11003730 block_rules=0 replace_blocks=485 compact_text=306 comp_text=235583173 time=2162
+I0115 21:11:53.988066 22431 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:11:54.128583 22431 util.hpp:108] Read 257961616 bytes
+I0115 21:11:54.128602 22431 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:11:54.327931 22452 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:11:56.581013 22452 util.hpp:84] Read 257961616 bytes
+I0115 21:11:56.581028 22452 util.hpp:85] Finished reading file
+I0115 21:11:58.038157 22452 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:11:58.038177 22452 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1457[ms]
+RESULT dataset=kernel algo=parallel_bcomp text=257961616 find_blocks=557 copy_blocks=0 sort=1 elements=496 hits=11003730 block_rules=0 replace_blocks=174 compact_text=300 comp_text=235583173 time=1457
+I0115 21:12:01.821485 22452 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:12:01.962039 22452 util.hpp:108] Read 257961616 bytes
+I0115 21:12:01.962059 22452 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:02.161332 22479 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:12:04.415643 22479 util.hpp:84] Read 257961616 bytes
+I0115 21:12:04.415659 22479 util.hpp:85] Finished reading file
+I0115 21:12:06.578593 22479 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:12:06.578611 22479 bcomp_bench.cpp:55] Time for sequential bcomp: 2162[ms]
+RESULT dataset=kernel algo=sequential_bcomp text=257961616 find_blocks=944 copy_blocks=0 sort=0 elements=496 hits=11003730 block_rules=0 replace_blocks=486 compact_text=308 comp_text=235583173 time=2162
+I0115 21:12:10.565676 22479 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:12:10.706344 22479 util.hpp:108] Read 257961616 bytes
+I0115 21:12:10.706363 22479 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:10.907210 22498 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:12:13.160675 22498 util.hpp:84] Read 257961616 bytes
+I0115 21:12:13.160691 22498 util.hpp:85] Finished reading file
+I0115 21:12:14.614307 22498 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:12:14.614326 22498 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1453[ms]
+RESULT dataset=kernel algo=parallel_bcomp text=257961616 find_blocks=553 copy_blocks=0 sort=1 elements=496 hits=11003730 block_rules=0 replace_blocks=174 compact_text=299 comp_text=235583173 time=1453
+I0115 21:12:18.376137 22498 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:12:18.516917 22498 util.hpp:108] Read 257961616 bytes
+I0115 21:12:18.516937 22498 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:18.717775 22525 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:12:20.973736 22525 util.hpp:84] Read 257961616 bytes
+I0115 21:12:20.973750 22525 util.hpp:85] Finished reading file
+I0115 21:12:23.134888 22525 bcomp_bench.cpp:54] Time for sequential bcomp: 2[s]
+I0115 21:12:23.134905 22525 bcomp_bench.cpp:55] Time for sequential bcomp: 2161[ms]
+RESULT dataset=kernel algo=sequential_bcomp text=257961616 find_blocks=943 copy_blocks=0 sort=0 elements=496 hits=11003730 block_rules=0 replace_blocks=486 compact_text=306 comp_text=235583173 time=2161
+I0115 21:12:26.867244 22525 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:12:27.008422 22525 util.hpp:108] Read 257961616 bytes
+I0115 21:12:27.008441 22525 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:27.207643 22544 util.hpp:61] Reading file: ../../data/kernel
+I0115 21:12:29.463359 22544 util.hpp:84] Read 257961616 bytes
+I0115 21:12:29.463376 22544 util.hpp:85] Finished reading file
+I0115 21:12:30.920508 22544 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 1[s]
+I0115 21:12:30.920526 22544 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 1457[ms]
+RESULT dataset=kernel algo=parallel_bcomp text=257961616 find_blocks=559 copy_blocks=0 sort=1 elements=496 hits=11003730 block_rules=0 replace_blocks=170 compact_text=300 comp_text=235583173 time=1457
+I0115 21:12:34.674919 22544 util.hpp:94] Reading file: ../../data/kernel
+I0115 21:12:34.815870 22544 util.hpp:108] Read 257961616 bytes
+I0115 21:12:34.815886 22544 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:35.015862 22566 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:35.441507 22566 util.hpp:84] Read 46968181 bytes
+I0115 21:12:35.441525 22566 util.hpp:85] Finished reading file
+I0115 21:12:35.659890 22566 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:12:35.659909 22566 bcomp_bench.cpp:55] Time for sequential bcomp: 218[ms]
+RESULT dataset=world_leaders algo=sequential_bcomp text=46968181 find_blocks=82 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=30 compact_text=57 comp_text=24143359 time=218
+I0115 21:12:36.381563 22566 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:36.409096 22566 util.hpp:108] Read 46968181 bytes
+I0115 21:12:36.409121 22566 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:36.449549 22587 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:36.865172 22587 util.hpp:84] Read 46968181 bytes
+I0115 21:12:36.865188 22587 util.hpp:85] Finished reading file
+I0115 21:12:37.041635 22587 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:12:37.041653 22587 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 176[ms]
+RESULT dataset=world_leaders algo=parallel_bcomp text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=45 comp_text=24143359 time=176
+I0115 21:12:37.775249 22587 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:37.803026 22587 util.hpp:108] Read 46968181 bytes
+I0115 21:12:37.803041 22587 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:37.844074 22595 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:38.257731 22595 util.hpp:84] Read 46968181 bytes
+I0115 21:12:38.257746 22595 util.hpp:85] Finished reading file
+I0115 21:12:38.477682 22595 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:12:38.477701 22595 bcomp_bench.cpp:55] Time for sequential bcomp: 219[ms]
+RESULT dataset=world_leaders algo=sequential_bcomp text=46968181 find_blocks=83 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=30 compact_text=58 comp_text=24143359 time=219
+I0115 21:12:39.197921 22595 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:39.224809 22595 util.hpp:108] Read 46968181 bytes
+I0115 21:12:39.224829 22595 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:39.265311 22600 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:39.687685 22600 util.hpp:84] Read 46968181 bytes
+I0115 21:12:39.687701 22600 util.hpp:85] Finished reading file
+I0115 21:12:39.864246 22600 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:12:39.864265 22600 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 176[ms]
+RESULT dataset=world_leaders algo=parallel_bcomp text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=45 comp_text=24143359 time=176
+I0115 21:12:40.594698 22600 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:40.621598 22600 util.hpp:108] Read 46968181 bytes
+I0115 21:12:40.621614 22600 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:40.662534 22608 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:41.076951 22608 util.hpp:84] Read 46968181 bytes
+I0115 21:12:41.076968 22608 util.hpp:85] Finished reading file
+I0115 21:12:41.298110 22608 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:12:41.298130 22608 bcomp_bench.cpp:55] Time for sequential bcomp: 218[ms]
+RESULT dataset=world_leaders algo=sequential_bcomp text=46968181 find_blocks=83 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=31 compact_text=57 comp_text=24143359 time=218
+I0115 21:12:42.020136 22608 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:42.047498 22608 util.hpp:108] Read 46968181 bytes
+I0115 21:12:42.047515 22608 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:42.087958 22613 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:42.502331 22613 util.hpp:84] Read 46968181 bytes
+I0115 21:12:42.502346 22613 util.hpp:85] Finished reading file
+I0115 21:12:42.679951 22613 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:12:42.679970 22613 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 177[ms]
+RESULT dataset=world_leaders algo=parallel_bcomp text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=46 comp_text=24143359 time=177
+I0115 21:12:43.414407 22613 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:43.441391 22613 util.hpp:108] Read 46968181 bytes
+I0115 21:12:43.441408 22613 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:43.481422 22621 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:43.896435 22621 util.hpp:84] Read 46968181 bytes
+I0115 21:12:43.896450 22621 util.hpp:85] Finished reading file
+I0115 21:12:44.115061 22621 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:12:44.115078 22621 bcomp_bench.cpp:55] Time for sequential bcomp: 218[ms]
+RESULT dataset=world_leaders algo=sequential_bcomp text=46968181 find_blocks=82 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=31 compact_text=57 comp_text=24143359 time=218
+I0115 21:12:44.835908 22621 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:44.862987 22621 util.hpp:108] Read 46968181 bytes
+I0115 21:12:44.863001 22621 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:44.903453 22636 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:45.328522 22636 util.hpp:84] Read 46968181 bytes
+I0115 21:12:45.328537 22636 util.hpp:85] Finished reading file
+I0115 21:12:45.504489 22636 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:12:45.504508 22636 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 175[ms]
+RESULT dataset=world_leaders algo=parallel_bcomp text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=45 comp_text=24143359 time=175
+I0115 21:12:46.235985 22636 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:46.263782 22636 util.hpp:108] Read 46968181 bytes
+I0115 21:12:46.263798 22636 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:46.304719 22643 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:46.719039 22643 util.hpp:84] Read 46968181 bytes
+I0115 21:12:46.719054 22643 util.hpp:85] Finished reading file
+I0115 21:12:46.943080 22643 bcomp_bench.cpp:54] Time for sequential bcomp: 0[s]
+I0115 21:12:46.943099 22643 bcomp_bench.cpp:55] Time for sequential bcomp: 219[ms]
+RESULT dataset=world_leaders algo=sequential_bcomp text=46968181 find_blocks=83 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=31 compact_text=57 comp_text=24143359 time=219
+I0115 21:12:47.664674 22643 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:47.691838 22643 util.hpp:108] Read 46968181 bytes
+I0115 21:12:47.691857 22643 util.hpp:109] Finished reading file
+BComp Correct
+I0115 21:12:47.732378 22650 util.hpp:61] Reading file: ../../data/world_leaders
+I0115 21:12:48.147307 22650 util.hpp:84] Read 46968181 bytes
+I0115 21:12:48.147321 22650 util.hpp:85] Finished reading file
+I0115 21:12:48.324088 22650 parallel_bcomp_bench.cpp:54] Time for parallel bcomp: 0[s]
+I0115 21:12:48.324105 22650 parallel_bcomp_bench.cpp:55] Time for parallel bcomp: 176[ms]
+RESULT dataset=world_leaders algo=parallel_bcomp text=46968181 find_blocks=57 copy_blocks=0 sort=0 elements=184 hits=666274 block_rules=0 replace_blocks=25 compact_text=45 comp_text=24143359 time=176
+I0115 21:12:49.055043 22650 util.hpp:94] Reading file: ../../data/world_leaders
+I0115 21:12:49.081799 22650 util.hpp:108] Read 46968181 bytes
+I0115 21:12:49.081817 22650 util.hpp:109] Finished reading file
+BComp Correct
