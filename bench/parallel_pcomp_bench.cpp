@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::regex reg("_");
-    std::regex_replace(dataset, reg, "\\_");
+    dataset = std::regex_replace(dataset, reg, "\\_");
     
     recompression.bcomp(text, rlslp);
     std::cout << std::endl;

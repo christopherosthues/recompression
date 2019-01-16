@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::regex reg("_");
-    std::regex_replace(dataset, reg, "\\_");
+    dataset = std::regex_replace(dataset, reg, "\\_");
     
     const auto startTime = std::chrono::system_clock::now();
 
