@@ -56,4 +56,29 @@ int main(int argc, char *argv[]) {
 
     std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
     //std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+
+    std::stringstream sstream;
+    for (const auto& c : text) {
+        rlslp.derive(sstream, c);
+//        if (c >= rlslp.terminals) {
+//            if (rlslp.is_block(c)) {
+//                auto len = rlslp[c - rlslp.terminals].second();
+//                for (size_t j = 0; j < len; ++j) {
+//                    sstream << static_cast<char>(rlslp[c - rlslp.terminals].first());
+//                }
+//            }
+//        } else {
+//            sstream << static_cast<char>(c);
+//        }
+    }
+
+    rlslp.resize(0);
+
+    std::string c_text;
+    recomp::util::read_text_file(file_name, c_text);
+    if (sstream.str() == c_text) {
+        std::cerr << "BComp Correct" << std::endl;
+    } else {
+        std::cerr << "BComp Failure" << std::endl;
+    }
 }

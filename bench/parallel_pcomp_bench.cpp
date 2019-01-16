@@ -59,4 +59,19 @@ int main(int argc, char *argv[]) {
 
     //std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
     std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+
+    std::stringstream sstream;
+    for (const auto& c : text) {
+        rlslp.derive(sstream, c);
+    }
+
+    rlslp.resize(0);
+
+    std::string c_text;
+    recomp::util::read_text_file(file_name, c_text);
+    if (sstream.str() == c_text) {
+        std::cerr << "PComp Correct" << std::endl;
+    } else {
+        std::cerr << "PComp Failure" << std::endl;
+    }
 }
