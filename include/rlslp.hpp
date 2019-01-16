@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <iostream>
+
 #include "defs.hpp"
 
 namespace recomp {
@@ -21,25 +23,6 @@ const term_t CHAR_ALPHABET = 256;
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 struct rlslp {
  private:
-    void derive(std::stringstream& sstream, variable_t nt) {
-        if (nt < static_cast<variable_t>(terminals)) {
-            sstream << static_cast<char>(nt);
-        } else {
-            auto first = non_terminals[nt - terminals].first();
-            auto second = non_terminals[nt - terminals].second();
-
-            if (is_block(nt)) {  // block
-                variable_t b_len = second;// - 1;
-                while (b_len--) {
-                    derive(sstream, first);
-                }
-            } else {  // pair
-                derive(sstream, first);
-                derive(sstream, second);
-            }
-        }
-    }
-
     inline size_t rest_len(const size_t i, const size_t len, const size_t derived_string_len) const {
         if (i + len > derived_string_len) {
             return len - derived_string_len + i;
@@ -173,7 +156,7 @@ struct rlslp {
     /**
      * The number of terminals.
      */
-    terminal_count_t terminals = 0;
+    terminal_count_t terminals = CHAR_ALPHABET;
 
     /**
      * The number of blocks.
@@ -220,6 +203,29 @@ struct rlslp {
             return false;
         }
         return this->blocks[nt - terminals];
+    }
+
+    void derive(std::stringstream& sstream, variable_t nt) {
+        //std::cout << "variable: " << nt << std::endl;
+        if (nt < static_cast<variable_t>(terminals)) {
+            //std::cout << "terminal: " << nt << std::endl;
+            sstream << static_cast<char>(nt);
+        } else {
+            auto first = non_terminals[nt - terminals].first();
+            auto second = non_terminals[nt - terminals].second();
+
+            if (is_block(nt)) {  // block
+                //std::cout << "block: " << first << ", " << second << std::endl;
+                variable_t b_len = second;// - 1;
+                while (b_len--) {
+                    derive(sstream, first);
+                }
+            } else {  // pair
+                //std::cout << "pair: " << first << ", " << second << std::endl;
+                derive(sstream, first);
+                derive(sstream, second);
+            }
+        }
     }
 
     std::string derive_text() {
