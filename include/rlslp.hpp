@@ -197,6 +197,11 @@ struct rlslp {
         blocks.resize(size, block);
     }
 
+    void shrink_to_fit() {
+        non_terminals.shrink_to_fit();
+        blocks.shrink_to_fit();
+    }
+
     bool is_block(variable_t nt) const {
         if (nt < terminals) {
             return false;
