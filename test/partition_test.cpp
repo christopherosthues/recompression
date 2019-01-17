@@ -2,6 +2,7 @@
 
 #define private public
 
+#include "partition.hpp"
 #include "recompression.hpp"
 #include "parallel_recompression.hpp"
 
@@ -22,10 +23,13 @@ TEST(parallel_partition, 212181623541741623541321) {
     par_multiset_t multiset(text.size() - 1);
     par_alphabet_t alphabet{1, 2, 3, 4, 5, 6, 7, 8};
     par_partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     parallel::recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
     par_partition_t exp_partition;
     exp_partition[1] = true;
@@ -45,10 +49,13 @@ TEST(parallel_partition, 131261051171161051139) {
     par_multiset_t multiset(text.size() - 1);
     par_alphabet_t alphabet{3, 5, 6, 7, 9, 10, 11, 12, 13};
     par_partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     parallel::recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
     par_partition_t exp_partition;
     exp_partition[3] = false;
@@ -69,10 +76,13 @@ TEST(parallel_partition, 18161517161514) {
     par_multiset_t multiset(text.size() - 1);
     par_alphabet_t alphabet{14, 15, 16, 17, 18};
     par_partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     parallel::recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
     par_partition_t exp_partition;
     exp_partition[14] = true;
@@ -89,10 +99,13 @@ TEST(parallel_partition, 21201619) {
     par_multiset_t multiset(text.size() - 1);
     par_alphabet_t alphabet{16, 19, 20, 21};
     par_partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     parallel::recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
     par_partition_t exp_partition;
     exp_partition[16] = false;
@@ -108,10 +121,13 @@ TEST(parallel_partition, 2322) {
     par_multiset_t multiset(text.size() - 1);
     par_alphabet_t alphabet{22, 23};
     par_partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     parallel::recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
     par_partition_t exp_partition;
     exp_partition[22] = true;
@@ -126,6 +142,9 @@ TEST(partition, 212181623541741623541321) {
     multiset_t multiset(text.size() - 1);
     alphabet_t alphabet{1, 2, 3, 4, 5, 6, 7, 8};
     partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
@@ -149,6 +168,9 @@ TEST(partition, 131261051171161051139) {
     multiset_t multiset(text.size() - 1);
     alphabet_t alphabet{3, 5, 6, 7, 9, 10, 11, 12, 13};
     partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
@@ -173,6 +195,9 @@ TEST(partition, 18161517161514) {
     multiset_t multiset(text.size() - 1);
     alphabet_t alphabet{14, 15, 16, 17, 18};
     partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
@@ -193,6 +218,9 @@ TEST(partition, 21201619) {
     multiset_t multiset(text.size() - 1);
     alphabet_t alphabet{16, 19, 20, 21};
     partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
@@ -212,6 +240,9 @@ TEST(partition, 2322) {
     multiset_t multiset(text.size() - 1);
     alphabet_t alphabet{22, 23};
     partition_t partition;
+    for (const auto& a : alphabet) {
+        partition[a] = false;
+    }
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());

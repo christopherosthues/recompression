@@ -274,15 +274,21 @@ class recompression {
         const auto startTime = std::chrono::system_clock::now();
 
         DLOG(INFO) << util::text_vector_to_string(alphabet);
-
         int l_count = 0;
         int r_count = 0;
         size_t j = 0;
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            while (j < alphabet.size() && std::get<0>(multiset[i]) > alphabet[j]) {
-                partition[alphabet[j]] = l_count > r_count;
-                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
-                j++;
+        if (multiset.size() > 0) {
+            if (partition[std::get<0>(multiset[0])]) {
+                r_count++;
+            } else {
+                l_count++;
+            }
+        }
+        for (size_t i = 1; i < multiset.size(); ++i) {
+            if (std::get<0>(multiset[i - 1]) < std::get<0>(multiset[i])) {
+//            LOG(INFO) << "Setting " << std::get<0>(multiset[i - 1]) << " to " << (l_count > r_count) << " ; "
+//                      << l_count << ", " << r_count;
+                partition[std::get<0>(multiset[i - 1])] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
             }
@@ -292,33 +298,58 @@ class recompression {
                 l_count++;
             }
         }
-        partition[alphabet[j]] = l_count > r_count;
+//    LOG(INFO) << "Setting " << std::get<0>(multiset[multiset.size() - 1]) << " to " << (l_count > r_count) << " ; "
+//              << l_count << ", " << r_count;
+        partition[std::get<0>(multiset[multiset.size() - 1])] = l_count > r_count;
         const auto endTimePar = std::chrono::system_clock::now();
         const auto timeSpanPar = endTimePar - startTime;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
         DLOG(INFO) << "j: " << j;
         DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
+//        int l_count = 0;
+//        int r_count = 0;
+//        size_t j = 0;
+//        for (size_t i = 0; i < multiset.size(); ++i) {
+//            while (j < alphabet.size() && std::get<0>(multiset[i]) > alphabet[j]) {
+//                partition[alphabet[j]] = l_count > r_count;
+//                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
+//                j++;
+//                l_count = 0;
+//                r_count = 0;
+//            }
+//            if (partition[std::get<1>(multiset[i])]) {
+//                r_count++;
+//            } else {
+//                l_count++;
+//            }
+//        }
+//        partition[alphabet[j]] = l_count > r_count;
+//        const auto endTimePar = std::chrono::system_clock::now();
+//        const auto timeSpanPar = endTimePar - startTime;
+//        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+//        DLOG(INFO) << "j: " << j;
+//        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
 
         const auto startTimeCount = std::chrono::system_clock::now();
-        l_count = 0;
-        r_count = 0;
+        int lr_count = 0;
+        int rl_count = 0;
         for (size_t i = 0; i < multiset.size(); ++i) {
             if (std::get<2>(multiset[i])) {
                 if (!partition[std::get<0>(multiset[i])] &&
                     partition[std::get<1>(multiset[i])]) {  // bc in text and b in right set and c in left
-                    r_count++;
+                    rl_count++;
                 } else if (partition[std::get<0>(multiset[i])] &&
                            !partition[std::get<1>(multiset[i])]) {  // bc in text and b in left set and c in right
-                    l_count++;
+                    lr_count++;
                 }
             } else {
                 if (!partition[std::get<0>(multiset[i])] &&
                     partition[std::get<1>(multiset[i])]) {  // cb in text and c in left set and b in right
-                    l_count++;
+                    lr_count++;
                 } else if (partition[std::get<0>(multiset[i])] &&
                            !partition[std::get<1>(multiset[i])]) {  // cb in text and c in right set and b in left
-                    r_count++;
+                    rl_count++;
                 }
             }
         }
@@ -326,7 +357,7 @@ class recompression {
         const auto timeSpanCount = endTimeCount - startTimeCount;
         std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
 
-        if (r_count > l_count) {
+        if (rl_count > lr_count) {
             DLOG(INFO) << "Swap partition sets";
             for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
                 (*iter).second = !(*iter).second;
