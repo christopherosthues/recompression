@@ -13,7 +13,7 @@ set(PROJECT_DESCRIPTION "Recompression")
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-#    set(CMAKE_BUILD_TYPE "Debug")
+    #    set(CMAKE_BUILD_TYPE "Debug")
 endif ()
 
 message(STATUS "Building in '${CMAKE_BUILD_TYPE}' mode")
@@ -42,15 +42,17 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
 # includes build_library, build_executable and build_tests macros
 include(Build)
 
-set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp src/radix_sort.cpp src/recompression.cpp src/partition.cpp)
-set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp include/radix_sort.hpp include/recompression.hpp include/partition.hpp)
+set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp src/radix_sort.cpp src/recompression.cpp
+        src/partition.cpp src/fast_recompression.cpp)
+set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp
+        include/radix_sort.hpp include/recompression.hpp include/partition.hpp include/fast_recompression.hpp)
 
 find_package(Git)
-if(GIT_FOUND)
+if (GIT_FOUND)
     message("git found at: ${GIT_EXECUTABLE}")
-else()
+else ()
     message(WARNING "Could not find git. Cloning of submodules will not work.")
-endif()
+endif ()
 
 build_library()
 
