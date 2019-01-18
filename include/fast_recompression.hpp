@@ -18,7 +18,8 @@ template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class recompression_fast {
  public:
     typedef std::vector<variable_t> text_t;
-    typedef std::tuple<variable_t, variable_t, bool> multiset_t;
+//    typedef std::tuple<variable_t, variable_t, bool> multiset_t;
+    typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> multiset_t;
 
     /**
      * @brief Builds the straight-line program generating the given text using the recompression technique.
@@ -39,18 +40,20 @@ class recompression_fast {
         std::vector<variable_t> mapping;
         rlslp.terminals = alphabet_size;
 
-        replace_letters(text, rlslp, alphabet_size, mapping);
+        terminal_count_t alpha_size = alphabet_size;
+
+        replace_letters(text, /*rlslp,*/ alpha_size, mapping);
 
         while (text.size() > 1) {
 //            std::cout << "BComp" << std::endl;
-            bcomp(text, rlslp, alphabet_size, mapping);
+            bcomp(text, rlslp, alpha_size, mapping);
 //            std::cout << "Alpha" << std::endl;
-            compute_alphabet(text, alphabet_size, mapping);
+            compute_alphabet(text, alpha_size, mapping);
             if (text.size() > 1) {
 //                std::cout << "PComp" << std::endl;
-                pcomp(text, rlslp, alphabet_size, mapping);
+                pcomp(text, rlslp, alpha_size, mapping);
 //                std::cout << "Alpha" << std::endl;
-                compute_alphabet(text, alphabet_size, mapping);
+                compute_alphabet(text, alpha_size, mapping);
             }
         }
 
@@ -94,16 +97,13 @@ class recompression_fast {
      * @brief Replaces all letters in the text with new non-terminals.
      *
      * @param text[in] The text to compress
-     * @param t[out] The new text where all letters are replaced with non-terminals
-     * @param alphabet_size[out] The size of the alphabet used in the text (from 0 to alphabet size - 1)
+     * @param alphabet_size[in,out] The size of the alphabet used in the text (from 0 to alphabet size - 1)
      * @param mapping[out] The mapping of the symbols in the text to the non-terminal
      */
     void replace_letters(text_t &t,
-                         rlslp<variable_t, terminal_count_t>& rlslp,
                          variable_t& alphabet_size,
                          std::vector<variable_t> &mapping) {
         const auto startTime = std::chrono::system_clock::now();
-        // std::map<variable_t, variable_t> alpha;
         std::vector<bool> alpha(alphabet_size, false);
         for (size_t i = 0; i < t.size(); ++i) {
             alpha[t[i]] = true;
@@ -111,18 +111,19 @@ class recompression_fast {
 
         std::vector<size_t> count(alphabet_size, 0);
 
+        alphabet_size = 0;
+
         bool first = true;
         for (size_t i = 0; i < alpha.size(); ++i) {
             if (alpha[i]) {
                 alphabet_size++;
-//                rlslp.non_terminals.emplace_back(i, 1);
 
                 if (i > 0 && !first) {
                     count[i] = count[i-1] + 1;
                 } else if (first) {
                     first = false;
                 }
-                mapping.emplace_back(count[i]);
+                mapping.emplace_back(i);
             } else {
                 if (i > 0) {
                     count[i] = count[i-1];
@@ -130,48 +131,9 @@ class recompression_fast {
             }
         }
 
-        /*for (size_t i = 0; i < t.size(); ++i) {
-            alpha[t[i]] = 0;
-        }
-
-        size_t i = 0;
-        for (auto& a : alpha) {
-            mapping.emplace_back(i);
-            a.second = i++;
-            rlslp.non_terminals.emplace_back(a.first, 1);
-        }*/
-
-//    std::cout << "Mapping: ";
-//    for (const auto& m : mapping) {
-//        std::cout << m << " ";
-//    }
-//    std::cout << std::endl;
-
-        /*rlslp.blocks.resize(alpha.size());
-        for (size_t j = 0; j < rlslp.blocks.size(); ++j) {
-            rlslp.blocks[j] = false;
-        }*/
-
-        // alphabet_size = alpha.size();
-//        rlslp.terminals = alphabet_size;
-
-        //std::cout << "Alphabet size: " << alphabet_size << std::endl;
-
         for (size_t i = 0; i < t.size(); ++i) {
-            // t[i] = alpha[t[i]];
             t[i] = count[t[i]];
         }
-
-//    std::cout << "Text: ";
-//    for (const auto& c : t) {
-//        std::cout << c;
-//    }
-//    std::cout << std::endl;
-
-//    for (const auto& term : rlslp.non_terminals) {
-//        std::cout << term.production[0] << " ";
-//    }
-//    std::cout << std::endl;
 
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
@@ -179,12 +141,12 @@ class recompression_fast {
     }
 
     /**
- * @brief Detects all blocks in the text and replaces them with new non-terminals.
- *
- * @param text[in,out] The text
- * @param alphabet_size[in,out] The size of the alphabet used in the text
- * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
- */
+     * @brief Detects all blocks in the text and replaces them with new non-terminals.
+     *
+     * @param text[in,out] The text
+     * @param alphabet_size[in,out] The size of the alphabet used in the text
+     * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
+     */
     void bcomp(text_t& text,
                rlslp<variable_t,
                terminal_count_t>& rlslp,
@@ -487,17 +449,17 @@ class recompression_fast {
      * counted. If there are more pairs from the right set to the left set occurring in the text
      * the sets will be swapped.
      *
-     * @param t[in] The text
+     * @param text[in] The text
      * @param alphabet_size[in] The size of the alphabet used in the text
      *
      * @return The partition of the letters in the current alphabet represented by a bitvector
      */
-    inline void partition(const text_t& t,
+    inline void partition(const text_t& text,
                           const variable_t& alphabet_size,
                           std::vector<bool>& partition) {
         //const auto startTime = std::chrono::system_clock::now();
-        std::vector<std::map<variable_t, std::pair<size_t, size_t>>> multiset(alphabet_size);
-        compute_multiset(t, multiset);
+        multiset_t multiset(alphabet_size);
+        compute_multiset(text, multiset);
 
         const auto startTime = std::chrono::system_clock::now();
         compute_partition(multiset, partition, alphabet_size);
