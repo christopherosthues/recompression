@@ -253,9 +253,9 @@ TEST(fast_bcomp, 21214441332311413334133231141321) {
     recomp.bcomp(text, rlslp, alphabet_size, mapping);
     recomp.compute_alphabet(text, alphabet_size, mapping);
 
-    text_t exp_text = {1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 4, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0};
-    std::vector<var_t> exp_mapping = {1, 2, 3, 4, 5, 6, 7};
-    term_t exp_alphabet_size = 7;
+    text_t exp_text = {1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0};
+    std::vector<var_t> exp_mapping = {1, 2, 3, 4, 5, 6, 7, 8};
+    term_t exp_alphabet_size = 8;
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
@@ -312,7 +312,7 @@ TEST(fast_bcomp, 22222222211111112222) {
 
     text_t exp_text = {2, 0, 1};
     std::vector<var_t> exp_mapping = {3, 4, 5};
-    term_t exp_alphabet_size = 1;
+    term_t exp_alphabet_size = 3;
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;

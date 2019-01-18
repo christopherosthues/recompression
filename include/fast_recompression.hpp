@@ -205,7 +205,12 @@ class recompression_fast {
                     block.second = alphabet_size++;
                     block_count++;
                     rlslp.block_count++;
-                    rlslp.non_terminals.emplace_back(mapping[i], block.first, rlslp.non_terminals[mapping[i]].len * block.first);
+                    variable_t len = block.first;
+                    if (mapping[i] >= rlslp.terminals) {
+                        len *= rlslp[mapping[i] - rlslp.terminals].len;
+                    }
+//                    rlslp.non_terminals.emplace_back(mapping[i], block.first, rlslp.non_terminals[mapping[i]].len * block.first);
+                    rlslp.non_terminals.emplace_back(mapping[i], block.first, len);
                     mapping.emplace_back(next_nt++);
                 }
             }
@@ -214,6 +219,8 @@ class recompression_fast {
         const auto timeSpanAss = endTimeAss - startTimeAss;
         std::cout << " block_rules=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
         //std::cout << "Time for block nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count() << "[ms]" << std::endl;
+
+        rlslp.blocks.resize(rlslp.blocks.size() + block_count, true);
 
 
         const auto startTimeRep = std::chrono::system_clock::now();

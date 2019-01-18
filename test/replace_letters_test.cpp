@@ -29,9 +29,6 @@ TEST(replace_letters, 212141323141341323141321) {
     exp_rlslp.root = 0;
     term_t exp_alphabet_size = 4;
 
-    LOG(INFO) << "rlslp: " << std::to_string(rlslp);
-    LOG(INFO) << "exp_rlslp: " << std::to_string(exp_rlslp);
-
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size, alphabet_size);
