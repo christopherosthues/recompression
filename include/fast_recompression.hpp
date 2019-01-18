@@ -148,8 +148,7 @@ class recompression_fast {
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
     void bcomp(text_t& text,
-               rlslp<variable_t,
-               terminal_count_t>& rlslp,
+               rlslp<variable_t, terminal_count_t>& rlslp,
                variable_t& alphabet_size,
                std::vector<variable_t>& mapping) {
         //std::cout << "Text size (Input BComp): " << text_size << std::endl;
