@@ -590,3 +590,161 @@ TEST(pprs_tuple, one_diff) {
 
     ASSERT_EQ(exp_vec, vec);
 }
+
+TEST(pprs, par_lsd) {
+    std::vector<variable_t> vec;
+    vec.emplace_back(23);
+    vec.emplace_back(23423);
+    vec.emplace_back(234333);
+    vec.emplace_back(5758);
+    vec.emplace_back(599);
+    vec.emplace_back(9023);
+    vec.emplace_back(2);
+    vec.emplace_back(774);
+    vec.emplace_back(23423);
+    vec.emplace_back(563);
+    vec.emplace_back(2);
+    vec.emplace_back(9023);
+    vec.emplace_back(563);
+    vec.emplace_back(6994);
+    vec.emplace_back(2);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    parallel::partitioned_radix_sort<variable_t, 8>(vec);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    std::vector<variable_t> exp_vec;
+    exp_vec.emplace_back(2);
+    exp_vec.emplace_back(2);
+    exp_vec.emplace_back(2);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(563);
+    exp_vec.emplace_back(563);
+    exp_vec.emplace_back(599);
+    exp_vec.emplace_back(774);
+    exp_vec.emplace_back(5758);
+    exp_vec.emplace_back(6994);
+    exp_vec.emplace_back(9023);
+    exp_vec.emplace_back(9023);
+    exp_vec.emplace_back(23423);
+    exp_vec.emplace_back(23423);
+    exp_vec.emplace_back(234333);
+
+    ASSERT_EQ(exp_vec, vec);
+}
+
+TEST(pprs, all_equal) {
+    std::vector<variable_t> vec;
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    parallel::partitioned_radix_sort<variable_t, 8>(vec);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    std::vector<variable_t> exp_vec;
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+
+    ASSERT_EQ(exp_vec, vec);
+}
+
+TEST(pprs, one_sec_diff) {
+    std::vector<variable_t> vec;
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    parallel::partitioned_radix_sort<variable_t, 8>(vec);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    std::vector<variable_t> exp_vec;
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+
+    ASSERT_EQ(exp_vec, vec);
+}
+
+TEST(pprs, one_diff) {
+    std::vector<variable_t> vec;
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(256);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+    vec.emplace_back(23);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    parallel::partitioned_radix_sort<variable_t, 8>(vec);
+
+    DLOG(INFO) << util::text_vector_to_string(vec);
+
+    std::vector<variable_t> exp_vec;
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(23);
+    exp_vec.emplace_back(256);
+
+    ASSERT_EQ(exp_vec, vec);
+}

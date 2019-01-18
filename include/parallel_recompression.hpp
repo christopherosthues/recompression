@@ -214,8 +214,6 @@ class recompression {
         std::cout << " copy_blocks=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
 
         const auto startTimeSort = std::chrono::system_clock::now();
-//    ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
-        // __gnu_parallel::sort(sort_blocks.begin(), sort_blocks.end(), __gnu_parallel::multiway_mergesort_tag());
 
         parallel::partitioned_radix_sort(sort_blocks);
         const auto endTimeSort = std::chrono::system_clock::now();
@@ -367,10 +365,14 @@ class recompression {
 
         std::cout << " text=" << text.size() << " alphabet=" << alphabet.size();
 
-
+        const auto startTimeMult = std::chrono::system_clock::now();
         multiset_t multiset(text.size() - 1);
         compute_multiset(text, multiset);
-        __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
+        partitioned_radix_sort(multiset);
+//        __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
+        const auto endTimeMult = std::chrono::system_clock::now();
+        const auto timeSpanMult = endTimeMult - startTimeMult;
+        std::cout << " sort_multiset=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
 
         size_t pair_count = 0;
 
