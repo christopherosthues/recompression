@@ -42,18 +42,28 @@ class recompression_fast {
 
         terminal_count_t alpha_size = alphabet_size;
 
+        LOG(INFO) << "Replace letters";
         replace_letters(text, /*rlslp,*/ alpha_size, mapping);
+        LOG(INFO) << "Replace letters finished";
 
         while (text.size() > 1) {
 //            std::cout << "BComp" << std::endl;
+            LOG(INFO) << "BComp";
             bcomp(text, rlslp, alpha_size, mapping);
+            LOG(INFO) << "BComp finished";
 //            std::cout << "Alpha" << std::endl;
+            LOG(INFO) << "Alphabet";
             compute_alphabet(text, alpha_size, mapping);
+            LOG(INFO) << "Alphabet finished";
             if (text.size() > 1) {
 //                std::cout << "PComp" << std::endl;
+                LOG(INFO) << "PComp";
                 pcomp(text, rlslp, alpha_size, mapping);
+                LOG(INFO) << "PComp finished";
 //                std::cout << "Alpha" << std::endl;
+                LOG(INFO) << "Alphabet PComp";
                 compute_alphabet(text, alpha_size, mapping);
+                LOG(INFO) << "Alphabet PComp finished";
             }
         }
 
@@ -91,8 +101,6 @@ class recompression_fast {
     }
 
  private:
-    const variable_t DELETED = UINT_MAX;
-
     /**
      * @brief Replaces all letters in the text with new non-terminals.
      *
@@ -100,7 +108,7 @@ class recompression_fast {
      * @param alphabet_size[in,out] The size of the alphabet used in the text (from 0 to alphabet size - 1)
      * @param mapping[out] The mapping of the symbols in the text to the non-terminal
      */
-    void replace_letters(text_t &t,
+    inline void replace_letters(text_t &t,
                          variable_t& alphabet_size,
                          std::vector<variable_t> &mapping) {
         const auto startTime = std::chrono::system_clock::now();
@@ -147,7 +155,7 @@ class recompression_fast {
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
-    void bcomp(text_t& text,
+    inline void bcomp(text_t& text,
                rlslp<variable_t, terminal_count_t>& rlslp,
                variable_t& alphabet_size,
                std::vector<variable_t>& mapping) {
@@ -487,7 +495,7 @@ class recompression_fast {
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
-    void pcomp(text_t& text,
+    inline void pcomp(text_t& text,
                rlslp<variable_t, terminal_count_t>& rlslp,
                variable_t& alphabet_size,
                std::vector<variable_t>& mapping) {
@@ -585,7 +593,7 @@ class recompression_fast {
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
-    void compute_alphabet(text_t& text, variable_t &alphabet_size, std::vector<variable_t> &mapping) {
+    inline void compute_alphabet(text_t& text, variable_t &alphabet_size, std::vector<variable_t> &mapping) {
         const auto startTime = std::chrono::system_clock::now();
         // Create bitvector for all letters to determine which are used in the current text
         std::vector<bool> used(alphabet_size, 0);
@@ -605,7 +613,7 @@ class recompression_fast {
 
         alphabet_size = 0;
         auto m = 0;
-        auto index = 0;
+        size_t index = 0;
         for (const auto& u : used) {
             // If letter is used in the current text add it to the new alphabet and set the rank of the letter
             if (u) {
