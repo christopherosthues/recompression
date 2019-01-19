@@ -37,50 +37,32 @@ class recompression_fast {
         DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: "
                    << std::to_string(alphabet_size);
         const auto startTime = std::chrono::system_clock::now();
-//        variable_t alphabet_size = 0;
         std::vector<variable_t> mapping;
         rlslp.terminals = alphabet_size;
 
         terminal_count_t alpha_size = alphabet_size;
 
-        LOG(INFO) << "Replace letters";
+//        LOG(INFO) << "Replace letters";
         replace_letters(text, /*rlslp,*/ alpha_size, mapping);
-        LOG(INFO) << "Replace letters finished";
+//        LOG(INFO) << "Replace letters finished";
 
         while (text.size() > 1) {
-//            std::cout << "BComp" << std::endl;
-            LOG(INFO) << "BComp";
+//            LOG(INFO) << "BComp";
             bcomp(text, rlslp, alpha_size, mapping);
-            LOG(INFO) << "BComp finished";
-//            std::cout << "Alpha" << std::endl;
-            LOG(INFO) << "Alphabet";
+//            LOG(INFO) << "BComp finished";
+//            LOG(INFO) << "Alphabet";
             compute_alphabet(text, alpha_size, mapping);
-            LOG(INFO) << "Alphabet finished";
+//            LOG(INFO) << "Alphabet finished";
             if (text.size() > 1) {
-//                std::cout << "PComp" << std::endl;
-                LOG(INFO) << "PComp";
+//                LOG(INFO) << "PComp";
                 pcomp(text, rlslp, alpha_size, mapping);
-                LOG(INFO) << "PComp finished";
-//                std::cout << "Alpha" << std::endl;
-                LOG(INFO) << "Alphabet PComp";
+//                LOG(INFO) << "PComp finished";
+//                LOG(INFO) << "Alphabet PComp";
                 compute_alphabet(text, alpha_size, mapping);
-                LOG(INFO) << "Alphabet PComp finished";
+//                LOG(INFO) << "Alphabet PComp finished";
             }
         }
 
-//        bool not_finished = text.size() > 1;
-//        rlslp.terminals = alphabet_size;
-//
-//        while (not_finished) {
-//            bcomp(text, rlslp);
-//            not_finished = text.size() > 1;
-//
-//            if (not_finished) {
-//                pcomp(text, rlslp);
-//                not_finished = text.size() > 1;
-//            }
-//        }
-//
         if (!rlslp.empty()) {
             rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
         }
@@ -190,7 +172,7 @@ class recompression_fast {
                 positions.emplace_back(block_len, copy_i - 1);
                 block_vec[text[i - 1]] = true;
                 blocks[text[i-1]][block_len] = 1;
-                block_count++;
+                block_count++;  // Only for statistics here
                 block_len = 1;
             }
             if (copy) {
@@ -212,7 +194,7 @@ class recompression_fast {
             if (block_vec[i]) {
                 for (auto& block : blocks[i]) {
                     block.second = alphabet_size++;
-                    block_count++;
+                    block_count++;  // Here needed to count the number of different blocks
                     rlslp.block_count++;
                     variable_t len = block.first;
                     if (mapping[i] >= rlslp.terminals) {
@@ -572,14 +554,15 @@ class recompression_fast {
 //        text_size = new_text_size;
 
         const auto startTimeAss = std::chrono::system_clock::now();
-//        size_t alpha_size = alphabet_size;
-        for (size_t i = 0; i < alphabet_size;/*alpha_size*/ ++i) {
+        size_t alpha_size = alphabet_size;
+        for (size_t i = 0; i < alpha_size; ++i) {
             if (!part[i]) {
                 for (const auto& pair : pairs[i]) {
                     for (const auto& pos : pair.second) {
-//                        text[pos] = alphabet_size;
-                        text[pos] = next_nt;
+                        text[pos] = alphabet_size;
+//                        text[pos] = next_nt;
                     }
+                    alphabet_size++;
                     size_t len = 0;
                     if (mapping[i] >= static_cast<variable_t>(rlslp.terminals)) {
                         len = rlslp[mapping[i] - rlslp.terminals].len;
@@ -592,7 +575,7 @@ class recompression_fast {
                         len += 1;
                     }
                     rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], len);
-                    next_nt++;
+//                    next_nt++;
                 }
             }
         }
