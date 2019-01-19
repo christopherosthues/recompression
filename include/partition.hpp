@@ -33,7 +33,6 @@ inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& al
 
     int l_count = 0;
     int r_count = 0;
-    size_t j = 0;
     if (multiset.size() > 0) {
         if (partition[std::get<0>(multiset[0])]) {
             r_count++;
@@ -76,7 +75,6 @@ inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& al
     const auto endTimePar = std::chrono::system_clock::now();
     const auto timeSpanPar = endTimePar - startTime;
     std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-    DLOG(INFO) << "j: " << j;
 //    LOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
 
