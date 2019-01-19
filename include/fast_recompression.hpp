@@ -20,6 +20,7 @@ class recompression_fast {
     typedef std::vector<variable_t> text_t;
 //    typedef std::tuple<variable_t, variable_t, bool> multiset_t;
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> multiset_t;
+    typedef std::vector<bool> partition_t;
 
     /**
      * @brief Builds the straight-line program generating the given text using the recompression technique.
@@ -260,7 +261,7 @@ class recompression_fast {
      * @return The multiset
      */
     inline void compute_multiset(const text_t& text,
-                                 std::vector<std::map<variable_t, std::pair<size_t, size_t>>>& multiset) {
+                                 multiset_t& multiset) {
         const auto startTime = std::chrono::system_clock::now();
         // Compute adjacency graph of the symbols in the current text
         for (size_t i = 1; i < text.size(); ++i) {
@@ -328,36 +329,54 @@ class recompression_fast {
      *
      * @return The partition of the symbols in the alphabet to maximize the number of pairs to be compressed
      */
-    inline void compute_partition(const std::vector<std::map<variable_t, std::pair<size_t, size_t>>>& multiset,
-                                  std::vector<bool>& partition,
-                                  const variable_t& alphabet_size) {
+    inline void compute_partition(const multiset_t& multiset,
+                                  partition_t& partition) {
         const auto startTime = std::chrono::system_clock::now();
-        //int lr_count = 0;
-        //int rl_count = 0;
-        variable_t c = 0;
-        int left = 0, right = 0;
+        int l_count = 0;
+        int r_count = 0;
         for (size_t i = 0; i < multiset.size(); ++i) {
-            while (c < alphabet_size && i > c) {
-                partition[c] = left > right;
-                c++;
-                left = 0;
-                right = 0;
-            }
-            for (const auto& sec : multiset[i]) {
-                if (partition[sec.first]) {
-                    right += sec.second.first + sec.second.second;
-                } else {
-                    left += sec.second.first + sec.second.second;
+            if (!multiset[i].empty()) {
+                for (const auto& mult : multiset[i]) {
+                    if (partition[mult.first]) {
+                        r_count += mult.second.first + mult.second.second;
+                    } else {
+                        l_count += mult.second.first + mult.second.second;
+                    }
                 }
+//                LOG(INFO) << "symbol: " << i << ", l: " << l_count << ", r: " << r_count;
+                partition[i] = l_count > r_count;
+                l_count = 0;
+                r_count = 0;
             }
         }
+//        //int lr_count = 0;
+//        //int rl_count = 0;
+//        variable_t c = 0;
+//        int left = 0, right = 0;
+//        for (size_t i = 0; i < multiset.size(); ++i) {
+//            while (c < alphabet_size && i > c) {
+//                partition[c] = left > right;
+//                c++;
+//                left = 0;
+//                right = 0;
+//            }
+//            for (const auto& sec : multiset[i]) {
+//                if (partition[sec.first]) {
+//                    right += sec.second.first + sec.second.second;
+//                } else {
+//                    left += sec.second.first + sec.second.second;
+//                }
+//            }
+//        }
+//
+//        while (c < alphabet_size) {
+//            partition[c] = left > right;
+//            c++;
+//            left = 0;
+//            right = 0;
+//        }
 
-        while (c < alphabet_size) {
-            partition[c] = left > right;
-            c++;
-            left = 0;
-            right = 0;
-        }
+
         /*for (const auto& adj : multiset) {
             auto first = adj.first;
             while (c < alphabet_size && first.first > c) {
@@ -403,8 +422,8 @@ class recompression_fast {
      * @param multiset[in] Multiset representing the adjacency graph of the text
      * @param partition[in,out] The partition of the letters in the current alphabet represented by a bitvector
      */
-    inline void count_pairs(const std::vector<std::map<variable_t, std::pair<size_t, size_t>>>& multiset,
-                            std::vector<bool>& partition) {
+    inline void count_pairs(const multiset_t& multiset,
+                            partition_t& partition) {
         const auto startTime = std::chrono::system_clock::now();
         int lr_count = 0;
         int rl_count = 0;
@@ -413,7 +432,7 @@ class recompression_fast {
                 if (!partition[i] && partition[sec.first]) {
                     lr_count += sec.second.first;
                     rl_count += sec.second.second;
-                } else {
+                } else if (partition[i] && !partition[sec.first]) {
                     rl_count += sec.second.first;
                     lr_count += sec.second.second;
                 }
@@ -430,6 +449,7 @@ class recompression_fast {
         }*/
 
         // If there are more pairs in the current text from right set to left set swap partition sets
+//        LOG(INFO) << "lr: " << lr_count << ", rl: " << rl_count;
         if (rl_count > lr_count) {
             partition.flip();
         }
@@ -470,13 +490,13 @@ class recompression_fast {
      */
     inline void partition(const text_t& text,
                           const variable_t& alphabet_size,
-                          std::vector<bool>& partition) {
+                          partition_t& partition) {
         //const auto startTime = std::chrono::system_clock::now();
         multiset_t multiset(alphabet_size);
         compute_multiset(text, multiset);
 
         const auto startTime = std::chrono::system_clock::now();
-        compute_partition(multiset, partition, alphabet_size);
+        compute_partition(multiset, partition);
 
         // Count pairs in the current text based on the pairs build by the partition
         // from left set to right set and vice versa
@@ -502,7 +522,7 @@ class recompression_fast {
         //std::cout << "Text size (Input PComp): " << text_size << std::endl;
         std::cout << " text=" << text.size() << " alphabet=" << alphabet_size;
         const auto startTime = std::chrono::system_clock::now();
-        std::vector<bool> part(alphabet_size, false);
+        partition_t part(alphabet_size, false);
         partition(text, alphabet_size, part);
 
         const auto startTimePairs = std::chrono::system_clock::now();

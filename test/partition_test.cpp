@@ -2,16 +2,21 @@
 
 #define private public
 
+#include "fast_recompression.hpp"
 #include "partition.hpp"
 #include "recompression.hpp"
 #include "parallel_recompression.hpp"
 
 using namespace recomp;
 
-typedef parallel::recompression<var_t, term_t>::text_t text_t;
-typedef parallel::recompression<var_t, term_t>::multiset_t multiset_t;
-typedef parallel::recompression<var_t, term_t>::partition_t partition_t;
-typedef parallel::recompression<var_t, term_t>::alphabet_t alphabet_t;
+typedef recompression<var_t, term_t>::text_t text_t;
+typedef recompression<var_t, term_t>::multiset_t multiset_t;
+typedef recompression<var_t, term_t>::partition_t partition_t;
+typedef recompression<var_t, term_t>::alphabet_t alphabet_t;
+
+typedef recompression_fast<var_t, term_t>::text_t fast_text_t;
+typedef recompression_fast<var_t, term_t>::multiset_t fast_multiset_t;
+typedef recompression_fast<var_t, term_t>::partition_t fast_partition_t;
 
 typedef parallel::recompression<var_t, term_t>::text_t par_text_t;
 typedef parallel::recompression<var_t, term_t>::multiset_t par_multiset_t;
@@ -251,6 +256,178 @@ TEST(partition, 2322) {
     partition_t exp_partition;
     exp_partition[22] = true;
     exp_partition[23] = false;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+
+TEST(fast_compute_partition, 212181623541741623541321) {
+    fast_text_t text{1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0};
+    term_t alphabet_size = 8;
+    fast_multiset_t multiset(alphabet_size);
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.compute_multiset(text, multiset);
+    recomp.compute_partition(multiset, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[1] = true;
+    exp_partition[3] = true;
+    exp_partition[7] = true;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_compute_partition, 131261051171161051139) {
+    fast_text_t text{8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4};
+    term_t alphabet_size = 9;
+    fast_multiset_t multiset(alphabet_size);
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.compute_multiset(text, multiset);
+    recomp.compute_partition(multiset, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[4] = true;
+    exp_partition[5] = true;
+    exp_partition[6] = true;
+    exp_partition[7] = true;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_compute_partition, 18161517161514) {
+    fast_text_t text{4, 2, 1, 3, 2, 1, 0};
+    term_t alphabet_size = 5;
+    fast_multiset_t multiset(alphabet_size);
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.compute_multiset(text, multiset);
+    recomp.compute_partition(multiset, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[1] = true;
+    exp_partition[4] = true;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_compute_partition, 21201619) {
+    fast_text_t text{3, 2, 0, 1};
+    term_t alphabet_size = 4;
+    fast_multiset_t multiset(alphabet_size);
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.compute_multiset(text, multiset);
+    recomp.compute_partition(multiset, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[1] = true;
+    exp_partition[2] = true;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_compute_partition, 2322) {
+    fast_text_t text{1, 0};
+    term_t alphabet_size = 2;
+    fast_multiset_t multiset(alphabet_size);
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.compute_multiset(text, multiset);
+    recomp.compute_partition(multiset, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[1] = true;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+
+TEST(fast_partition, 212181623541741623541321) {
+    fast_text_t text{1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0};
+    term_t alphabet_size = 8;
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.partition(text, alphabet_size, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[0] = true;
+    exp_partition[1] = false;
+    exp_partition[2] = true;
+    exp_partition[3] = false;
+    exp_partition[4] = true;
+    exp_partition[5] = true;
+    exp_partition[6] = true;
+    exp_partition[7] = false;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_partition, 131261051171161051139) {
+    fast_text_t text{8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4};
+    term_t alphabet_size = 9;
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.partition(text, alphabet_size, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[0] = false;
+    exp_partition[1] = false;
+    exp_partition[2] = false;
+    exp_partition[3] = false;
+    exp_partition[4] = true;
+    exp_partition[5] = true;
+    exp_partition[6] = true;
+    exp_partition[7] = true;
+    exp_partition[8] = false;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_partition, 18161517161514) {
+    fast_text_t text{4, 2, 1, 3, 2, 1, 0};
+    term_t alphabet_size = 5;
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.partition(text, alphabet_size, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[0] = true;
+    exp_partition[1] = false;
+    exp_partition[2] = true;
+    exp_partition[3] = true;
+    exp_partition[4] = false;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_partition, 21201619) {
+    fast_text_t text{3, 2, 0, 1};
+    term_t alphabet_size = 4;
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.partition(text, alphabet_size, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[0] = false;
+    exp_partition[1] = true;
+    exp_partition[2] = true;
+    exp_partition[3] = false;
+
+    ASSERT_EQ(exp_partition, partition);
+}
+
+TEST(fast_partition, 2322) {
+    fast_text_t text{1, 0};
+    term_t alphabet_size = 2;
+    fast_partition_t partition(alphabet_size, false);
+    recompression_fast<var_t, term_t> recomp;
+    recomp.partition(text, alphabet_size, partition);
+
+    fast_partition_t exp_partition(alphabet_size, false);
+    exp_partition[0] = true;
+    exp_partition[1] = false;
 
     ASSERT_EQ(exp_partition, partition);
 }
