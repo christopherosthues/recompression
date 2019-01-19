@@ -29,12 +29,14 @@ TEST(fast_recomp, recompression) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 5;
+
     recomp.recomp(text, rlslp, alphabet_size);
 
-    text_t exp_text = {24};
-
+    text_t exp_text = {0};
+//    std::vector<var_t> exp_mapping{24};
+//    term_t exp_alphabet_size = 1;
     recomp::rlslp<var_t, term_t> exp_rlslp;
-    exp_rlslp.terminals = alphabet_size;
+    exp_rlslp.terminals = 5;
     exp_rlslp.root = 19;
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
     exp_rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -61,6 +63,7 @@ TEST(fast_recomp, recompression) {
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+//    ASSERT_EQ(exp_alphabet_size, alphabet_size);
 }
 
 TEST(fast_recomp, one_block) {
@@ -70,7 +73,7 @@ TEST(fast_recomp, one_block) {
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
-    text_t exp_text = {3};
+    text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
@@ -88,7 +91,7 @@ TEST(fast_recomp, two_blocks) {
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
-    text_t exp_text = {5};
+    text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 2;
@@ -108,7 +111,7 @@ TEST(fast_recomp, three_blocks) {
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
-    text_t exp_text = {7};
+    text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
@@ -130,7 +133,7 @@ TEST(fast_recomp, four_blocks) {
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
-    text_t exp_text = {9};
+    text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 6;
