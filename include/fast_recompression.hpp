@@ -516,9 +516,9 @@ class recompression_fast {
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
     inline void pcomp(text_t& text,
-               rlslp<variable_t, terminal_count_t>& rlslp,
-               variable_t& alphabet_size,
-               std::vector<variable_t>& mapping) {
+                      rlslp<variable_t, terminal_count_t>& rlslp,
+                      variable_t& alphabet_size,
+                      std::vector<variable_t>& mapping) {
         //std::cout << "Text size (Input PComp): " << text_size << std::endl;
         std::cout << " text=" << text.size() << " alphabet=" << alphabet_size;
         const auto startTime = std::chrono::system_clock::now();
@@ -580,7 +580,18 @@ class recompression_fast {
 //                        text[pos] = alphabet_size;
                         text[pos] = next_nt;
                     }
-                    rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], rlslp.non_terminals[mapping[i]].len + rlslp.non_terminals[mapping[pair.first]].len);  // TODO(Chris): adjust
+                    size_t len = 0;
+                    if (mapping[i] >= static_cast<variable_t>(rlslp.terminals)) {
+                        len = rlslp[mapping[i] - rlslp.terminals].len;
+                    } else {
+                        len = 1;
+                    }
+                    if (mapping[pair.first] >= static_cast<variable_t>(rlslp.terminals)) {
+                        len += rlslp[mapping[pair.first] - rlslp.terminals].len;
+                    } else {
+                        len += 1;
+                    }
+                    rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], len);
                     next_nt++;
                 }
             }
@@ -588,6 +599,9 @@ class recompression_fast {
         const auto endTimeAss = std::chrono::system_clock::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
         std::cout << " pair_rules=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
+
+        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
+
         text.resize(new_text_size);
         text.shrink_to_fit();
 
