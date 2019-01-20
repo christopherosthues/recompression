@@ -17,7 +17,6 @@ typedef parallel::recompression<var_t, term_t>::multiset_t multiset_t;
 
 
 TEST(digits, output_digits) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::uint64_t val = (24 << 4) | (56 << 16);
     DLOG(INFO) << val;
 
@@ -25,17 +24,13 @@ TEST(digits, output_digits) {
     DLOG(INFO) << digits<std::uint64_t, 8>(val, 1);
     DLOG(INFO) << digits<std::uint64_t, 8>(val, 2);
     DLOG(INFO) << digits<std::uint64_t, 8>(val, 3);
-//    std::cout << parallel::igits<std::uint64_t>(val, 4) << std::endl;
-//    std::cout << parallel::igits<std::uint64_t>(val, 5) << std::endl;
-//    std::cout << parallel::igits<std::uint64_t>(val, 6) << std::endl;
-//    std::cout << parallel::igits<std::uint64_t>(val, 7) << std::endl;
 }
 
 TEST(digits, digits) {
     std::vector<variable_t> vec{23, 23423, 234333, 5758, 6994, 599, 9023, 2, 774, 563};
 
     const auto n_blocks = sizeof(variable_t) * CHAR_BIT / 4;
-    DLOG(INFO) << "Number of blocks: " << n_blocks;
+//    DLOG(INFO) << "Number of blocks: " << n_blocks;
 
     ASSERT_EQ(8, n_blocks);
 
@@ -63,7 +58,7 @@ TEST(digits, digits_mask) {
     std::vector<variable_t> vec{23, 23423, 234333, 5758, 6994, 599, 9023, 2, 774, 563};
 
     const auto n_blocks = sizeof(variable_t) * CHAR_BIT / 4;
-    DLOG(INFO) << "Number of blocks: " << n_blocks;
+//    DLOG(INFO) << "Number of blocks: " << n_blocks;
     variable_t mask = (1 << 4) - 1;
 
     ASSERT_EQ(8, n_blocks);
@@ -107,11 +102,7 @@ TEST(lsd_radix_sort, par_lsd) {
     vec.emplace_back(6994, 4);
     vec.emplace_back(2, 2);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     lsd_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(2, 2);
@@ -130,22 +121,10 @@ TEST(lsd_radix_sort, par_lsd) {
     exp_vec.emplace_back(23423, 2133);
     exp_vec.emplace_back(234333, 4);
 
-//    exp_vec.emplace_back(2, 4);
-//    exp_vec.emplace_back(23, 4);
-//    exp_vec.emplace_back(563, 4);
-//    exp_vec.emplace_back(599, 4);
-//    exp_vec.emplace_back(774, 4);
-//    exp_vec.emplace_back(5758, 4);
-//    exp_vec.emplace_back(6994, 4);
-//    exp_vec.emplace_back(9023, 4);
-//    exp_vec.emplace_back(23423, 4);
-//    exp_vec.emplace_back(234333, 4);
-
     ASSERT_EQ(exp_vec, vec);
 }
 
 TEST(lsd_radix_sort, all_equal) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::vector<std::pair<variable_t, variable_t>> vec;
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
@@ -160,11 +139,7 @@ TEST(lsd_radix_sort, all_equal) {
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     lsd_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(23, 7);
@@ -184,7 +159,6 @@ TEST(lsd_radix_sort, all_equal) {
 }
 
 TEST(lsd_radix_sort, one_sec_diff) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::vector<std::pair<variable_t, variable_t>> vec;
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
@@ -199,11 +173,7 @@ TEST(lsd_radix_sort, one_sec_diff) {
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     lsd_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(23, 6);
@@ -223,7 +193,6 @@ TEST(lsd_radix_sort, one_sec_diff) {
 }
 
 TEST(lsd_radix_sort, one_diff) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::vector<std::pair<variable_t, variable_t>> vec;
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
@@ -238,11 +207,7 @@ TEST(lsd_radix_sort, one_diff) {
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     lsd_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(23, 7);
@@ -262,7 +227,6 @@ TEST(lsd_radix_sort, one_diff) {
 }
 
 TEST(pprs_pair, par_lsd) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::vector<std::pair<variable_t, variable_t>> vec;
     vec.emplace_back(23, 7);
     vec.emplace_back(23423, 2133);
@@ -280,11 +244,7 @@ TEST(pprs_pair, par_lsd) {
     vec.emplace_back(6994, 4);
     vec.emplace_back(2, 2);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(2, 2);
@@ -303,22 +263,10 @@ TEST(pprs_pair, par_lsd) {
     exp_vec.emplace_back(23423, 2133);
     exp_vec.emplace_back(234333, 4);
 
-//    exp_vec.emplace_back(2, 4);
-//    exp_vec.emplace_back(23, 4);
-//    exp_vec.emplace_back(563, 4);
-//    exp_vec.emplace_back(599, 4);
-//    exp_vec.emplace_back(774, 4);
-//    exp_vec.emplace_back(5758, 4);
-//    exp_vec.emplace_back(6994, 4);
-//    exp_vec.emplace_back(9023, 4);
-//    exp_vec.emplace_back(23423, 4);
-//    exp_vec.emplace_back(234333, 4);
-
     ASSERT_EQ(exp_vec, vec);
 }
 
 TEST(pprs_pair, all_equal) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::vector<std::pair<variable_t, variable_t>> vec;
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
@@ -333,11 +281,7 @@ TEST(pprs_pair, all_equal) {
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(23, 7);
@@ -357,7 +301,6 @@ TEST(pprs_pair, all_equal) {
 }
 
 TEST(pprs_pair, one_sec_diff) {
-//    std::cout << (1 << 0) << "," << (1 << 1) << "," << (1 << 2) << "," << (1 << 3) << std::endl;
     std::vector<std::pair<variable_t, variable_t>> vec;
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
@@ -372,11 +315,7 @@ TEST(pprs_pair, one_sec_diff) {
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(23, 6);
@@ -410,11 +349,7 @@ TEST(pprs_pair, one_diff) {
     vec.emplace_back(23, 7);
     vec.emplace_back(23, 7);
 
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::vector_blocks_to_string(vec);
 
     std::vector<std::pair<variable_t, variable_t>> exp_vec;
     exp_vec.emplace_back(23, 7);
@@ -451,11 +386,7 @@ TEST(pprs_tuple, par_lsd) {
     vec.emplace_back(6994, 4, 0);
     vec.emplace_back(2, 2, 0);
 
-    DLOG(INFO) << util::multiset_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::multiset_to_string(vec);
 
     multiset_t exp_vec;
     exp_vec.emplace_back(2, 2, 0);
@@ -492,11 +423,7 @@ TEST(pprs_tuple, all_equal) {
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 0);
 
-    DLOG(INFO) << util::multiset_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::multiset_to_string(vec);
 
     multiset_t exp_vec;
     exp_vec.emplace_back(23, 7, 0);
@@ -530,11 +457,7 @@ TEST(pprs_tuple, one_sec_diff) {
     vec.emplace_back(23, 7, 1);
     vec.emplace_back(23, 7, 0);
 
-    DLOG(INFO) << util::multiset_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::multiset_to_string(vec);
 
     multiset_t exp_vec;
     exp_vec.emplace_back(23, 6, 0);
@@ -568,11 +491,7 @@ TEST(pprs_tuple, one_diff) {
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 0);
 
-    DLOG(INFO) << util::multiset_to_string(vec);
-
     parallel::partitioned_radix_sort<>(vec);
-
-    DLOG(INFO) << util::multiset_to_string(vec);
 
     multiset_t exp_vec;
     exp_vec.emplace_back(23, 7, 0);
@@ -609,11 +528,7 @@ TEST(pprs, par_lsd) {
     vec.emplace_back(6994);
     vec.emplace_back(2);
 
-    DLOG(INFO) << util::text_vector_to_string(vec);
-
     parallel::partitioned_radix_sort<variable_t, 8>(vec);
-
-    DLOG(INFO) << util::text_vector_to_string(vec);
 
     std::vector<variable_t> exp_vec;
     exp_vec.emplace_back(2);
@@ -650,11 +565,7 @@ TEST(pprs, all_equal) {
     vec.emplace_back(23);
     vec.emplace_back(23);
 
-    DLOG(INFO) << util::text_vector_to_string(vec);
-
     parallel::partitioned_radix_sort<variable_t, 8>(vec);
-
-    DLOG(INFO) << util::text_vector_to_string(vec);
 
     std::vector<variable_t> exp_vec;
     exp_vec.emplace_back(23);
@@ -688,11 +599,7 @@ TEST(pprs, one_sec_diff) {
     vec.emplace_back(23);
     vec.emplace_back(23);
 
-    DLOG(INFO) << util::text_vector_to_string(vec);
-
     parallel::partitioned_radix_sort<variable_t, 8>(vec);
-
-    DLOG(INFO) << util::text_vector_to_string(vec);
 
     std::vector<variable_t> exp_vec;
     exp_vec.emplace_back(23);
@@ -726,11 +633,7 @@ TEST(pprs, one_diff) {
     vec.emplace_back(23);
     vec.emplace_back(23);
 
-    DLOG(INFO) << util::text_vector_to_string(vec);
-
     parallel::partitioned_radix_sort<variable_t, 8>(vec);
-
-    DLOG(INFO) << util::text_vector_to_string(vec);
 
     std::vector<variable_t> exp_vec;
     exp_vec.emplace_back(23);
