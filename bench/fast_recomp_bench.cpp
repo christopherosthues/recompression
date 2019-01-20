@@ -9,12 +9,12 @@
 #include "defs.hpp"
 #include "util.hpp"
 #define private public
-#include "recompression.hpp"
+#include "fast_recompression.hpp"
 
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cerr << "./recomp_bench [file name]" << std::endl;
+        std::cerr << "./fast_recomp_bench [file name]" << std::endl;
     }
     FLAGS_logtostderr = true;
     google::InitGoogleLogging(argv[0]);
@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
     std::regex reg("_");
     dataset = std::regex_replace(dataset, reg, "\\_");
 
-    recomp::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
-    typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+    recomp::recompression_fast<recomp::var_t, recomp::term_t> recompression{dataset};
+    typedef recomp::recompression_fast<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);
 
@@ -51,10 +51,10 @@ int main(int argc, char *argv[]) {
     recompression.recomp(text, rlslp);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
-    LOG(INFO) << "Time for sequential recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-    LOG(INFO) << "Time for sequential recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+    LOG(INFO) << "Time for fast recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
+    LOG(INFO) << "Time for fast recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
-//    std::cout << "RESULT dataset=" << dataset << " algo=sequential_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
+//    std::cout << "RESULT dataset=" << dataset << " algo=parallel_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
 //              << " rlslp_size=" << rlslp.size() << " terminals=" << rlslp.terminals << std::endl;
 
     std::string res = rlslp.derive_text();
@@ -68,4 +68,7 @@ int main(int argc, char *argv[]) {
     } else {
         std::cerr << "Failure" << std::endl;
     }
+
+//    std::cout << std::to_string(rlslp) << std::endl;
+//    std::cout << c_text;
 }

@@ -19,9 +19,21 @@ int main(int argc, char *argv[]) {
     FLAGS_logtostderr = true;
     google::InitGoogleLogging(argv[0]);
 
-    recomp::parallel::recompression<recomp::var_t, recomp::term_t> recompression;
-    typedef recomp::parallel::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
     std::string file_name(argv[1]);
+
+    size_t pos = file_name.find_last_of('/');
+    std::string dataset;
+    if (pos != std::string::npos) {
+        dataset = file_name.substr(pos + 1);
+    } else {
+        dataset = file_name;
+    }
+
+    std::regex reg("_");
+    dataset = std::regex_replace(dataset, reg, "\\_");
+
+    recomp::parallel::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
+    typedef recomp::parallel::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);
 
@@ -33,17 +45,6 @@ int main(int argc, char *argv[]) {
         }
         std::cout << std::endl;
     }
-    
-    size_t pos = file_name.find_last_of('/');
-    std::string dataset;
-    if (pos != std::string::npos) {
-        dataset = file_name.substr(pos + 1);
-    } else {
-        dataset = file_name;
-    }
-
-    std::regex reg("_");
-    dataset = std::regex_replace(dataset, reg, "\\_");
     
     const auto startTime = std::chrono::system_clock::now();
 

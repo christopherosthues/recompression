@@ -9,12 +9,12 @@
 #include "defs.hpp"
 #include "util.hpp"
 #define private public
-#include "recompression.hpp"
+#include "fast_recompression.hpp"
 
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cerr << "./bcomp_bench [file name]" << std::endl;
+        std::cerr << "./fast_bcomp_bench [file name]" << std::endl;
     }
     FLAGS_logtostderr = true;
     google::InitGoogleLogging(argv[0]);
@@ -32,9 +32,8 @@ int main(int argc, char *argv[]) {
     std::regex reg("_");
     dataset = std::regex_replace(dataset, reg, "\\_");
 
-    recomp::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
-    typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
-
+    recomp::recompression_fast<recomp::var_t, recomp::term_t> recompression{dataset};
+    typedef recomp::recompression_fast<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);
 
@@ -47,31 +46,29 @@ int main(int argc, char *argv[]) {
         std::cout << std::endl;
     }
 
+    recomp::term_t alpha = recomp::CHAR_ALPHABET;
+    std::vector<recomp::var_t> mapping;
+
+    recompression.replace_letters(text, alpha, mapping);
+
     const auto startTime = std::chrono::system_clock::now();
-    
-//    std::cout << "RESULT dataset=" << dataset << " algo=sequential_bcomp";
-    recompression.bcomp(text, rlslp);
+
+//    std::cout << "RESULT dataset=" << dataset << " algo=parallel_bcomp";
+    recompression.bcomp(text, rlslp, alpha, mapping);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
-    LOG(INFO) << "Time for sequential bcomp: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-    LOG(INFO) << "Time for sequential bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+    LOG(INFO) << "Time for fast bcomp: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
+    LOG(INFO) << "Time for fast bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
-//    std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+    recompression.compute_alphabet(text, alpha, mapping);
+    recompression.level++;
+
     //std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+//    std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
     std::stringstream sstream;
     for (const auto& c : text) {
-        rlslp.derive(sstream, c);
-//        if (c >= rlslp.terminals) {
-//            if (rlslp.is_block(c)) {
-//                auto len = rlslp[c - rlslp.terminals].second();
-//                for (size_t j = 0; j < len; ++j) {
-//                    sstream << static_cast<char>(rlslp[c - rlslp.terminals].first());
-//                }
-//            }
-//        } else {
-//            sstream << static_cast<char>(c);
-//        }
+        rlslp.derive(sstream, mapping[c]);
     }
 
     rlslp.resize(0);
