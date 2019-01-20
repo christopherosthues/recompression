@@ -10,25 +10,27 @@
 #include "defs.hpp"
 #include "util.hpp"
 
-#ifndef THREAD_COUNT
-#define THREAD_COUNT std::thread::hardware_concurrency()
-#endif
+//#ifndef THREAD_COUNT
+//#define THREAD_COUNT std::thread::hardware_concurrency()
+//#endif
 
 namespace recomp {
 
 namespace parallel {
 /**
-     * @brief Computes a partitioning of the symbol in the text.
-     *
-     * @param multiset[in] The adjacency list of the text
-     * @param alphabet[in] The effective alphabet
-     * @param partition[out] The partition
-     */
+ * @brief Computes a partitioning of the symbol in the text.
+ *
+ * @param multiset[in] The adjacency list of the text
+ * @param alphabet[in] The effective alphabet
+ * @param partition[out] The partition
+ */
 template<typename multiset_t/*, typename alphabet_t*/, typename partition_t>
-inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& alphabet,*/ partition_t& partition) {
-//        std::cout << "partition" << std::endl;
+inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& alphabet,*/
+                              partition_t& partition,
+                              const size_t cores = std::thread::hardware_concurrency()) {
+#ifdef BENCH
     const auto startTime = std::chrono::system_clock::now();
-
+#endif
 //        DLOG(INFO) << util::text_vector_to_string(alphabet);
 
     int l_count = 0;
@@ -54,9 +56,10 @@ inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& al
             l_count++;
         }
     }
+    partition[std::get<0>(multiset[multiset.size() - 1])] = l_count > r_count;
+
 //    LOG(INFO) << "Setting " << std::get<0>(multiset[multiset.size() - 1]) << " to " << (l_count > r_count) << " ; "
 //              << l_count << ", " << r_count;
-    partition[std::get<0>(multiset[multiset.size() - 1])] = l_count > r_count;
 //        for (size_t i = 0; i < multiset.size(); ++i) {
 //            while (j < alphabet.size() && std::get<0>(multiset[i]) > alphabet[j]) {
 //                partition[alphabet[j]] = l_count > r_count;
@@ -72,16 +75,19 @@ inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& al
 //            }
 //        }
 //        partition[alphabet[j]] = l_count > r_count;
+#ifdef BENCH
     const auto endTimePar = std::chrono::system_clock::now();
     const auto timeSpanPar = endTimePar - startTime;
     std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+#endif
 //    LOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
-
+#ifdef BENCH
     const auto startTimeCount = std::chrono::system_clock::now();
+#endif
     int lr_count = 0;
     int rl_count = 0;
-#pragma omp parallel for num_threads(THREAD_COUNT) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
+#pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
     for (size_t i = 0; i < multiset.size(); ++i) {
         if (std::get<2>(multiset[i])) {
             if (!partition[std::get<0>(multiset[i])] &&
@@ -101,14 +107,16 @@ inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& al
             }
         }
     }
+#ifdef BENCH
     const auto endTimeCount = std::chrono::system_clock::now();
     const auto timeSpanCount = endTimeCount - startTimeCount;
     std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
 
 //    LOG(INFO) << "rl: " << rl_count << ", lr: " << lr_count;
     if (rl_count > lr_count) {
 //        LOG(INFO) << "Swap partition sets";
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
         {
 #pragma omp single
             {
@@ -123,43 +131,43 @@ inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& al
         }
     }
 //        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
-
+#ifdef BENCH
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
     std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
-    DLOG(INFO) << "Time for computing partition: "
-               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
-
-//        std::cout << "partition finished" << std::endl;
+#endif
+//    DLOG(INFO) << "Time for computing partition: "
+//               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 }
 
 
 /**
-     * @brief Computes a partitioning of the symbol in the text.
-     *
-     * @param multiset[in] The adjacency list of the text
-     * @param alphabet[in] The effective alphabet
-     * @param partition[out] The partition
-     */
+ * @brief Computes a partitioning of the symbol in the text.
+ *
+ * @param multiset[in] The adjacency list of the text
+ * @param alphabet[in] The effective alphabet
+ * @param partition[out] The partition
+ */
 template<typename variable_t, typename multiset_t, typename alphabet_t, typename partition_t>
 inline void compute_partition_full_parallel(const multiset_t& multiset,
                                             const alphabet_t& alphabet,
-                                            partition_t& partition) {
-//        std::cout << "partition" << std::endl;
+                                            partition_t& partition,
+                                            const size_t cores = std::thread::hardware_concurrency()) {
+#ifdef BENCH
     const auto startTime = std::chrono::system_clock::now();
+#endif
+//    DLOG(INFO) << util::text_vector_to_string(alphabet);
 
-        DLOG(INFO) << util::text_vector_to_string(alphabet);
-
-        std::unordered_map<variable_t, size_t> mapping;
-        std::unordered_map<variable_t, bool> locks;
-#pragma omp parallel for schedule(static) num_threads(THREAD_COUNT)
-        for (size_t i = 0; i < alphabet.size(); ++i) {
+    std::unordered_map<variable_t, size_t> mapping;
+    std::unordered_map<variable_t, bool> locks;
+#pragma omp parallel for schedule(static) num_threads(cores)
+    for (size_t i = 0; i < alphabet.size(); ++i) {
 #pragma omp critical
-            {
-                mapping[alphabet[i]] = i;
-                locks[alphabet[i]] = false;
-            }
+        {
+            mapping[alphabet[i]] = i;
+            locks[alphabet[i]] = false;
         }
+    }
 
 //        std::cout << "Locks: " << std::endl;
 //        for (const auto& lock : locks) {
@@ -212,7 +220,7 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
 ////        }
 
         std::vector<size_t> bounds;
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
         {
             auto thread_id = omp_get_thread_num();
             auto n_threads = static_cast<size_t>(omp_get_num_threads());
@@ -338,17 +346,19 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
 //            }
 //        }
 //        partition[alphabet[j]] = l_count > r_count;
+#ifdef BENCH
     const auto endTimePar = std::chrono::system_clock::now();
     const auto timeSpanPar = endTimePar - startTime;
     std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-    DLOG(INFO) << "j: " << j;
+#endif
 //        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
-
+#ifdef BENCH
     const auto startTimeCount = std::chrono::system_clock::now();
+#endif
     int lr_count = 0;
     int rl_count = 0;
-#pragma omp parallel for num_threads(THREAD_COUNT) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
+#pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
     for (size_t i = 0; i < multiset.size(); ++i) {
         if (std::get<2>(multiset[i])) {
             if (!partition[std::get<0>(multiset[i])] &&
@@ -368,13 +378,15 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
             }
         }
     }
+#ifdef BENCH
     const auto endTimeCount = std::chrono::system_clock::now();
     const auto timeSpanCount = endTimeCount - startTimeCount;
     std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
 
     if (rl_count > lr_count) {
-        DLOG(INFO) << "Swap partition sets";
-#pragma omp parallel num_threads(THREAD_COUNT)
+//        DLOG(INFO) << "Swap partition sets";
+#pragma omp parallel num_threads(cores)
         {
 #pragma omp single
             {
@@ -389,14 +401,13 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
         }
     }
 //        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
-
+#ifdef BENCH
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
     std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
-    DLOG(INFO) << "Time for computing partition: "
-               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
-
-//        std::cout << "partition finished" << std::endl;
+#endif
+//    DLOG(INFO) << "Time for computing partition: "
+//               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 }
 
 }  // namespace parallel

@@ -17,9 +17,9 @@
 
 #include "defs.hpp"
 
-#ifndef THREAD_COUNT
-#define THREAD_COUNT std::thread::hardware_concurrency()
-#endif
+//#ifndef THREAD_COUNT
+//#define THREAD_COUNT std::thread::hardware_concurrency()
+//#endif
 
 namespace recomp {
 
@@ -116,7 +116,7 @@ namespace parallel {
  * @param vec The vector to sort
  */
 template<typename variable_t = recomp::var_t, std::uint8_t D = 8>
-void partitioned_radix_sort(std::vector<variable_t>& vec) {
+void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = std::thread::hardware_concurrency()) {
     const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;  // assumed that the number of bits is integer-divisible by D
     int n_blocks = lsd_blocks;
     const auto n_buckets = (1 << D);
@@ -130,7 +130,7 @@ void partitioned_radix_sort(std::vector<variable_t>& vec) {
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
     std::array<size_t*, n_buckets> bounds;
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
     {
         auto thread_id = omp_get_thread_num();
         auto n_threads = static_cast<size_t>(omp_get_num_threads());
@@ -242,7 +242,7 @@ void partitioned_radix_sort(std::vector<variable_t>& vec) {
 #endif
 
     // sort buckets in increaseing order via LSD radix sort first by the second coordinate than by the first with exchange radix sort
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
     {
 #pragma omp for schedule(dynamic)
         for (size_t buck = 0; buck < bucks.size(); ++buck) {
@@ -310,7 +310,8 @@ void partitioned_radix_sort(std::vector<variable_t>& vec) {
  * @param vec The vector to sort
  */
 template<typename variable_t = recomp::var_t, std::uint8_t D = 8>
-void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec) {
+void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
+                            const size_t cores = std::thread::hardware_concurrency()) {
     const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;  // assumed that the number of bits is integer-divisible by D
     int n_blocks = lsd_blocks;
     const auto n_buckets = (1 << D);
@@ -324,7 +325,7 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec)
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
     std::array<size_t*, n_buckets> bounds;
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
     {
         auto thread_id = omp_get_thread_num();
         auto n_threads = static_cast<size_t>(omp_get_num_threads());
@@ -435,7 +436,7 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec)
 #endif
 
     // sort buckets in increaseing order via LSD radix sort first by the second coordinate than by the first with exchange radix sort
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
     {
 #pragma omp for schedule(dynamic)
         for (size_t buck = 0; buck < bucks.size(); ++buck) {
@@ -496,7 +497,8 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec)
 }
 
 template<typename variable_t = recomp::var_t, std::uint8_t D = 8>
-void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>>& vec) {
+void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>>& vec,
+                            const size_t cores = std::thread::hardware_concurrency()) {
     const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;  // assumed that the number of bits is integer-divisible by D
     int n_blocks = lsd_blocks;
     const auto n_buckets = (1 << D);
@@ -510,7 +512,7 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
     std::array<size_t*, n_buckets> bounds;
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
     {
         auto thread_id = omp_get_thread_num();
         auto n_threads = static_cast<size_t>(omp_get_num_threads());
@@ -616,7 +618,7 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 #endif
 
     // sort buckets in increaseing order via LSD radix sort first by the second coordinate than by the first with exchange radix sort
-#pragma omp parallel num_threads(THREAD_COUNT)
+#pragma omp parallel num_threads(cores)
     {
 #pragma omp for schedule(dynamic)
         for (size_t buck = 0; buck < bucks.size(); ++buck) {
