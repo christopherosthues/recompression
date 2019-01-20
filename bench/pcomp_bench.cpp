@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     const auto startTime = std::chrono::system_clock::now();
 
-    std::cout << "RESULT dataset=" << dataset << " algo=sequential_pcomp";
+//    std::cout << "RESULT dataset=" << dataset << " algo=sequential_pcomp";
     recompression.pcomp(text, rlslp);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     LOG(INFO) << "Time for sequential pcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
     //std::cout << "RESULT dataset=" << dataset << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
-    std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+//    std::cout << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
     std::stringstream sstream;
     for (const auto& c : text) {
@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
     }
 
     rlslp.resize(0);
+    rlslp.shrink_to_fit();
 
     std::string c_text;
     recomp::util::read_text_file(file_name, c_text);

@@ -53,5 +53,18 @@ int main(int argc, char *argv[]) {
     LOG(INFO) << "Time for sequential recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
     LOG(INFO) << "Time for sequential recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
-    std::cout << "RESULT dataset=" << dataset << " algo=sequential_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
+//    std::cout << "RESULT dataset=" << dataset << " algo=sequential_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
+//              << " rlslp_size=" << rlslp.size() << " terminals=" << rlslp.terminals << std::endl;
+
+    std::string res = rlslp.derive_text();
+    rlslp.resize(0);
+    rlslp.shrink_to_fit();
+
+    std::string c_text;
+    recomp::util::read_text_file(file_name, c_text);
+    if (res == c_text) {
+        std::cerr << "Correct" << std::endl;
+    } else {
+        std::cerr << "Failure" << std::endl;
+    }
 }
