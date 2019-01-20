@@ -153,7 +153,7 @@ TEST(partition, 212181623541741623541321) {
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
     partition_t exp_partition;
     exp_partition[1] = true;
@@ -179,7 +179,7 @@ TEST(partition, 131261051171161051139) {
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -206,7 +206,7 @@ TEST(partition, 18161517161514) {
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
     partition_t exp_partition;
     exp_partition[14] = true;
@@ -229,7 +229,7 @@ TEST(partition, 21201619) {
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -251,7 +251,7 @@ TEST(partition, 2322) {
     recompression<var_t, term_t> recomp;
     recomp.compute_multiset(text, multiset);
     __gnu_parallel::sort(multiset.begin(), multiset.end(), __gnu_parallel::multiway_mergesort_tag());
-    recomp.compute_partition(multiset, alphabet, partition);
+    recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
     partition_t exp_partition;
     exp_partition[22] = true;
