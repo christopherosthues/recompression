@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <glog/logging.h>
+#include <ips4o.hpp>
 
 #include "defs.hpp"
 #include "util.hpp"
@@ -90,7 +91,7 @@ class recompression {
         std::cout << "RESULT algo=parallel_recompression dataset=" << dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << level
-                  << std::endl;
+                  << " cores=" << cores << std::endl;
 #endif
 //        DLOG(INFO) << "Time for recomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
 //                   << "[ms]";
@@ -125,7 +126,7 @@ class recompression {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=parallel_bcomp dataset=" << dataset << " text=" << text.size()
-                  << " level=" << level;
+                  << " level=" << level << " cores=" << cores;
 #endif
 
         size_t block_count = 0;
@@ -246,7 +247,8 @@ class recompression {
 #ifdef BENCH
         const auto startTimeSort = std::chrono::system_clock::now();
 #endif
-        parallel::partitioned_radix_sort(sort_blocks);
+//        parallel::partitioned_radix_sort(sort_blocks);
+        ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
 #ifdef BENCH
         const auto endTimeSort = std::chrono::system_clock::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -401,7 +403,8 @@ class recompression {
 //        DLOG(INFO) << "PComp input - text size: " << text.size();
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level;
+        std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
+                  << " cores=" << cores;
 #endif
 
         partition_t partition;
@@ -427,7 +430,8 @@ class recompression {
 #ifdef BENCH
         const auto startTimeMult = std::chrono::system_clock::now();
 #endif
-        partitioned_radix_sort(multiset);
+//        partitioned_radix_sort(multiset);
+        ips4o::parallel::sort(multiset.begin(), multiset.end());
 #ifdef BENCH
         const auto endTimeMult = std::chrono::system_clock::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
@@ -528,7 +532,8 @@ class recompression {
 #ifdef BENCH
         const auto startTimeSort = std::chrono::system_clock::now();
 #endif
-        parallel::partitioned_radix_sort(sort_pairs);
+//        parallel::partitioned_radix_sort(sort_pairs);
+        ips4o::parallel::sort(sort_pairs.begin(), sort_pairs.end());
 #ifdef BENCH
         const auto endTimeSort = std::chrono::system_clock::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;

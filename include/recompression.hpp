@@ -18,6 +18,7 @@
 #endif
 
 #include <glog/logging.h>
+#include <ips4o.hpp>
 
 #include "defs.hpp"
 #include "util.hpp"
@@ -172,7 +173,8 @@ class recompression {
 #ifdef BENCH
         const auto startTimeSort = std::chrono::system_clock::now();
 #endif
-        lsd_radix_sort(sort_blocks);
+//        lsd_radix_sort(sort_blocks);
+        ips4o::sort(sort_blocks.begin(), sort_blocks.end());
 #ifdef BENCH
         const auto endTimeSort = std::chrono::system_clock::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -454,7 +456,8 @@ class recompression {
 #ifdef BENCH
         const auto startTimeMult = std::chrono::system_clock::now();
 #endif
-        std::sort(multiset.begin(), multiset.end());
+//        std::sort(multiset.begin(), multiset.end());
+        ips4o::sort(multiset.begin(), multiset.end());
 #ifdef BENCH
         const auto endTimeMult = std::chrono::system_clock::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
@@ -512,7 +515,8 @@ class recompression {
 #ifdef BENCH
         const auto startTimeSort = std::chrono::system_clock::now();
 #endif
-        lsd_radix_sort(sort_pairs);
+//        lsd_radix_sort(sort_pairs);
+        ips4o::sort(sort_pairs.begin(), sort_pairs.end());
 #ifdef BENCH
         const auto endTimeSort = std::chrono::system_clock::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
