@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     dataset = std::regex_replace(dataset, reg, "\\_");
 
     recomp::parallel::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
+    recompression.cores = 2;
     typedef recomp::parallel::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);

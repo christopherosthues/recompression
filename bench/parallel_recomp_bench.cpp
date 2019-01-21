@@ -2,6 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include <regex>
+#include <thread>
 #include <vector>
 
 #include <glog/logging.h>
@@ -11,10 +12,23 @@
 #define private public
 #include "parallel_recompression.hpp"
 
+int str_to_int(std::string s) {
+    std::istringstream ss(s);
+    int n;
+    if (!(ss >> n)) {
+        std::cerr << "Invalid number: " << s;
+        return -1;
+    } else if (!ss.eof()) {
+        std::cerr << "Trailing characters after number: " << s;
+        return -1;
+    }
+    return n;
+}
+
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cerr << "./parallel_recomp_bench [file name]" << std::endl;
+        std::cerr << "./parallel_recomp_bench [file name] [cores]" << std::endl;
     }
     FLAGS_logtostderr = true;
     google::InitGoogleLogging(argv[0]);
@@ -31,8 +45,14 @@ int main(int argc, char *argv[]) {
 
     std::regex reg("_");
     dataset = std::regex_replace(dataset, reg, "\\_");
+    
+    int cores = std::thread::hardware_concurrency();
+    if (argc > 2) {
+        cores = str_to_int(argv[2]);
+    }
 
     recomp::parallel::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
+    // recompression.cores = 2;
     typedef recomp::parallel::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);
@@ -48,7 +68,7 @@ int main(int argc, char *argv[]) {
     
     const auto startTime = std::chrono::system_clock::now();
 
-    recompression.recomp(text, rlslp);
+    recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
     LOG(INFO) << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";

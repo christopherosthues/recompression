@@ -681,7 +681,7 @@ class recompression_fast {
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "effective_alphabet=" << alphabet_size << " time="
+        std::cout << " effective_alphabet=" << alphabet_size << " time="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
 #endif
     }
