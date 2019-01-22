@@ -23,10 +23,6 @@
 #include "rlslp.hpp"
 #include "radix_sort.hpp"
 
-// #ifndef THREAD_COUNT
-// #define THREAD_COUNT std::thread::hardware_concurrency()
-// #endif
-
 namespace recomp {
 
 namespace parallel {

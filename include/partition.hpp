@@ -155,14 +155,17 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
 #endif
 
     alphabet_t alphabet(partition.size());
-    auto partition_iter = partition.begin();
-#pragma omp parallel for schedule(static) num_threads(cores)
-    for (size_t i = 0; i < partition.size(); ++i) {
-        if (partition_iter == partition.begin()) {
-            std::advance(partition_iter, i);
+#pragma omp parallel num_threads(cores)
+    {
+        auto partition_iter = partition.begin();
+#pragma omp for schedule(static)
+        for (size_t i = 0; i < partition.size(); ++i) {
+            if (partition_iter == partition.begin()) {
+                std::advance(partition_iter, i);
+            }
+            alphabet[i] = (*partition_iter).first;
+            ++partition_iter;
         }
-        alphabet[i] = (*partition_iter).first;
-        ++partition_iter;
     }
     ips4o::parallel::sort(alphabet.begin(), alphabet.end());
 
@@ -277,8 +280,7 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
             r_count = 0;
         }
     }
-    mutexes.resize(0);
-    mutexes.shrink_to_fit();
+//    mutexes.clear();
 
 #ifdef BENCH
     const auto endTimePar = std::chrono::system_clock::now();
