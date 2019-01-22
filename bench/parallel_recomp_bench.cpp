@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
     if (argc > 2) {
         cores = str_to_int(argv[2]);
     }
+    std::cout << "Using " << cores << " threads" << std::endl;
 
     recomp::parallel::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
     // recompression.cores = 2;
