@@ -35,7 +35,10 @@ class recompression {
  public:
     typedef std::vector<variable_t> text_t;
     typedef std::vector<variable_t> alphabet_t;
+    typedef std::vector<bool> bitvector_t;
     typedef std::vector<std::tuple<variable_t, variable_t, bool>> multiset_t;
+//    typedef std::vector<std::pair<variable_t, variable_t>> multiset_t;
+//    typedef bitvector_t multiset_dir_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     typedef std::pair<variable_t, variable_t> block_t;
@@ -369,7 +372,7 @@ class recompression {
      * @param text The text
      * @param multiset[out] The adjacency list
      */
-    inline void compute_multiset(const text_t& text, multiset_t& multiset) {
+    inline void compute_multiset(const text_t& text, multiset_t& multiset/*, multiset_dir_t& multiset_dir*/) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -378,8 +381,12 @@ class recompression {
         for (size_t i = 0; i < multiset.size(); ++i) {
             if (text[i] > text[i + 1]) {
                 multiset[i] = std::make_tuple(text[i], text[i + 1], false);
+//                multiset[i] = std::make_pair(text[i], text[i + 1]);
+//                multiset_dir[i] = false;
             } else {
                 multiset[i] = std::make_tuple(text[i + 1], text[i], true);
+//                multiset[i] = std::make_pair(text[i + 1], text[i]);
+//                multiset_dir[i] = true;
             }
         }
 
@@ -411,6 +418,7 @@ class recompression {
         for (size_t i = 0; i < text.size(); ++i) {
             partition[text[i]] = false;
         }
+//        std::cout << "Parition: " << util::partition_to_string(partition);
 //        alphabet_t alphabet(partition.size());
 //        auto partition_iter = partition.begin();
 //        for (size_t i = 0; i < partition.size(); ++i, ++partition_iter) {
@@ -425,7 +433,8 @@ class recompression {
         std::cout << " alphabet=" << partition.size();
 #endif
         multiset_t multiset(text.size() - 1);
-        compute_multiset(text, multiset);
+//        multiset_dir_t multiset_dir(text.size() - 1);
+        compute_multiset(text, multiset/*, multiset_dir*/);
 
 #ifdef BENCH
         const auto startTimeMult = std::chrono::system_clock::now();
@@ -441,7 +450,8 @@ class recompression {
 
         size_t pair_count = 0;
 
-        compute_partition<multiset_t, partition_t>(multiset, /*alphabet,*/ partition);
+//        compute_partition<multiset_t, partition_t>(multiset, /*alphabet,*/ partition, cores);
+        compute_partition_full_parallel<variable_t, multiset_t, alphabet_t, partition_t>(multiset, partition, cores);
 
 #ifdef BENCH
         const auto startTimePairs = std::chrono::system_clock::now();
