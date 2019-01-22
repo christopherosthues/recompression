@@ -5,6 +5,7 @@
 #include <chrono>
 #include <climits>
 #include <iostream>
+#include <string>
 #include <thread>
 #include <tuple>
 #include <unordered_map>
@@ -509,7 +510,8 @@ class recompression {
 #ifdef BENCH
         const auto endTimeCopy = std::chrono::system_clock::now();
         const auto timeSpanCopy = endTimeCopy - startTimeCopy;
-        std::cout << " copy_pairs=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
+        std::cout << " copy_pairs="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
 #endif
 
 #ifdef BENCH
@@ -560,8 +562,8 @@ class recompression {
         std::cout << " pair_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for pair nts: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
+//        DLOG(INFO) << "Time for pair nts: "
+//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count() << "[ms]";
 
 
 #ifdef BENCH

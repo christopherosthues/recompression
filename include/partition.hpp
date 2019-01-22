@@ -1,11 +1,14 @@
 
 #pragma once
 
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <mutex>
 #include <shared_mutex>
 #include <thread>
+#include <unordered_map>
+#include <vector>
 
 #include <glog/logging.h>
 #include <ips4o.hpp>
@@ -216,11 +219,13 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
         }
 
         for (size_t i = bounds[thread_id]; i < bounds[thread_id + 1]; ++i) {
-//#pragma omp critical
-//            {std::cout << "Locking write " << std::get<0>(multiset[starts[i]]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//            {std::cout << "Locking write " << std::get<0>(multiset[starts[i]]) << " by thread " << thread_id
+//                       << std::endl;}
             mutexes[mapping[std::get<0>(multiset[starts[i]])]].lock();
-//#pragma omp critical
-//            {std::cout << "Locked write " << std::get<0>(multiset[starts[i]]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//            {std::cout << "Locked write " << std::get<0>(multiset[starts[i]]) << " by thread " << thread_id
+//                       << std::endl;}
         }
 #pragma omp barrier
 
@@ -231,34 +236,42 @@ inline void compute_partition_full_parallel(const multiset_t& multiset,
             index = starts[i];
 
             while (index < starts[i + 1]) {
-//#pragma omp critical
-//                {std::cout << "Index " << index << " to " << starts[i+1] << " by thread " << thread_id << " char " << mapping[std::get<0>(multiset[index])] << std::endl;}
+// #pragma omp critical
+//                {std::cout << "Index " << index << " to " << starts[i+1] << " by thread " << thread_id << " char "
+//                           << mapping[std::get<0>(multiset[index])] << std::endl;}
 
-//#pragma omp critical
-//                {std::cout << "Locking shared " << std::get<1>(multiset[index]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//                {std::cout << "Locking shared " << std::get<1>(multiset[index]) << " by thread " << thread_id
+//                           << std::endl;}
                 mutexes[mapping[std::get<1>(multiset[index])]].lock_shared();
-//#pragma omp critical
-//                {std::cout << "Locked shared " << std::get<1>(multiset[index]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//                {std::cout << "Locked shared " << std::get<1>(multiset[index]) << " by thread " << thread_id
+//                           << std::endl;}
                 if (partition[std::get<1>(multiset[index])]) {
                     r_count++;
                 } else {
                     l_count++;
                 }
-//#pragma omp critical
-//                {std::cout << "Unlocking shared " << std::get<1>(multiset[index]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//                {std::cout << "Unlocking shared " << std::get<1>(multiset[index]) << " by thread " << thread_id
+//                           << std::endl;}
                 mutexes[mapping[std::get<1>(multiset[index])]].unlock_shared();
-//#pragma omp critical
-//                {std::cout << "Unlocked shared " << std::get<1>(multiset[index]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//                {std::cout << "Unlocked shared " << std::get<1>(multiset[index]) << " by thread " << thread_id
+//                           << std::endl;}
                 index++;
             }
-//#pragma omp critical
-//            {std::cout << "finished " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id << " at index " << (index-1) << std::endl;}
+// #pragma omp critical
+//            {std::cout << "finished " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id
+//                       << " at index " << (index-1) << std::endl;}
             partition[std::get<0>(multiset[index - 1])] = l_count > r_count;
-//#pragma omp critical
-//            {std::cout << "Unlocking write " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//            {std::cout << "Unlocking write " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id
+//                       << std::endl;}
             mutexes[mapping[std::get<0>(multiset[index - 1])]].unlock();
-//#pragma omp critical
-//            {std::cout << "Unlocked write " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id << std::endl;}
+// #pragma omp critical
+//            {std::cout << "Unlocked write " << std::get<0>(multiset[index - 1]) << " by thread " << thread_id
+//                       << std::endl;}
 
             l_count = 0;
             r_count = 0;

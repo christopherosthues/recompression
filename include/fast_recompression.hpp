@@ -5,6 +5,8 @@
 #include <climits>
 #include <iostream>
 #include <map>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include <glog/logging.h>
@@ -148,6 +150,7 @@ class recompression_fast {
      * @brief Detects all blocks in the text and replaces them with new non-terminals.
      *
      * @param text[in,out] The text
+     * @param rlslp[in,out] The rlslp
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
@@ -155,7 +158,7 @@ class recompression_fast {
                       rlslp<variable_t, terminal_count_t>& rlslp,
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
-        //std::cout << "Text size (Input BComp): " << text_size << std::endl;
+//        std::cout << "Text size (Input BComp): " << text_size << std::endl;
 #ifdef BENCH
         std::cout << "RESULT algo=fast_bcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
                   << " alphabet=" << alphabet_size;
@@ -261,7 +264,7 @@ class recompression_fast {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-        //std::cout << "Text size (Ouput BComp): " << text_size << std::endl;
+//        std::cout << "Text size (Ouput BComp): " << text_size << std::endl;
     }
 
     /**
@@ -515,6 +518,7 @@ class recompression_fast {
      * @brief Detects all pairs in the text and replaces them with new non-terminals.
      *
      * @param text[in,out] The text
+     * @param rlslp[in,out] The rlslp
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
@@ -522,7 +526,7 @@ class recompression_fast {
                       rlslp<variable_t, terminal_count_t>& rlslp,
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
-        //std::cout << "Text size (Input PComp): " << text_size << std::endl;
+//        std::cout << "Text size (Input PComp): " << text_size << std::endl;
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=fast_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
@@ -541,7 +545,7 @@ class recompression_fast {
         std::vector<std::map<variable_t, std::vector<variable_t>>> pairs(alphabet_size);
         size_t copy_i = 0;
         bool copy = false;
-        //std::cout << "Alphabet: " << alphabet_size << std::endl;
+//        std::cout << "Alphabet: " << alphabet_size << std::endl;
         /*if (text_size == 2) {
             for (const auto& b : part) {
                 std::cout << b;
@@ -628,7 +632,7 @@ class recompression_fast {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-        //std::cout << "Text size (Ouput PComp): " << text_size << std::endl;
+//        std::cout << "Text size (Ouput PComp): " << text_size << std::endl;
     }
 
     /**
@@ -651,7 +655,7 @@ class recompression_fast {
             used[text[i]] = true;
         }
         // Build rank structure over the bitvector
-        ranks[0] = 0;//(used[0]? 1 : 0);
+        ranks[0] = 0;  // (used[0]? 1 : 0);
         for (size_t i = 1; i < ranks.size(); ++i) {
             if (used[i-1]) {
                 ranks[i] = ranks[i-1] + 1;

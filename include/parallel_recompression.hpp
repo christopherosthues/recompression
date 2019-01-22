@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <chrono>
 #include <iostream>
+#include <string>
 #include <thread>
 #include <tuple>
 #include <unordered_map>
