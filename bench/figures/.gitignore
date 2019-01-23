@@ -5,3 +5,7 @@
 !radix_sort.pdf
 !benchmark_bcomp.pdf
 !benchmark_pcomp.pdf
+!benchmark_recomp.pdf
+!benchmark_pcomp_l1.pdf
+!benchmark_pcomp_l3.pdf
+!benchmark_pcomp_l5.pdf

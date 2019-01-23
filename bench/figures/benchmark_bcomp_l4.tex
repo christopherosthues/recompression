@@ -1,0 +1,39 @@
+\documentclass[10pt,a4paper]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+
+\begin{document}
+	
+	% IMPORT-DATA recomp ../results/bench_recomp.txt
+	
+	\begin{tabular}{l|r|r|r|r|r|r}
+		Datensatz/Zeit (ms) & Größe (KB) & Seq\_BComp & Par\_BComp (4 Threads) & full parallel & fast\_BComp & naive\_BComp \\ \hline
+		%% TABULAR REFORMAT(row 0-19=(min=bold))
+		%% SELECT s.dataset AS x,
+		%% (SELECT (text / 1000) FROM recomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "fast_bcomp" AND s1.level = 0 GROUP BY s1.dataset),
+		%% (SELECT ((SUM(time) / 5)) FROM recomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "seq_bcomp" AND level = 4 GROUP BY s1.dataset),
+		%% (SELECT ((SUM(time) / 5)) FROM recomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "parallel_bcomp" AND level = 4 GROUP BY s1.dataset),
+		%% (SELECT ((SUM(time) / 5)) FROM recomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "full_parallel_bcomp" AND level = 4 GROUP BY s1.dataset),
+		%% (SELECT ((SUM(time) / 5)) FROM recomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "fast_bcomp" AND level = 4 GROUP BY s1.dataset),
+		%% (SELECT ((SUM(time) / 5)) FROM recomp s1 WHERE s1.dataset = s.dataset AND s1.algo = "naive_bcomp" AND level = 4 GROUP BY s1.dataset)
+		%% FROM recomp s GROUP BY s.dataset
+  Escherichia\_Coli & 112689 & 147 & 135 & 145 & 134 & \textbf{104} \\
+          coreutils & 205281 & 334 & 315 & 322 & 317 & \textbf{235} \\
+      dblp.xml.50MB &  52428 &  92 &  90 &  93 &  88 &  \textbf{64} \\
+                dna & 403927 & 551 & 469 & 481 & 472 & \textbf{384} \\
+           dna.50MB &  52428 &  74 &  65 &  75 &  65 &  \textbf{51} \\
+    einstein.de.txt &  92758 & 148 & 143 & 149 & 146 & \textbf{106} \\
+             kernel & 257961 & 419 & 394 & 404 & 402 & \textbf{294} \\
+            sources & 210866 & 326 & 311 & 320 & 314 & \textbf{235} \\
+     world\_leaders &  46968 &  43 &  43 &  47 &  39 &  \textbf{29} \\
+  % END TABULAR SELECT s.dataset AS x, (SELECT (text / 1000) FROM recomp s1 WH...)
+	\end{tabular}
+\end{document}
