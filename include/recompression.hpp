@@ -280,7 +280,7 @@ class recompression {
      * @brief
      *
      * @param text The text
-     * @param adj_list The multiset
+     * @param adj_list The adj_list
      */
     inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
@@ -457,7 +457,7 @@ class recompression {
 #ifdef BENCH
         const auto endTimeMult = std::chrono::system_clock::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
-        std::cout << " sort_multiset="
+        std::cout << " sort_adj_list="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
 #endif
 

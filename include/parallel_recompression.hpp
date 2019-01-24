@@ -413,7 +413,7 @@ class recompression {
 #ifdef BENCH
         const auto endTimeMult = std::chrono::system_clock::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
-        std::cout << " sort_multiset="
+        std::cout << " sort_adj_list="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
 #endif
 
