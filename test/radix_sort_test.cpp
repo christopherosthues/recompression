@@ -13,18 +13,18 @@
 using namespace recomp;
 
 typedef var_t variable_t;
-typedef parallel::recompression<var_t, term_t>::multiset_t multiset_t;
+typedef parallel::recompression<var_t, term_t>::adj_list_t multiset_t;
 
 
-TEST(digits, output_digits) {
-    std::uint64_t val = (24 << 4) | (56 << 16);
-    DLOG(INFO) << val;
-
-    DLOG(INFO) << digits<std::uint64_t, 8>(val, 0);
-    DLOG(INFO) << digits<std::uint64_t, 8>(val, 1);
-    DLOG(INFO) << digits<std::uint64_t, 8>(val, 2);
-    DLOG(INFO) << digits<std::uint64_t, 8>(val, 3);
-}
+//TEST(digits, output_digits) {
+//    std::uint64_t val = (24 << 4) | (56 << 16);
+//    DLOG(INFO) << val;
+//
+//    DLOG(INFO) << digits<std::uint64_t, 8>(val, 0);
+//    DLOG(INFO) << digits<std::uint64_t, 8>(val, 1);
+//    DLOG(INFO) << digits<std::uint64_t, 8>(val, 2);
+//    DLOG(INFO) << digits<std::uint64_t, 8>(val, 3);
+//}
 
 TEST(digits, digits) {
     std::vector<variable_t> vec{23, 23423, 234333, 5758, 6994, 599, 9023, 2, 774, 563};
