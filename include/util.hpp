@@ -2,6 +2,7 @@
 #pragma once
 
 #include <fstream>
+#include <map>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -194,9 +195,16 @@ std::string pair_positions_to_string(const std::vector<pair_position_t>& positio
 template<typename partition_t>
 std::string partition_to_string(const partition_t& partition) {
     std::stringstream sstream;
+    std::map<var_t, bool> part;
     for (const auto& par : partition) {
-        sstream << "(" << par.first << ": " << par.second << ") ";
+        part[par.first] = par.second;
     }
+    for (const auto& par : part) {
+        sstream << "(" << par.first << ": " << par.second << ") " << std::endl;
+    }
+    /*for (const auto& par : partition) {
+        sstream << "(" << par.first << ": " << par.second << ") ";
+    }*/
     return sstream.str();
 }
 
