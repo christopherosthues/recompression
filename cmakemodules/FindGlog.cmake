@@ -25,9 +25,9 @@ set(Glog_FIND_REQUIRED 0)
 set(Glog_ROOT_DIR ${Glog_INSTALL_DIR})
 
 if (WIN32)
-    find_path(Glog_INCLUDE_DIR glog/logging.h PATHS ${Glog_ROOT_DIR}/src/windows)
+    find_path(Glog_INCLUDE_DIR Glog/logging.h PATHS ${Glog_ROOT_DIR}/src/windows)
 else ()
-    find_path(Glog_INCLUDE_DIR glog/logging.h PATHS ${Glog_ROOT_DIR})
+    find_path(Glog_INCLUDE_DIR Glog/logging.h PATHS ${Glog_ROOT_DIR})
 endif ()
 
 if (MSVC)
