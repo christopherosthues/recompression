@@ -33,7 +33,7 @@ class recompression {
  public:
     typedef std::vector<variable_t> text_t;
     typedef std::vector<variable_t> alphabet_t;
-    typedef std::vector<std::tuple<variable_t, variable_t, bool>> multiset_t;
+    typedef std::vector<std::tuple<variable_t, variable_t, bool>> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     typedef std::pair<variable_t, variable_t> block_t;
@@ -274,49 +274,44 @@ class recompression {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-//        DLOG(INFO) << "Time for bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
-//                   << "[ms]";
-
-//        DLOG(INFO) << "BComp ouput - text size: " << text.size() << " - distinct blocks: " << block_count
-//                   << " - string length reduce by: " << substr_len;
     }
 
     /**
      * @brief
      *
      * @param text The text
-     * @param multiset The multiset
+     * @param adj_list The multiset
      */
-    inline void compute_multiset(const text_t& text, multiset_t& multiset) {
+    inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
 
-        for (size_t i = 0; i < multiset.size(); ++i) {
+        for (size_t i = 0; i < adj_list.size(); ++i) {
             if (text[i] > text[i + 1]) {
-                multiset[i] = std::make_tuple(text[i], text[i + 1], false);
+                adj_list[i] = std::make_tuple(text[i], text[i + 1], false);
             } else {
-                multiset[i] = std::make_tuple(text[i + 1], text[i], true);
+                adj_list[i] = std::make_tuple(text[i + 1], text[i], true);
             }
         }
 
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << " multiset=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+        std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
-//        DLOG(INFO) << "Time for computing multiset: "
+//        DLOG(INFO) << "Time for computing adj_list: "
 //                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
     }
 
     /**
      * @brief
      *
-     * @param multiset
+     * @param adj_list
      * @param alphabet
      * @param partition
      */
-    inline void compute_partition(const multiset_t& multiset, /*const alphabet_t& alphabet,*/ partition_t& partition) {
+    inline void compute_partition(const adj_list_t& adj_list, /*const alphabet_t& alphabet,*/ partition_t& partition) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -324,29 +319,29 @@ class recompression {
 //        DLOG(INFO) << util::text_vector_to_string(alphabet);
         int l_count = 0;
         int r_count = 0;
-        if (multiset.size() > 0) {
-            if (partition[std::get<0>(multiset[0])]) {
+        if (adj_list.size() > 0) {
+            if (partition[std::get<0>(adj_list[0])]) {
                 r_count++;
             } else {
                 l_count++;
             }
         }
-        for (size_t i = 1; i < multiset.size(); ++i) {
-            if (std::get<0>(multiset[i - 1]) < std::get<0>(multiset[i])) {
-//            LOG(INFO) << "Setting " << std::get<0>(multiset[i - 1]) << " to " << (l_count > r_count) << " ; "
+        for (size_t i = 1; i < adj_list.size(); ++i) {
+            if (std::get<0>(adj_list[i - 1]) < std::get<0>(adj_list[i])) {
+//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
 //                      << l_count << ", " << r_count;
-                partition[std::get<0>(multiset[i - 1])] = l_count > r_count;
+                partition[std::get<0>(adj_list[i - 1])] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
             }
-            if (partition[std::get<1>(multiset[i])]) {
+            if (partition[std::get<1>(adj_list[i])]) {
                 r_count++;
             } else {
                 l_count++;
             }
         }
-        partition[std::get<0>(multiset[multiset.size() - 1])] = l_count > r_count;
-//    LOG(INFO) << "Setting " << std::get<0>(multiset[multiset.size() - 1]) << " to " << (l_count > r_count) << " ; "
+        partition[std::get<0>(adj_list[adj_list.size() - 1])] = l_count > r_count;
+//    LOG(INFO) << "Setting " << std::get<0>(adj_list[adj_list.size() - 1]) << " to " << (l_count > r_count) << " ; "
 //              << l_count << ", " << r_count;
 #ifdef BENCH
         const auto endTimePar = std::chrono::system_clock::now();
@@ -357,15 +352,15 @@ class recompression {
 //        int l_count = 0;
 //        int r_count = 0;
 //        size_t j = 0;
-//        for (size_t i = 0; i < multiset.size(); ++i) {
-//            while (j < alphabet.size() && std::get<0>(multiset[i]) > alphabet[j]) {
+//        for (size_t i = 0; i < adj_list.size(); ++i) {
+//            while (j < alphabet.size() && std::get<0>(adj_list[i]) > alphabet[j]) {
 //                partition[alphabet[j]] = l_count > r_count;
 //                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
 //                j++;
 //                l_count = 0;
 //                r_count = 0;
 //            }
-//            if (partition[std::get<1>(multiset[i])]) {
+//            if (partition[std::get<1>(adj_list[i])]) {
 //                r_count++;
 //            } else {
 //                l_count++;
@@ -383,21 +378,21 @@ class recompression {
 #endif
         int lr_count = 0;
         int rl_count = 0;
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            if (std::get<2>(multiset[i])) {
-                if (!partition[std::get<0>(multiset[i])] &&
-                    partition[std::get<1>(multiset[i])]) {  // bc in text and b in right set and c in left
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            if (std::get<2>(adj_list[i])) {
+                if (!partition[std::get<0>(adj_list[i])] &&
+                    partition[std::get<1>(adj_list[i])]) {  // bc in text and b in right set and c in left
                     rl_count++;
-                } else if (partition[std::get<0>(multiset[i])] &&
-                           !partition[std::get<1>(multiset[i])]) {  // bc in text and b in left set and c in right
+                } else if (partition[std::get<0>(adj_list[i])] &&
+                           !partition[std::get<1>(adj_list[i])]) {  // bc in text and b in left set and c in right
                     lr_count++;
                 }
             } else {
-                if (!partition[std::get<0>(multiset[i])] &&
-                    partition[std::get<1>(multiset[i])]) {  // cb in text and c in left set and b in right
+                if (!partition[std::get<0>(adj_list[i])] &&
+                    partition[std::get<1>(adj_list[i])]) {  // cb in text and c in left set and b in right
                     lr_count++;
-                } else if (partition[std::get<0>(multiset[i])] &&
-                           !partition[std::get<1>(multiset[i])]) {  // cb in text and c in right set and b in left
+                } else if (partition[std::get<0>(adj_list[i])] &&
+                           !partition[std::get<1>(adj_list[i])]) {  // cb in text and c in right set and b in left
                     rl_count++;
                 }
             }
@@ -451,14 +446,14 @@ class recompression {
 #ifdef BENCH
         std::cout << " alphabet=" << partition.size();
 #endif
-        multiset_t multiset(text.size() - 1);
-        compute_multiset(text, multiset);
+        adj_list_t adj_list(text.size() - 1);
+        compute_adj_list(text, adj_list);
 
 #ifdef BENCH
         const auto startTimeMult = std::chrono::system_clock::now();
 #endif
-//        std::sort(multiset.begin(), multiset.end());
-        ips4o::sort(multiset.begin(), multiset.end());
+//        std::sort(adj_list.begin(), adj_list.end());
+        ips4o::sort(adj_list.begin(), adj_list.end());
 #ifdef BENCH
         const auto endTimeMult = std::chrono::system_clock::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
@@ -468,7 +463,7 @@ class recompression {
 
         size_t pair_count = 0;
 
-        compute_partition(multiset, /*alphabet,*/ partition);
+        compute_partition(adj_list, /*alphabet,*/ partition);
 
 #ifdef BENCH
         const auto startTimePairs = std::chrono::system_clock::now();

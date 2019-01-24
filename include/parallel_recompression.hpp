@@ -33,9 +33,7 @@ class recompression {
     typedef std::vector<variable_t> text_t;
     typedef std::vector<variable_t> alphabet_t;
     typedef std::vector<bool> bitvector_t;
-    typedef std::vector<std::tuple<variable_t, variable_t, bool>> multiset_t;
-//    typedef std::vector<std::pair<variable_t, variable_t>> multiset_t;
-//    typedef bitvector_t multiset_dir_t;
+    typedef std::vector<std::tuple<variable_t, variable_t, bool>> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     typedef std::pair<variable_t, variable_t> block_t;
@@ -63,8 +61,6 @@ class recompression {
                 rlslp<variable_t, terminal_count_t>& rlslp,
                 const terminal_count_t& alphabet_size,
                 const size_t cores = std::thread::hardware_concurrency()) {
-//        DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: "
-//                   << std::to_string(alphabet_size);
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -93,8 +89,6 @@ class recompression {
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << level
                   << " cores=" << cores << std::endl;
 #endif
-//        DLOG(INFO) << "Time for recomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
-//                   << "[ms]";
     }
 
     /**
@@ -120,9 +114,7 @@ class recompression {
      * @param rlslp The rlslp
      */
     inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-//        DLOG(INFO) << "BComp input - text size: " << text.size();
 //        DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
-//        std::cout << " text=" << text.size();  // << " alphabet=" << alphabet.size();
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=parallel_bcomp dataset=" << dataset << " text=" << text.size()
@@ -147,6 +139,7 @@ class recompression {
 
 #pragma omp single
             {
+                std::cout << " used_cores=" << n_threads;
                 bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
@@ -180,7 +173,6 @@ class recompression {
 //                    DLOG(INFO) << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
 //                               << " by thread " << thread_id;
                     t_positions.emplace_back(block_len, i - block_len + 1);
-//                    t_positions.emplace_back(i - block_len + 1);
                     block_t block = std::make_pair(text[i], block_len);
                     t_blocks[block] = 1;
                     block_count++;
@@ -336,8 +328,6 @@ class recompression {
         std::cout << " compact_text="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 #endif
-//        DLOG(INFO) << "Shrinking text by " << substr_len << " from length " << text.size() << " to length "
-//                   << new_text_size;
 
         text.resize(new_text_size);
         text.shrink_to_fit();
@@ -349,51 +339,33 @@ class recompression {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-//        DLOG(INFO) << "Time for bcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
-//                   << "[ms]";
-//        DLOG(INFO) << "BComp ouput - text size: " << text.size() << " - distinct blocks: " << block_count
-//                   << " - string length reduce by: " << substr_len;
-
-// #ifdef DEBUG
-//        if (text.size() < 30) {
-//            DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
-//        }
-// #endif
-
-
     }
 
     /**
      * @brief Computes the adjacency list of the text.
      *
      * @param text The text
-     * @param multiset[out] The adjacency list
+     * @param adj_list[out] The adjacency list
      */
-    inline void compute_multiset(const text_t& text, multiset_t& multiset/*, multiset_dir_t& multiset_dir*/) {
+    inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
 
 #pragma omp parallel for schedule(static) num_threads(cores)
-        for (size_t i = 0; i < multiset.size(); ++i) {
+        for (size_t i = 0; i < adj_list.size(); ++i) {
             if (text[i] > text[i + 1]) {
-                multiset[i] = std::make_tuple(text[i], text[i + 1], false);
-//                multiset[i] = std::make_pair(text[i], text[i + 1]);
-//                multiset_dir[i] = false;
+                adj_list[i] = std::make_tuple(text[i], text[i + 1], false);
             } else {
-                multiset[i] = std::make_tuple(text[i + 1], text[i], true);
-//                multiset[i] = std::make_pair(text[i + 1], text[i]);
-//                multiset_dir[i] = true;
+                adj_list[i] = std::make_tuple(text[i + 1], text[i], true);
             }
         }
 
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << " multiset=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+        std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
-//        DLOG(INFO) << "Time for computing multiset: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
     }
 
 
@@ -404,12 +376,13 @@ class recompression {
      * @param rlslp The rlslp
      */
     inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-//        DLOG(INFO) << "PComp input - text size: " << text.size();
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
                   << " cores=" << cores;
 #endif
+
+//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
 
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
@@ -429,15 +402,14 @@ class recompression {
 #ifdef BENCH
         std::cout << " alphabet=" << partition.size();
 #endif
-        multiset_t multiset(text.size() - 1);
-//        multiset_dir_t multiset_dir(text.size() - 1);
-        compute_multiset(text, multiset/*, multiset_dir*/);
+        adj_list_t adj_list(text.size() - 1);
+        compute_adj_list(text, adj_list);
 
 #ifdef BENCH
         const auto startTimeMult = std::chrono::system_clock::now();
 #endif
-//        partitioned_radix_sort(multiset);
-        ips4o::parallel::sort(multiset.begin(), multiset.end());
+//        partitioned_radix_sort(adj_list);
+        ips4o::parallel::sort(adj_list.begin(), adj_list.end());
 #ifdef BENCH
         const auto endTimeMult = std::chrono::system_clock::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
@@ -447,8 +419,8 @@ class recompression {
 
         size_t pair_count = 0;
 
-//        compute_partition<multiset_t, partition_t>(multiset, /*alphabet,*/ partition, cores);
-        compute_partition_full_parallel<variable_t, multiset_t, alphabet_t, partition_t>(multiset, partition, cores);
+        compute_partition<adj_list_t, partition_t>(adj_list, partition, cores);
+//        compute_partition_full_parallel<variable_t, adj_list_t, alphabet_t, partition_t>(adj_list, partition, cores);
 
 #ifdef BENCH
         const auto startTimePairs = std::chrono::system_clock::now();
@@ -591,6 +563,11 @@ class recompression {
 //                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
 //                   << "[ms]";
 
+//        std::cout << std::endl;
+//        for (const auto& p : sort_pairs) {
+//            std::cout << p.first << ", " << p.second << ": " << pairs[p] << std::endl;
+//        }
+
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
@@ -610,8 +587,6 @@ class recompression {
         std::cout << " replace_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
 #endif
-//        DLOG(INFO) << "Time for replacing pairs: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
 
 #ifdef BENCH
         const auto startTimeCompact = std::chrono::system_clock::now();
@@ -633,8 +608,6 @@ class recompression {
         std::cout << " compact_text="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 #endif
-//        DLOG(INFO) << "Shrinking text by " << positions.size() << " from length " << text.size() << " to length "
-//                   << new_text_size;
 
         text.resize(new_text_size);
         text.shrink_to_fit();
@@ -646,10 +619,8 @@ class recompression {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-//        DLOG(INFO) << "Time for pcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
-//                   << "[ms]";
-//        DLOG(INFO) << "PComp ouput - text size: " << text.size() << " - distinct pairs: " << pair_count
-//                   << " - string length reduce by: " << positions.size();
+
+//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
     }
 };
 

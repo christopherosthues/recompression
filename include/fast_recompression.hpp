@@ -20,8 +20,8 @@ template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class recompression_fast {
  public:
     typedef std::vector<variable_t> text_t;
-//    typedef std::tuple<variable_t, variable_t, bool> multiset_t;
-    typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> multiset_t;
+//    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
+    typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
 
     std::string dataset = "data";
@@ -273,28 +273,28 @@ class recompression_fast {
      * @param text[in] The text
      * @return The multiset
      */
-    inline void compute_multiset(const text_t& text,
-                                 multiset_t& multiset) {
+    inline void compute_adj_list(const text_t& text,
+                                 adj_list_t& adj_list) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
         // Compute adjacency graph of the symbols in the current text
         for (size_t i = 1; i < text.size(); ++i) {
             if (text[i-1] > text[i]) {
-                auto found = multiset[text[i-1]].find(text[i]);
-                if (found == multiset[text[i-1]].end()) {
-                    multiset[text[i-1]][text[i]].first = 1;
-                    multiset[text[i-1]][text[i]].second = 0;
+                auto found = adj_list[text[i-1]].find(text[i]);
+                if (found == adj_list[text[i-1]].end()) {
+                    adj_list[text[i-1]][text[i]].first = 1;
+                    adj_list[text[i-1]][text[i]].second = 0;
                 } else {
-                    multiset[text[i-1]][text[i]].first++;
+                    adj_list[text[i-1]][text[i]].first++;
                 }
             } else {
-                auto found = multiset[text[i]].find(text[i-1]);
-                if (found == multiset[text[i]].end()) {
-                    multiset[text[i]][text[i-1]].first = 0;
-                    multiset[text[i]][text[i-1]].second = 1;
+                auto found = adj_list[text[i]].find(text[i-1]);
+                if (found == adj_list[text[i]].end()) {
+                    adj_list[text[i]][text[i-1]].first = 0;
+                    adj_list[text[i]][text[i-1]].second = 1;
                 } else {
-                    multiset[text[i]][text[i-1]].second++;
+                    adj_list[text[i]][text[i-1]].second++;
                 }
             }
             /*std::pair<variable_t, variable_t> adj;
@@ -305,14 +305,14 @@ class recompression_fast {
                 adj.first = text[i];
                 adj.second = text[i-1];
             }
-            auto found = multiset.find(adj);
-            if (found == multiset.end()) {
+            auto found = adj_list.find(adj);
+            if (found == adj_list.end()) {
                 if (text[i-1] > text[i]) {
-                    multiset[adj].first = 1;
-                    multiset[adj].second = 0;
+                    adj_list[adj].first = 1;
+                    adj_list[adj].second = 0;
                 } else {
-                    multiset[adj].first = 0;
-                    multiset[adj].second = 1;
+                    adj_list[adj].first = 0;
+                    adj_list[adj].second = 1;
                 }
             } else {
                 if (text[i-1] > text[i]) {
@@ -324,36 +324,36 @@ class recompression_fast {
         }
 
         /*std::cout << "Multiset: " << std::endl;
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            for (const auto& sec : multiset[i]) {
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            for (const auto& sec : adj_list[i]) {
                 std::cout << i << "," << sec.first << ": " << sec.second.first << "," << sec.second.second << std::endl;
             }
         }*/
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << " multiset=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+        std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
     }
 
     /**
      * @brief Computes the partition based on the adjacency graph of the text given by the multiset.
      *
-     * @param multiset[i] Multiset representing the adjacency graph of the text
+     * @param adj_list[i] Multiset representing the adjacency graph of the text
      * @param alphabet_size[in] The size of the alphabet used in the text
      *
      * @return The partition of the symbols in the alphabet to maximize the number of pairs to be compressed
      */
-    inline void compute_partition(const multiset_t& multiset,
+    inline void compute_partition(const adj_list_t& adj_list,
                                   partition_t& partition) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
         int l_count = 0;
         int r_count = 0;
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            if (!multiset[i].empty()) {
-                for (const auto& mult : multiset[i]) {
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            if (!adj_list[i].empty()) {
+                for (const auto& mult : adj_list[i]) {
                     if (partition[mult.first]) {
                         r_count += mult.second.first + mult.second.second;
                     } else {
@@ -370,14 +370,14 @@ class recompression_fast {
 //        //int rl_count = 0;
 //        variable_t c = 0;
 //        int left = 0, right = 0;
-//        for (size_t i = 0; i < multiset.size(); ++i) {
+//        for (size_t i = 0; i < adj_list.size(); ++i) {
 //            while (c < alphabet_size && i > c) {
 //                partition[c] = left > right;
 //                c++;
 //                left = 0;
 //                right = 0;
 //            }
-//            for (const auto& sec : multiset[i]) {
+//            for (const auto& sec : adj_list[i]) {
 //                if (partition[sec.first]) {
 //                    right += sec.second.first + sec.second.second;
 //                } else {
@@ -394,7 +394,7 @@ class recompression_fast {
 //        }
 
 
-        /*for (const auto& adj : multiset) {
+        /*for (const auto& adj : adj_list) {
             auto first = adj.first;
             while (c < alphabet_size && first.first > c) {
                 partition[c] = left > right;
@@ -436,18 +436,18 @@ class recompression_fast {
      * the left set is greater than the number of symbol pairs from left to right then the sets of the
      * partition are swapped.
      *
-     * @param multiset[in] Multiset representing the adjacency graph of the text
+     * @param adj_list[in] Multiset representing the adjacency graph of the text
      * @param partition[in,out] The partition of the letters in the current alphabet represented by a bitvector
      */
-    inline void count_pairs(const multiset_t& multiset,
+    inline void count_pairs(const adj_list_t& adj_list,
                             partition_t& partition) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
         int lr_count = 0;
         int rl_count = 0;
-        for (size_t i = 0; i < multiset.size(); ++i) {
-            for (const auto& sec : multiset[i]) {
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            for (const auto& sec : adj_list[i]) {
                 if (!partition[i] && partition[sec.first]) {
                     lr_count += sec.second.first;
                     rl_count += sec.second.second;
@@ -460,6 +460,7 @@ class recompression_fast {
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
+        std::cout << " lr=" << lr_count << " rl=" << rl_count;
         std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
 
@@ -495,17 +496,17 @@ class recompression_fast {
     inline void partition(const text_t& text,
                           const variable_t& alphabet_size,
                           partition_t& partition) {
-        multiset_t multiset(alphabet_size);
-        compute_multiset(text, multiset);
+        adj_list_t adj_list(alphabet_size);
+        compute_adj_list(text, adj_list);
 
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
-        compute_partition(multiset, partition);
+        compute_partition(adj_list, partition);
 
         // Count pairs in the current text based on the pairs build by the partition
         // from left set to right set and vice versa
-        count_pairs(multiset, partition);
+        count_pairs(adj_list, partition);
 
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();

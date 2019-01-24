@@ -10,16 +10,16 @@
 using namespace recomp;
 
 typedef recompression<var_t, term_t>::text_t text_t;
-typedef recompression<var_t, term_t>::multiset_t multiset_t;
+typedef recompression<var_t, term_t>::adj_list_t multiset_t;
 typedef recompression<var_t, term_t>::partition_t partition_t;
 typedef recompression<var_t, term_t>::alphabet_t alphabet_t;
 
 typedef recompression_fast<var_t, term_t>::text_t fast_text_t;
-typedef recompression_fast<var_t, term_t>::multiset_t fast_multiset_t;
+typedef recompression_fast<var_t, term_t>::adj_list_t fast_multiset_t;
 typedef recompression_fast<var_t, term_t>::partition_t fast_partition_t;
 
 typedef parallel::recompression<var_t, term_t>::text_t par_text_t;
-typedef parallel::recompression<var_t, term_t>::multiset_t par_multiset_t;
+typedef parallel::recompression<var_t, term_t>::adj_list_t par_multiset_t;
 typedef parallel::recompression<var_t, term_t>::partition_t par_partition_t;
 typedef parallel::recompression<var_t, term_t>::alphabet_t par_alphabet_t;
 
@@ -32,7 +32,7 @@ TEST(parallel_partition, 212181623541741623541321) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -58,7 +58,7 @@ TEST(parallel_partition, 131261051171161051139) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -85,7 +85,7 @@ TEST(parallel_partition, 18161517161514) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -108,7 +108,7 @@ TEST(parallel_partition, 21201619) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -130,7 +130,7 @@ TEST(parallel_partition, 2322) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition<par_multiset_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -151,7 +151,7 @@ TEST(full_parallel_partition, 212181623541741623541321) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition_full_parallel<var_t, par_multiset_t, par_alphabet_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -177,7 +177,7 @@ TEST(full_parallel_partition, 131261051171161051139) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition_full_parallel<var_t, par_multiset_t, par_alphabet_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -204,7 +204,7 @@ TEST(full_parallel_partition, 18161517161514) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition_full_parallel<var_t, par_multiset_t, par_alphabet_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -227,7 +227,7 @@ TEST(full_parallel_partition, 21201619) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition_full_parallel<var_t, par_multiset_t, par_alphabet_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -249,7 +249,7 @@ TEST(full_parallel_partition, 2322) {
         partition[a] = false;
     }
     parallel::recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     parallel::compute_partition_full_parallel<var_t, par_multiset_t, par_alphabet_t, par_partition_t>(multiset, /*alphabet,*/ partition);
 
@@ -270,7 +270,7 @@ TEST(partition, 212181623541741623541321) {
         partition[a] = false;
     }
     recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
@@ -296,7 +296,7 @@ TEST(partition, 131261051171161051139) {
         partition[a] = false;
     }
     recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
@@ -323,7 +323,7 @@ TEST(partition, 18161517161514) {
         partition[a] = false;
     }
     recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
@@ -346,7 +346,7 @@ TEST(partition, 21201619) {
         partition[a] = false;
     }
     recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
@@ -368,7 +368,7 @@ TEST(partition, 2322) {
         partition[a] = false;
     }
     recompression<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     ips4o::parallel::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, /*alphabet,*/ partition);
 
@@ -386,7 +386,7 @@ TEST(fast_compute_partition, 212181623541741623541321) {
     fast_multiset_t multiset(alphabet_size);
     fast_partition_t partition(alphabet_size, false);
     recompression_fast<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     recomp.compute_partition(multiset, partition);
 
     fast_partition_t exp_partition(alphabet_size, false);
@@ -403,7 +403,7 @@ TEST(fast_compute_partition, 131261051171161051139) {
     fast_multiset_t multiset(alphabet_size);
     fast_partition_t partition(alphabet_size, false);
     recompression_fast<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     recomp.compute_partition(multiset, partition);
 
     fast_partition_t exp_partition(alphabet_size, false);
@@ -421,7 +421,7 @@ TEST(fast_compute_partition, 18161517161514) {
     fast_multiset_t multiset(alphabet_size);
     fast_partition_t partition(alphabet_size, false);
     recompression_fast<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     recomp.compute_partition(multiset, partition);
 
     fast_partition_t exp_partition(alphabet_size, false);
@@ -437,7 +437,7 @@ TEST(fast_compute_partition, 21201619) {
     fast_multiset_t multiset(alphabet_size);
     fast_partition_t partition(alphabet_size, false);
     recompression_fast<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     recomp.compute_partition(multiset, partition);
 
     fast_partition_t exp_partition(alphabet_size, false);
@@ -453,7 +453,7 @@ TEST(fast_compute_partition, 2322) {
     fast_multiset_t multiset(alphabet_size);
     fast_partition_t partition(alphabet_size, false);
     recompression_fast<var_t, term_t> recomp;
-    recomp.compute_multiset(text, multiset);
+    recomp.compute_adj_list(text, multiset);
     recomp.compute_partition(multiset, partition);
 
     fast_partition_t exp_partition(alphabet_size, false);
