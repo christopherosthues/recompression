@@ -678,6 +678,45 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
     }
 }
 
+template<typename adj_list_t>
+void bucket_sort(adj_list_t& adj_list, const size_t cores = std::thread::hardware_concurrency()) {
+    std::vector<size_t> bounds;
+#pragma omp parallel num_threads(cores)
+    {
+
+        auto thread_id = omp_get_thread_num();
+        auto n_threads = static_cast<size_t>(omp_get_num_threads());
+        auto bounds_len = (n_threads << 1);
+
+#pragma omp single
+        {
+            bounds.reserve(bounds_len + 1);
+            bounds.resize(bounds_len + 1);
+            bounds[0] = 0;
+        }
+
+        std::array<adj_list_t, 2> buckets;
+#pragma omp for schedule(static) nowait
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            buckets[std::get<0>(adj_list[i])].push_back(adj_list[i]);
+        }
+
+        bounds[thread_id + 1] = buckets[0].size();
+        bounds[thread_id + n_threads + 1] = buckets[1].size();
+
+#pragma omp barrier
+#pragma omp single
+        {
+            for (size_t i = 1; i < bounds_len + 1; ++i) {
+                bounds[i] += bounds[i - 1];
+            }
+//            positions.resize(positions.size() + bounds[n_threads]);
+        }
+        std::copy(buckets[0].begin(), buckets[0].end(), adj_list.begin() + bounds[thread_id]);
+        std::copy(buckets[1].begin(), buckets[1].end(), adj_list.begin() + bounds[thread_id + n_threads]);
+    }
+}
+
 }  // namespace parallel
 
 }  // namespace recomp

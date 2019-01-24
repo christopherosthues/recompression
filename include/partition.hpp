@@ -346,6 +346,132 @@ inline void compute_partition_full_parallel(const adj_list_t& adj_list,
     std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
 }
+
+
+/**
+ * @brief Computes a partitioning of the symbol in the text.
+ *
+ * @param adj_list[in] The adjacency list of the text
+ * @param partition[out] The partition
+ */
+template<typename adj_list_t, typename partition_t>
+inline void compute_partition(const adj_list_t& adj_list,
+                              partition_t& partition,
+                              size_t& begin,
+                              bool& part_l,
+                              const size_t cores = std::thread::hardware_concurrency()) {
+#ifdef BENCH
+    const auto startTime = std::chrono::system_clock::now();
+#endif
+//        DLOG(INFO) << util::text_vector_to_string(alphabet);
+
+    int l_count = 0;
+    int r_count = 0;
+    if (adj_list.size() > 0) {
+        if (partition[std::get<1>(adj_list[0])]) {
+            r_count++;
+        } else {
+            l_count++;
+        }
+    }
+    for (size_t i = 1; i < adj_list.size(); ++i) {
+        if (std::get<1>(adj_list[i - 1]) < std::get<1>(adj_list[i])) {
+//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
+//                      << l_count << ", " << r_count;
+            partition[std::get<1>(adj_list[i - 1])] = l_count > r_count;
+            l_count = 0;
+            r_count = 0;
+        }
+        if (partition[std::get<2>(adj_list[i])]) {
+            r_count++;
+        } else {
+            l_count++;
+        }
+    }
+    partition[std::get<1>(adj_list[adj_list.size() - 1])] = l_count > r_count;
+
+//    LOG(INFO) << "Setting " << std::get<0>(adj_list[adj_list.size() - 1]) << " to " << (l_count > r_count) << " ; "
+//              << l_count << ", " << r_count;
+//        for (size_t i = 0; i < adj_list.size(); ++i) {
+//            while (j < alphabet.size() && std::get<0>(adj_list[i]) > alphabet[j]) {
+//                partition[alphabet[j]] = l_count > r_count;
+////                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
+//                j++;
+//                l_count = 0;
+//                r_count = 0;
+//            }
+//            if (partition[std::get<1>(adj_list[i])]) {
+//                r_count++;
+//            } else {
+//                l_count++;
+//            }
+//        }
+//        partition[alphabet[j]] = l_count > r_count;
+#ifdef BENCH
+    const auto endTimePar = std::chrono::system_clock::now();
+    const auto timeSpanPar = endTimePar - startTime;
+    std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+#endif
+//    LOG(INFO) << "Partition: " << util::partition_to_string(partition);
+
+#ifdef BENCH
+    const auto startTimeCount = std::chrono::system_clock::now();
+#endif
+    int lr_count = 0;
+    int rl_count = 0;
+#pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
+    for (size_t i = 0; i < adj_list.size(); ++i) {
+        if (std::get<0>(adj_list[i])) {
+            if (!partition[std::get<1>(adj_list[i])] &&
+                partition[std::get<2>(adj_list[i])]) {  // bc in text and b in right set and c in left
+                rl_count++;
+            } else if (partition[std::get<1>(adj_list[i])] &&
+                       !partition[std::get<2>(adj_list[i])]) {  // bc in text and b in left set and c in right
+                lr_count++;
+            }
+        } else {
+            if (!partition[std::get<1>(adj_list[i])] &&
+                partition[std::get<2>(adj_list[i])]) {  // cb in text and c in left set and b in right
+                lr_count++;
+            } else if (partition[std::get<1>(adj_list[i])] &&
+                       !partition[std::get<2>(adj_list[i])]) {  // cb in text and c in right set and b in left
+                rl_count++;
+            }
+        }
+    }
+#ifdef BENCH
+    const auto endTimeCount = std::chrono::system_clock::now();
+    const auto timeSpanCount = endTimeCount - startTimeCount;
+    std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
+              << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
+
+    part_l = lr_count >= rl_count;
+////    LOG(INFO) << "rl: " << rl_count << ", lr: " << lr_count;
+//    if (rl_count > lr_count) {
+////        LOG(INFO) << "Swap partition sets";
+//#pragma omp parallel num_threads(cores)
+//        {
+//#pragma omp single
+//            {
+//                for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
+//#pragma omp task
+//                    {
+//                        (*iter).second = !(*iter).second;
+//                    }
+//                }
+//            }
+//#pragma omp barrier
+//        }
+//    }
+////        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
+#ifdef BENCH
+    const auto endTime = std::chrono::system_clock::now();
+    const auto timeSpan = endTime - startTime;
+    std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+#endif
+}
+
 }  // namespace parallel
 
 }  // namespace recomp

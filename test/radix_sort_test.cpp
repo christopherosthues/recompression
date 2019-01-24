@@ -4,16 +4,20 @@
 #include <utility>
 #include <vector>
 
+#include <ips4o.hpp>
+
 #include "defs.hpp"
 #include "radix_sort.hpp"
 #include "util.hpp"
 
 #include "parallel_recompression.hpp"
+#include "parallel_fast_recompression.hpp"
 
 using namespace recomp;
 
 typedef var_t variable_t;
-typedef parallel::recompression<var_t, term_t>::adj_list_t multiset_t;
+typedef parallel::recompression<var_t, term_t>::adj_list_t adj_list_t;
+typedef parallel::recompression_fast<var_t, term_t>::adj_list_t fast_adj_list_t;
 
 
 //TEST(digits, output_digits) {
@@ -369,7 +373,7 @@ TEST(pprs_pair, one_diff) {
 }
 
 TEST(pprs_tuple, par_lsd) {
-    multiset_t vec;
+    adj_list_t vec;
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23423, 2133, 0);
     vec.emplace_back(234333, 4, 0);
@@ -388,7 +392,7 @@ TEST(pprs_tuple, par_lsd) {
 
     parallel::partitioned_radix_sort<>(vec);
 
-    multiset_t exp_vec;
+    adj_list_t exp_vec;
     exp_vec.emplace_back(2, 2, 0);
     exp_vec.emplace_back(2, 4, 0);
     exp_vec.emplace_back(2, 7, 0);
@@ -409,7 +413,7 @@ TEST(pprs_tuple, par_lsd) {
 }
 
 TEST(pprs_tuple, all_equal) {
-    multiset_t vec;
+    adj_list_t vec;
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 1);
@@ -425,7 +429,7 @@ TEST(pprs_tuple, all_equal) {
 
     parallel::partitioned_radix_sort<>(vec);
 
-    multiset_t exp_vec;
+    adj_list_t exp_vec;
     exp_vec.emplace_back(23, 7, 0);
     exp_vec.emplace_back(23, 7, 0);
     exp_vec.emplace_back(23, 7, 1);
@@ -443,7 +447,7 @@ TEST(pprs_tuple, all_equal) {
 }
 
 TEST(pprs_tuple, one_sec_diff) {
-    multiset_t vec;
+    adj_list_t vec;
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 1);
@@ -459,7 +463,7 @@ TEST(pprs_tuple, one_sec_diff) {
 
     parallel::partitioned_radix_sort<>(vec);
 
-    multiset_t exp_vec;
+    adj_list_t exp_vec;
     exp_vec.emplace_back(23, 6, 0);
     exp_vec.emplace_back(23, 7, 0);
     exp_vec.emplace_back(23, 7, 0);
@@ -477,7 +481,7 @@ TEST(pprs_tuple, one_sec_diff) {
 }
 
 TEST(pprs_tuple, one_diff) {
-    multiset_t vec;
+    adj_list_t vec;
     vec.emplace_back(23, 7, 0);
     vec.emplace_back(23, 7, 1);
     vec.emplace_back(23, 7, 0);
@@ -493,7 +497,7 @@ TEST(pprs_tuple, one_diff) {
 
     parallel::partitioned_radix_sort<>(vec);
 
-    multiset_t exp_vec;
+    adj_list_t exp_vec;
     exp_vec.emplace_back(23, 7, 0);
     exp_vec.emplace_back(23, 7, 1);
     exp_vec.emplace_back(23, 7, 0);
@@ -650,4 +654,240 @@ TEST(pprs, one_diff) {
     exp_vec.emplace_back(256);
 
     ASSERT_EQ(exp_vec, vec);
+}
+
+
+
+TEST(parallel_bucket_sort, par_lsd) {
+    adj_list_t vec;
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23423, 2133);
+    vec.emplace_back(0, 234333, 4);
+    vec.emplace_back(1, 5758, 66);
+    vec.emplace_back(0, 599, 3);
+    vec.emplace_back(0, 9023, 4456);
+    vec.emplace_back(0, 2, 4);
+    vec.emplace_back(1, 774, 4);
+    vec.emplace_back(1, 23423, 993);
+    vec.emplace_back(0, 563, 4);
+    vec.emplace_back(0, 2, 7);
+    vec.emplace_back(0, 9023, 778);
+    vec.emplace_back(0, 563, 2);
+    vec.emplace_back(0, 6994, 4);
+    vec.emplace_back(0, 2, 2);
+
+    size_t begin = 12;
+    parallel::bucket_sort(vec);
+
+    adj_list_t exp_vec;
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23423, 2133);
+    exp_vec.emplace_back(0, 234333, 4);
+    exp_vec.emplace_back(0, 599, 3);
+    exp_vec.emplace_back(0, 9023, 4456);
+    exp_vec.emplace_back(0, 2, 4);
+    exp_vec.emplace_back(0, 563, 4);
+    exp_vec.emplace_back(0, 2, 7);
+    exp_vec.emplace_back(0, 9023, 778);
+    exp_vec.emplace_back(0, 563, 2);
+    exp_vec.emplace_back(0, 6994, 4);
+    exp_vec.emplace_back(0, 2, 2);
+    exp_vec.emplace_back(1, 5758, 66);
+    exp_vec.emplace_back(1, 774, 4);
+    exp_vec.emplace_back(1, 23423, 993);
+
+    ASSERT_EQ(exp_vec, vec);
+
+    auto iter = vec.begin();
+    std::advance(iter, begin);
+    ips4o::parallel::sort(vec.begin(), iter);
+    ips4o::parallel::sort(iter, vec.end());
+
+    adj_list_t exp_vec_ips;
+    exp_vec_ips.emplace_back(0, 2, 2);
+    exp_vec_ips.emplace_back(0, 2, 4);
+    exp_vec_ips.emplace_back(0, 2, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 563, 2);
+    exp_vec_ips.emplace_back(0, 563, 4);
+    exp_vec_ips.emplace_back(0, 599, 3);
+    exp_vec_ips.emplace_back(0, 6994, 4);
+    exp_vec_ips.emplace_back(0, 9023, 778);
+    exp_vec_ips.emplace_back(0, 9023, 4456);
+    exp_vec_ips.emplace_back(0, 23423, 2133);
+    exp_vec_ips.emplace_back(0, 234333, 4);
+    exp_vec_ips.emplace_back(1, 774, 4);
+    exp_vec_ips.emplace_back(1, 5758, 66);
+    exp_vec_ips.emplace_back(1, 23423, 993);
+
+    ASSERT_EQ(exp_vec_ips, vec);
+}
+
+TEST(parallel_bucket_sort, all_equal) {
+    adj_list_t vec;
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+
+    size_t begin = 8;
+    parallel::bucket_sort(vec);
+
+    adj_list_t exp_vec;
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+
+    ASSERT_EQ(exp_vec, vec);
+
+    auto iter = vec.begin();
+    std::advance(iter, begin);
+    ips4o::parallel::sort(vec.begin(), iter);
+    ips4o::parallel::sort(iter, vec.end());
+
+    adj_list_t exp_vec_ips;
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+
+
+    ASSERT_EQ(exp_vec_ips, vec);
+}
+
+TEST(parallel_bucket_sort, one_sec_diff) {
+    adj_list_t vec;
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 6);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+
+    size_t begin = 8;
+    parallel::bucket_sort(vec);
+
+    adj_list_t exp_vec;
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 6);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+
+    ASSERT_EQ(exp_vec, vec);
+
+    auto iter = vec.begin();
+    std::advance(iter, begin);
+    ips4o::parallel::sort(vec.begin(), iter);
+    ips4o::parallel::sort(iter, vec.end());
+
+    adj_list_t exp_vec_ips;
+    exp_vec_ips.emplace_back(0, 23, 6);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+
+    ASSERT_EQ(exp_vec_ips, vec);
+}
+
+TEST(parallel_bucket_sort, one_diff) {
+    adj_list_t vec;
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 256, 4);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(1, 23, 7);
+    vec.emplace_back(0, 23, 7);
+    vec.emplace_back(0, 23, 7);
+
+    size_t begin = 7;
+    parallel::bucket_sort(vec);
+
+    adj_list_t exp_vec;
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(0, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 256, 4);
+    exp_vec.emplace_back(1, 23, 7);
+    exp_vec.emplace_back(1, 23, 7);
+
+    ASSERT_EQ(exp_vec, vec);
+
+    auto iter = vec.begin();
+    std::advance(iter, begin);
+    ips4o::parallel::sort(vec.begin(), iter);
+    ips4o::parallel::sort(iter, vec.end());
+
+    adj_list_t exp_vec_ips;
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(0, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 23, 7);
+    exp_vec_ips.emplace_back(1, 256, 4);
+
+    ASSERT_EQ(exp_vec_ips, vec);
 }
