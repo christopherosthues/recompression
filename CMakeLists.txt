@@ -13,7 +13,6 @@ set(PROJECT_DESCRIPTION "Recompression")
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-    #    set(CMAKE_BUILD_TYPE "Debug")
 endif ()
 
 message(STATUS "Building in '${CMAKE_BUILD_TYPE}' mode")
@@ -28,6 +27,10 @@ if (${CMAKE_BUILD_TYPE} MATCHES Debug)
 elseif(${CMAKE_BUILD_TYPE} MATCHES Bench)
     message(STATUS "Adding benchmark flags")
     add_definitions(-DBENCH)
+    add_definitions(-DBENCH_RECOMP)
+elseif(${CMAKE_BUILD_TYPE} MATCHES BenchRecompression)
+    message(STATUS "Adding recompression benchmark flags")
+    add_definitions(-DBENCH_RECOMP)
 endif ()
 
 set(CMAKE_CXX_STANDARD 14)

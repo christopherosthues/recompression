@@ -61,7 +61,7 @@ class recompression {
                 rlslp<variable_t, terminal_count_t>& rlslp,
                 const terminal_count_t& alphabet_size,
                 const size_t cores = std::thread::hardware_concurrency()) {
-#ifdef BENCH
+#ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
         this->cores = cores;
@@ -81,7 +81,7 @@ class recompression {
             rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
         }
 
-#ifdef BENCH
+#ifdef BENCH_RECOMP
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=parallel_recompression dataset=" << dataset << " time="

@@ -46,7 +46,7 @@ class recompression_fast {
     void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, const terminal_count_t& alphabet_size) {
 //        DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: "
 //                   << std::to_string(alphabet_size);
-#ifdef BENCH
+#ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
         std::vector<variable_t> mapping;
@@ -72,7 +72,7 @@ class recompression_fast {
             rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
         }
 
-#ifdef BENCH
+#ifdef BENCH_RECOMP
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=fast_recompression dataset=" << dataset << " time="
