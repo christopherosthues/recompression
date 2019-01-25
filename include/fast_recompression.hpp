@@ -574,7 +574,6 @@ class recompression_fast {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-//        std::cout << "Text size (Ouput PComp): " << text_size << std::endl;
     }
 
     /**

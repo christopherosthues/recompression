@@ -432,7 +432,7 @@ class recompression_fast {
 
         if (adj_list.size() > 0) {
             variable_t left, right;
-            bool pair_found = false;
+            bool pair_found;
             if (std::get<0>(adj_list[0])) {
                 left = std::get<2>(adj_list[0]);
                 right = std::get<1>(adj_list[0]);
@@ -464,7 +464,7 @@ class recompression_fast {
             variable_t left, right;
             variable_t l_before = std::get<1>(adj_list[i - 1]);
             variable_t r_before = std::get<2>(adj_list[i - 1]);
-            bool pair_found = false;
+            bool pair_found;
             if (std::get<0>(adj_list[i])) {
                 left = std::get<2>(adj_list[i]);
                 right = std::get<1>(adj_list[i]);
