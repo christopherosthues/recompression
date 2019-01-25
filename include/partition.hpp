@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include <ips4o.hpp>
 
 #include "defs.hpp"
@@ -268,7 +268,10 @@ inline void compute_partition_full_parallel(const adj_list_t& adj_list,
 // #pragma omp critical
 //            {std::cout << "finished " << std::get<0>(adj_list[index - 1]) << " by thread " << thread_id
 //                       << " at index " << (index-1) << std::endl;}
-            partition[std::get<0>(adj_list[index - 1])] = l_count > r_count;
+#pragma omp critical
+            {
+                partition[std::get<0>(adj_list[index - 1])] = l_count > r_count;
+            }
 // #pragma omp critical
 //            {std::cout << "Unlocking write " << std::get<0>(adj_list[index - 1]) << " by thread " << thread_id
 //                       << std::endl;}
@@ -364,6 +367,8 @@ inline void compute_partition(const adj_list_t& adj_list,
     const auto startTime = std::chrono::system_clock::now();
 #endif
 //        DLOG(INFO) << util::text_vector_to_string(alphabet);
+
+    // TODO(Chris): adjust to (0, c, b),...,(1, c, b),...
 
     int l_count = 0;
     int r_count = 0;
