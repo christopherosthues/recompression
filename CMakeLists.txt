@@ -45,8 +45,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
 # includes build_library, build_executable and build_tests macros
 include(Build)
 
-set(SOURCES src/rlslp.cpp src/parallel_recompression.cpp src/util.cpp src/radix_sort.cpp src/recompression.cpp
-        src/partition.cpp src/fast_recompression.cpp src/parallel_fast_recompression.cpp)
+set(SOURCES src/recompression.cpp)
 set(HEADERS include/defs.hpp include/rlslp.hpp include/parallel_recompression.hpp include/util.hpp
         include/radix_sort.hpp include/recompression.hpp include/partition.hpp include/fast_recompression.hpp
         include/parallel_fast_recompression.hpp)
