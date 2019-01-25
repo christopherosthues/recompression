@@ -25,9 +25,9 @@ set(Glog_FIND_REQUIRED 0)
 set(Glog_ROOT_DIR ${Glog_INSTALL_DIR})
 
 if (WIN32)
-    find_path(Glog_INCLUDE_DIR Glog/logging.h PATHS ${Glog_ROOT_DIR}/src/windows)
+    find_path(Glog_INCLUDE_DIR glog/logging.h PATHS ${Glog_ROOT_DIR}/src/windows)
 else ()
-    find_path(Glog_INCLUDE_DIR Glog/logging.h PATHS ${Glog_ROOT_DIR})
+    find_path(Glog_INCLUDE_DIR glog/logging.h PATHS ${Glog_ROOT_DIR})
 endif ()
 
 if (MSVC)
@@ -43,7 +43,7 @@ endif ()
 find_package_handle_standard_args(Glog DEFAULT_MSG Glog_INCLUDE_DIR Glog_LIBRARY)
 
 # Restore REQUIRED
-set(Glog_FIND_REQUIRED ${GTest_FIND_REQUIRED_BACKUP})
+set(Glog_FIND_REQUIRED ${Glog_FIND_REQUIRED_BACKUP})
 
 if (Glog_FOUND)
     set(Glog_INCLUDE_DIRS ${Glog_INCLUDE_DIR})
