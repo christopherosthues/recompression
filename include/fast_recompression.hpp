@@ -44,8 +44,6 @@ class recompression_fast {
      * @param text The text
      */
     void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, const terminal_count_t& alphabet_size) {
-//        DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: "
-//                   << std::to_string(alphabet_size);
 #ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -360,67 +358,11 @@ class recompression_fast {
                         l_count += mult.second.first + mult.second.second;
                     }
                 }
-//                LOG(INFO) << "symbol: " << i << ", l: " << l_count << ", r: " << r_count;
                 partition[i] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
             }
         }
-//        //int lr_count = 0;
-//        //int rl_count = 0;
-//        variable_t c = 0;
-//        int left = 0, right = 0;
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            while (c < alphabet_size && i > c) {
-//                partition[c] = left > right;
-//                c++;
-//                left = 0;
-//                right = 0;
-//            }
-//            for (const auto& sec : adj_list[i]) {
-//                if (partition[sec.first]) {
-//                    right += sec.second.first + sec.second.second;
-//                } else {
-//                    left += sec.second.first + sec.second.second;
-//                }
-//            }
-//        }
-//
-//        while (c < alphabet_size) {
-//            partition[c] = left > right;
-//            c++;
-//            left = 0;
-//            right = 0;
-//        }
-
-
-        /*for (const auto& adj : adj_list) {
-            auto first = adj.first;
-            while (c < alphabet_size && first.first > c) {
-                partition[c] = left > right;
-                c++;
-                left = 0;
-                right = 0;
-            }
-            if (partition[first.second]) {
-                right += adj.second.first + adj.second.second;
-            } else {
-                left += adj.second.first + adj.second.second;
-            }
-        }
-
-        while (c < alphabet_size) {
-            partition[c] = left > right;
-            c++;
-            left = 0;
-            right = 0;
-        }*/
-
-        /*std::cout << "Partition: " << std::endl;
-        for (size_t i = 0; i < partition.size(); ++i) {
-            std::cout << partition[i];
-        }
-        std::cout << std::endl;*/
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
@@ -465,7 +407,6 @@ class recompression_fast {
 #endif
 
         // If there are more pairs in the current text from right set to left set swap partition sets
-//        LOG(INFO) << "lr: " << lr_count << ", rl: " << rl_count;
         if (rl_count > lr_count) {
             partition.flip();
         }

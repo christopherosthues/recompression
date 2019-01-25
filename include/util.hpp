@@ -2,13 +2,12 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-#include <glog/logging.h>
 
 #include "defs.hpp"
 
@@ -24,11 +23,11 @@ namespace util {
  */
 template<typename text_t>
 void read_file_fast(const std::string& file_name, text_t& text) {
-    LOG(INFO) << "Reading file: " << file_name;
+    std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     auto file_size = ifs.tellg();
     if (file_size < 0) {
-        LOG(ERROR) << "Failed to read file " << file_name;
+        std::cerr << "Failed to read file " << file_name << std::endl;
         return;
     }
     ifs.seekg(0, std::ios::beg);
@@ -40,8 +39,8 @@ void read_file_fast(const std::string& file_name, text_t& text) {
         text[i] = static_cast<typename text_t::value_type>(in[i]);
     }
     ifs.close();
-    LOG(INFO) << "Read " << file_size << " bytes";
-    LOG(INFO) << "Finished reading file";
+    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Finished reading file" << std::endl;
 }
 
 /**
@@ -53,11 +52,11 @@ void read_file_fast(const std::string& file_name, text_t& text) {
  */
 template<typename text_t>
 void read_file(const std::string& file_name, text_t& text) {
-    LOG(INFO) << "Reading file: " << file_name;
+    std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     auto file_size = ifs.tellg();
     if (file_size < 0) {
-        LOG(ERROR) << "Failed to read file " << file_name;
+        std::cerr << "Failed to read file " << file_name << std::endl;
         return;
     }
     ifs.seekg(0, std::ios::beg);
@@ -71,8 +70,8 @@ void read_file(const std::string& file_name, text_t& text) {
     }
     ifs.close();
 
-    LOG(INFO) << "Read " << file_size << " bytes";
-    LOG(INFO) << "Finished reading file";
+    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Finished reading file" << std::endl;
 }
 
 /**
@@ -82,11 +81,11 @@ void read_file(const std::string& file_name, text_t& text) {
  * @param text[out] The read text
  */
 void read_text_file(const std::string& file_name, std::string& text) {
-    LOG(INFO) << "Reading file: " << file_name;
+    std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     auto file_size = ifs.tellg();
     if (file_size < 0) {
-        LOG(ERROR) << "Failed to read file " << file_name;
+        std::cerr << "Failed to read file " << file_name << std::endl;
         return;
     }
     ifs.seekg(0, std::ios::beg);
@@ -96,8 +95,8 @@ void read_text_file(const std::string& file_name, std::string& text) {
     ifs.read((char*)text.data(), file_size);
     // bytes.data()[file_size] = '$';
     ifs.close();
-    LOG(INFO) << "Read " << file_size << " bytes";
-    LOG(INFO) << "Finished reading file";
+    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Finished reading file" << std::endl;
     // return std::string(bytes.data(), file_size);
 //    std::ifstream ifs(file_name.c_str());
 //    std::istream_iterator<char> input(ifs);

@@ -12,13 +12,6 @@
 #include <utility>
 #include <vector>
 
-#ifdef DEBUG
-
-#include <sstream>
-
-#endif
-
-#include <glog/logging.h>
 #include <ips4o.hpp>
 
 #include "defs.hpp"
@@ -56,8 +49,6 @@ class recompression {
      * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
      */
     void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, const terminal_count_t& alphabet_size) {
-//        DLOG(INFO) << "recomp input - text size: " << text.size() << " - alphabet size: "
-//                   << std::to_string(alphabet_size);
 #ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -107,8 +98,6 @@ class recompression {
      * @param rlslp The rlslp
      */
     void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-        // TODO(Chris): Benchmark output
-//        DLOG(INFO) << "BComp input - text size: " << text.size();
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=seq_bcomp dataset=" << dataset << " text=" << text.size()
@@ -148,9 +137,6 @@ class recompression {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
 
-//        DLOG(INFO) << "Blocks found: " << block_count;
-//        DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
-
 #ifdef BENCH
         const auto startTimeCopy = std::chrono::system_clock::now();
 #endif
@@ -184,8 +170,6 @@ class recompression {
                   << " elements=" << sort_blocks.size() << " blocks=" << block_count;;
 #endif
 
-//        DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
-
 #ifdef BENCH
         const auto startTimeAss = std::chrono::system_clock::now();
 #endif
@@ -214,17 +198,10 @@ class recompression {
         std::cout << " block_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for block nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
-
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-
-//        DLOG(INFO) << "Positions are " << recomp::util::block_positions_to_string<position_t>(positions);
-
         for (size_t i = 0; i < positions.size(); ++i) {
             auto block = std::make_pair(text[positions[i].second], positions[i].first);
             text[positions[i].second] = blocks[block];
@@ -262,8 +239,6 @@ class recompression {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 #endif
 
-//        DLOG(INFO) << "Shrinking text by " << substr_len << " to length " << new_text_size;
-
         text.resize(new_text_size);
         text.shrink_to_fit();
 
@@ -300,8 +275,6 @@ class recompression {
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
-//        DLOG(INFO) << "Time for computing adj_list: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
     }
 
     /**
@@ -311,12 +284,10 @@ class recompression {
      * @param alphabet
      * @param partition
      */
-    inline void compute_partition(const adj_list_t& adj_list, /*const alphabet_t& alphabet,*/ partition_t& partition) {
+    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
-
-//        DLOG(INFO) << util::text_vector_to_string(alphabet);
         int l_count = 0;
         int r_count = 0;
         if (adj_list.size() > 0) {
@@ -348,30 +319,6 @@ class recompression {
         const auto timeSpanPar = endTimePar - startTime;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
-//        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
-//        int l_count = 0;
-//        int r_count = 0;
-//        size_t j = 0;
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            while (j < alphabet.size() && std::get<0>(adj_list[i]) > alphabet[j]) {
-//                partition[alphabet[j]] = l_count > r_count;
-//                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
-//                j++;
-//                l_count = 0;
-//                r_count = 0;
-//            }
-//            if (partition[std::get<1>(adj_list[i])]) {
-//                r_count++;
-//            } else {
-//                l_count++;
-//            }
-//        }
-//        partition[alphabet[j]] = l_count > r_count;
-//        const auto endTimePar = std::chrono::system_clock::now();
-//        const auto timeSpanPar = endTimePar - startTime;
-//        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-//        DLOG(INFO) << "j: " << j;
-//        DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
 
 #ifdef BENCH
         const auto startTimeCount = std::chrono::system_clock::now();
@@ -404,19 +351,15 @@ class recompression {
 #endif
 
         if (rl_count > lr_count) {
-//            DLOG(INFO) << "Swap partition sets";
             for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
                 (*iter).second = !(*iter).second;
             }
-//            DLOG(INFO) << "Partition: " << util::partition_to_string(partition);
         }
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
-//        DLOG(INFO) << "Time for computing partition: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
     }
 
 /**
@@ -426,23 +369,14 @@ class recompression {
  * @param rlslp The rlslp
  */
     void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-//        DLOG(INFO) << "PComp input - text size: " << text.size();
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=seq_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level;
 #endif
-
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
             partition[text[i]] = false;
         }
-//        alphabet_t alphabet(partition.size());
-//        auto part_iter = partition.begin();
-//        for (size_t i = 0; i < partition.size(); ++i, ++part_iter) {
-//            alphabet[i] = (*part_iter).first;
-//        }
-//        std::sort(alphabet.begin(), alphabet.end());
-
 #ifdef BENCH
         std::cout << " alphabet=" << partition.size();
 #endif
@@ -463,7 +397,7 @@ class recompression {
 
         size_t pair_count = 0;
 
-        compute_partition(adj_list, /*alphabet,*/ partition);
+        compute_partition(adj_list, partition);
 
 #ifdef BENCH
         const auto startTimePairs = std::chrono::system_clock::now();
@@ -487,9 +421,6 @@ class recompression {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 #endif
 
-//        DLOG(INFO) << "Pairs found: " << pair_count;
-//        DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
-
 #ifdef BENCH
         const auto startTimeCopy = std::chrono::system_clock::now();
 #endif
@@ -498,7 +429,6 @@ class recompression {
         auto iter = pairs.begin();
 
         for (size_t i = 0; i < pairs.size(); ++i) {
-//            DLOG(INFO) << "Adding pair (" << (*iter).first.first << "," << (*iter).first.second << ") at index " << i;
             sort_pairs[i] = (*iter).first;
             ++iter;
         }
@@ -521,8 +451,6 @@ class recompression {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count())
                   << " elements=" << sort_pairs.size() << " pairs=" << pair_count;
 #endif
-
-//        DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
 
 #ifdef BENCH
         const auto startTimeAss = std::chrono::system_clock::now();
@@ -557,15 +485,10 @@ class recompression {
         std::cout << " pair_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for pair nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count() << "[ms]";
-
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-//        DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
-
         for (size_t i = 0; i < positions.size(); ++i) {
             auto pos = positions[i];
             auto pair = std::make_pair(text[pos], text[pos + 1]);
@@ -579,8 +502,6 @@ class recompression {
         std::cout << " replace_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
 #endif
-//        DLOG(INFO) << "Time for replacing pairs: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count() << "[ms]";
 
 #ifdef BENCH
         const auto startTimeCompact = std::chrono::system_clock::now();
@@ -603,8 +524,6 @@ class recompression {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 #endif
 
-//        DLOG(INFO) << "Shrinking text by " << positions.size() << " to length " << new_text_size;
-
         text.resize(new_text_size);
         text.shrink_to_fit();
 
@@ -615,11 +534,6 @@ class recompression {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-//        DLOG(INFO) << "Time for pcomp: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
-//                   << "[ms]";
-//        std::cout << " comp_text=" << text.size();
-//        DLOG(INFO) << "PComp ouput - text size: " << text.size() << " - distinct pairs: " << pair_count
-//                   << " - string length reduce by: " << positions.size();
     }
 };
 
