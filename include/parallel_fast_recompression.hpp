@@ -357,10 +357,12 @@ class recompression_fast {
 #pragma omp parallel for schedule(static) num_threads(cores) reduction(+:beg)
         for (size_t i = 0; i < adj_list.size(); ++i) {
             if (text[i] > text[i + 1]) {
-                adj_list[i] = std::make_tuple(false, text[i], text[i + 1]);
+//                adj_list[i] = std::make_tuple(false, text[i], text[i + 1]);
+                adj_list[i] = std::make_tuple(true, text[i], text[i + 1]);
                 beg++;
             } else {
-                adj_list[i] = std::make_tuple(true, text[i + 1], text[i]);
+//                adj_list[i] = std::make_tuple(true, text[i + 1], text[i]);
+                adj_list[i] = std::make_tuple(false, text[i + 1], text[i]);
             }
         }
         begin = beg;
@@ -427,13 +429,13 @@ class recompression_fast {
         std::unordered_map<pair_t, variable_t, pair_hash> pairs;
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition<adj_list_t, partition_t>(adj_list, partition, begin, part_l, cores);
+        compute_partition<adj_list_t, partition_t, variable_t>(adj_list, partition, begin, part_l, cores);
 //        compute_partition_full_parallel<variable_t, adj_list_t, alphabet_t, partition_t>(adj_list, partition, cores);
 
         if (adj_list.size() > 0) {
             variable_t left, right;
             bool pair_found;
-            if (std::get<0>(adj_list[0])) {
+            if (!std::get<0>(adj_list[0])) {
                 left = std::get<2>(adj_list[0]);
                 right = std::get<1>(adj_list[0]);
                 pair_found = partition[left] == part_l && partition[right] != part_l;
@@ -465,7 +467,7 @@ class recompression_fast {
             variable_t l_before = std::get<1>(adj_list[i - 1]);
             variable_t r_before = std::get<2>(adj_list[i - 1]);
             bool pair_found;
-            if (std::get<0>(adj_list[i])) {
+            if (!std::get<0>(adj_list[i])) {
                 left = std::get<2>(adj_list[i]);
                 right = std::get<1>(adj_list[i]);
                 pair_found = partition[left] == part_l && partition[right] != part_l && r_before != left &&

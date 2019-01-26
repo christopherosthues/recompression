@@ -341,7 +341,7 @@ inline void compute_partition_full_parallel(const adj_list_t& adj_list,
  * @param adj_list[in] The adjacency list of the text
  * @param partition[out] The partition
  */
-template<typename adj_list_t, typename partition_t>
+template<typename adj_list_t, typename partition_t, typename variable_t>
 inline void compute_partition(const adj_list_t& adj_list,
                               partition_t& partition,
                               size_t& begin,
@@ -350,51 +350,45 @@ inline void compute_partition(const adj_list_t& adj_list,
 #ifdef BENCH
     const auto startTime = std::chrono::system_clock::now();
 #endif
-
-    // TODO(Chris): adjust to (0, c, b),...,(1, c, b),...
-
     int l_count = 0;
     int r_count = 0;
-    if (adj_list.size() > 0) {
-        if (partition[std::get<1>(adj_list[0])]) {
-            r_count++;
-        } else {
-            l_count++;
-        }
+    size_t glob_i = 0;
+    size_t i = 0;
+    size_t j = begin;
+    variable_t actual = std::get<1>(adj_list[0]);
+    if (begin < adj_list.size()) {
+        actual = std::min(actual, std::get<1>(adj_list[begin]));
     }
-    for (size_t i = 1; i < adj_list.size(); ++i) {
-        if (std::get<1>(adj_list[i - 1]) < std::get<1>(adj_list[i])) {
-//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
-//                      << l_count << ", " << r_count;
-            partition[std::get<1>(adj_list[i - 1])] = l_count > r_count;
-            l_count = 0;
-            r_count = 0;
+    variable_t next = actual;
+    while (glob_i < adj_list.size()) {
+        while (i < begin && std::get<1>(adj_list[i]) == actual) {
+            if (partition[std::get<2>(adj_list[i])]) {
+                r_count++;
+            } else {
+                l_count++;
+            }
+            i++;
+            glob_i++;
         }
-        if (partition[std::get<2>(adj_list[i])]) {
-            r_count++;
-        } else {
-            l_count++;
+        if (i < begin) {
+            next = std::get<1>(adj_list[i]);
         }
-    }
-    partition[std::get<1>(adj_list[adj_list.size() - 1])] = l_count > r_count;
 
-//    LOG(INFO) << "Setting " << std::get<0>(adj_list[adj_list.size() - 1]) << " to " << (l_count > r_count) << " ; "
-//              << l_count << ", " << r_count;
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            while (j < alphabet.size() && std::get<0>(adj_list[i]) > alphabet[j]) {
-//                partition[alphabet[j]] = l_count > r_count;
-////                DLOG(INFO) << "Setting " << alphabet[j] << " to " << (l_count > r_count);
-//                j++;
-//                l_count = 0;
-//                r_count = 0;
-//            }
-//            if (partition[std::get<1>(adj_list[i])]) {
-//                r_count++;
-//            } else {
-//                l_count++;
-//            }
-//        }
-//        partition[alphabet[j]] = l_count > r_count;
+        while (j < adj_list.size() && std::get<1>(adj_list[j]) == actual) {
+            if (partition[std::get<2>(adj_list[j])]) {
+                r_count++;
+            } else {
+                l_count++;
+            }
+            j++;
+            glob_i++;
+        }
+        partition[actual] = l_count > r_count;
+
+        if (j < adj_list.size()) {
+            actual = std::min(next, std::get<1>(adj_list[j]));
+        }
+    }
 #ifdef BENCH
     const auto endTimePar = std::chrono::system_clock::now();
     const auto timeSpanPar = endTimePar - startTime;
@@ -408,7 +402,7 @@ inline void compute_partition(const adj_list_t& adj_list,
     int rl_count = 0;
 #pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
     for (size_t i = 0; i < adj_list.size(); ++i) {
-        if (std::get<0>(adj_list[i])) {
+        if (!std::get<0>(adj_list[i])) {
             if (!partition[std::get<1>(adj_list[i])] &&
                 partition[std::get<2>(adj_list[i])]) {  // bc in text and b in right set and c in left
                 rl_count++;

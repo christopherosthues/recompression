@@ -5,6 +5,7 @@
 #include "fast_recompression.hpp"
 #include "recompression.hpp"
 #include "parallel_recompression.hpp"
+#include "parallel_fast_recompression.hpp"
 
 using namespace recomp;
 
@@ -16,6 +17,8 @@ typedef recompression_fast<var_t, term_t>::adj_list_t fast_adj_list_t;
 
 typedef parallel::recompression<var_t, term_t>::text_t par_text_t;
 typedef parallel::recompression<var_t, term_t>::adj_list_t par_adj_list_t;
+
+typedef parallel::recompression_fast<var_t, term_t>::adj_list_t par_fast_adj_list_t;
 
 TEST(parallel_adj_list, 212181623541741623541321) {
     par_text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
@@ -115,6 +118,113 @@ TEST(parallel_adj_list, 2322) {
     par_adj_list_t exp_adj_list;
     exp_adj_list.emplace_back(23, 22, 0);
     
+    ASSERT_EQ(exp_adj_list, adj_list);
+}
+
+
+TEST(parallel_fast_adj_list, 212181623541741623541321) {
+    par_text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
+    par_fast_adj_list_t adj_list(text.size() - 1);
+    size_t begin = 0;
+    parallel::recompression_fast<var_t, term_t> recomp;
+    recomp.compute_adj_list(text, adj_list, begin);
+
+    par_fast_adj_list_t exp_adj_list;
+    exp_adj_list.emplace_back(1, 2, 1);
+    exp_adj_list.emplace_back(0, 2, 1);
+    exp_adj_list.emplace_back(1, 2, 1);
+    exp_adj_list.emplace_back(0, 8, 1);
+    exp_adj_list.emplace_back(1, 8, 1);
+    exp_adj_list.emplace_back(0, 6, 1);
+    exp_adj_list.emplace_back(1, 6, 2);
+    exp_adj_list.emplace_back(0, 3, 2);
+    exp_adj_list.emplace_back(0, 5, 3);
+    exp_adj_list.emplace_back(1, 5, 4);
+    exp_adj_list.emplace_back(1, 4, 1);
+    exp_adj_list.emplace_back(0, 7, 1);
+    exp_adj_list.emplace_back(1, 7, 4);
+    exp_adj_list.emplace_back(1, 4, 1);
+    exp_adj_list.emplace_back(0, 6, 1);
+    exp_adj_list.emplace_back(1, 6, 2);
+    exp_adj_list.emplace_back(0, 3, 2);
+    exp_adj_list.emplace_back(0, 5, 3);
+    exp_adj_list.emplace_back(1, 5, 4);
+    exp_adj_list.emplace_back(1, 4, 1);
+    exp_adj_list.emplace_back(0, 3, 1);
+    exp_adj_list.emplace_back(1, 3, 2);
+    exp_adj_list.emplace_back(1, 2, 1);
+
+    ASSERT_EQ(exp_adj_list, adj_list);
+}
+
+TEST(parallel_fast_adj_list, 131261051171161051139) {
+    par_text_t text{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9};
+    par_fast_adj_list_t adj_list(text.size() - 1);
+    size_t begin = 0;
+    parallel::recompression_fast<var_t, term_t> recomp;
+    recomp.compute_adj_list(text, adj_list, begin);
+
+    par_fast_adj_list_t exp_adj_list;
+    exp_adj_list.emplace_back(1, 13, 12);
+    exp_adj_list.emplace_back(1, 12, 6);
+    exp_adj_list.emplace_back(0, 10, 6);
+    exp_adj_list.emplace_back(1, 10, 5);
+    exp_adj_list.emplace_back(0, 11, 5);
+    exp_adj_list.emplace_back(1, 11, 7);
+    exp_adj_list.emplace_back(0, 11, 7);
+    exp_adj_list.emplace_back(1, 11, 6);
+    exp_adj_list.emplace_back(0, 10, 6);
+    exp_adj_list.emplace_back(1, 10, 5);
+    exp_adj_list.emplace_back(0, 11, 5);
+    exp_adj_list.emplace_back(1, 11, 3);
+    exp_adj_list.emplace_back(0, 9, 3);
+
+    ASSERT_EQ(exp_adj_list, adj_list);
+}
+
+TEST(parallel_fast_adj_list, 18161517161514) {
+    par_text_t text{18, 16, 15, 17, 16, 15, 14};
+    par_fast_adj_list_t adj_list(text.size() - 1);
+    size_t begin = 0;
+    parallel::recompression_fast<var_t, term_t> recomp;
+    recomp.compute_adj_list(text, adj_list, begin);
+
+    par_fast_adj_list_t exp_adj_list;
+    exp_adj_list.emplace_back(1, 18, 16);
+    exp_adj_list.emplace_back(1, 16, 15);
+    exp_adj_list.emplace_back(0, 17, 15);
+    exp_adj_list.emplace_back(1, 17, 16);
+    exp_adj_list.emplace_back(1, 16, 15);
+    exp_adj_list.emplace_back(1, 15, 14);
+
+    ASSERT_EQ(exp_adj_list, adj_list);
+}
+
+TEST(parallel_fast_adj_list, 21201619) {
+    par_text_t text{21, 20, 16, 19};
+    par_fast_adj_list_t adj_list(text.size() - 1);
+    size_t begin = 0;
+    parallel::recompression_fast<var_t, term_t> recomp;
+    recomp.compute_adj_list(text, adj_list, begin);
+
+    par_fast_adj_list_t exp_adj_list;
+    exp_adj_list.emplace_back(1, 21, 20);
+    exp_adj_list.emplace_back(1, 20, 16);
+    exp_adj_list.emplace_back(0, 19, 16);
+
+    ASSERT_EQ(exp_adj_list, adj_list);
+}
+
+TEST(parallel_fast_adj_list, 2322) {
+    par_text_t text{23, 22};
+    par_fast_adj_list_t adj_list(text.size() - 1);
+    size_t begin = 0;
+    parallel::recompression_fast<var_t, term_t> recomp;
+    recomp.compute_adj_list(text, adj_list, begin);
+
+    par_fast_adj_list_t exp_adj_list;
+    exp_adj_list.emplace_back(1, 23, 22);
+
     ASSERT_EQ(exp_adj_list, adj_list);
 }
 
