@@ -23,6 +23,7 @@ class recompression_fast {
 //    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
+    typedef std::vector<variable_t> alphabet_t;
 
     std::string dataset = "data";
 
