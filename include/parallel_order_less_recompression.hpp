@@ -28,7 +28,7 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class recompression_fast {
+class recompression_order {
  public:
     typedef std::vector<variable_t> text_t;
     typedef std::vector<variable_t> alphabet_t;
@@ -47,9 +47,9 @@ class recompression_fast {
     size_t level = 0;
     size_t cores = 1;
 
-    recompression_fast() = default;
+    recompression_order() = default;
 
-    recompression_fast(std::string& dataset) : dataset(dataset) {}
+    recompression_order(std::string& dataset) : dataset(dataset) {}
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
@@ -115,7 +115,6 @@ class recompression_fast {
      * @param rlslp The rlslp
      */
     inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-//        DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=parallel_bcomp dataset=" << dataset << " text=" << text.size()
@@ -193,9 +192,6 @@ class recompression_fast {
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-//            DLOG(INFO) << "Thread " << thread_id << " inserting blocks "
-//                       << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
-
 #pragma omp critical
             blocks.insert(t_blocks.begin(), t_blocks.end());
         }
@@ -205,9 +201,6 @@ class recompression_fast {
         std::cout << " find_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
-
-//        DLOG(INFO) << "Blocks found: " << block_count;
-//        DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
 
 #ifdef BENCH
         const auto startTimeCopy = std::chrono::system_clock::now();
@@ -250,9 +243,6 @@ class recompression_fast {
                   << " elements=" << sort_blocks.size() << " blocks=" << block_count;;
 #endif
 
-//        DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
-//        DLOG(INFO) << "Number of different blocks: " << sort_blocks.size();
-
 #ifdef BENCH
         const auto startTimeAss = std::chrono::system_clock::now();
 #endif
@@ -281,16 +271,10 @@ class recompression_fast {
         std::cout << " block_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for block nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
-
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-
-//        DLOG(INFO) << "Positions are " << recomp::util::block_positions_to_string<position_t>(positions);
 
 #pragma omp parallel for schedule(static) num_threads(cores)
         for (size_t i = 0; i < positions.size(); ++i) {
@@ -356,13 +340,13 @@ class recompression_fast {
         size_t beg = 0;
 #pragma omp parallel for schedule(static) num_threads(cores) reduction(+:beg)
         for (size_t i = 0; i < adj_list.size(); ++i) {
-            if (text[i] > text[i + 1]) {
+            if (text[i] < text[i + 1]) {
 //                adj_list[i] = std::make_tuple(false, text[i], text[i + 1]);
-                adj_list[i] = std::make_tuple(true, text[i], text[i + 1]);
+                adj_list[i] = std::make_tuple(false, text[i], text[i + 1]);
                 beg++;
             } else {
 //                adj_list[i] = std::make_tuple(true, text[i + 1], text[i]);
-                adj_list[i] = std::make_tuple(false, text[i + 1], text[i]);
+                adj_list[i] = std::make_tuple(true, text[i + 1], text[i]);
             }
         }
         begin = beg;
@@ -371,6 +355,105 @@ class recompression_fast {
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+#endif
+    }
+
+
+    /**
+     * @brief Computes a partitioning of the symbol in the text.
+     *
+     * @param adj_list[in] The adjacency list of the text
+     * @param partition[out] The partition
+     */
+    inline void compute_partition(const adj_list_t& adj_list,
+                                  partition_t& partition,
+                                  size_t& begin,
+                                  bool& part_l) {
+#ifdef BENCH
+        const auto startTime = std::chrono::system_clock::now();
+#endif
+        int l_count = 0;
+        int r_count = 0;
+        size_t glob_i = 0;
+        size_t i = 0;
+        size_t j = begin;
+        variable_t actual = std::get<1>(adj_list[0]);
+        if (begin < adj_list.size()) {
+            actual = std::min(actual, std::get<1>(adj_list[begin]));
+        }
+        variable_t next = actual;
+        while (glob_i < adj_list.size()) {
+            while (i < begin && std::get<1>(adj_list[i]) == actual) {
+                if (partition[std::get<2>(adj_list[i])]) {
+                    r_count++;
+                } else {
+                    l_count++;
+                }
+                i++;
+                glob_i++;
+            }
+            if (i < begin) {
+                next = std::get<1>(adj_list[i]);
+            }
+
+            while (j < adj_list.size() && std::get<1>(adj_list[j]) == actual) {
+                if (partition[std::get<2>(adj_list[j])]) {
+                    r_count++;
+                } else {
+                    l_count++;
+                }
+                j++;
+                glob_i++;
+            }
+            partition[actual] = l_count > r_count;
+
+            if (j < adj_list.size()) {
+                actual = std::min(next, std::get<1>(adj_list[j]));
+            }
+        }
+#ifdef BENCH
+        const auto endTimePar = std::chrono::system_clock::now();
+        const auto timeSpanPar = endTimePar - startTime;
+        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+#endif
+
+#ifdef BENCH
+        const auto startTimeCount = std::chrono::system_clock::now();
+#endif
+        int lr_count = 0;
+        int rl_count = 0;
+#pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            if (!std::get<0>(adj_list[i])) {
+                if (!partition[std::get<1>(adj_list[i])] &&
+                    partition[std::get<2>(adj_list[i])]) {  // bc in text and b in right set and c in left
+                    rl_count++;
+                } else if (partition[std::get<1>(adj_list[i])] &&
+                           !partition[std::get<2>(adj_list[i])]) {  // bc in text and b in left set and c in right
+                    lr_count++;
+                }
+            } else {
+                if (!partition[std::get<1>(adj_list[i])] &&
+                    partition[std::get<2>(adj_list[i])]) {  // cb in text and c in left set and b in right
+                    lr_count++;
+                } else if (partition[std::get<1>(adj_list[i])] &&
+                           !partition[std::get<2>(adj_list[i])]) {  // cb in text and c in right set and b in left
+                    rl_count++;
+                }
+            }
+        }
+#ifdef BENCH
+        const auto endTimeCount = std::chrono::system_clock::now();
+        const auto timeSpanCount = endTimeCount - startTimeCount;
+        std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
+
+        part_l = lr_count < rl_count;
+#ifdef BENCH
+        const auto endTime = std::chrono::system_clock::now();
+        const auto timeSpan = endTime - startTime;
+        std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
     }
 
@@ -387,23 +470,10 @@ class recompression_fast {
         std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
                   << " cores=" << cores;
 #endif
-
-//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
-
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
             partition[text[i]] = false;
         }
-//        std::cout << "Parition: " << util::partition_to_string(partition);
-//        alphabet_t alphabet(partition.size());
-//        auto partition_iter = partition.begin();
-//        for (size_t i = 0; i < partition.size(); ++i, ++partition_iter) {
-//            alphabet[i] = (*partition_iter).first;
-//        }
-//        partitioned_radix_sort(alphabet);
-//        __gnu_parallel::sort(alphabet.begin(), alphabet.end(), __gnu_parallel::multiway_mergesort_tag());
-
-//        DLOG(INFO) << "Text: " << util::text_vector_to_string(text);
 
 #ifdef BENCH
         std::cout << " alphabet=" << partition.size();
@@ -429,8 +499,7 @@ class recompression_fast {
         std::unordered_map<pair_t, variable_t, pair_hash> pairs;
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition<adj_list_t, partition_t, variable_t>(adj_list, partition, begin, part_l, cores);
-//        compute_partition_full_parallel<variable_t, adj_list_t, alphabet_t, partition_t>(adj_list, partition, cores);
+        compute_partition(adj_list, partition, begin, part_l);
 
         if (adj_list.size() > 0) {
             variable_t left, right;
