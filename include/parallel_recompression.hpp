@@ -14,12 +14,10 @@
 #include <utility>
 #include <vector>
 
-//#include <glog/logging.h>
 #include <ips4o.hpp>
 
 #include "defs.hpp"
 #include "util.hpp"
-#include "partition.hpp"
 #include "rlslp.hpp"
 #include "radix_sort.hpp"
 
