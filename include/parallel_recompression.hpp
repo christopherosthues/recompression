@@ -14,7 +14,7 @@
 #include <utility>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include <ips4o.hpp>
 
 #include "defs.hpp"
@@ -368,6 +368,101 @@ class recompression {
 #endif
     }
 
+    /**
+     * @brief Computes a partitioning of the symbol in the text.
+     *
+     * @param adj_list[in] The adjacency list of the text
+     * @param partition[out] The partition
+     */
+    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition) {
+#ifdef BENCH
+        const auto startTime = std::chrono::system_clock::now();
+#endif
+        int l_count = 0;
+        int r_count = 0;
+        if (adj_list.size() > 0) {
+            if (partition[std::get<0>(adj_list[0])]) {
+                r_count++;
+            } else {
+                l_count++;
+            }
+        }
+        for (size_t i = 1; i < adj_list.size(); ++i) {
+            if (std::get<0>(adj_list[i - 1]) < std::get<0>(adj_list[i])) {
+//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
+//                      << l_count << ", " << r_count;
+                partition[std::get<0>(adj_list[i - 1])] = l_count > r_count;
+                l_count = 0;
+                r_count = 0;
+            }
+            if (partition[std::get<1>(adj_list[i])]) {
+                r_count++;
+            } else {
+                l_count++;
+            }
+        }
+        partition[std::get<0>(adj_list[adj_list.size() - 1])] = l_count > r_count;
+
+#ifdef BENCH
+        const auto endTimePar = std::chrono::system_clock::now();
+        const auto timeSpanPar = endTimePar - startTime;
+        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+#endif
+
+#ifdef BENCH
+        const auto startTimeCount = std::chrono::system_clock::now();
+#endif
+        int lr_count = 0;
+        int rl_count = 0;
+#pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            if (std::get<2>(adj_list[i])) {
+                if (!partition[std::get<0>(adj_list[i])] &&
+                    partition[std::get<1>(adj_list[i])]) {  // bc in text and b in right set and c in left
+                    rl_count++;
+                } else if (partition[std::get<0>(adj_list[i])] &&
+                           !partition[std::get<1>(adj_list[i])]) {  // bc in text and b in left set and c in right
+                    lr_count++;
+                }
+            } else {
+                if (!partition[std::get<0>(adj_list[i])] &&
+                    partition[std::get<1>(adj_list[i])]) {  // cb in text and c in left set and b in right
+                    lr_count++;
+                } else if (partition[std::get<0>(adj_list[i])] &&
+                           !partition[std::get<1>(adj_list[i])]) {  // cb in text and c in right set and b in left
+                    rl_count++;
+                }
+            }
+        }
+#ifdef BENCH
+        const auto endTimeCount = std::chrono::system_clock::now();
+        const auto timeSpanCount = endTimeCount - startTimeCount;
+        std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
+
+        if (rl_count > lr_count) {
+#pragma omp parallel num_threads(cores)
+            {
+#pragma omp single
+                {
+                    for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
+#pragma omp task
+                        {
+                            (*iter).second = !(*iter).second;
+                        }
+                    }
+                }
+#pragma omp barrier
+            }
+        }
+#ifdef BENCH
+        const auto endTime = std::chrono::system_clock::now();
+        const auto timeSpan = endTime - startTime;
+        std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+#endif
+    }
+
 
     /**
      * @brief Replaces all pairs in the text based on a partition of the symbols with new non-terminals.
@@ -381,23 +476,10 @@ class recompression {
         std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
                   << " cores=" << cores;
 #endif
-
-//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
-
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
             partition[text[i]] = false;
         }
-//        std::cout << "Parition: " << util::partition_to_string(partition);
-//        alphabet_t alphabet(partition.size());
-//        auto partition_iter = partition.begin();
-//        for (size_t i = 0; i < partition.size(); ++i, ++partition_iter) {
-//            alphabet[i] = (*partition_iter).first;
-//        }
-//        partitioned_radix_sort(alphabet);
-//        __gnu_parallel::sort(alphabet.begin(), alphabet.end(), __gnu_parallel::multiway_mergesort_tag());
-
-//        DLOG(INFO) << "Text: " << util::text_vector_to_string(text);
 
 #ifdef BENCH
         std::cout << " alphabet=" << partition.size();
@@ -419,7 +501,7 @@ class recompression {
 
         size_t pair_count = 0;
 
-        compute_partition<adj_list_t, partition_t>(adj_list, partition, cores);
+        compute_partition(adj_list, partition);
 //        compute_partition_full_parallel<variable_t, adj_list_t, alphabet_t, partition_t>(adj_list, partition, cores);
 
 #ifdef BENCH
