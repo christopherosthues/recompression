@@ -52,9 +52,9 @@ int main(int argc, char *argv[]) {
     }
     std::cout << "Using " << cores << " threads" << std::endl;
 
-    recomp::parallel::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
+    recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t> recompression{dataset};
     // recompression.cores = 2;
-    typedef recomp::parallel::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+    typedef recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);
 

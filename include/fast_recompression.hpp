@@ -9,29 +9,32 @@
 #include <utility>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 
+#include "recompression.hpp"
 #include "defs.hpp"
 #include "rlslp.hpp"
 
 namespace recomp {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class recompression_fast {
+class recompression_fast : public recompression<variable_t, terminal_count_t> {
  public:
-    typedef std::vector<variable_t> text_t;
+//    typedef std::vector<variable_t> text_t;
+    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
+    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
 //    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
-    typedef std::vector<variable_t> alphabet_t;
+//    typedef std::vector<variable_t> alphabet_t;
 
-    std::string dataset = "data";
-
-    size_t level = 0;
+    const std::string name = "fast_seq";
+//    std::string dataset = "data";
+//    size_t level = 0;
 
     recompression_fast() = default;
 
-    recompression_fast(std::string& dataset) : dataset(dataset) {}
+    recompression_fast(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
 
     /**
      * @brief Builds the straight-line program generating the given text using the recompression technique.
@@ -44,7 +47,10 @@ class recompression_fast {
      *
      * @param text The text
      */
-    void recomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, const terminal_count_t& alphabet_size) {
+    inline virtual void recomp(text_t& text,
+                               rlslp<variable_t, terminal_count_t>& rlslp,
+                               const terminal_count_t& alphabet_size,
+                               const size_t cores = std::thread::hardware_concurrency()) override {
 #ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -58,12 +64,12 @@ class recompression_fast {
         while (text.size() > 1) {
             bcomp(text, rlslp, alpha_size, mapping);
             compute_alphabet(text, alpha_size, mapping);
-            level++;
+            this->level++;
 
             if (text.size() > 1) {
                 pcomp(text, rlslp, alpha_size, mapping);
                 compute_alphabet(text, alpha_size, mapping);
-                level++;
+                this->level++;
             }
         }
 
@@ -74,22 +80,24 @@ class recompression_fast {
 #ifdef BENCH_RECOMP
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=fast_recompression dataset=" << dataset << " time="
+        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
-                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << level
+                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
                   << std::endl;
 #endif
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     */
-    void recomp(text_t& text, rlslp <variable_t, terminal_count_t>& rlslp) {
-        recomp(text, rlslp, recomp::CHAR_ALPHABET);
-    }
+    using recompression<variable_t, terminal_count_t>::recomp;
+
+//    /**
+//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
+//     *
+//     * @param text The text
+//     * @param rlslp The rlslp
+//     */
+//    void recomp(text_t& text, rlslp <variable_t, terminal_count_t>& rlslp) {
+//        recomp(text, rlslp, recomp::CHAR_ALPHABET);
+//    }
 
  private:
     /**
@@ -139,7 +147,7 @@ class recompression_fast {
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=replace_letters dataset=" << dataset << " time="
+        std::cout << "RESULT algo=replace_letters dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " effective_alphabet=" << alphabet_size << std::endl;
 #endif
@@ -159,8 +167,8 @@ class recompression_fast {
                       std::vector<variable_t>& mapping) {
 //        std::cout << "Text size (Input BComp): " << text_size << std::endl;
 #ifdef BENCH
-        std::cout << "RESULT algo=fast_bcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
-                  << " alphabet=" << alphabet_size;
+        std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " alphabet=" << alphabet_size;
         const auto startTime = std::chrono::system_clock::now();
 #endif
 
@@ -296,38 +304,8 @@ class recompression_fast {
                     adj_list[text[i]][text[i-1]].second++;
                 }
             }
-            /*std::pair<variable_t, variable_t> adj;
-            if (text[i-1] > text[i]) {
-                adj.first = text[i-1];
-                adj.second = text[i];
-            } else {
-                adj.first = text[i];
-                adj.second = text[i-1];
-            }
-            auto found = adj_list.find(adj);
-            if (found == adj_list.end()) {
-                if (text[i-1] > text[i]) {
-                    adj_list[adj].first = 1;
-                    adj_list[adj].second = 0;
-                } else {
-                    adj_list[adj].first = 0;
-                    adj_list[adj].second = 1;
-                }
-            } else {
-                if (text[i-1] > text[i]) {
-                    (*found).second.first += 1;
-                } else {
-                    (*found).second.second += 1;
-                }
-            }*/
         }
 
-        /*std::cout << "Multiset: " << std::endl;
-        for (size_t i = 0; i < adj_list.size(); ++i) {
-            for (const auto& sec : adj_list[i]) {
-                std::cout << i << "," << sec.first << ": " << sec.second.first << "," << sec.second.second << std::endl;
-            }
-        }*/
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
@@ -472,8 +450,8 @@ class recompression_fast {
 //        std::cout << "Text size (Input PComp): " << text_size << std::endl;
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=fast_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
-                  << " alphabet=" << alphabet_size;
+        std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " alphabet=" << alphabet_size;
 #endif
 
         partition_t part(alphabet_size, false);
@@ -587,8 +565,8 @@ class recompression_fast {
     inline void compute_alphabet(text_t& text, variable_t &alphabet_size, std::vector<variable_t> &mapping) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=fast_alphabet dataset=" << dataset << " level=" << level << " alphabet="
-                  << alphabet_size;
+        std::cout << "RESULT algo=" << this->name << "_alphabet dataset=" << this->dataset << " level=" << this->level
+                  << " alphabet=" << alphabet_size;
 #endif
         // Create bitvector for all letters to determine which are used in the current text
         std::vector<bool> used(alphabet_size, 0);

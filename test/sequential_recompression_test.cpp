@@ -2,19 +2,19 @@
 
 #define private public
 
-#include "recompression.hpp"
+#include "sequential_recompression.hpp"
 
 using namespace recomp;
 
-typedef recompression<var_t, term_t>::text_t text_t;
-typedef recompression<var_t, term_t>::adj_list_t adj_list_t;
-typedef recompression<var_t, term_t>::partition_t partition_t;
-typedef recompression<var_t, term_t>::alphabet_t alphabet_t;
+typedef sequential_recompression<var_t, term_t>::text_t text_t;
+typedef sequential_recompression<var_t, term_t>::adj_list_t adj_list_t;
+typedef sequential_recompression<var_t, term_t>::partition_t partition_t;
+typedef sequential_recompression<var_t, term_t>::alphabet_t alphabet_t;
 
 TEST(bcomp, no_block) {
     text_t text = {2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -31,7 +31,7 @@ TEST(bcomp, no_block) {
 TEST(bcomp, 21214441332311413334133231141321) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -53,7 +53,7 @@ TEST(bcomp, 21214441332311413334133231141321) {
 TEST(bcomp, 222222222222222222222) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -72,7 +72,7 @@ TEST(bcomp, 222222222222222222222) {
 TEST(bcomp, 22222222211111112222) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -93,7 +93,7 @@ TEST(bcomp, 22222222211111112222) {
 TEST(bcomp, 2222222221111111222200) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -116,7 +116,7 @@ TEST(bcomp, 2222222221111111222200) {
 TEST(adj_list, 212181623541741623541321) {
     text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
     adj_list_t adj_list(text.size() - 1);
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
@@ -150,7 +150,7 @@ TEST(adj_list, 212181623541741623541321) {
 TEST(adj_list, 131261051171161051139) {
     text_t text{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9};
     adj_list_t adj_list(text.size() - 1);
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
@@ -174,7 +174,7 @@ TEST(adj_list, 131261051171161051139) {
 TEST(adj_list, 18161517161514) {
     text_t text{18, 16, 15, 17, 16, 15, 14};
     adj_list_t adj_list(text.size() - 1);
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
@@ -191,7 +191,7 @@ TEST(adj_list, 18161517161514) {
 TEST(adj_list, 21201619) {
     text_t text{21, 20, 16, 19};
     adj_list_t adj_list(text.size() - 1);
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
@@ -205,7 +205,7 @@ TEST(adj_list, 21201619) {
 TEST(adj_list, 2322) {
     text_t text{23, 22};
     adj_list_t adj_list(text.size() - 1);
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
@@ -223,7 +223,7 @@ TEST(partition, repreated_pair) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition);
@@ -243,7 +243,7 @@ TEST(partition, repreated_pair_same_occ) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition);
@@ -263,7 +263,7 @@ TEST(partition, 212181623541741623541321) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
     ips4o::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, partition);
@@ -289,7 +289,7 @@ TEST(partition, 131261051171161051139) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
     ips4o::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, partition);
@@ -316,7 +316,7 @@ TEST(partition, 18161517161514) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
     ips4o::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, partition);
@@ -339,7 +339,7 @@ TEST(partition, 21201619) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
     ips4o::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, partition);
@@ -361,7 +361,7 @@ TEST(partition, 2322) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
     ips4o::sort(multiset.begin(), multiset.end());
     recomp.compute_partition(multiset, partition);
@@ -377,7 +377,7 @@ TEST(partition, 2322) {
 TEST(pcomp, repeated_pair) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 3;
     recomp.pcomp(text, rlslp);
 
@@ -395,7 +395,7 @@ TEST(pcomp, repeated_pair) {
 TEST(pcomp, repeated_pair_same_occ) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 3;
     recomp.pcomp(text, rlslp);
 
@@ -413,7 +413,7 @@ TEST(pcomp, repeated_pair_same_occ) {
 TEST(pcomp, 212181623541741623541321) {
     text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -443,7 +443,7 @@ TEST(pcomp, 212181623541741623541321) {
 TEST(pcomp, 131261051171161051139) {
     text_t text{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -484,7 +484,7 @@ TEST(pcomp, 131261051171161051139) {
 TEST(pcomp, 18161517161514) {
     text_t text{18, 16, 15, 17, 16, 15, 14};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -534,7 +534,7 @@ TEST(pcomp, 18161517161514) {
 TEST(pcomp, 21201619) {
     text_t text{21, 20, 16, 19};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -590,7 +590,7 @@ TEST(pcomp, 21201619) {
 TEST(pcomp, 2322) {
     text_t text{23, 22};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -650,7 +650,7 @@ TEST(pcomp, 2322) {
 TEST(recomp, empty) {
     text_t text = {};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -667,7 +667,7 @@ TEST(recomp, empty) {
 TEST(recomp, recompression) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -706,7 +706,7 @@ TEST(recomp, recompression) {
 TEST(recomp, one_block) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -724,7 +724,7 @@ TEST(recomp, one_block) {
 TEST(recomp, two_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -744,7 +744,7 @@ TEST(recomp, two_blocks) {
 TEST(recomp, three_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -766,7 +766,7 @@ TEST(recomp, three_blocks) {
 TEST(recomp, four_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -790,7 +790,7 @@ TEST(recomp, four_blocks) {
 TEST(recomp, repeated_pair) {
     text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -809,7 +809,7 @@ TEST(recomp, repeated_pair) {
 TEST(recomp, repeated_pair_same_occ) {
     text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     rlslp<var_t, term_t> rlslp;
-    recompression<var_t, term_t> recomp;
+    sequential_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 

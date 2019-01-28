@@ -14,9 +14,10 @@
 #include <utility>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include <ips4o.hpp>
 
+#include "recompression.hpp"
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
@@ -27,10 +28,10 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class recompression_order_ls {
+class recompression_order_ls : public recompression<variable_t, terminal_count_t> {
  public:
-    typedef std::vector<variable_t> text_t;
-    typedef std::vector<variable_t> alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
+    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef std::vector<bool> bitvector_t;
     typedef std::vector<std::tuple<bool, variable_t, variable_t>> adj_list_t;
 //    typedef std::array<std::vector<std::pair<variable_t, variable_t>>, 2> adj_list_t;
@@ -41,14 +42,12 @@ class recompression_order_ls {
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    std::string dataset = "data";
-
-    size_t level = 0;
+    const std::string name = "parallel_ls";
     size_t cores = 1;
 
-    recompression_order_ls() = default;
+    inline recompression_order_ls() = default;
 
-    recompression_order_ls(std::string& dataset) : dataset(dataset) {}
+    inline recompression_order_ls(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
@@ -57,10 +56,10 @@ class recompression_order_ls {
      * @param rlslp The rlslp
      * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
      */
-    void recomp(text_t& text,
-                rlslp<variable_t, terminal_count_t>& rlslp,
-                const terminal_count_t& alphabet_size,
-                const size_t cores = std::thread::hardware_concurrency()) {
+    inline virtual void recomp(text_t& text,
+                               rlslp<variable_t, terminal_count_t>& rlslp,
+                               const terminal_count_t& alphabet_size,
+                               const size_t cores = std::thread::hardware_concurrency()) override {
 #ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -69,11 +68,11 @@ class recompression_order_ls {
 
         while (text.size() > 1) {
             bcomp(text, rlslp);
-            level++;
+            this->level++;
 
             if (text.size() > 1) {
                 pcomp(text, rlslp);
-                level++;
+                this->level++;
             }
         }
 
@@ -84,24 +83,26 @@ class recompression_order_ls {
 #ifdef BENCH_RECOMP
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=parallel_recompression dataset=" << dataset << " time="
+        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
-                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << level
+                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
                   << " cores=" << cores << std::endl;
 #endif
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     */
-    void recomp(text_t& text,
-                rlslp <variable_t, terminal_count_t>& rlslp,
-                const size_t cores = std::thread::hardware_concurrency()) {
-        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
-    }
+//    /**
+//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
+//     *
+//     * @param text The text
+//     * @param rlslp The rlslp
+//     */
+//    void recomp(text_t& text,
+//                rlslp <variable_t, terminal_count_t>& rlslp,
+//                const size_t cores = std::thread::hardware_concurrency()) {
+//        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
+//    }
+
+    using recompression<variable_t, terminal_count_t>::recomp;
 
 
  private:
@@ -116,8 +117,8 @@ class recompression_order_ls {
     inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_bcomp dataset=" << dataset << " text=" << text.size()
-                  << " level=" << level << " cores=" << cores;
+        std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " cores=" << cores;
 #endif
 
         size_t block_count = 0;
@@ -340,11 +341,9 @@ class recompression_order_ls {
 #pragma omp parallel for schedule(static) num_threads(cores) reduction(+:beg)
         for (size_t i = 0; i < adj_list.size(); ++i) {
             if (text[i] < text[i + 1]) {
-//                adj_list[i] = std::make_tuple(false, text[i], text[i + 1]);
                 adj_list[i] = std::make_tuple(false, text[i], text[i + 1]);
                 beg++;
             } else {
-//                adj_list[i] = std::make_tuple(true, text[i + 1], text[i]);
                 adj_list[i] = std::make_tuple(true, text[i + 1], text[i]);
             }
         }
@@ -376,7 +375,6 @@ class recompression_order_ls {
             sums[c.first] = 0;
         }
 
-        // TODO: rework partition computation
         std::vector<variable_t> alphabet(partition.size());
 #pragma omp parallel num_threads(cores)
         {
@@ -393,6 +391,9 @@ class recompression_order_ls {
 
         ips4o::parallel::sort(alphabet.begin(), alphabet.end());
 
+#ifdef BENCH
+        const auto startTimePar = std::chrono::system_clock::now();
+#endif
         size_t l = 0;
         size_t r = begin;
         for (size_t i = 0; i < alphabet.size(); ++i) {
@@ -410,7 +411,7 @@ class recompression_order_ls {
         }
 #ifdef BENCH
         const auto endTimePar = std::chrono::system_clock::now();
-        const auto timeSpanPar = endTimePar - startTime;
+        const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
 
@@ -464,8 +465,8 @@ class recompression_order_ls {
     inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
-                  << " cores=" << cores;
+        std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " cores=" << cores;
 #endif
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
@@ -498,6 +499,9 @@ class recompression_order_ls {
         bool part_l = false;
         compute_partition(adj_list, partition, begin, part_l);
 
+#ifdef BENCH
+        const auto startTimeRules = std::chrono::system_clock::now();
+#endif
         if (adj_list.size() > 0) {
             variable_t left, right;
             bool pair_found;
@@ -567,6 +571,12 @@ class recompression_order_ls {
                 rlslp.non_terminals.emplace_back(left, right, len);
             }
         }
+#ifdef BENCH
+        const auto endTimeRules = std::chrono::system_clock::now();
+        const auto timeSpanRules = endTimeRules - startTimeRules;
+        std::cout << " pair_rules="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count());
+#endif
 
         rlslp.blocks.reserve(rlslp.size());
         rlslp.blocks.resize(rlslp.size(), false);

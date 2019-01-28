@@ -14,9 +14,10 @@
 #include <utility>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include <ips4o.hpp>
 
+#include "recompression.hpp"
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
@@ -27,10 +28,10 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class recompression_order_gr {
+class recompression_order_gr : public recompression<variable_t, terminal_count_t> {
  public:
-    typedef std::vector<variable_t> text_t;
-    typedef std::vector<variable_t> alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
+    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef std::vector<bool> bitvector_t;
     typedef std::vector<std::tuple<bool, variable_t, variable_t>> adj_list_t;
 //    typedef std::array<std::vector<std::pair<variable_t, variable_t>>, 2> adj_list_t;
@@ -41,14 +42,12 @@ class recompression_order_gr {
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    std::string dataset = "data";
-
-    size_t level = 0;
+    const std::string name = "parallel_gr";
     size_t cores = 1;
 
-    recompression_order_gr() = default;
+    inline recompression_order_gr() = default;
 
-    recompression_order_gr(std::string& dataset) : dataset(dataset) {}
+    inline recompression_order_gr(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
@@ -57,10 +56,10 @@ class recompression_order_gr {
      * @param rlslp The rlslp
      * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
      */
-    void recomp(text_t& text,
-                rlslp<variable_t, terminal_count_t>& rlslp,
-                const terminal_count_t& alphabet_size,
-                const size_t cores = std::thread::hardware_concurrency()) {
+    inline virtual void recomp(text_t& text,
+                               rlslp<variable_t, terminal_count_t>& rlslp,
+                               const terminal_count_t& alphabet_size,
+                               const size_t cores = std::thread::hardware_concurrency()) override {
 #ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -69,11 +68,11 @@ class recompression_order_gr {
 
         while (text.size() > 1) {
             bcomp(text, rlslp);
-            level++;
+            this->level++;
 
             if (text.size() > 1) {
                 pcomp(text, rlslp);
-                level++;
+                this->level++;
             }
         }
 
@@ -84,24 +83,26 @@ class recompression_order_gr {
 #ifdef BENCH_RECOMP
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=parallel_recompression dataset=" << dataset << " time="
+        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
-                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << level
+                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
                   << " cores=" << cores << std::endl;
 #endif
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     */
-    void recomp(text_t& text,
-                rlslp <variable_t, terminal_count_t>& rlslp,
-                const size_t cores = std::thread::hardware_concurrency()) {
-        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
-    }
+//    /**
+//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
+//     *
+//     * @param text The text
+//     * @param rlslp The rlslp
+//     */
+//    void recomp(text_t& text,
+//                rlslp <variable_t, terminal_count_t>& rlslp,
+//                const size_t cores = std::thread::hardware_concurrency()) {
+//        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
+//    }
+
+    using recompression<variable_t, terminal_count_t>::recomp;
 
 
  private:
@@ -116,8 +117,8 @@ class recompression_order_gr {
     inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_bcomp dataset=" << dataset << " text=" << text.size()
-                  << " level=" << level << " cores=" << cores;
+        std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " cores=" << cores;
 #endif
 
         size_t block_count = 0;
@@ -470,8 +471,8 @@ class recompression_order_gr {
     inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
-                  << " cores=" << cores;
+        std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " cores=" << cores;
 #endif
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
@@ -504,6 +505,9 @@ class recompression_order_gr {
         bool part_l = false;
         compute_partition(adj_list, partition, begin, part_l);
 
+#ifdef BENCH
+        const auto startTimeRules = std::chrono::system_clock::now();
+#endif
         if (adj_list.size() > 0) {
             variable_t left, right;
             bool pair_found;
@@ -516,8 +520,6 @@ class recompression_order_gr {
                 right = std::get<2>(adj_list[0]);
                 pair_found = partition[left] == part_l && partition[right] != part_l;
             }
-//            std::cout << left << ", " << right << ": " << partition[left] << ", " << partition[right] << ": " << part_l << std::endl;
-//            std::cout << "Pair found: " << pair_found << std::endl;
             if (pair_found) {
                 auto pair = std::make_pair(left, right);
                 pairs[pair] = next_nt++;
@@ -558,8 +560,6 @@ class recompression_order_gr {
                     pair_found &= (l_before != left || r_before != right);
                 }
             }
-//            std::cout << left << ", " << right << ": " << partition[left] << ", " << partition[right] << ": " << part_l << std::endl;
-//            std::cout << "Pair found: " << pair_found << std::endl;
             if (pair_found) {
                 auto pair = std::make_pair(left, right);
                 pairs[pair] = next_nt++;
@@ -577,11 +577,12 @@ class recompression_order_gr {
                 rlslp.non_terminals.emplace_back(left, right, len);
             }
         }
-
-//        std::cout << "Map: " << std::endl;
-//        for (const auto& m : pairs) {
-//            std::cout << m.first.first << ", " << m.first.second << ": " << m.second << std::endl;
-//        }
+#ifdef BENCH
+        const auto endTimeRules = std::chrono::system_clock::now();
+        const auto timeSpanRules = endTimeRules - startTimeRules;
+        std::cout << " pair_rules="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count());
+#endif
 
         rlslp.blocks.reserve(rlslp.size());
         rlslp.blocks.resize(rlslp.size(), false);
@@ -592,7 +593,6 @@ class recompression_order_gr {
 
 #pragma omp parallel num_threads(cores)
         {
-
 #pragma omp for schedule(static) reduction(+:pair_count)
             for (size_t i = 0; i < text.size() - 1; ++i) {
                 bool p_l = partition[text[i]];

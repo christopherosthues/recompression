@@ -51,8 +51,8 @@ int main(int argc, char *argv[]) {
     recompression.recomp(text, rlslp);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
-    LOG(INFO) << "Time for fast recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-    LOG(INFO) << "Time for fast recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+    LOG(INFO) << "Time for fast sequential_recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
+    LOG(INFO) << "Time for fast sequential_recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
 
 //    std::cout << "RESULT dataset=" << dataset << " algo=parallel_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
 //              << " rlslp_size=" << rlslp.size() << " terminals=" << rlslp.terminals << std::endl;

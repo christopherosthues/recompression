@@ -6,12 +6,12 @@
 
 using namespace recomp;
 
-typedef parallel::recompression<var_t, term_t>::text_t text_t;
+typedef parallel::parallel_recompression<var_t, term_t>::text_t text_t;
 
 TEST(extract, empty) {
     text_t text = {};
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -28,7 +28,7 @@ TEST(extract, recompression) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -50,7 +50,7 @@ TEST(extract, short_block) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -72,7 +72,7 @@ TEST(extract, one_block) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -94,7 +94,7 @@ TEST(extract, two_blocks) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -116,7 +116,7 @@ TEST(extract, three_blocks) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -138,7 +138,7 @@ TEST(extract, four_blocks) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -160,7 +160,7 @@ TEST(extract, pairs) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size);
 

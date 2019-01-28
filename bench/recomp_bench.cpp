@@ -9,7 +9,7 @@
 #include "defs.hpp"
 #include "util.hpp"
 #define private public
-#include "recompression.hpp"
+#include "sequential_recompression.hpp"
 
 
 int main(int argc, char *argv[]) {
@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
     std::regex reg("_");
     dataset = std::regex_replace(dataset, reg, "\\_");
 
-    recomp::recompression<recomp::var_t, recomp::term_t> recompression{dataset};
-    typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+    recomp::sequential_recompression<recomp::var_t, recomp::term_t> recompression{dataset};
+    typedef recomp::sequential_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
     text_t text;
     recomp::util::read_file<text_t>(file_name, text);
 

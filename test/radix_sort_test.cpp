@@ -15,7 +15,7 @@
 using namespace recomp;
 
 typedef var_t variable_t;
-typedef parallel::recompression<var_t, term_t>::adj_list_t adj_list_t;
+typedef parallel::parallel_recompression<var_t, term_t>::adj_list_t adj_list_t;
 
 
 //TEST(digits, output_digits) {

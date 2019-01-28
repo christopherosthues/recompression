@@ -16,9 +16,9 @@
 #include <utility>
 #include <vector>
 
-//#include <glog/logging.h>
 #include <ips4o.hpp>
 
+#include "recompression.hpp"
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
@@ -29,10 +29,10 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class recompression_full {
+class full_parallel_recompression : public recompression<variable_t, terminal_count_t> {
  public:
-    typedef std::vector<variable_t> text_t;
-    typedef std::vector<variable_t> alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
+    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef std::vector<bool> bitvector_t;
     typedef std::vector<std::tuple<variable_t, variable_t, bool>> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
@@ -42,14 +42,12 @@ class recompression_full {
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    std::string dataset = "data";
-
-    size_t level = 0;
+    const std::string name = "full_parallel";
     size_t cores = 1;
 
-    recompression_full() = default;
+    inline full_parallel_recompression() = default;
 
-    recompression_full(std::string& dataset) : dataset(dataset) {}
+    inline full_parallel_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
@@ -58,10 +56,10 @@ class recompression_full {
      * @param rlslp The rlslp
      * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
      */
-    void recomp(text_t& text,
-                rlslp<variable_t, terminal_count_t>& rlslp,
-                const terminal_count_t& alphabet_size,
-                const size_t cores = std::thread::hardware_concurrency()) {
+    inline virtual void recomp(text_t& text,
+                               rlslp<variable_t, terminal_count_t>& rlslp,
+                               const terminal_count_t& alphabet_size,
+                               const size_t cores = std::thread::hardware_concurrency()) override {
 #ifdef BENCH_RECOMP
         const auto startTime = std::chrono::system_clock::now();
 #endif
@@ -70,11 +68,11 @@ class recompression_full {
 
         while (text.size() > 1) {
             bcomp(text, rlslp);
-            level++;
+            this->level++;
 
             if (text.size() > 1) {
                 pcomp(text, rlslp);
-                level++;
+                this->level++;
             }
         }
 
@@ -85,24 +83,26 @@ class recompression_full {
 #ifdef BENCH_RECOMP
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=parallel_recompression dataset=" << dataset << " time="
+        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
-                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << level
+                  << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
                   << " cores=" << cores << std::endl;
 #endif
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     */
-    void recomp(text_t& text,
-                rlslp <variable_t, terminal_count_t>& rlslp,
-                const size_t cores = std::thread::hardware_concurrency()) {
-        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
-    }
+//    /**
+//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
+//     *
+//     * @param text The text
+//     * @param rlslp The rlslp
+//     */
+//    void recomp(text_t& text,
+//                rlslp <variable_t, terminal_count_t>& rlslp,
+//                const size_t cores = std::thread::hardware_concurrency()) {
+//        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
+//    }
+
+    using recompression<variable_t, terminal_count_t>::recomp;
 
 
  private:
@@ -115,11 +115,10 @@ class recompression_full {
      * @param rlslp The rlslp
      */
     inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-//        DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_bcomp dataset=" << dataset << " text=" << text.size()
-                  << " level=" << level << " cores=" << cores;
+        std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " cores=" << cores;
 #endif
 
         size_t block_count = 0;
@@ -193,9 +192,6 @@ class recompression_full {
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-//            DLOG(INFO) << "Thread " << thread_id << " inserting blocks "
-//                       << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
-
 #pragma omp critical
             blocks.insert(t_blocks.begin(), t_blocks.end());
         }
@@ -205,9 +201,6 @@ class recompression_full {
         std::cout << " find_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
-
-//        DLOG(INFO) << "Blocks found: " << block_count;
-//        DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
 
 #ifdef BENCH
         const auto startTimeCopy = std::chrono::system_clock::now();
@@ -250,9 +243,6 @@ class recompression_full {
                   << " elements=" << sort_blocks.size() << " blocks=" << block_count;;
 #endif
 
-//        DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
-//        DLOG(INFO) << "Number of different blocks: " << sort_blocks.size();
-
 #ifdef BENCH
         const auto startTimeAss = std::chrono::system_clock::now();
 #endif
@@ -281,16 +271,10 @@ class recompression_full {
         std::cout << " block_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for block nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
-
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-
-//        DLOG(INFO) << "Positions are " << recomp::util::block_positions_to_string<position_t>(positions);
 
 #pragma omp parallel for schedule(static) num_threads(cores)
         for (size_t i = 0; i < positions.size(); ++i) {
@@ -591,8 +575,8 @@ class recompression_full {
     inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
-        std::cout << "RESULT algo=parallel_pcomp dataset=" << dataset << " text=" << text.size() << " level=" << level
-                  << " cores=" << cores;
+        std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
+                  << " level=" << this->level << " cores=" << cores;
 #endif
         partition_t partition;
         for (size_t i = 0; i < text.size(); ++i) {
@@ -749,19 +733,10 @@ class recompression_full {
         std::cout << " pair_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for pair nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
-
-//        std::cout << std::endl;
-//        for (const auto& p : sort_pairs) {
-//            std::cout << p.first << ", " << p.second << ": " << pairs[p] << std::endl;
-//        }
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-//        DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
 
 #pragma omp parallel for schedule(static) num_threads(cores)
         for (size_t i = 0; i < positions.size(); ++i) {
@@ -809,8 +784,6 @@ class recompression_full {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-
-//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
     }
 };
 

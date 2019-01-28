@@ -6,12 +6,12 @@
 
 using namespace recomp;
 
-typedef parallel::recompression<var_t, term_t>::text_t text_t;
+typedef parallel::parallel_recompression<var_t, term_t>::text_t text_t;
 
 TEST(derive_text, empty) {
     text_t text = {};
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -28,7 +28,7 @@ TEST(derive_text, recompression) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -45,7 +45,7 @@ TEST(derive_text, one_block) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -62,7 +62,7 @@ TEST(derive_text, two_blocks) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -79,7 +79,7 @@ TEST(derive_text, three_blocks) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -96,7 +96,7 @@ TEST(derive_text, four_blocks) {
     }
 
     rlslp<var_t, term_t> rlslp;
-    parallel::recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
