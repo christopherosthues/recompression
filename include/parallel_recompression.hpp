@@ -203,9 +203,6 @@ class recompression {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
 
-//        DLOG(INFO) << "Blocks found: " << block_count;
-//        DLOG(INFO) << "Blocks are " << recomp::util::blocks_to_string<block_t, variable_t>(blocks);
-
 #ifdef BENCH
         const auto startTimeCopy = std::chrono::system_clock::now();
 #endif
@@ -247,9 +244,6 @@ class recompression {
                   << " elements=" << sort_blocks.size() << " blocks=" << block_count;;
 #endif
 
-//        DLOG(INFO) << "Sorted blocks are " << recomp::util::vector_blocks_to_string<block_t>(sort_blocks);
-//        DLOG(INFO) << "Number of different blocks: " << sort_blocks.size();
-
 #ifdef BENCH
         const auto startTimeAss = std::chrono::system_clock::now();
 #endif
@@ -278,16 +272,10 @@ class recompression {
         std::cout << " block_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for block nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
-
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-
-//        DLOG(INFO) << "Positions are " << recomp::util::block_positions_to_string<position_t>(positions);
 
 #pragma omp parallel for schedule(static) num_threads(cores)
         for (size_t i = 0; i < positions.size(); ++i) {
@@ -547,8 +535,6 @@ class recompression {
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-//            DLOG(INFO) << "Inserting pairs " << util::blocks_to_string(t_pairs);
-
 #pragma omp critical
             pairs.insert(t_pairs.begin(), t_pairs.end());
         }
@@ -558,9 +544,6 @@ class recompression {
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 #endif
-
-//        DLOG(INFO) << "Pairs found: " << pair_count;
-//        DLOG(INFO) << "Pairs are " << util::blocks_to_string(pairs);
 
 #ifdef BENCH
         const auto startTimeCopy = std::chrono::system_clock::now();
@@ -601,10 +584,6 @@ class recompression {
                   << " elements=" << sort_pairs.size() << " pairs=" << pair_count;
 #endif
 
-//        DLOG(INFO) << "Sorted pairs are " << util::vector_blocks_to_string(sort_pairs);
-
-//        DLOG(INFO) << "Number of different pairs: " << sort_pairs.size();
-
 #ifdef BENCH
         const auto startTimeAss = std::chrono::system_clock::now();
 #endif
@@ -639,19 +618,10 @@ class recompression {
         std::cout << " pair_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
 #endif
-//        DLOG(INFO) << "Time for pair nts: "
-//                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count()
-//                   << "[ms]";
-
-//        std::cout << std::endl;
-//        for (const auto& p : sort_pairs) {
-//            std::cout << p.first << ", " << p.second << ": " << pairs[p] << std::endl;
-//        }
 
 #ifdef BENCH
         const auto startTimeRep = std::chrono::system_clock::now();
 #endif
-//        DLOG(INFO) << "Positions are " << util::pair_positions_to_string(positions);
 
 #pragma omp parallel for schedule(static) num_threads(cores)
         for (size_t i = 0; i < positions.size(); ++i) {
@@ -699,8 +669,6 @@ class recompression {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-
-//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
     }
 };
 
