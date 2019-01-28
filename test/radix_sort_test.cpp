@@ -11,13 +11,11 @@
 #include "util.hpp"
 
 #include "parallel_recompression.hpp"
-#include "parallel_fast_recompression.hpp"
 
 using namespace recomp;
 
 typedef var_t variable_t;
 typedef parallel::recompression<var_t, term_t>::adj_list_t adj_list_t;
-typedef parallel::recompression_fast<var_t, term_t>::adj_list_t fast_adj_list_t;
 
 
 //TEST(digits, output_digits) {
