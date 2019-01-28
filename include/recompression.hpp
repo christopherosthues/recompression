@@ -25,7 +25,7 @@ class recompression {
     virtual void recomp(text_t& text,
                         rlslp<variable_t, terminal_count_t>& rlslp,
                         const terminal_count_t& alphabet_size,
-                        const size_t cores = std::thread::hardware_concurrency()) = 0;
+                        const size_t cores = std::thread::hardware_concurrency()) {};
 
     virtual void recomp(text_t& text,
                         rlslp <variable_t, terminal_count_t>& rlslp,
