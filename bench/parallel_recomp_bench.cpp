@@ -5,7 +5,7 @@
 #include <thread>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 
 #include "defs.hpp"
 #include "util.hpp"
@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
     if (argc < 2) {
         std::cerr << "./parallel_recomp_bench [file name] [cores]" << std::endl;
     }
-    FLAGS_logtostderr = true;
-    google::InitGoogleLogging(argv[0]);
+//    FLAGS_logtostderr = true;
+//    google::InitGoogleLogging(argv[0]);
 
     std::string file_name(argv[1]);
 
@@ -72,8 +72,8 @@ int main(int argc, char *argv[]) {
     recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
-    LOG(INFO) << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-    LOG(INFO) << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+    std::cout << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+    std::cout << "Time for parallel recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
 
 //    std::cout << "RESULT dataset=" << dataset << " algo=parallel_recomp" << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
 //              << " rlslp_size=" << rlslp.size() << " terminals=" << rlslp.terminals << std::endl;

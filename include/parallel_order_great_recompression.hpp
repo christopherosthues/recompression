@@ -139,7 +139,9 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 
 #pragma omp single
             {
+#ifdef BENCH
                 std::cout << " used_cores=" << n_threads;
+#endif
                 bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;

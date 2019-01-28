@@ -118,7 +118,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param rlslp The rlslp
      */
     inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
-//        DLOG(INFO) << "Text: " << recomp::util::text_vector_to_string<text_t>(text);
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -143,7 +142,9 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp single
             {
+#ifdef BENCH
                 std::cout << " used_cores=" << n_threads;
+#endif
                 bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
@@ -195,9 +196,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 positions.resize(positions.size() + bounds[n_threads]);
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
-
-//            DLOG(INFO) << "Thread " << thread_id << " inserting blocks "
-//                       << recomp::util::blocks_to_string<block_t, variable_t>(t_blocks);
 
 #pragma omp critical
             blocks.insert(t_blocks.begin(), t_blocks.end());

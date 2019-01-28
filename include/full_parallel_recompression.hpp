@@ -139,7 +139,9 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 
 #pragma omp single
             {
+#ifdef BENCH
                 std::cout << " used_cores=" << n_threads;
+#endif
                 bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;

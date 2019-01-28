@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include <ips4o.hpp>
 
 #include "radix_sort.hpp"
@@ -30,7 +30,7 @@ int str_to_int(std::string s) {
 
 double str_to_double(std::string s) {
     std::istringstream ss(s);
-    double n;
+    double n = 0;
     // TODO(Chris): convert string to int
 
     return n;
@@ -41,23 +41,23 @@ int main(int argc, char *argv[]) {
         std::cerr << "bench_radix_sort [number] [pprs | lsd | pms | pqs | std::sort | std::stable_sort | ips4o | pips4o] [std::rand | uniform | normal | poisson | exponential | bernoulli | geometric | binomial] [dist_params: seed | (s_range, e_range) | (mean, std_dev) | mean | lambda | p | p | (t, p)] " << std::endl;
         return -1;
     }
-    FLAGS_logtostderr = true;
-    google::InitGoogleLogging(argv[0]);
+//    FLAGS_logtostderr = true;
+//    google::InitGoogleLogging(argv[0]);
 
     int number = str_to_int(argv[1]);
     std::vector<std::pair<recomp::var_t, recomp::var_t>> vector(static_cast<size_t>(number));
 
     std::string algo(argv[2]);
-    LOG(INFO) << "Using sorting algorithm: " << algo;
+    std::cout << "Using sorting algorithm: " << algo;
 
     std::string dist_type = std::string(argv[3]);
-    LOG(INFO) << "Using random generator: " << dist_type;
+    std::cout << "Using random generator: " << dist_type;
     if (dist_type == "std::rand") {
 
         auto seed = std::time(nullptr);
         seed = str_to_int(argv[4]);
         std::srand(seed); // use current time as seed for random generator
-        LOG(INFO) << "Using seed: " << std::to_string(seed);
+        std::cout << "Using seed: " << std::to_string(seed);
 
 
         for (int i = 0; i < number; ++i) {
@@ -133,12 +133,12 @@ int main(int argc, char *argv[]) {
     }
 
     if (number < 31) {
-        LOG(INFO) << recomp::util::vector_blocks_to_string(vector);
+        std::cout << recomp::util::vector_blocks_to_string(vector) << std::endl;
     }
     if (recomp::util::is_sorted(vector)) {
-        LOG(INFO) << "vector already sorted";
+        std::cout << "vector already sorted" << std::endl;
     } else {
-        LOG(INFO) << "vector not sorted";
+        std::cout << "vector not sorted" << std::endl;
     }
     
     if (algo == "pprs") {
@@ -147,14 +147,14 @@ int main(int argc, char *argv[]) {
         recomp::parallel::partitioned_radix_sort<recomp::var_t, 8>(vector);
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for partitioned parallel radix sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for partitioned parallel radix sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for partitioned parallel radix sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for partitioned parallel radix sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "Partitioned parallel radix sort sorted correctly";
+            std::cout << "Partitioned parallel radix sort sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with partitioned parallel radix sort failed";
+            std::cerr << "Sorting with partitioned parallel radix sort failed" << std::endl;
         }
     } else if (algo == "lsd") {
         const auto startTime = std::chrono::system_clock::now();
@@ -162,14 +162,14 @@ int main(int argc, char *argv[]) {
         recomp::lsd_radix_sort<recomp::var_t, 8>(vector);
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for LSD radix sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for LSD radix sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for LSD radix sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for LSD radix sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "LSD radix sort sorted correctly";
+            std::cout << "LSD radix sort sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with LSD radix sort failed";
+            std::cerr << "Sorting with LSD radix sort failed" << std::endl;
         }
     } else if (algo == "pms") {
         const auto startTime = std::chrono::system_clock::now();
@@ -177,14 +177,14 @@ int main(int argc, char *argv[]) {
         __gnu_parallel::sort(vector.begin(), vector.end(), __gnu_parallel::multiway_mergesort_tag());
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for parallel merge sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for parallel merge sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for parallel merge sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for parallel merge sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "parallel merge sort sorted correctly";
+            std::cout << "parallel merge sort sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with parallel merge sort failed";
+            std::cerr << "Sorting with parallel merge sort failed" << std::endl;
         }
     } else if (algo == "pqs") {
         const auto startTime = std::chrono::system_clock::now();
@@ -192,14 +192,14 @@ int main(int argc, char *argv[]) {
         __gnu_parallel::sort(vector.begin(), vector.end(), __gnu_parallel::quicksort_tag());
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for parallel quick sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for parallel quick sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for parallel quick sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for parallel quick sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "parallel quick sort sorted correctly";
+            std::cout << "parallel quick sort sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with parallel quick sort failed";
+            std::cerr << "Sorting with parallel quick sort failed" << std::endl;
         }
     } else if (algo == "std::sort") {
         const auto startTime = std::chrono::system_clock::now();
@@ -207,14 +207,14 @@ int main(int argc, char *argv[]) {
         std::sort(vector.begin(), vector.end());
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for std::sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for std::sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for std::sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for std::sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "std::sort sorted correctly";
+            std::cout << "std::sort sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with std::sort failed";
+            std::cerr << "Sorting with std::sort failed" << std::endl;
         }
     } else if (algo == "std::stable_sort") {
         const auto startTime = std::chrono::system_clock::now();
@@ -222,14 +222,14 @@ int main(int argc, char *argv[]) {
         std::stable_sort(vector.begin(), vector.end());
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for std::stable_sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for std::stable_sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for std::stable_sort: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for std::stable_sort: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "std::stable_sort sorted correctly";
+            std::cout << "std::stable_sort sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with std::stable_sort failed";
+            std::cerr << "Sorting with std::stable_sort failed" << std::endl;
         }
     } else if (algo == "pips4o") {
         const auto startTime = std::chrono::system_clock::now();
@@ -237,14 +237,14 @@ int main(int argc, char *argv[]) {
         ips4o::parallel::sort(vector.begin(), vector.end());
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for parallel IPS4o: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for parallel IPS4o: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for parallel IPS4o: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for parallel IPS4o: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "parallel IPS4o sorted correctly";
+            std::cout << "parallel IPS4o sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with parallel IPS4o failed";
+            std::cerr << "Sorting with parallel IPS4o failed" << std::endl;
         }
     } else if (algo == "ips4o") {
         const auto startTime = std::chrono::system_clock::now();
@@ -252,21 +252,21 @@ int main(int argc, char *argv[]) {
         ips4o::sort(vector.begin(), vector.end());
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
-        LOG(INFO) << "Time for IPS4o: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]";
-        LOG(INFO) << "Time for IPS4o: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]";
+        std::cout << "Time for IPS4o: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+        std::cout << "Time for IPS4o: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
         std::cout << "RESULT algorithm=" << algo << " elements=" << std::to_string(number) << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()) << std::endl;
 
         if (recomp::util::is_sorted(vector)) {
-            LOG(INFO) << "IPS4o sorted correctly";
+            std::cout << "IPS4o sorted correctly" << std::endl;
         } else {
-            LOG(ERROR) << "Sorting with IPS4o failed";
+            std::cerr << "Sorting with IPS4o failed" << std::endl;
         }
     } else {
         std::cerr << "Algorithm " << algo << " not supported" << std::endl;
     }
     
     if (number < 31) {
-        LOG(INFO) << recomp::util::vector_blocks_to_string(vector);
+        std::cout << recomp::util::vector_blocks_to_string(vector) << std::endl;
     }
 
     return 0;

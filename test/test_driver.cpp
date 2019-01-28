@@ -1,10 +1,10 @@
 
 #include <gtest/gtest.h>
-#include <glog/logging.h>
+//#include <glog/logging.h>
 
 int main(int argc, char **argv) {
-    FLAGS_logtostderr = true;
-    google::InitGoogleLogging(argv[0]);
+//    FLAGS_logtostderr = true;
+//    google::InitGoogleLogging(argv[0]);
 
     testing::InitGoogleTest(&argc, argv);
 
