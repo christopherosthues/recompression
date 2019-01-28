@@ -35,7 +35,7 @@ int str_to_int(std::string s) {
 int main(int argc, char *argv[]) {
     if (argc < 3) {
         std::cerr << "./recompression_bench [file name] [sequential | parallel | full_parallel | parallel_ls | "
-                     "parallel_gr | fast] [cores]" << std::endl;
+                     "parallel_gr | fast] [cores] [output]" << std::endl;
     }
 
     std::string file_name(argv[1]);
@@ -91,8 +91,10 @@ int main(int argc, char *argv[]) {
     recomp->recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
     const auto endTime = std::chrono::system_clock::now();
     const auto timeSpan = endTime - startTime;
-    std::cout << "Time for " << algo << " recompression: " << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
-    std::cout << "Time for " << algo << " recompression: " << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
+    std::cout << "Time for " << algo << " recompression: "
+              << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
+    std::cout << "Time for " << algo << " recompression: "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]" << std::endl;
 
     std::string res = rlslp.derive_text();
     rlslp.resize(0);
@@ -104,5 +106,12 @@ int main(int argc, char *argv[]) {
         std::cerr << "Correct" << std::endl;
     } else {
         std::cerr << "Failure" << std::endl;
+    }
+
+    if (argc > 4) {
+        std::string output(argv[4]);
+        if (output == "output") {
+            std::cout << res;
+        }
     }
 }
