@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include "util.hpp"
 
 #include "defs.hpp"
