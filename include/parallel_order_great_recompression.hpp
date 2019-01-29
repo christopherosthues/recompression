@@ -597,14 +597,19 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
         {
 #pragma omp for schedule(static) reduction(+:pair_count)
             for (size_t i = 0; i < text.size() - 1; ++i) {
-                bool p_l = partition[text[i]];
-                if (p_l == part_l && p_l != partition[text[i + 1]]) {
+                auto ti = partition.find(text[i]);
+                auto tn = partition.find(text[i + 1]);
+                if (ti != partition.end() && tn != partition.end()) {
+                    bool p_l = (*ti).second;
+                    bool p_r = (*tn).second;
+                    if (p_l == part_l && p_l != p_r) {
 //                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
 //                               << thread_id;
-                    auto pair = std::make_pair(text[i], text[i + 1]);
-                    text[i++] = pairs[pair];
-                    text[i] = DELETED;
-                    pair_count++;
+                        auto pair = std::make_pair(text[i], text[i + 1]);
+                        text[i++] = pairs[pair];
+                        text[i] = DELETED;
+                        pair_count++;
+                    }
                 }
             }
         }
