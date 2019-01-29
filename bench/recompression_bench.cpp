@@ -1,8 +1,8 @@
-
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <memory>
-#include <regex>
+//#include <regex>
 #include <thread>
 #include <vector>
 
@@ -31,11 +31,21 @@ int str_to_int(std::string s) {
     return n;
 }
 
+void replace_all(std::string& s, std::string replace, std::string replace_with) {
+    size_t pos = s.find(replace);
+
+    while(pos != std::string::npos) {
+        s.replace(pos, replace.size(), replace_with);
+        pos = s.find(replace, pos + replace_with.size());
+    }
+}
+
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
         std::cerr << "./recompression_bench [file name] [sequential | parallel | full_parallel | parallel_ls | "
                      "parallel_gr | fast] [cores] [output]" << std::endl;
+        return -1;
     }
 
     std::string file_name(argv[1]);
@@ -48,8 +58,9 @@ int main(int argc, char *argv[]) {
         dataset = file_name;
     }
 
-    std::regex reg("_");
-    dataset = std::regex_replace(dataset, reg, "\\_");
+//    std::regex reg("_");
+//    dataset = std::regex_replace(dataset, reg, "\\_");
+    replace_all(dataset, "_", "\\_");
 
     std::string algo = argv[2];
 
