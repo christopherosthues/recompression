@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include <ips4o.hpp>
+
 #include "recompression.hpp"
 #include "defs.hpp"
 #include "rlslp.hpp"
@@ -23,7 +25,8 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
 //    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
 //    typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
-    typedef std::array<std::unordered_map<std::pair<variable_t, variable_t>, size_t>, 2> adj_list_t;
+    typedef std::array<std::unordered_map<std::pair<variable_t, variable_t>, size_t, pair_hash>, 2> adj_list_comp_t;
+    typedef std::array<std::vector<std::tuple<variable_t, variable_t, size_t>>, 2> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     std::string name = "hash";
@@ -76,17 +79,8 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 #endif
     }
 
-//    /**
-//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-//     *
-//     * @param text The text
-//     * @param rlslp The rlslp
-//     */
-//    void recomp(text_t& text, rlslp <variable_t, terminal_count_t>& rlslp) {
-//        recomp(text, rlslp, recomp::CHAR_ALPHABET);
-//    }
-
     using recompression<variable_t, terminal_count_t>::recomp;
+
 
  private:
     /**
@@ -183,11 +177,12 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
      * @return The multiset
      */
     inline void compute_adj_list(const text_t& text,
-                                 adj_list_t& adj_list,
-                                 partition_t part) {
+                                 adj_list_t& adj,
+                                 partition_t& part) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
+        adj_list_comp_t adj_list;
         // Compute adjacency graph of the symbols in the current text
         part[text[0]] = false;
         for (size_t i = 1; i < text.size(); ++i) {
@@ -206,6 +201,12 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
                 } else {
                     (adj_list[1][key])++;
                 }
+            }
+        }
+
+        for (size_t i = 0; i < 2; ++i) {
+            for (const auto& ad : adj_list[i]) {
+                adj[i].push_back(std::make_tuple(ad.first.first, ad.first.second, ad.second));
             }
         }
 #ifdef BENCH
@@ -237,115 +238,61 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
      *
      * @return The partition of the letters in the current alphabet represented by a bitvector
      */
-    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l,
-                                  std::array<std::vector<std::tuple<variable_t, variable_t, size_t>>, 2> adj) {
+    inline void compute_partition(adj_list_t& adj,
+                                  partition_t& partition,
+                                  bool& part_l) {
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
 #endif
         int l_count = 0;
         int r_count = 0;
-        size_t i = 0;
-
-        if (adj[0].empty()) {
-            if (partition[std::get<0>(adj[1][0])]) {
-                r_count += std::get<2>(adj[1][0]);
-            } else {
-                l_count += std::get<2>(adj[1][0]);
+        size_t glob_i = 0;
+        size_t l = 0;
+        size_t r = 0;
+        variable_t actual = 0;
+        if (!adj[0].empty()) {
+            actual = std::get<0>(adj[0][0]);
+            if (!adj[1].empty()) {
+                actual = std::min(actual, std::get<0>(adj[1][0]));
             }
-            for (size_t i = 1; i < adj[1].size(); ++i) {
-                if (std::get<0>(adj[1][i - 1]) < std::get<0>(adj[1][i])) {
-//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
-//                      << l_count << ", " << r_count;
-                    partition[std::get<0>(adj[1][i - 1])] = l_count > r_count;
-                    l_count = 0;
-                    r_count = 0;
-                }
-                if (partition[std::get<1>(adj[1][i])]) {
-                    r_count += std::get<2>(adj[1][i]);
+        } else if (!adj[1].empty()) {
+            actual = std::get<0>(adj[1][0]);
+        }
+        variable_t next = actual;
+        size_t size = adj[0].size() + adj[1].size();
+        while (glob_i < size) {
+            while (l < adj[0].size() && std::get<0>(adj[0][l]) == actual) {
+                if (partition[std::get<1>(adj[0][l])]) {
+                    r_count += std::get<2>(adj[0][l]);
                 } else {
-                    l_count += std::get<2>(adj[1][i]);
+                    l_count += std::get<2>(adj[0][l]);
                 }
+                l++;
+                glob_i++;
             }
-            partition[std::get<0>(adj[1][adj[1].size() - 1])] = l_count > r_count;
-        } else if (adj[1].empty()) {
-            if (partition[std::get<0>(adj[0][0])]) {
-                r_count += std::get<2>(adj[0][0]);
-            } else {
-                l_count += std::get<2>(adj[0][0]);
+            if (l < adj[0].size()) {
+                next = std::get<0>(adj[0][l]);
             }
-            for (size_t i = 1; i < adj[0].size(); ++i) {
-                if (std::get<0>(adj[0][i - 1]) < std::get<0>(adj[0][i])) {
-//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
-//                      << l_count << ", " << r_count;
-                    partition[std::get<0>(adj[0][i - 1])] = l_count > r_count;
-                    l_count = 0;
-                    r_count = 0;
-                }
-                if (partition[std::get<1>(adj[0][i])]) {
-                    r_count += std::get<2>(adj[0][i]);
+
+            while (r < adj[1].size() && std::get<0>(adj[1][r]) == actual) {
+                if (partition[std::get<1>(adj[1][r])]) {
+                    r_count += std::get<2>(adj[1][r]);
                 } else {
-                    l_count += std::get<2>(adj[0][i]);
+                    l_count += std::get<2>(adj[1][r]);
                 }
+                r++;
+                glob_i++;
             }
-            partition[std::get<0>(adj[0][adj[0].size() - 1])] = l_count > r_count;
-        } else {
-            size_t l_i = 0;
-            size_t r_i = 0;
-            size_t size = adj[0].size() + adj[1].size();
-            variable_t actual = std::min(std::get<0>(adj[0][0]), std::get<0>(adj[1][0]));
-//            variable_t next =
-            while (i < size) {
-                for (; l_i < adj[0].size() && adj[0][l_i]; ++l_i) {
+            partition[actual] = l_count > r_count;
+            l_count = 0;
+            r_count = 0;
 
-                    i++;
-                }
-                for (; r_i < adj[0].size() && adj[1][r_i]; ++r_i) {
-
-                    i++;
-                }
-            }
-        }
-
-
-
-        if (adj_list.size() > 0) {
-            if (partition[std::get<0>(adj_list[0])]) {
-                r_count++;
+            if (r < adj[1].size() && l < adj[0].size()) {
+                actual = std::min(next, std::get<0>(adj[1][r]));
+            } else if (r < adj[1].size()) {
+                actual = std::get<0>(adj[1][r]);
             } else {
-                l_count++;
-            }
-        }
-        for (size_t i = 1; i < adj_list.size(); ++i) {
-            if (std::get<0>(adj_list[i - 1]) < std::get<0>(adj_list[i])) {
-//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
-//                      << l_count << ", " << r_count;
-                partition[std::get<0>(adj_list[i - 1])] = l_count > r_count;
-                l_count = 0;
-                r_count = 0;
-            }
-            if (partition[std::get<1>(adj_list[i])]) {
-                r_count++;
-            } else {
-                l_count++;
-            }
-        }
-        partition[std::get<0>(adj_list[adj_list.size() - 1])] = l_count > r_count;
-
-
-
-        for (size_t i = 0; i < adj_list.size(); ++i) {
-            if (!adj_list[i].empty()) {
-                for (const auto& mult : adj_list[i]) {
-                    if (partition[mult.first]) {
-                        r_count += mult.second.first + mult.second.second;
-                    } else {
-                        l_count += mult.second.first + mult.second.second;
-                    }
-                }
-//                LOG(INFO) << "symbol: " << i << ", l: " << l_count << ", r: " << r_count;
-                partition[i] = l_count > r_count;
-                l_count = 0;
-                r_count = 0;
+                actual = next;
             }
         }
 #ifdef BENCH
@@ -361,15 +308,18 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 #endif
         int lr_count = 0;
         int rl_count = 0;
-        for (size_t i = 0; i < adj_list.size(); ++i) {
-            for (const auto& sec : adj_list[i]) {
-                if (!partition[i] && partition[sec.first]) {
-                    lr_count += sec.second.first;
-                    rl_count += sec.second.second;
-                } else if (partition[i] && !partition[sec.first]) {
-                    rl_count += sec.second.first;
-                    lr_count += sec.second.second;
-                }
+        for (size_t i = 0; i < adj[0].size(); ++i) {
+            if (!partition[std::get<0>(adj[0][i])] && partition[std::get<1>(adj[0][i])]) {
+                lr_count += std::get<2>(adj[0][i]);
+            } else if (partition[std::get<0>(adj[0][i])] && !partition[std::get<1>(adj[0][i])]) {
+                rl_count += std::get<2>(adj[0][i]);
+            }
+        }
+        for (size_t i = 0; i < adj[1].size(); ++i) {
+            if (!partition[std::get<0>(adj[1][i])] && partition[std::get<1>(adj[1][i])]) {
+                rl_count += std::get<2>(adj[1][i]);
+            } else if (partition[std::get<0>(adj[1][i])] && !partition[std::get<1>(adj[1][i])]) {
+                lr_count += std::get<2>(adj[1][i]);
             }
         }
 #ifdef BENCH
@@ -381,10 +331,6 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 
         // If there are more pairs in the current text from right set to left set swap partition sets
         part_l = rl_count > lr_count;
-//        if (rl_count > lr_count) {
-//            partition.flip();
-//        }
-
 #ifdef BENCH
         const auto endTime = std::chrono::system_clock::now();
         const auto timeSpan = endTime - startTime;
@@ -408,9 +354,9 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
                   << " level=" << this->level;
 #endif
 
-        adj_list_t adj_list;
         partition_t part;
-        compute_adj_list(text, adj_list, part);
+        adj_list_t adj;
+        compute_adj_list(text, adj, part);
 #ifdef BENCH
         std::cout << " alphabet=" << part.size();
 #endif
@@ -418,13 +364,6 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 #ifdef BENCH
         const auto startTimeAdj = std::chrono::system_clock::now();
 #endif
-        std::array<std::vector<std::tuple<variable_t, variable_t, size_t>>, 2> adj;
-        for (size_t i = 0; i < 2; ++i) {
-            for (const auto& ad : adj_list[i]) {
-                adj[i].push_back(std::make_tuple(ad.first.first, ad.first.second, ad.second));
-            }
-        }
-
         ips4o::sort(adj[0].begin(), adj[0].end());
         ips4o::sort(adj[1].begin(), adj[1].end());
 #ifdef BENCH
@@ -434,7 +373,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 #endif
 
         bool part_l = false;
-        compute_partition(text, part, part_l, adj);
+        compute_partition(adj, part, part_l);
 
 #ifdef BENCH
         const auto startTimePairs = std::chrono::system_clock::now();
@@ -442,7 +381,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
         variable_t next_nt = rlslp.terminals + rlslp.non_terminals.size();
         size_t pair_count = 0;
         size_t new_text_size = text.size();
-        std::unordered_map<std::pair<variable_t, variable_t>, variable_t> pairs;
+        std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
         size_t copy_i = 0;
         bool copy = false;
         size_t pair_c = 0;
@@ -493,7 +432,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
                   << " elements=" << pairs.size() << " pairs=" << pair_count;
 #endif
 
-        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
+        rlslp.blocks.resize(rlslp.blocks.size() + pairs.size(), false);
 
         text.resize(new_text_size);
         text.shrink_to_fit();
