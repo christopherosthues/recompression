@@ -51,11 +51,11 @@ include(Build)
 set(SOURCES src/defs.cpp src/rlslp.cpp src/recompression.cpp src/parallel_recompression.cpp src/util.cpp
         src/radix_sort.cpp src/sequential_recompression.cpp src/fast_recompression.cpp
         src/parallel_order_less_recompression.cpp src/full_parallel_recompression.cpp
-        src/parallel_order_great_recompression.cpp src/lce_query.cpp)
+        src/parallel_order_great_recompression.cpp src/recompression_hash.cpp src/lce_query.cpp)
 set(HEADERS include/defs.hpp include/rlslp.hpp include/recompression.hpp include/parallel_recompression.hpp include/util.hpp
         include/radix_sort.hpp include/sequential_recompression.hpp include/fast_recompression.hpp
         include/parallel_order_less_recompression.hpp include/full_parallel_recompression.hpp
-        include/parallel_order_great_recompression.hpp include/lce_query.hpp)
+        include/parallel_order_great_recompression.hpp include/recompression_hash.hpp include/lce_query.hpp)
 
 find_package(Git)
 if (GIT_FOUND)
