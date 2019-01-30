@@ -39,29 +39,42 @@ void replace_all(std::string& s, std::string replace, std::string replace_with) 
     }
 }
 
+void split(std::string s, std::string delimiter, std::vector<std::string>& split) {
+    size_t pos = 0, end;
+    size_t delim_len = delimiter.size();
+
+    while ((end = s.find(delimiter, pos)) != std::string::npos) {
+        split.push_back(s.substr(pos, end - pos));
+        pos = end + delim_len;
+    }
+
+    split.push_back(s.substr(pos));
+}
+
 
 int main(int argc, char *argv[]) {
-    if (argc < 4) {
-        std::cerr << "./recompression_all_bench [file name] [cores] [repeats]" << std::endl;
+    if (argc < 6) {
+        std::cerr << "./recompression_all_bench [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | fast] [cores] [repeats]" << std::endl;
         return -1;
     }
 
-    int cores = std::thread::hardware_concurrency();
-    if (argc > 2) {
-        cores = str_to_int(argv[2]);
-    }
+    int cores = str_to_int(argv[4]);
     std::cout << "Using " << cores << " threads" << std::endl;
-
-    int repeats = 5;
-    if (argc > 3) {
-        repeats = str_to_int(argv[3]);
+    if (cores <= 0) {
+        return -1;
     }
-    std::cout << "Using " << repeats << " repeats" << std::endl;
 
-    const std::vector<std::string> algos{"sequential", "parallel", "full_parallel", "parallel_ls", "parallel_gr",
-                                         "fast"};
-    const std::vector<std::string> files{"world_leaders", "einstein.de.txt", "coreutils", "kernel", "Escherichia_Coli",
-                                         "einstein.en.txt", "dna", "sources", "dblp.xml"};
+    int repeats = str_to_int(argv[5]);
+    std::cout << "Using " << repeats << " repeats" << std::endl;
+    if (repeats <= 0) {
+        return -1;
+    }
+
+    std::vector<std::string> files;
+    split(argv[2], " ", files);
+
+    std::vector<std::string> algos;
+    split(argv[3], " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
         for (size_t i = 0; i < algos.size(); ++i) {
