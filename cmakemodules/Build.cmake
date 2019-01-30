@@ -2,46 +2,24 @@ include(Dependency)
 
 macro(build_library)
     message(STATUS "Adding library '${PROJECT_NAME}'")
-    #
-    #    set(options)
-    #    set(oneValueArgs)
-    #    set(multiValueArgs DEPS)
-    #    cmake_parse_arguments(SOURCE "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
 
     add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
     target_link_libraries(${PROJECT_NAME} "-lm")
-    #add_dependency(${PROJECT_NAME} "SDSL" REQUIRED)
     add_dependency(${PROJECT_NAME} "IPS4o" REQUIRED)
     add_dependency(${PROJECT_NAME} "OpenMP" REQUIRED)
-#    add_dependency(${PROJECT_NAME} "Glog" REQUIRED)
     add_definitions(-D_GLIBCXX_PARALLEL)
 
-#    find_library(ATOMIC_LIB libatomic.so.1 PATHS /usr/lib64 /usr/lib /usr/lib /usr/lib/x86_64-linux-gnu/)
-#    message("Found ${ATOMIC_LIB}")
-#    target_link_libraries(${PROJECT_NAME} "${ATOMIC_LIB}")
-        target_link_libraries(${PROJECT_NAME} -latomic)
+    target_link_libraries(${PROJECT_NAME} -latomic)
 
     message(STATUS "Library '${PROJECT_NAME}' successfully added")
 endmacro(build_library)
-
-#macro(build_executable name)
-#    message(STATUS "Adding executable '${name}'")
-#
-#    add_executable(${name} src/tir_driver.cpp src/main_${name}.cpp)
-#    target_link_libraries(${name} ${PROJECT_NAME})
-#
-#    install(TARGETS ${name} RUNTIME DESTINATION build)
-#    message(STATUS "Executable '${name}' successfully added")
-#endmacro(build_executable)
 
 macro(build_bench name)
     message(STATUS "Adding executable 'bench_${name}'")
 
     add_executable(bench_${name} ${name}_bench.cpp)
     target_link_libraries(bench_${name} ${PROJECT_NAME})
-#    add_dependency(bench_${name} "Celero" REQUIRED)
     add_dependency(bench_${name} "OpenMP" REQUIRED)
-#    add_dependency(bench_${name} "Glog" REQUIRED)
 
     install(TARGETS bench_${name} RUNTIME DESTINATION build)
     message(STATUS "Executable 'bench_${name}' successfully added")
@@ -76,7 +54,3 @@ macro(build_test name)
     message(STATUS "Tests for '${name}' successfully added")
 endmacro(build_test)
 
-#macro(build_target_with_test name)
-#    build_executable(${name})
-#    build_tests(${name})
-#endmacro(build_target_with_test)

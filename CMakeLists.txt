@@ -36,10 +36,8 @@ endif ()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
 
 add_custom_target(external-downloads)
-#cmake_policy(SET CMP0046 OLD)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
@@ -71,4 +69,3 @@ add_subdirectory(test)
 add_subdirectory(bench)
 
 add_subdirectory(docs)
-

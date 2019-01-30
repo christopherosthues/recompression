@@ -14,7 +14,6 @@
 #include <utility>
 #include <vector>
 
-//#include <glog/logging.h>
 #include <ips4o.hpp>
 
 #include "recompression.hpp"
@@ -32,9 +31,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-    typedef std::vector<bool> bitvector_t;
     typedef std::vector<std::tuple<bool, variable_t, variable_t>> adj_list_t;
-//    typedef std::array<std::vector<std::pair<variable_t, variable_t>>, 2> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     typedef std::pair<variable_t, variable_t> block_t;
@@ -89,18 +86,6 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                   << " cores=" << cores << std::endl;
 #endif
     }
-
-//    /**
-//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-//     *
-//     * @param text The text
-//     * @param rlslp The rlslp
-//     */
-//    void recomp(text_t& text,
-//                rlslp <variable_t, terminal_count_t>& rlslp,
-//                const size_t cores = std::thread::hardware_concurrency()) {
-//        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
-//    }
 
     using recompression<variable_t, terminal_count_t>::recomp;
 

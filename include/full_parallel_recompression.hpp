@@ -90,18 +90,6 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 #endif
     }
 
-//    /**
-//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-//     *
-//     * @param text The text
-//     * @param rlslp The rlslp
-//     */
-//    void recomp(text_t& text,
-//                rlslp <variable_t, terminal_count_t>& rlslp,
-//                const size_t cores = std::thread::hardware_concurrency()) {
-//        recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
-//    }
-
     using recompression<variable_t, terminal_count_t>::recomp;
 
 

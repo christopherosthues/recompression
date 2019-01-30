@@ -9,8 +9,6 @@
 #include <utility>
 #include <vector>
 
-//#include <glog/logging.h>
-
 #include "recompression.hpp"
 #include "defs.hpp"
 #include "rlslp.hpp"
@@ -20,17 +18,12 @@ namespace recomp {
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class recompression_fast : public recompression<variable_t, terminal_count_t> {
  public:
-//    typedef std::vector<variable_t> text_t;
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-//    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
-//    typedef std::vector<variable_t> alphabet_t;
 
     const std::string name = "fast_seq";
-//    std::string dataset = "data";
-//    size_t level = 0;
 
     recompression_fast() = default;
 
@@ -89,15 +82,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 
     using recompression<variable_t, terminal_count_t>::recomp;
 
-//    /**
-//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-//     *
-//     * @param text The text
-//     * @param rlslp The rlslp
-//     */
-//    void recomp(text_t& text, rlslp <variable_t, terminal_count_t>& rlslp) {
-//        recomp(text, rlslp, recomp::CHAR_ALPHABET);
-//    }
 
  private:
     /**
@@ -165,7 +149,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                       rlslp<variable_t, terminal_count_t>& rlslp,
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
-//        std::cout << "Text size (Input BComp): " << text_size << std::endl;
 #ifdef BENCH
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level << " alphabet=" << alphabet_size;
@@ -271,7 +254,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                   << " compressed_text=" << text.size() << std::endl;
 #endif
-//        std::cout << "Text size (Ouput BComp): " << text_size << std::endl;
     }
 
     /**
@@ -447,7 +429,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                       rlslp<variable_t, terminal_count_t>& rlslp,
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
-//        std::cout << "Text size (Input PComp): " << text_size << std::endl;
 #ifdef BENCH
         const auto startTime = std::chrono::system_clock::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -466,17 +447,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         std::vector<std::map<variable_t, std::vector<variable_t>>> pairs(alphabet_size);
         size_t copy_i = 0;
         bool copy = false;
-//        std::cout << "Alphabet: " << alphabet_size << std::endl;
-        /*if (text_size == 2) {
-            for (const auto& b : part) {
-                std::cout << b;
-            }
-            std::cout << std::endl;
-            for (size_t i = 0; i < text_size; ++i) {
-                std::cout << t[i] << " ";
-            }
-            std::cout << std::endl;
-        }*/
         size_t pair_c = 0;
         for (size_t i = 1; i < text.size(); ++i, ++copy_i) {
             if (!part[text[i-1]] && part[text[i]]) {
@@ -515,7 +485,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 for (const auto& pair : pairs[i]) {
                     for (const auto& pos : pair.second) {
                         text[pos] = alphabet_size;
-//                        text[pos] = next_nt;
                     }
                     alphabet_size++;
                     size_t len = 0;
@@ -530,7 +499,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                         len += 1;
                     }
                     rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], len);
-//                    next_nt++;
                 }
             }
         }

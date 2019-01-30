@@ -25,7 +25,6 @@ namespace recomp {
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class sequential_recompression : public recompression<variable_t, terminal_count_t> {
  public:
-//    using recomp::recompression<variable_t, terminal_count_t>::text_t;
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef std::vector<std::tuple<variable_t, variable_t, bool>> adj_list_t;
@@ -37,8 +36,6 @@ class sequential_recompression : public recompression<variable_t, terminal_count
     typedef size_t pair_position_t;
 
     const std::string name = "seq";
-//    std::string dataset = "data";
-//    size_t level = 0;
 
     inline sequential_recompression() = default;
 
@@ -84,16 +81,6 @@ class sequential_recompression : public recompression<variable_t, terminal_count
     }
 
     using recompression<variable_t, terminal_count_t>::recomp;
-
-//    /**
-//     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-//     *
-//     * @param text The text
-//     * @param rlslp The rlslp
-//     */
-//    void recomp(text_t& text, rlslp <variable_t, terminal_count_t>& rlslp) {
-//        recomp(text, rlslp, recomp::CHAR_ALPHABET);
-//    }
 
 
  private:
