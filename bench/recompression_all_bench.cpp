@@ -16,6 +16,7 @@
 
 #include "sequential_recompression.hpp"
 #include "fast_recompression.hpp"
+#include "recompression_hash.hpp"
 
 int str_to_int(std::string s) {
     std::istringstream ss(s);
@@ -54,7 +55,7 @@ void split(std::string s, std::string delimiter, std::vector<std::string>& split
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./recompression_all_bench [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | fast] [cores] [repeats]" << std::endl;
+        std::cerr << "./recompression_all_bench [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | fast | hash] [cores] [repeats]" << std::endl;
         return -1;
     }
 
@@ -114,6 +115,8 @@ int main(int argc, char *argv[]) {
                             dataset);
                 } else if (algo == "fast") {
                     recomp = std::make_unique<recomp::recompression_fast<recomp::var_t, recomp::term_t>>(dataset);
+                } else if (algo == "hash") {
+                    recomp = std::make_unique<recomp::recompression_hash<recomp::var_t, recomp::term_t>>(dataset);
                 } else {
                     std::cerr << "No such algo " << algo << std::endl;
                     return -1;
