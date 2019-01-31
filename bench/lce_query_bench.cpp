@@ -4,8 +4,6 @@
 #include <regex>
 #include <vector>
 
-#include <glog/logging.h>
-
 #include "defs.hpp"
 #include "lce_query.hpp"
 #include "parallel_recompression.hpp"
