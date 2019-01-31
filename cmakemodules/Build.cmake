@@ -21,6 +21,12 @@ macro(build_bench name)
     target_link_libraries(bench_${name} ${PROJECT_NAME})
     add_dependency(bench_${name} "OpenMP" REQUIRED)
 
+    if(ENABLE_MALLOC_COUNT)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ansi")
+        target_sources(bench_${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/malloc_count)
+        target_compile_definitions(bench_${name} PUBLIC MALLOC_COUNT)
+    endif(ENABLE_MALLOC_COUNT)
+
     install(TARGETS bench_${name} RUNTIME DESTINATION build)
     message(STATUS "Executable 'bench_${name}' successfully added")
 endmacro(build_bench)
