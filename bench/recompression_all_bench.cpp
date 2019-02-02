@@ -44,8 +44,8 @@ int main(int argc, char *argv[]) {
     recomp::util::split(argv[3], " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
-        for (size_t i = 0; i < algos.size(); ++i) {
-            for (size_t repeat = 0; repeat < repeats; ++repeat) {
+        for (size_t repeat = 0; repeat < repeats; ++repeat) {
+            for (size_t i = 0; i < algos.size(); ++i) {
                 std::cout << "Iteration: " << repeat << std::endl;
                 std::string algo = algos[i];
                 std::cout << "Using algo " << algo << std::endl;

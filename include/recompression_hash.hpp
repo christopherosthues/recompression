@@ -384,7 +384,6 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
         std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
         size_t copy_i = 0;
         bool copy = false;
-        size_t pair_c = 0;
         for (size_t i = 1; i < text.size(); ++i, ++copy_i) {
             if (part_l == part[text[i - 1]] && part_l != part[text[i]]) {
                 copy = true;
