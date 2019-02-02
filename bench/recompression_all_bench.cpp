@@ -18,40 +18,6 @@
 #include "fast_recompression.hpp"
 #include "recompression_hash.hpp"
 
-int str_to_int(std::string s) {
-    std::istringstream ss(s);
-    int n;
-    if (!(ss >> n)) {
-        std::cerr << "Invalid number: " << s;
-        return -1;
-    } else if (!ss.eof()) {
-        std::cerr << "Trailing characters after number: " << s;
-        return -1;
-    }
-    return n;
-}
-
-void replace_all(std::string& s, std::string replace, std::string replace_with) {
-    size_t pos = s.find(replace);
-
-    while(pos != std::string::npos) {
-        s.replace(pos, replace.size(), replace_with);
-        pos = s.find(replace, pos + replace_with.size());
-    }
-}
-
-void split(std::string s, std::string delimiter, std::vector<std::string>& split) {
-    size_t pos = 0, end;
-    size_t delim_len = delimiter.size();
-
-    while ((end = s.find(delimiter, pos)) != std::string::npos) {
-        split.push_back(s.substr(pos, end - pos));
-        pos = end + delim_len;
-    }
-
-    split.push_back(s.substr(pos));
-}
-
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
@@ -59,23 +25,23 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    int cores = str_to_int(argv[4]);
+    size_t cores = (size_t)recomp::util::str_to_int(argv[4]);
     std::cout << "Using " << cores << " threads" << std::endl;
     if (cores <= 0) {
         return -1;
     }
 
-    int repeats = str_to_int(argv[5]);
+    size_t repeats = (size_t)recomp::util::str_to_int(argv[5]);
     std::cout << "Using " << repeats << " repeats" << std::endl;
     if (repeats <= 0) {
         return -1;
     }
 
     std::vector<std::string> files;
-    split(argv[2], " ", files);
+    recomp::util::split(argv[2], " ", files);
 
     std::vector<std::string> algos;
-    split(argv[3], " ", algos);
+    recomp::util::split(argv[3], " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
         for (size_t i = 0; i < algos.size(); ++i) {
@@ -95,7 +61,7 @@ int main(int argc, char *argv[]) {
                     dataset = file_name;
                 }
 
-                replace_all(dataset, "_", "\\_");
+                recomp::util::replace_all(dataset, "_", "\\_");
 
                 std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp;
 
@@ -128,10 +94,10 @@ int main(int argc, char *argv[]) {
 
                 recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
 
-                const auto startTime = std::chrono::system_clock::now();
+                const auto startTime = recomp::timer::now();
 
                 recomp->recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
-                const auto endTime = std::chrono::system_clock::now();
+                const auto endTime = recomp::timer::now();
                 const auto timeSpan = endTime - startTime;
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;

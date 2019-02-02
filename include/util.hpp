@@ -249,5 +249,39 @@ bool is_sorted(std::vector<vector_t> vector) {
     return true;
 }
 
+void replace_all(std::string& s, std::string replace, std::string replace_with) {
+    size_t pos = s.find(replace);
+
+    while(pos != std::string::npos) {
+        s.replace(pos, replace.size(), replace_with);
+        pos = s.find(replace, pos + replace_with.size());
+    }
+}
+
+void split(std::string s, std::string delimiter, std::vector<std::string>& split) {
+    size_t pos = 0, end;
+    size_t delim_len = delimiter.size();
+
+    while ((end = s.find(delimiter, pos)) != std::string::npos) {
+        split.push_back(s.substr(pos, end - pos));
+        pos = end + delim_len;
+    }
+
+    split.push_back(s.substr(pos));
+}
+
+int str_to_int(std::string s) {
+    std::istringstream ss(s);
+    int n;
+    if (!(ss >> n)) {
+        std::cerr << "Invalid number: " << s;
+        return -1;
+    } else if (!ss.eof()) {
+        std::cerr << "Trailing characters after number: " << s;
+        return -1;
+    }
+    return n;
+}
+
 }  // namespace util
 }  // namespace recomp

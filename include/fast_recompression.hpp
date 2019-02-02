@@ -45,7 +45,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                                const terminal_count_t& alphabet_size,
                                const size_t cores = std::thread::hardware_concurrency()) override {
 #ifdef BENCH_RECOMP
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
         std::vector<variable_t> mapping;
         rlslp.terminals = alphabet_size;
@@ -71,7 +71,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         }
 
 #ifdef BENCH_RECOMP
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
@@ -95,7 +95,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                                 variable_t& alphabet_size,
                                 std::vector<variable_t> &mapping) {
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
         std::vector<bool> alpha(alphabet_size, false);
         for (size_t i = 0; i < t.size(); ++i) {
@@ -129,7 +129,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         }
 
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=replace_letters dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
@@ -152,11 +152,11 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 #ifdef BENCH
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level << " alphabet=" << alphabet_size;
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
 
 #ifdef BENCH
-        const auto startTimeBlocks = std::chrono::system_clock::now();
+        const auto startTimeBlocks = recomp::timer::now();
 #endif
         variable_t next_nt = rlslp.terminals + rlslp.non_terminals.size();
         std::vector<bool> block_vec(alphabet_size);
@@ -194,7 +194,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             text[copy_i] = text[text.size() - 1];
         }
 #ifdef BENCH
-        const auto endTimeBlocks = std::chrono::system_clock::now();
+        const auto endTimeBlocks = recomp::timer::now();
         const auto timeSpanBlocks = endTimeBlocks - startTimeBlocks;
         std::cout << " find_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count())
@@ -204,7 +204,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         block_count = 0;
 
 #ifdef BENCH
-        const auto startTimeAss = std::chrono::system_clock::now();
+        const auto startTimeAss = recomp::timer::now();
 #endif
         for (size_t i = 0; i < block_vec.size(); ++i) {
             if (block_vec[i]) {
@@ -222,7 +222,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             }
         }
 #ifdef BENCH
-        const auto endTimeAss = std::chrono::system_clock::now();
+        const auto endTimeAss = recomp::timer::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
         std::cout << " elements=" << block_count << " block_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
@@ -233,13 +233,13 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         }
 
 #ifdef BENCH
-        const auto startTimeRep = std::chrono::system_clock::now();
+        const auto startTimeRep = recomp::timer::now();
 #endif
         for (const auto& pos : positions) {
             text[pos.second] = blocks[text[pos.second]][pos.first];
         }
 #ifdef BENCH
-        const auto endTimeRep = std::chrono::system_clock::now();
+        const auto endTimeRep = recomp::timer::now();
         const auto timeSpanRep = endTimeRep - startTimeRep;
         std::cout << " replace_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
@@ -248,7 +248,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         text.shrink_to_fit();
 
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " time="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
@@ -265,7 +265,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
     inline void compute_adj_list(const text_t& text,
                                  adj_list_t& adj_list) {
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
         // Compute adjacency graph of the symbols in the current text
         for (size_t i = 1; i < text.size(); ++i) {
@@ -289,7 +289,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         }
 
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
@@ -306,7 +306,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
     inline void compute_partition(const adj_list_t& adj_list,
                                   partition_t& partition) {
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
         int l_count = 0;
         int r_count = 0;
@@ -325,7 +325,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             }
         }
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
@@ -345,7 +345,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
     inline void count_pairs(const adj_list_t& adj_list,
                             partition_t& partition) {
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
         int lr_count = 0;
         int rl_count = 0;
@@ -361,7 +361,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             }
         }
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " lr=" << lr_count << " rl=" << rl_count;
         std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
@@ -402,7 +402,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         compute_adj_list(text, adj_list);
 
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
 #endif
         compute_partition(adj_list, partition);
 
@@ -411,7 +411,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         count_pairs(adj_list, partition);
 
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
@@ -430,7 +430,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level << " alphabet=" << alphabet_size;
 #endif
@@ -439,7 +439,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         partition(text, alphabet_size, part);
 
 #ifdef BENCH
-        const auto startTimePairs = std::chrono::system_clock::now();
+        const auto startTimePairs = recomp::timer::now();
 #endif
         variable_t next_nt = rlslp.terminals + rlslp.non_terminals.size();
         size_t pair_count = 0;
@@ -469,7 +469,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             text[copy_i] = text[text.size() - 1];
         }
 #ifdef BENCH
-        const auto endTimePairs = std::chrono::system_clock::now();
+        const auto endTimePairs = recomp::timer::now();
         const auto timeSpanPairs = endTimePairs - startTimePairs;
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count())
@@ -477,7 +477,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 #endif
 
 #ifdef BENCH
-        const auto startTimeAss = std::chrono::system_clock::now();
+        const auto startTimeAss = recomp::timer::now();
 #endif
         size_t alpha_size = alphabet_size;
         for (size_t i = 0; i < alpha_size; ++i) {
@@ -505,7 +505,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
 
 #ifdef BENCH
-        const auto endTimeAss = std::chrono::system_clock::now();
+        const auto endTimeAss = recomp::timer::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
         std::cout << " pair_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
@@ -515,7 +515,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         text.shrink_to_fit();
 
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " time="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
@@ -532,7 +532,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
      */
     inline void compute_alphabet(text_t& text, variable_t &alphabet_size, std::vector<variable_t> &mapping) {
 #ifdef BENCH
-        const auto startTime = std::chrono::system_clock::now();
+        const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_alphabet dataset=" << this->dataset << " level=" << this->level
                   << " alphabet=" << alphabet_size;
 #endif
@@ -571,7 +571,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             text[i] -= (text[i] - ranks[text[i]]);
         }
 #ifdef BENCH
-        const auto endTime = std::chrono::system_clock::now();
+        const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " effective_alphabet=" << alphabet_size << " time="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;

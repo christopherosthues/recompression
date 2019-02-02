@@ -1,12 +1,15 @@
 
 #pragma once
 
+#include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <utility>
 
 namespace recomp {
+
+using timer = std::chrono::steady_clock;
 
 typedef std::uint32_t var_t;
 typedef std::uint32_t term_t;
