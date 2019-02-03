@@ -25,7 +25,7 @@ find_package_handle_standard_args(IPS4o DEFAULT_MSG IPS4o_INCLUDE_DIR)
 set(IPS4o_FIND_REQUIRED ${IPS4o_FIND_REQUIRED_BACKUP})
 
 if (IPS4o_FOUND)
-#    set(IPS4o_INCLUDE_DIRS ${IPS4o_INCLUDE_DIR})
+    set(IPS4o_INCLUDE_DIRS ${IPS4o_INCLUDE_DIR})
 #    set(IPS4o_LIBRARIES ${IPS4o_LIBRARY})
 #    message(STATUS "Found ${IPS4o_LIBRARIES}")
     message(STATUS "Found ${IPS4o_INCLUDE_DIRS}")
