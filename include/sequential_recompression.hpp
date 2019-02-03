@@ -51,7 +51,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
-                               const size_t cores = std::thread::hardware_concurrency()) override {
+                               const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
 #endif

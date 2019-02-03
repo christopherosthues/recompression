@@ -34,7 +34,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef std::vector<bool> bitvector_t;
-    typedef std::vector<std::tuple<variable_t, variable_t, bool>> adj_list_t;
+    typedef std::tuple<variable_t, variable_t, bool> adj_t;
+    typedef std::vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     typedef std::pair<variable_t, variable_t> block_t;
@@ -59,7 +60,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
-                               const size_t cores = std::thread::hardware_concurrency()) override {
+                               const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
 #endif
@@ -224,7 +225,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         const auto startTimeSort = recomp::timer::now();
 #endif
 //        parallel::partitioned_radix_sort(sort_blocks);
-        ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
+        ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end(), std::less<block_t>(), cores);
 #ifdef BENCH
         const auto endTimeSort = recomp::timer::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -367,7 +368,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 ++partition_iter;
             }
         }
-        ips4o::parallel::sort(alphabet.begin(), alphabet.end());
+        ips4o::parallel::sort(alphabet.begin(), alphabet.end(), std::less<variable_t>(), cores);
 
         std::vector<std::shared_timed_mutex> mutexes(alphabet.size());
         std::unordered_map<variable_t, size_t> mapping;
@@ -583,7 +584,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         const auto startTimeMult = recomp::timer::now();
 #endif
 //        partitioned_radix_sort(adj_list);
-        ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), std::less<adj_t>(), cores);
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
@@ -680,7 +681,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         const auto startTimeSort = recomp::timer::now();
 #endif
 //        parallel::partitioned_radix_sort(sort_pairs);
-        ips4o::parallel::sort(sort_pairs.begin(), sort_pairs.end());
+        ips4o::parallel::sort(sort_pairs.begin(), sort_pairs.end(), std::less<pair_t>(), cores);
 #ifdef BENCH
         const auto endTimeSort = recomp::timer::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;

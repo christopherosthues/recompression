@@ -32,7 +32,8 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-    typedef std::vector<std::tuple<bool, variable_t, variable_t>> adj_list_t;
+    typedef std::tuple<bool, variable_t, variable_t> adj_t;
+    typedef std::vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
     typedef std::pair<variable_t, variable_t> block_t;
@@ -57,7 +58,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
-                               const size_t cores = std::thread::hardware_concurrency()) override {
+                               const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
 #endif
@@ -222,7 +223,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
         const auto startTimeSort = recomp::timer::now();
 #endif
 //        parallel::partitioned_radix_sort(sort_blocks);
-        ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end());
+        ips4o::parallel::sort(sort_blocks.begin(), sort_blocks.end(), std::less<block_t>(), cores);
 #ifdef BENCH
         const auto endTimeSort = recomp::timer::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -377,7 +378,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
             }
         }
 
-        ips4o::parallel::sort(alphabet.begin(), alphabet.end());
+        ips4o::parallel::sort(alphabet.begin(), alphabet.end(), std::less<variable_t>(), cores);
 
 #ifdef BENCH
         const auto startTimePar = recomp::timer::now();
@@ -472,7 +473,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
         const auto startTimeMult = recomp::timer::now();
 #endif
 //        partitioned_radix_sort(adj_list);
-        ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), std::less<adj_t>(), cores);
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;

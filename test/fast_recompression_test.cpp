@@ -1112,7 +1112,7 @@ TEST(fast_recomp, empty) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 0;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {};
 
@@ -1130,7 +1130,7 @@ TEST(fast_recomp, recompression) {
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 5;
 
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -1168,7 +1168,7 @@ TEST(fast_recomp, one_block) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -1186,7 +1186,7 @@ TEST(fast_recomp, two_blocks) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -1206,7 +1206,7 @@ TEST(fast_recomp, three_blocks) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -1228,7 +1228,7 @@ TEST(fast_recomp, four_blocks) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -1252,7 +1252,7 @@ TEST(fast_recomp, repeated_pair) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -1271,7 +1271,7 @@ TEST(fast_recomp, repeated_pair_same_occ) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;

@@ -676,7 +676,7 @@ TEST(recomp_hash, empty) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 0;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {};
 
@@ -693,7 +693,7 @@ TEST(recomp_hash, recompression) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {24};
 
@@ -732,7 +732,7 @@ TEST(recomp_hash, one_block) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {3};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -750,7 +750,7 @@ TEST(recomp_hash, two_blocks) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {5};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -770,7 +770,7 @@ TEST(recomp_hash, three_blocks) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {7};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -792,7 +792,7 @@ TEST(recomp_hash, four_blocks) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {9};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -816,7 +816,7 @@ TEST(recomp_hash, repeated_pair) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {4};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -835,7 +835,7 @@ TEST(recomp_hash, repeated_pair_same_occ) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {5};
     recomp::rlslp<var_t, term_t> exp_rlslp;

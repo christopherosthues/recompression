@@ -652,7 +652,7 @@ TEST(parallel_recomp, empty) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 0;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {};
 
@@ -669,7 +669,7 @@ TEST(parallel_recomp, recompression) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {24};
 
@@ -708,7 +708,7 @@ TEST(parallel_recomp, one_block) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {3};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -726,7 +726,7 @@ TEST(parallel_recomp, two_blocks) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {5};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -746,7 +746,7 @@ TEST(parallel_recomp, three_blocks) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {7};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -768,7 +768,7 @@ TEST(parallel_recomp, four_blocks) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {9};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -792,7 +792,7 @@ TEST(parallel_recomp, repeated_pair) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {4};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -811,7 +811,7 @@ TEST(parallel_recomp, repeated_pair_same_occ) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = {5};
     recomp::rlslp<var_t, term_t> exp_rlslp;
