@@ -121,7 +121,7 @@ size_t find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
 //        DLOG(INFO) << "Traverse up for i: " << parent_i << ", " << i << ", " << comp_i_len;
         i_visited.visited.erase(parent_i);
         auto child_pos = i;
-        auto child = parent_i;
+//        auto child = parent_i;
         parent_i = i_visited.parents.top();
         i_visited.parents.pop();
         i = i_visited.visited[parent_i].pos;
@@ -149,7 +149,7 @@ size_t find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
 //        DLOG(INFO) << "Traverse up for j: " << parent_j << ", " << j << ", " << comp_j_len;
         j_visited.visited.erase(parent_j);
         auto child_pos = j;
-        auto child = parent_j;
+//        auto child = parent_j;
         parent_j = j_visited.parents.top();
         j_visited.parents.pop();
         j = j_visited.visited[parent_j].pos;
