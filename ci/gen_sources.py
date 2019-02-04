@@ -7,5 +7,8 @@ for root, sub_dirs, files in os.walk("."):
             r = root[1:] if root == "." else root[2:]
             os.makedirs("../src/" + r + "/", exist_ok=True)
             source_file = open("../src/" + r + "/" + file[:len(file)-3] + "cpp", 'w')
-            source_file.write('#include "' + file + '"')
+            if root[2:] == "":
+                source_file.write('#include "' + file + '"\n')
+            else:
+                source_file.write('#include "' + root[2:] + "/" + file + '"\n')
             source_file.close()
