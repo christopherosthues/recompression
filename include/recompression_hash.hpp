@@ -29,11 +29,15 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
     typedef std::array<std::vector<std::tuple<variable_t, variable_t, size_t>>, 2> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
-    std::string name = "hash";
+//    const std::string name = "hash";
 
-    inline recompression_hash() = default;
+    inline recompression_hash() {
+        this->name = "hash";
+    }
 
-    inline recompression_hash(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
+    inline recompression_hash(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "hash";
+    }
 
     /**
      * @brief Builds the straight-line program generating the given text using the recompression technique.

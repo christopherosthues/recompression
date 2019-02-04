@@ -40,12 +40,16 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    const std::string name = "parallel";
+//    const std::string name = "parallel";
     size_t cores = 1;
 
-    inline parallel_recompression() = default;
+    inline parallel_recompression() {
+        this->name = "parallel";
+    }
 
-    inline parallel_recompression(std::string& dataset) : recomp::recompression<variable_t, terminal_count_t>(dataset) {}
+    inline parallel_recompression(std::string& dataset) : recomp::recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "parallel";
+    }
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.

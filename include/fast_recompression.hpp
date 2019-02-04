@@ -23,11 +23,15 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
 
-    const std::string name = "fast_seq";
+//    const std::string name = "fast_seq";
 
-    recompression_fast() = default;
+    recompression_fast() {
+        this->name = "fast_seq";
+    }
 
-    recompression_fast(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
+    recompression_fast(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "fast_seq";
+    }
 
     /**
      * @brief Builds the straight-line program generating the given text using the recompression technique.
@@ -186,7 +190,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 block_count++;  // Only for statistics here
                 block_len = 1;
             }
-            if (copy) {
+            if (copy && i < text.size()) {
                 text[copy_i] = text[i];
             }
         }

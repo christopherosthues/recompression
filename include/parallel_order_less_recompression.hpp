@@ -41,12 +41,16 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    const std::string name = "parallel_ls";
+//    const std::string name = "parallel_ls";
     size_t cores = 1;
 
-    inline recompression_order_ls() = default;
+    inline recompression_order_ls() {
+        this->name = "parallel_ls";
+    }
 
-    inline recompression_order_ls(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
+    inline recompression_order_ls(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "parallel_ls";
+    }
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.

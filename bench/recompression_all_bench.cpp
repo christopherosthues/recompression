@@ -18,6 +18,10 @@
 #include "fast_recompression.hpp"
 #include "recompression_hash.hpp"
 
+#ifdef MALLOC_COUNT
+#include "malloc_count.h"
+#endif
+
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
@@ -63,6 +67,10 @@ int main(int argc, char *argv[]) {
 
                 recomp::util::replace_all(dataset, "_", "\\_");
 
+#ifdef MALLOC_COUNT
+                malloc_count_reset_peak();
+#endif
+
                 std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp;
 
                 if (algo == "sequential") {
@@ -99,12 +107,22 @@ int main(int argc, char *argv[]) {
                 recomp->recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
                 const auto endTime = recomp::timer::now();
                 const auto timeSpan = endTime - startTime;
+#ifdef MALLOC_COUNT
+                malloc_count_reset_peak();
+                std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset
+                          << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level="
+                          << recomp->level << " cores=" << cores << " memory=" << malloc_count_peak() << std::endl;
+#endif // MALLOC_COUNT
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]"
                           << std::endl;
-
+//
+//#ifdef MALLOC_COUNT
+//                malloc_count_reset_peak();
+//                std::cout << "Memory: " << malloc_count_peak() << std::endl;
+//#endif // MALLOC_COUNT
                 std::string res = rlslp.derive_text();
                 rlslp.resize(0);
                 rlslp.shrink_to_fit();
@@ -116,6 +134,11 @@ int main(int argc, char *argv[]) {
                 } else {
                     std::cout << "Failure" << std::endl;
                 }
+//#ifdef MALLOC_COUNT
+//                std::cout << "Memory: " << malloc_count_peak() << std::endl;
+//                malloc_count_reset_peak();
+//                std::cout << "Memory: " << malloc_count_peak() << std::endl;
+//#endif // MALLOC_COUNT
             }
         }
     }

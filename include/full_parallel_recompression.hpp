@@ -43,12 +43,16 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    const std::string name = "full_parallel";
+//    const std::string name = "full_parallel";
     size_t cores = 1;
 
-    inline full_parallel_recompression() = default;
+    inline full_parallel_recompression() {
+        this->name = "full_parallel";
+    }
 
-    inline full_parallel_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
+    inline full_parallel_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "full_parallel";
+    }
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.

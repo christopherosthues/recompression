@@ -40,12 +40,16 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    const std::string name = "parallel_gr";
+//    const std::string name = "parallel_gr";
     size_t cores = 1;
 
-    inline recompression_order_gr() = default;
+    inline recompression_order_gr() {
+        this->name = "parallel_gr";
+    }
 
-    inline recompression_order_gr(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
+    inline recompression_order_gr(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "parallel_gr";
+    }
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.

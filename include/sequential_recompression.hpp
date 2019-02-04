@@ -35,11 +35,15 @@ class sequential_recompression : public recompression<variable_t, terminal_count
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
-    const std::string name = "seq";
+//    const std::string name = "seq";
 
-    inline sequential_recompression() = default;
+    inline sequential_recompression() {
+        this->name = "seq";
+    }
 
-    inline sequential_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {}
+    inline sequential_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+        this->name = "seq";
+    }
 
     /**
      * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.

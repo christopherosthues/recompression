@@ -15,6 +15,7 @@ class recompression {
     typedef std::vector<variable_t> text_t;
     typedef std::vector<variable_t> alphabet_t;
 
+    std::string name;
     std::string dataset = "data";
     size_t level = 0;
 
