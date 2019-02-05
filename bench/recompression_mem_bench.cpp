@@ -18,15 +18,19 @@
 #include "fast_recompression.hpp"
 #include "recompression_hash.hpp"
 
+#ifdef MALLOC_COUNT
+#include "malloc_count.h"
+#endif
+
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./recompression_all_bench [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | fast | hash] [cores] [repeats]" << std::endl;
+        std::cerr << "./bench_recompression_mem [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | fast | hash] [cores] [repeats]" << std::endl;
         return -1;
     }
 
     size_t cores = (size_t)recomp::util::str_to_int(argv[4]);
-    std::cout << "Using " << cores << " threads" << std::endl;
+    std::cout << "Using " << cores << " cores" << std::endl;
     if (cores <= 0) {
         return -1;
     }
@@ -62,6 +66,10 @@ int main(int argc, char *argv[]) {
                 }
 
                 recomp::util::replace_all(dataset, "_", "\\_");
+
+#ifdef MALLOC_COUNT
+                malloc_count_reset_peak();
+#endif
 
                 std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp;
 
@@ -99,23 +107,38 @@ int main(int argc, char *argv[]) {
                 recomp->recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
                 const auto endTime = recomp::timer::now();
                 const auto timeSpan = endTime - startTime;
+#ifdef MALLOC_COUNT
+                malloc_count_reset_peak();
+                std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset
+                          << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level="
+                          << recomp->level << " cores=" << cores << " memory=" << malloc_count_peak() << std::endl;
+#endif // MALLOC_COUNT
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]"
                           << std::endl;
-
-                std::string res = rlslp.derive_text();
-                rlslp.resize(0);
-                rlslp.shrink_to_fit();
-
-                std::string c_text;
-                recomp::util::read_text_file(file_name, c_text);
-                if (res == c_text) {
-                    std::cout << "Correct" << std::endl;
-                } else {
-                    std::cout << "Failure" << std::endl;
-                }
+////
+////#ifdef MALLOC_COUNT
+////                malloc_count_reset_peak();
+////                std::cout << "Memory: " << malloc_count_peak() << std::endl;
+////#endif // MALLOC_COUNT
+//                std::string res = rlslp.derive_text();
+//                rlslp.resize(0);
+//                rlslp.shrink_to_fit();
+//
+//                std::string c_text;
+//                recomp::util::read_text_file(file_name, c_text);
+//                if (res == c_text) {
+//                    std::cout << "Correct" << std::endl;
+//                } else {
+//                    std::cout << "Failure" << std::endl;
+//                }
+////#ifdef MALLOC_COUNT
+////                std::cout << "Memory: " << malloc_count_peak() << std::endl;
+////                malloc_count_reset_peak();
+////                std::cout << "Memory: " << malloc_count_peak() << std::endl;
+////#endif // MALLOC_COUNT
             }
         }
     }

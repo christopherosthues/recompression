@@ -4,7 +4,7 @@ option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit
 option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." OFF)
 option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." ON)
 option(RECOMPRESSION_GENERATE_DOC "Set ON to generate doxygen API reference in build/doc directory" OFF)
-option(RECOMPRESSION_ENABLE_MALLOC_COUNT "Set ON to enable memory measurement." OFF)
+option(RECOMPRESSION_ENABLE_MALLOC_COUNT "Set ON to enable memory measurement." ON)
 
 project(recompression)
 set(PROJECT_VENDOR "Christopher Osthues")
