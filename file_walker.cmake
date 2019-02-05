@@ -1,0 +1,39 @@
+set(SOURCES
+    src/parallel_recompression.cpp
+    src/full_parallel_recompression.cpp
+    src/rlslp.cpp
+    src/recompression.cpp
+    src/fast_recompression.cpp
+    src/util.cpp
+    src/parallel_order_less_recompression.cpp
+    src/lce_query.cpp
+    src/radix_sort.cpp
+    src/parallel_order_great_recompression.cpp
+    src/sequential_recompression.cpp
+    src/recompression_hash.cpp
+    src/defs.cpp
+    src/coders/rlslp_rule_sorter.cpp
+    src/io/bitostream.cpp
+    src/io/bitistream.cpp
+)
+set(HEADERS
+    include/full_parallel_recompression.hpp
+    include/defs.hpp
+    include/lce_query.hpp
+    include/rlslp.hpp
+    include/recompression.hpp
+    include/sequential_recompression.hpp
+    include/parallel_recompression.hpp
+    include/radix_sort.hpp
+    include/parallel_order_less_recompression.hpp
+    include/fast_recompression.hpp
+    include/recompression_hash.hpp
+    include/util.hpp
+    include/parallel_order_great_recompression.hpp
+    include/coders/rlslp_coder.hpp
+    include/coders/rlslp_rule_sorter.hpp
+    include/coders/delta_coder.hpp
+    include/coders/coder.hpp
+    include/io/bitistream.hpp
+    include/io/bitostream.hpp
+)

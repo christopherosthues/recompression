@@ -1,10 +1,6 @@
 import os
 import os.path
 
-dir = os.listdir()
-
-print(dir)
-
 for root, sub_dirs, files in os.walk("."):
     for file in files:
         if file.endswith(".hpp"):
