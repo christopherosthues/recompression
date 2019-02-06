@@ -4,6 +4,7 @@
 #include <climits>
 #include <fstream>
 #include <ios>
+#include <vector>
 
 #include "util.hpp"
 
@@ -30,6 +31,13 @@ class BitOStream {
  public:
     inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
         stream = std::ofstream(file_name, mode);
+    }
+
+    inline BitOStream(BitOStream& ostream) {
+        stream = std::move(ostream.stream);
+        dirty = ostream.dirty;
+        buffer = ostream.buffer;
+        cursor = ostream.cursor;
     }
 
     inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {}
@@ -108,6 +116,40 @@ class BitOStream {
     inline void write_int(value_t value, size_t bits = sizeof(value_t) * CHAR_BIT) {
         for (size_t i = bits - 1; i >= 0; --i) {
             write_bit((value & value_t(value_t(1) << i)) != value_t(0));
+        }
+    }
+
+    inline void write_bitvector_compressed(std::vector<bool>& bv) {
+        write_int<size_t>(bv.size());
+        if (!bv.empty()) {
+            auto val = bv[0];
+            std::uint32_t len = 0;
+            for (size_t i = 0; i < bv.size(); ++i) {
+                while (i < bv.size() && bv[i] == val) {
+                    len++;
+                    i++;
+                }
+                std::uint32_t value = 0;
+                if (len > 31) {
+                    value |= (std::uint32_t(1) << 31);
+                    if (val) {
+                        value |= (std::uint32_t(1) << 30);
+                    }
+                    std::uint32_t check_len = len | (std::uint32_t(3) << 30);
+                    if (check_len) {
+                        // TODO(Chris): verkleinern
+                    } else {
+                        value |= len;
+                    }
+                } else {
+                    for (size_t j = 0; j < 31 && i < bv.size(); ++j, ++i) {
+                        if (bv[i - len]) {
+                            value |= (std::uint32_t(1) << (30 - j));
+                        }
+                    }
+                }
+                write_int<std::uint32_t>(value);
+            }
         }
     }
 

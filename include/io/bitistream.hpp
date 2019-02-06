@@ -1,9 +1,9 @@
-
 #pragma once
 
 #include <climits>
 #include <fstream>
 #include <ios>
+#include <vector>
 
 class BitIStream {
     std::ifstream stream;
@@ -43,6 +43,14 @@ class BitIStream {
     }
 
  public:
+    inline BitIStream(BitIStream& istream) {
+        stream = std::move(istream.stream);
+        current = istream.current;
+        buffer = istream.buffer;
+        end = istream.end;
+        end_bits = istream.end_bits;
+        current = istream.cursor;
+    }
 
     inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
         stream = std::ifstream(file_name, mode);
@@ -130,6 +138,30 @@ class BitIStream {
 //            value |= read_bit();
         }
         return value;
+    }
+
+    inline std::vector<bool> read_bitvector_compressed() {
+        auto size = read_int<size_t>();
+        std::vector<bool> bv(size);
+        if (size > 0) {
+            for (size_t i = 0; i < bv.size(); ++i) {
+                auto value = read_int<std::uint32_t>();
+                auto type = (value >> 31) & std::uint32_t(1);
+                if (type) {
+                    bool v = (bool)((value >> 30) & std::uint32_t(1));
+                    std::uint32_t len = ((value << 2) >> 2);
+                    for (size_t j = 0; j < len; ++j, ++i) {
+                        bv[i] = v;
+                    }
+                } else {
+                    for (size_t j = 0; j < 31; ++j, ++i) {
+                        bool v = (bool)((value >> (30 - j)) & std::uint32_t(1));
+                        bv[i] = v;
+                    }
+                }
+            }
+        }
+        return bv;
     }
 
     inline bool eof() const {
