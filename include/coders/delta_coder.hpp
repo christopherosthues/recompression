@@ -1,10 +1,10 @@
-
 #pragma once
 
 #include "coders/coder.hpp"
 
 namespace recomp {
 namespace coder {
+
 /**
  * @brief A class to delta encode and decode values.
  *
