@@ -13,6 +13,9 @@ set(SOURCES
     src/recompression_hash.cpp
     src/defs.cpp
     src/coders/rlslp_rule_sorter.cpp
+    src/coders/coder.cpp
+    src/coders/delta_coder.cpp
+    src/coders/rlslp_coder.cpp
     src/io/bitostream.cpp
     src/io/bitistream.cpp
 )
