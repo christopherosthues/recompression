@@ -3,6 +3,12 @@
 #include <iostream>
 #include <vector>
 
+#include <sdsl/construct_sa.hpp>
+#include <sdsl/lcp_support_sada.hpp>
+#include <sdsl/rmq_support.hpp>
+#include <sdsl/csa_sada.hpp>
+#include <sdsl/csa_wt.hpp>
+
 #include "defs.hpp"
 #include "lce_query.hpp"
 #include "parallel_recompression.hpp"
@@ -93,6 +99,10 @@ int main(int argc, char *argv[]) {
                     // TODO(Chris): RMQ on lcp array
                     // compute first A, then H, then ISA and then RMQ data structure on H
                     // LCE(i,j) = RMQ_H(ISA[i], ISA[j])
+//                    sdsl::_construct_sa_IS()
+                    sdsl::cache_config config;
+//                    config.
+                    sdsl::construct_sa<8>(config);
                     const auto startTime = recomp::timer::now();
                     auto lce = 0;
                     const auto endTime = recomp::timer::now();
