@@ -23,6 +23,28 @@ const term_t CHAR_ALPHABET = 256;
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 struct rlslp {
  private:
+    size_t compute_length(const variable_t nt) {
+        if (nt < terminals) {
+            return 1;
+        } else {
+            auto first = non_terminals[nt - terminals].first();
+            auto second = non_terminals[nt - terminals].second();
+
+            if (is_block(nt)) {
+                size_t len = compute_length(first);
+                non_terminals[nt - terminals].len = len * second;
+                return len * second;
+            } else {
+                size_t first_len = compute_length(first);
+                size_t second_len = compute_length(second);
+//                non_terminals[first - terminals].len = first_len;
+//                non_terminals[second - terminals].len = second_len;
+                non_terminals[nt - terminals].len = first_len + second_len;
+                return first_len + second_len;
+            }
+        }
+    }
+
     inline size_t rest_len(const size_t i, const size_t len, const size_t derived_string_len) const {
         if (i + len > derived_string_len) {
             return len - derived_string_len + i;
@@ -241,6 +263,10 @@ struct rlslp {
                 derive(sstream, second);
             }
         }
+    }
+
+    void compute_lengths() {
+        compute_length(root);
     }
 
     size_t len(variable_t nt) const {
