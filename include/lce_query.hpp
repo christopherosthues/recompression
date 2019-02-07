@@ -299,21 +299,19 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp, size_t i, si
 //        DLOG(INFO) << "Empty rlslp";
         return 0;
     }
-    if (rlslp[rlslp.root].len <= i || rlslp[rlslp.root].len <= j) {
+    if (rlslp.len(rlslp.root) <= i || rlslp.len(rlslp.root) <= j) {
 //        DLOG(INFO) << "Position out of bounds";
         return 0;
     }
     if (i == j) {
 //        DLOG(INFO) << "Equal position";
-        return rlslp[rlslp.root].len - i;
+        return rlslp.len(rlslp.root) - i;
     }
 
     lceq<variable_t> i_visited;
     lceq<variable_t> j_visited;
 
-    return lce_query<variable_t, terminal_count_t>(rlslp, i, j, static_cast<variable_t>(rlslp.root + rlslp.terminals),
-                                                   static_cast<variable_t>(rlslp.root + rlslp.terminals), i_visited,
-                                                   j_visited, 1);
+    return lce_query<variable_t, terminal_count_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
 }
 
 

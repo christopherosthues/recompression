@@ -69,8 +69,10 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
             }
         }
 
-        if (!rlslp.empty()) {
-            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
+        if (!text.empty()) {
+//            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
+            rlslp.root = static_cast<variable_t>(text[0]);
+            rlslp.is_empty = false;
         }
 
 #ifdef BENCH_RECOMP

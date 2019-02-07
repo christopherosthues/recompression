@@ -81,8 +81,10 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             }
         }
 
-        if (!rlslp.empty()) {
-            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
+        if (!text.empty()) {
+//            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
+            rlslp.root = static_cast<variable_t>(text[0]);
+            rlslp.is_empty = false;
         }
 
 #ifdef BENCH_RECOMP

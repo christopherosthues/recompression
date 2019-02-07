@@ -167,7 +167,7 @@ struct rlslp {
     };
 
     /**
-     * The root variable (valid index).
+     * The root variable.
      */
     variable_t root = 0;
 
@@ -180,6 +180,11 @@ struct rlslp {
      * The number of terminals.
      */
     terminal_count_t terminals = CHAR_ALPHABET;
+
+    /**
+     * @code{true} if the rlslp is empty, @code{false} if not
+     */
+    bool is_empty = true;
 
     /**
      * The number of blocks.
@@ -204,7 +209,7 @@ struct rlslp {
     }
 
     bool empty() const {
-        return size() == 0;
+        return is_empty;
     }
 
     bool operator==(const rlslp& rlslp) const {
@@ -216,8 +221,8 @@ struct rlslp {
 //            }
 //        }
         return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals &&
+               is_empty == rlslp.is_empty && blocks == rlslp.blocks;
 //               bl;
-               blocks == rlslp.blocks;
     }
 
     void reserve(size_t size) {
@@ -280,18 +285,18 @@ struct rlslp {
     std::string derive_text() {
         std::stringstream sstream;
         if (!empty()) {
-            derive(sstream, root + terminals);
+            derive(sstream, root);
         }
         return sstream.str();
     }
 
     std::string extract(size_t i, size_t len) const {
         std::stringstream sstream;
-        if (!empty() && i < non_terminals[root].len && len > 0) {
-            if (i + len > non_terminals[root].len) {
-                len = non_terminals[root].len - i;
+        if (!empty() && i < this->len(root) && len > 0) {
+            if (i + len > this->len(root)) {
+                len = this->len(root) - i;
             }
-            extract(sstream, i, len, root + terminals);
+            extract(sstream, i, len, root);
         }
         return sstream.str();
     }
