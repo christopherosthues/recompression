@@ -682,6 +682,46 @@ TEST(full_parallel_recomp, terminal) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
+TEST(full_parallel_recomp, short_block2) {
+    text_t text = {112, 112};
+    rlslp<var_t, term_t> rlslp;
+    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    term_t alphabet_size = 113;
+    recomp.recomp(text, rlslp, alphabet_size, 4);
+
+    text_t exp_text = {113};
+
+    recomp::rlslp<var_t, term_t> exp_rlslp;
+    exp_rlslp.terminals = alphabet_size;
+    exp_rlslp.root = 113;
+    exp_rlslp.non_terminals.emplace_back(112, 2, 2);
+    exp_rlslp.is_empty = false;
+    exp_rlslp.blocks = {true};
+
+    ASSERT_EQ(exp_text, text);
+    ASSERT_EQ(exp_rlslp, rlslp);
+}
+
+TEST(full_parallel_recomp, short_block3) {
+    text_t text = {112, 112, 112};
+    rlslp<var_t, term_t> rlslp;
+    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    term_t alphabet_size = 113;
+    recomp.recomp(text, rlslp, alphabet_size, 4);
+
+    text_t exp_text = {113};
+
+    recomp::rlslp<var_t, term_t> exp_rlslp;
+    exp_rlslp.terminals = alphabet_size;
+    exp_rlslp.root = 113;
+    exp_rlslp.non_terminals.emplace_back(112, 3, 3);
+    exp_rlslp.is_empty = false;
+    exp_rlslp.blocks = {true};
+
+    ASSERT_EQ(exp_text, text);
+    ASSERT_EQ(exp_rlslp, rlslp);
+}
+
 TEST(full_parallel_recomp, recompression) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;

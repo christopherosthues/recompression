@@ -13,7 +13,7 @@ TEST(extract, empty) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 0;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     std::string extr = rlslp.extract(0, 9);
     ASSERT_EQ("", extr);
@@ -30,7 +30,7 @@ TEST(extract, recompression) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
@@ -42,7 +42,7 @@ TEST(extract, recompression) {
 }
 
 TEST(extract, short_block) {
-    text_t text = {2, 2, 2};
+    text_t text = {'a', 'a', 'a'};
     std::string exp_string;
     exp_string.resize(text.size());
     for (size_t i = 0; i < text.size(); ++i) {
@@ -51,8 +51,8 @@ TEST(extract, short_block) {
 
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
-    term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    term_t alphabet_size = 255;
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
@@ -74,7 +74,7 @@ TEST(extract, one_block) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
@@ -96,7 +96,7 @@ TEST(extract, two_blocks) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
@@ -118,7 +118,7 @@ TEST(extract, three_blocks) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
@@ -140,7 +140,7 @@ TEST(extract, four_blocks) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 5;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {
@@ -162,7 +162,7 @@ TEST(extract, pairs) {
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     term_t alphabet_size = 3;
-    recomp.recomp(text, rlslp, alphabet_size);
+    recomp.recomp(text, rlslp, alphabet_size, 4);
 
     for (size_t i = 0; i < exp_string.size(); ++i) {
         for (size_t len = 0; len < exp_string.size(); ++len) {

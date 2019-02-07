@@ -150,11 +150,13 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
             for (size_t i = 0; i < text.size() - 1; ++i) {
                 if (begin == 0) {
 //                    DLOG(INFO) << "begin at " << i << " for thread " << thread_id;
-                    begin = i;
+                    begin = false;
                     if (i == 0) {
-                        begin = 1;
+                        add = true;
+                    } else {
+                        add = text[i - 1] != text[i];
                     }
-                    add = !(begin > 1 && text[begin - 1] == text[begin]);
+//                    add = !(begin > 1 && text[begin - 1] == text[begin]);
                 }
                 while (i < text.size() - 1 && text[i] == text[i + 1]) {
                     block_len++;

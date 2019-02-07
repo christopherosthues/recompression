@@ -142,18 +142,20 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
             }
             std::vector<position_t> t_positions;
             std::unordered_map<block_t, variable_t, pair_hash> t_blocks;
-            size_t begin = 0;
+            bool begin = true;
             bool add = false;
 
 #pragma omp for schedule(static) nowait reduction(+:block_count) reduction(+:substr_len)
             for (size_t i = 0; i < text.size() - 1; ++i) {
-                if (begin == 0) {
+                if (begin) {
 //                    DLOG(INFO) << "begin at " << i << " for thread " << thread_id;
-                    begin = i;
+                    begin = false;
                     if (i == 0) {
-                        begin = 1;
+                        add = true;
+                    } else {
+                        add = text[i - 1] != text[i];
                     }
-                    add = !(begin > 1 && text[begin - 1] == text[begin]);
+//                    add = !(begin > 1 && text[begin - 1] == text[begin]);
                 }
                 while (i < text.size() - 1 && text[i] == text[i + 1]) {
                     block_len++;

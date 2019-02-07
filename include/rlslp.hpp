@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-//#include <dynamic.hpp>
-
 #include "defs.hpp"
 
 namespace recomp {
@@ -103,7 +101,6 @@ struct rlslp {
 
  public:
     typedef std::vector<bool> block_t;
-//    typedef dyn::suc_bv block_t;
 
     /**
      * @brief A structure to represent a non-terminal.
@@ -213,16 +210,8 @@ struct rlslp {
     }
 
     bool operator==(const rlslp& rlslp) const {
-//        bool bl = true;
-//        for (std::uint64_t i = 0; i < blocks.size(); ++i) {
-//            if (blocks[i] != rlslp.blocks[i]) {
-//                bl = false;
-//                break;
-//            }
-//        }
         return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals &&
                is_empty == rlslp.is_empty && blocks == rlslp.blocks;
-//               bl;
     }
 
     void reserve(size_t size) {
@@ -232,10 +221,6 @@ struct rlslp {
 
     void resize(size_t size, bool block = false) {
         non_terminals.resize(size);
-//        auto diff = size - blocks.size();
-//        for (size_t i = 0; i < diff; ++i) {
-//            blocks.push_back(block);
-//        }
         blocks.resize(size, block);
     }
 
