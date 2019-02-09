@@ -3,11 +3,14 @@
 #include <iostream>
 #include <vector>
 
-#include <sdsl/construct_sa.hpp>
+#include <sdsl/suffix_arrays.hpp>
 #include <sdsl/lcp_support_sada.hpp>
 #include <sdsl/rmq_support.hpp>
-#include <sdsl/csa_sada.hpp>
-#include <sdsl/csa_wt.hpp>
+//#include <sdsl/construct_sa.hpp>
+//#include <sdsl/lcp_support_sada.hpp>
+//#include <sdsl/rmq_support.hpp>
+//#include <sdsl/csa_sada.hpp>
+//#include <sdsl/csa_wt.hpp>
 
 #include "defs.hpp"
 #include "lce_query.hpp"
@@ -28,11 +31,8 @@ int main(int argc, char *argv[]) {
     std::vector<std::string> algos;
     recomp::util::split(argv[3], " ", algos);
 
-    typedef recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t>::text_t text_t;
-
     size_t repeats = (size_t)recomp::util::str_to_int(argv[4]);
 
-    text_t text;
     auto i = (size_t)recomp::util::str_to_int(argv[5]);
     auto j = (size_t)recomp::util::str_to_int(argv[6]);
 
@@ -55,8 +55,11 @@ int main(int argc, char *argv[]) {
 
                 recomp::util::replace_all(dataset, "_", "\\_");
 
-                recomp::util::read_file(file_name, text);
                 if (algo == "recomp") {
+                    typedef recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t>::text_t text_t;
+                    text_t text;
+                    recomp::util::read_file(file_name, text);
+
                     recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
                     recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t> recompression;
                     recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
@@ -70,13 +73,17 @@ int main(int argc, char *argv[]) {
                     std::cout << "RESULT algo=recompression lce=" << lce << " i=" << i << " j=" << j << " time="
                               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
                 } else if (algo == "naive") {
-                    size_t sum_lce = 0;
-                    size_t max_i = 0;
-                    size_t max_j = 0;
-                    size_t max_lce = 0;
-                    size_t sum = 0;
-                    for (size_t i = 0; i < text.size(); ++i) {
-                        for (size_t j = i + 1; j < text.size(); ++j) {
+                    typedef recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t>::text_t text_t;
+                    text_t text;
+                    recomp::util::read_file(file_name, text);
+
+//                    size_t sum_lce = 0;
+//                    size_t max_i = 0;
+//                    size_t max_j = 0;
+//                    size_t max_lce = 0;
+//                    size_t sum = 0;
+//                    for (size_t i = 0; i < text.size(); ++i) {
+//                        for (size_t j = i + 1; j < text.size(); ++j) {
                             const auto startTime = recomp::timer::now();
                             size_t lce = recomp::lce_query::lce_query_naive(text, i, j);
                             const auto endTime = recomp::timer::now();
@@ -84,25 +91,28 @@ int main(int argc, char *argv[]) {
                             std::cout << "RESULT algo=naive lce=" << lce << " i=" << i << " j=" << j << " time="
                                       << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
                                       << std::endl;
-                            sum_lce += lce;
-                            sum++;
-                            if (max_lce < lce) {
-                                max_lce = lce;
-                                max_i = i;
-                                max_j = j;
-                            }
-                        }
-                    }
-                    std::cout << "RESULT algo=naive_lce max_lce=" << max_lce << " max_i=" << max_i << " max_j="
-                              << max_j << " lces=" << sum_lce << " sum=" << sum << std::endl;
+//                            sum_lce += lce;
+//                            sum++;
+//                            if (max_lce < lce) {
+//                                max_lce = lce;
+//                                max_i = i;
+//                                max_j = j;
+//                            }
+//                        }
+//                    }
+//                    std::cout << "RESULT algo=naive_lce max_lce=" << max_lce << " max_i=" << max_i << " max_j="
+//                              << max_j << " lces=" << sum_lce << " sum=" << sum << std::endl;
                 } else if (algo == "rmq") {
                     // TODO(Chris): RMQ on lcp array
                     // compute first A, then H, then ISA and then RMQ data structure on H
                     // LCE(i,j) = RMQ_H(ISA[i], ISA[j])
-//                    sdsl::_construct_sa_IS()
-                    sdsl::cache_config config;
-//                    config.
-                    sdsl::construct_sa<8>(config);
+//                    sdsl::csa_wt<> csa;
+                    sdsl::csa_sada<> csa;
+                    sdsl::construct(csa, file_name, 1);
+//                    sdsl::lcp
+//                    sdsl::construct()
+                    sdsl::rmq_succinct_sada<> rmq;
+                    rmq = sdsl::rmq_succinct_sada();
                     const auto startTime = recomp::timer::now();
                     auto lce = 0;
                     const auto endTime = recomp::timer::now();

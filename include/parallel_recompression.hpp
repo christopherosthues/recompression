@@ -427,6 +427,9 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
 
         if (rl_count > lr_count) {
+#ifdef BENCH
+            const auto startTimeSwap = recomp::timer::now();
+#endif
 #pragma omp parallel num_threads(cores)
             {
 #pragma omp single
@@ -440,6 +443,12 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 }
 #pragma omp barrier
             }
+#ifdef BENCH
+            const auto endTimeSwap = recomp::timer::now();
+            const auto timeSpanSwap = endTimeSwap - startTimeSwap;
+            std::cout << " swap="
+                      << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSwap).count();
+#endif
         }
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
@@ -467,7 +476,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         }
 
 #ifdef BENCH
-        std::cout << " alphabet=" << partition.size();
+        const auto endTimeCreate = recomp::timer::now();
+        const auto timeSpanCreate = endTimeCreate - startTime;
+        std::cout << " alphabet=" << partition.size() << " create_partition="
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCreate).count();
 #endif
         adj_list_t adj_list(text.size() - 1);
         compute_adj_list(text, adj_list);
@@ -536,6 +548,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp critical
             pairs.insert(t_pairs.begin(), t_pairs.end());
+            // TODO(Chris): maybe use std::vector, sort it and than make pairs unique, possibly better scaling
         }
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();

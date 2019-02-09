@@ -4,6 +4,7 @@
 #include <fstream>
 #include <ios>
 #include <vector>
+#include <iostream>
 
 class BitIStream {
     std::ifstream stream;
@@ -14,7 +15,7 @@ class BitIStream {
     bool end = false;
     std::uint8_t end_bits = 0;
 
-    std::uint8_t cursor = 0;
+    std::int8_t cursor = 0;
 
     inline void read_buffer() {
         current = buffer;
@@ -53,7 +54,9 @@ class BitIStream {
     }
 
     inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
+        std::cout << "create bis" << std::endl;
         stream = std::ifstream(file_name, mode);
+        std::cout << "bis created" << std::endl;
     }
 
     inline BitIStream(std::ifstream&& stream) : stream(std::move(stream)) {
@@ -131,6 +134,7 @@ class BitIStream {
      */
     template<typename value_t>
     inline value_t read_int(size_t bits = sizeof(value_t) * CHAR_BIT) {
+        std::cout << "Bits: " << bits << std::endl;
         value_t value = 0;
         for (size_t i = 0; i < bits; ++i) {
             value = (value << value_t(1)) | read_bit();
@@ -141,7 +145,9 @@ class BitIStream {
     }
 
     inline std::vector<bool> read_bitvector_compressed() {
+        std::cout << "Read" << std::endl;
         auto size = read_int<size_t>();
+        std::cout << "Read bv size: " << size << std::endl;
         std::vector<bool> bv(size);
         if (size > 0) {
             for (size_t i = 0; i < bv.size(); ++i) {

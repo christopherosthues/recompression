@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     }
 
     size_t cores = (size_t)recomp::util::str_to_int(argv[4]);
-    std::cout << "Using " << cores << " threads" << std::endl;
+    std::cout << "Using " << cores << " cores" << std::endl;
     if (cores <= 0) {
         return -1;
     }
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     }
 
     size_t begin = (size_t)recomp::util::str_to_int(argv[6]);
-    std::cout << "Using " << begin << " steps" << std::endl;
+    std::cout << "Begin with " << begin << std::endl;
     if (begin <= 0) {
         return -1;
     }
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     recomp::util::split(argv[3], " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
-        for (size_t step = begin; step <= cores; step+=steps) {
+        for (size_t step = 1; step <= cores;) {
             for (size_t repeat = 0; repeat < repeats; ++repeat) {
                 for (size_t i = 0; i < algos.size(); ++i) {
                     std::cout << "Iteration: " << repeat << std::endl;
@@ -124,6 +124,15 @@ int main(int argc, char *argv[]) {
                         std::cout << "Failure" << std::endl;
                     }
                 }
+            }
+            if (step == 1) {
+                if (begin != 1) {
+                    step = begin;
+                } else {
+                    step = 2;
+                }
+            } else {
+                step += steps;
             }
         }
     }

@@ -16,7 +16,7 @@ class BitOStream {
 
     bool dirty = false;
     std::uint8_t buffer = 0;
-    std::uint8_t cursor = 7;
+    std::int8_t cursor = 7;
 
     /**
      * @brief Writes the current buffer to the output stream.
@@ -30,6 +30,7 @@ class BitOStream {
 
  public:
     inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
+        std::cout << "file: " << file_name << std::endl;
         stream = std::ofstream(file_name, mode);
     }
 
@@ -43,16 +44,17 @@ class BitOStream {
     inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {}
 
     ~BitOStream() {
-        char last = static_cast<char>(7 - cursor);
-        if (cursor >= 2) {
-            buffer |= last;
-        } else {
-            write_buffer();
-            buffer = static_cast<std::uint8_t>(last);
-        }
-
-        dirty = true;
-        write_buffer();
+//        std::cout << "delete" << std::endl;
+//        char last = static_cast<char>(7 - cursor);
+//        if (cursor >= 2) {
+//            buffer |= last;
+//        } else {
+//            write_buffer();
+//            buffer = static_cast<std::uint8_t>(last);
+//        }
+//
+//        dirty = true;
+//        write_buffer();
     }
 
     /**
@@ -69,6 +71,17 @@ class BitOStream {
     }
 
     inline void close() {
+        std::cout << "close" << std::endl;
+        char last = static_cast<char>(7 - cursor);
+        if (cursor >= 2) {
+            buffer |= last;
+        } else {
+            write_buffer();
+            buffer = static_cast<std::uint8_t>(last);
+        }
+
+        dirty = true;
+        write_buffer();
         stream.close();
     }
 
@@ -114,14 +127,18 @@ class BitOStream {
      */
     template<typename value_t>
     inline void write_int(value_t value, size_t bits = sizeof(value_t) * CHAR_BIT) {
-        for (size_t i = bits - 1; i >= 0; --i) {
+        std::cout << "Bits: " << bits << std::endl;
+        for (int i = bits - 1; i >= 0; --i) {
+//            std::cout << "writing bit: " << i << std::endl;
             write_bit((value & value_t(value_t(1) << i)) != value_t(0));
         }
     }
 
     inline void write_bitvector_compressed(std::vector<bool>& bv) {
+        std::cout << "writing bv size: " << bv.size() << std::endl;
         write_int<size_t>(bv.size());
         if (!bv.empty()) {
+            std::cout << "not empty" << std::endl;
             auto val = bv[0];
             std::uint32_t len = 0;
             for (size_t i = 0; i < bv.size(); ++i) {
@@ -137,6 +154,7 @@ class BitOStream {
                     }
                     std::uint32_t check_len = len | (std::uint32_t(3) << 30);
                     if (check_len) {
+                        std::cout << "too long" << std::endl;
                         // TODO(Chris): verkleinern
                     } else {
                         value |= len;
@@ -148,6 +166,10 @@ class BitOStream {
                         }
                     }
                 }
+                if (i < bv.size()) {
+                    val = bv[i];
+                }
+                len = 0;
                 write_int<std::uint32_t>(value);
             }
         }
