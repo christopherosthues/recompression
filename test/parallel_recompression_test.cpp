@@ -220,19 +220,22 @@ TEST(parallel_partition, repreated_pair) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{1, 2};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
-    exp_partition[1] = true;
-    exp_partition[2] = false;
+    exp_partition[1] = false;
+    exp_partition[2] = true;
+    bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 TEST(parallel_partition, repreated_pair_same_occ) {
@@ -240,19 +243,22 @@ TEST(parallel_partition, repreated_pair_same_occ) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{1, 2};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
     exp_partition[2] = true;
+    bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 TEST(parallel_partition, 212181623541741623541321) {
@@ -260,25 +266,28 @@ TEST(parallel_partition, 212181623541741623541321) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{1, 2, 3, 4, 5, 6, 7, 8};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
-    exp_partition[1] = true;
-    exp_partition[2] = false;
-    exp_partition[3] = true;
-    exp_partition[4] = false;
-    exp_partition[5] = true;
-    exp_partition[6] = true;
-    exp_partition[7] = true;
-    exp_partition[8] = false;
+    exp_partition[1] = false;
+    exp_partition[2] = true;
+    exp_partition[3] = false;
+    exp_partition[4] = true;
+    exp_partition[5] = false;
+    exp_partition[6] = false;
+    exp_partition[7] = false;
+    exp_partition[8] = true;
+    bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 TEST(parallel_partition, 131261051171161051139) {
@@ -286,13 +295,14 @@ TEST(parallel_partition, 131261051171161051139) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{3, 5, 6, 7, 9, 10, 11, 12, 13};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -304,8 +314,10 @@ TEST(parallel_partition, 131261051171161051139) {
     exp_partition[11] = true;
     exp_partition[12] = true;
     exp_partition[13] = false;
+    bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 TEST(parallel_partition, 18161517161514) {
@@ -313,22 +325,25 @@ TEST(parallel_partition, 18161517161514) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{14, 15, 16, 17, 18};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
-    exp_partition[14] = true;
-    exp_partition[15] = false;
-    exp_partition[16] = true;
-    exp_partition[17] = true;
-    exp_partition[18] = false;
+    exp_partition[14] = false;
+    exp_partition[15] = true;
+    exp_partition[16] = false;
+    exp_partition[17] = false;
+    exp_partition[18] = true;
+    bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 TEST(parallel_partition, 21201619) {
@@ -336,21 +351,24 @@ TEST(parallel_partition, 21201619) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{16, 19, 20, 21};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[16] = false;
     exp_partition[19] = true;
     exp_partition[20] = true;
     exp_partition[21] = false;
+    bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 TEST(parallel_partition, 2322) {
@@ -358,19 +376,22 @@ TEST(parallel_partition, 2322) {
     adj_list_t adj_list(text.size() - 1);
     alphabet_t alphabet{22, 23};
     partition_t partition;
+    bool part_l = false;
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+    recomp.compute_partition(adj_list, partition, part_l);
 
     partition_t exp_partition;
-    exp_partition[22] = true;
-    exp_partition[23] = false;
+    exp_partition[22] = false;
+    exp_partition[23] = true;
+    bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
+    ASSERT_EQ(exp_part_l, part_l);
 }
 
 

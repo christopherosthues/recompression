@@ -6,5 +6,7 @@ if (RECOMPRESSION_ENABLE_BENCHMARKS)
 
 #    build_bench("radix_sort")
 #    build_bench("lce_query")
+
+    build_bench("statistics")
 endif (RECOMPRESSION_ENABLE_BENCHMARKS)
 

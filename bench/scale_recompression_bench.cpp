@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     }
 
     size_t cores = (size_t)recomp::util::str_to_int(argv[4]);
-    std::cout << "Using " << cores << " cores" << std::endl;
+    std::cout << "Using max " << cores << " cores" << std::endl;
     if (cores <= 0) {
         return -1;
     }
@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "Iteration: " << repeat << std::endl;
                     std::string algo = algos[i];
                     std::cout << "Using algo " << algo << std::endl;
+                    std::cout << "Using " << step << " cores" << std::endl;
 
                     std::string file_name(argv[1]);
                     file_name += files[j];

@@ -359,7 +359,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param adj_list[in] The adjacency list of the text
      * @param partition[out] The partition
      */
-    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition) {
+    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition, bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -426,30 +426,31 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
 #endif
 
-        if (rl_count > lr_count) {
-#ifdef BENCH
-            const auto startTimeSwap = recomp::timer::now();
-#endif
-#pragma omp parallel num_threads(cores)
-            {
-#pragma omp single
-                {
-                    for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
-#pragma omp task
-                        {
-                            (*iter).second = !(*iter).second;
-                        }
-                    }
-                }
-#pragma omp barrier
-            }
-#ifdef BENCH
-            const auto endTimeSwap = recomp::timer::now();
-            const auto timeSpanSwap = endTimeSwap - startTimeSwap;
-            std::cout << " swap="
-                      << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSwap).count();
-#endif
-        }
+        part_l = rl_count > lr_count;
+//        if (rl_count > lr_count) {
+//#ifdef BENCH
+//            const auto startTimeSwap = recomp::timer::now();
+//#endif
+//#pragma omp parallel num_threads(cores)
+//            {
+//#pragma omp single
+//                {
+//                    for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
+//#pragma omp task
+//                        {
+//                            (*iter).second = !(*iter).second;
+//                        }
+//                    }
+//                }
+//#pragma omp barrier
+//            }
+//#ifdef BENCH
+//            const auto endTimeSwap = recomp::timer::now();
+//            const auto timeSpanSwap = endTimeSwap - startTimeSwap;
+//            std::cout << " swap="
+//                      << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSwap).count();
+//#endif
+//        }
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
@@ -497,8 +498,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
 
         size_t pair_count = 0;
-
-        compute_partition(adj_list, partition);
+        bool part_l = false;
+        compute_partition(adj_list, partition, part_l);
 //        compute_partition_full_parallel<variable_t, adj_list_t, alphabet_t, partition_t>(adj_list, partition, cores);
 
 #ifdef BENCH
@@ -524,7 +525,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp for schedule(static) nowait reduction(+:pair_count)
             for (size_t i = 0; i < text.size() - 1; ++i) {
-                if (!partition[text[i]] && partition[text[i + 1]]) {
+                if (part_l == partition[text[i]] && part_l != partition[text[i + 1]]) {
+//                if (!partition[text[i]] && partition[text[i + 1]]) {
 //                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
 //                               << thread_id;
                     auto pair = std::make_pair(text[i], text[i + 1]);
