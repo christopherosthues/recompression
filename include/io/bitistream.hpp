@@ -15,11 +15,11 @@ class BitIStream {
     bool end = false;
     std::uint8_t end_bits = 0;
 
-    std::int8_t cursor = 0;
+    std::uint8_t cursor = 0;
 
     inline void read_buffer() {
         current = buffer;
-        current = 7;
+        cursor = static_cast<std::uint8_t>(7);
 
         char c;
         if (stream.get(c)) {
@@ -50,12 +50,32 @@ class BitIStream {
         buffer = istream.buffer;
         end = istream.end;
         end_bits = istream.end_bits;
-        current = istream.cursor;
+        cursor = istream.cursor;
+        char c;
+        if (stream.get(c)) {
+            end = false;
+            buffer = static_cast<std::uint8_t>(c);
+
+            read_buffer();
+        } else {
+            end = true;
+            end_bits = 0;
+        }
     }
 
     inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
         std::cout << "create bis" << std::endl;
         stream = std::ifstream(file_name, mode);
+        char c;
+        if (stream.get(c)) {
+            end = false;
+            buffer = static_cast<std::uint8_t>(c);
+
+            read_buffer();
+        } else {
+            end = true;
+            end_bits = 0;
+        }
         std::cout << "bis created" << std::endl;
     }
 
@@ -137,7 +157,10 @@ class BitIStream {
         std::cout << "Bits: " << bits << std::endl;
         value_t value = 0;
         for (size_t i = 0; i < bits; ++i) {
-            value = (value << value_t(1)) | read_bit();
+            auto val = read_bit();
+//            std::cout << "Read: " << std::to_string(val) << std::endl;
+//            std::cout << "Read bit: " << (bits - 1 - i) << ", val: " << ((value << value_t(1)) | val) << std::endl;
+            value = (value << value_t(1)) | val;
 //            value <<= 1;
 //            value |= read_bit();
         }

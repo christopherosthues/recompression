@@ -23,6 +23,7 @@ class BitOStream {
      */
     inline void write_buffer() {
         if (dirty) {
+//            std::cout << "Write buffer: " << ((unsigned int)buffer) << std::endl;
             stream.put(static_cast<char>(buffer));
             reset();
         }
@@ -32,6 +33,7 @@ class BitOStream {
     inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
         std::cout << "file: " << file_name << std::endl;
         stream = std::ofstream(file_name, mode);
+        reset();
     }
 
     inline BitOStream(BitOStream& ostream) {
@@ -39,9 +41,12 @@ class BitOStream {
         dirty = ostream.dirty;
         buffer = ostream.buffer;
         cursor = ostream.cursor;
+        reset();
     }
 
-    inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {}
+    inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {
+        reset();
+    }
 
     ~BitOStream() {
 //        std::cout << "delete" << std::endl;
@@ -130,7 +135,8 @@ class BitOStream {
         std::cout << "Bits: " << bits << std::endl;
         for (int i = bits - 1; i >= 0; --i) {
 //            std::cout << "writing bit: " << i << std::endl;
-            write_bit((value & value_t(value_t(1) << i)) != value_t(0));
+//            std::cout << "Writing bit: " << i << ", val: " << ((value & (value_t(value_t(1) << i))) != value_t(0)) << std::endl;
+            write_bit((value & (value_t(value_t(1) << i))) != value_t(0));
         }
     }
 
@@ -138,21 +144,23 @@ class BitOStream {
         std::cout << "writing bv size: " << bv.size() << std::endl;
         write_int<size_t>(bv.size());
         if (!bv.empty()) {
-            std::cout << "not empty" << std::endl;
-            auto val = bv[0];
+//            std::cout << "not empty" << std::endl;
+            bool val = bv[0];
             std::uint32_t len = 0;
             for (size_t i = 0; i < bv.size(); ++i) {
+//                std::cout << "val: " << ((int) val) << std::endl;
                 while (i < bv.size() && bv[i] == val) {
                     len++;
                     i++;
                 }
                 std::uint32_t value = 0;
+//                std::cout << "len: " << len << std::endl;
                 if (len > 31) {
                     value |= (std::uint32_t(1) << 31);
                     if (val) {
                         value |= (std::uint32_t(1) << 30);
                     }
-                    std::uint32_t check_len = len | (std::uint32_t(3) << 30);
+                    std::uint32_t check_len = len & (std::uint32_t(3) << 30);
                     if (check_len) {
                         std::cout << "too long" << std::endl;
                         // TODO(Chris): verkleinern
@@ -160,8 +168,11 @@ class BitOStream {
                         value |= len;
                     }
                 } else {
+//                    std::cout << "i: " << i << std::endl;
+                    i -= len;
                     for (size_t j = 0; j < 31 && i < bv.size(); ++j, ++i) {
-                        if (bv[i - len]) {
+                        if (bv[i]) {
+//                            std::cout << "Putting: " << std::uint32_t(1) << " to " << (30 - j) << std::endl;
                             value |= (std::uint32_t(1) << (30 - j));
                         }
                     }

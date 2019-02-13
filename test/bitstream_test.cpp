@@ -23,9 +23,83 @@ TEST(bitstream, empty) {
     remove(file_name.c_str());
 }
 
-TEST(bitstream, bitvector) {
+TEST(bitstream, bitvector110) {
     std::string file_name = "bv.txt";
     std::vector<bool> bv = {true, true, false};
+
+    BitOStream bos{file_name};
+    bos.write_bitvector_compressed(bv);
+    bos.close();
+
+    BitIStream bis(file_name);
+    std::vector<bool> bv_in = bis.read_bitvector_compressed();
+    bis.close();
+
+    ASSERT_EQ(bv, bv_in);
+
+    remove(file_name.c_str());
+}
+
+TEST(bitstream, bitvector110100001) {
+    std::string file_name = "bv.txt";
+    std::vector<bool> bv = {true, true, false, true, false, false, false, false, true};
+
+    BitOStream bos{file_name};
+    bos.write_bitvector_compressed(bv);
+    bos.close();
+
+    BitIStream bis(file_name);
+    std::vector<bool> bv_in = bis.read_bitvector_compressed();
+    bis.close();
+
+    ASSERT_EQ(bv, bv_in);
+
+    remove(file_name.c_str());
+}
+
+TEST(bitstream, bitvector61_1) {
+    std::string file_name = "bv.txt";
+    std::vector<bool> bv(61, true);
+
+    BitOStream bos{file_name};
+    bos.write_bitvector_compressed(bv);
+    bos.close();
+
+    BitIStream bis(file_name);
+    std::vector<bool> bv_in = bis.read_bitvector_compressed();
+    bis.close();
+
+    ASSERT_EQ(bv, bv_in);
+
+    remove(file_name.c_str());
+}
+
+TEST(bitstream, bitvector100_1) {
+    std::string file_name = "bv.txt";
+    std::vector<bool> bv(100, true);
+
+    BitOStream bos{file_name};
+    bos.write_bitvector_compressed(bv);
+    bos.close();
+
+    BitIStream bis(file_name);
+    std::vector<bool> bv_in = bis.read_bitvector_compressed();
+    bis.close();
+
+    ASSERT_EQ(bv, bv_in);
+
+    remove(file_name.c_str());
+}
+
+TEST(bitstream, bitvector100_10) {
+    std::string file_name = "bv.txt";
+    std::vector<bool> bv(100, true);
+    for (size_t i = 0; i < 67; ++i) {
+        bv[i] = true;
+    }
+    for (size_t i = 67; i < bv.size(); ++i) {
+        bv[i] = false;
+    }
 
     std::cout << "Write bv" << std::endl;
     BitOStream bos{file_name};

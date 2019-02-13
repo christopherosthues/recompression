@@ -13,5 +13,5 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("extract")
     build_test("lce_query")
 
-    #build_test("bitstream")
+    build_test("bitstream")
 endif (RECOMPRESSION_ENABLE_TESTS)
