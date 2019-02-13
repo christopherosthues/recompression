@@ -15,6 +15,7 @@ TEST(parallel_order_gr_bcomp, no_block) {
     text_t text = {2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -32,6 +33,7 @@ TEST(parallel_order_gr_bcomp, 21214441332311413334133231141321) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -54,6 +56,7 @@ TEST(parallel_order_gr_bcomp, 222222222222222222222) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -73,6 +76,7 @@ TEST(parallel_order_gr_bcomp, 22222222211111112222) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -94,6 +98,7 @@ TEST(parallel_order_gr_bcomp, 2222222221111111222200) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     recomp.bcomp(text, rlslp);
@@ -118,6 +123,7 @@ TEST(parallel_order_gr_adj_list, 212181623541741623541321) {
     adj_list_t adj_list(text.size() - 1);
     size_t begin = 0;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
@@ -185,6 +191,7 @@ TEST(parallel_order_gr_adj_list, 131261051171161051139) {
     adj_list_t adj_list(text.size() - 1);
     size_t begin = 0;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
@@ -232,6 +239,7 @@ TEST(parallel_order_gr_adj_list, 18161517161514) {
     adj_list_t adj_list(text.size() - 1);
     size_t begin = 0;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
@@ -265,6 +273,7 @@ TEST(parallel_order_gr_adj_list, 21201619) {
     adj_list_t adj_list(text.size() - 1);
     size_t begin = 0;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
@@ -292,6 +301,7 @@ TEST(parallel_order_gr_adj_list, 2322) {
     adj_list_t adj_list(text.size() - 1);
     size_t begin = 0;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
@@ -314,6 +324,7 @@ TEST(parallel_order_gr_partition, repreated_pair) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -338,6 +349,7 @@ TEST(parallel_order_gr_partition, repreated_pair_same_occ) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -362,6 +374,7 @@ TEST(parallel_order_gr_partition, 212181623541741623541321) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -392,6 +405,7 @@ TEST(parallel_order_gr_partition, 131261051171161051139) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -423,6 +437,7 @@ TEST(parallel_order_gr_partition, 18161517161514) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -450,6 +465,7 @@ TEST(parallel_order_gr_partition, 21201619) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -476,6 +492,7 @@ TEST(parallel_order_gr_partition, 2322) {
     size_t begin = 0;
     bool part_l = false;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
     recomp.compute_partition(adj_list, partition, begin, part_l);
@@ -494,6 +511,7 @@ TEST(parallel_order_gr_pcomp, repeated_pair) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 3;
     recomp.pcomp(text, rlslp);
 
@@ -512,6 +530,7 @@ TEST(parallel_order_gr_pcomp, repeated_pair_same_occ) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 3;
     recomp.pcomp(text, rlslp);
 
@@ -530,6 +549,7 @@ TEST(parallel_order_gr_pcomp, 212181623541741623541321) {
     text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -560,6 +580,7 @@ TEST(parallel_order_gr_pcomp, 131161251071061251039) {
     text_t text{13, 11, 6, 12, 5, 10, 7, 10, 6, 12, 5, 10, 3, 9};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -602,6 +623,7 @@ TEST(parallel_order_gr_pcomp, 14181617181615) {
     text_t text{14, 18, 16, 17, 18, 16, 15};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -650,6 +672,7 @@ TEST(parallel_order_gr_pcomp, 1419171915) {
     text_t text{14, 19, 17, 19, 15};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -701,6 +724,7 @@ TEST(parallel_order_gr_pcomp, 202115) {
     text_t text{20, 21, 15};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -756,6 +780,7 @@ TEST(parallel_order_gr_pcomp, 2215) {
     text_t text{22, 15};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 2, 2);
@@ -814,6 +839,7 @@ TEST(parallel_order_gr_recomp, empty) {
     text_t text = {};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -831,6 +857,7 @@ TEST(parallel_order_gr_recomp, terminal) {
     text_t text = {112};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -849,6 +876,8 @@ TEST(parallel_order_gr_recomp, short_block2) {
     text_t text = {112, 112};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
+    recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -869,6 +898,7 @@ TEST(parallel_order_gr_recomp, short_block3) {
     text_t text = {112, 112, 112};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -889,6 +919,7 @@ TEST(parallel_order_gr_recomp, recompression) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -928,6 +959,7 @@ TEST(parallel_order_gr_recomp, one_block) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -947,6 +979,7 @@ TEST(parallel_order_gr_recomp, two_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -968,6 +1001,7 @@ TEST(parallel_order_gr_recomp, three_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -991,6 +1025,7 @@ TEST(parallel_order_gr_recomp, four_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -1016,6 +1051,7 @@ TEST(parallel_order_gr_recomp, repeated_pair) {
     text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -1036,6 +1072,7 @@ TEST(parallel_order_gr_recomp, repeated_pair_same_occ) {
     text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     rlslp<var_t, term_t> rlslp;
     parallel::recompression_order_gr<var_t, term_t> recomp;
+    recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
