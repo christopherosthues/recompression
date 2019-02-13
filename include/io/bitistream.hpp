@@ -64,7 +64,6 @@ class BitIStream {
     }
 
     inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
-        std::cout << "create bis" << std::endl;
         stream = std::ifstream(file_name, mode);
         char c;
         if (stream.get(c)) {
@@ -76,7 +75,6 @@ class BitIStream {
             end = true;
             end_bits = 0;
         }
-        std::cout << "bis created" << std::endl;
     }
 
     inline BitIStream(std::ifstream&& stream) : stream(std::move(stream)) {
@@ -154,7 +152,7 @@ class BitIStream {
      */
     template<typename value_t>
     inline value_t read_int(size_t bits = sizeof(value_t) * CHAR_BIT) {
-        std::cout << "Bits: " << bits << std::endl;
+//        std::cout << "Bits: " << bits << std::endl;
         value_t value = 0;
         for (size_t i = 0; i < bits; ++i) {
             auto val = read_bit();
@@ -168,22 +166,26 @@ class BitIStream {
     }
 
     inline std::vector<bool> read_bitvector_compressed() {
-        std::cout << "Read" << std::endl;
+//        std::cout << "Read" << std::endl;
         auto size = read_int<size_t>();
-        std::cout << "Read bv size: " << size << std::endl;
+//        std::cout << "Read bv size: " << size << std::endl;
         std::vector<bool> bv(size);
+//        std::cout << "BV size: " << bv.size() << std::endl;
         if (size > 0) {
-            for (size_t i = 0; i < bv.size(); ++i) {
+            for (size_t i = 0; i < bv.size();) {
                 auto value = read_int<std::uint32_t>();
                 auto type = (value >> 31) & std::uint32_t(1);
+//                std::cout << "Type: " << type << std::endl;
                 if (type) {
                     bool v = (bool)((value >> 30) & std::uint32_t(1));
                     std::uint32_t len = ((value << 2) >> 2);
-                    for (size_t j = 0; j < len; ++j, ++i) {
+//                    std::cout << "Read len: " << len << ", value: " << ((int)v) << std::endl;
+                    for (size_t j = 0; j < len && i < bv.size(); ++j, ++i) {
                         bv[i] = v;
                     }
                 } else {
-                    for (size_t j = 0; j < 31; ++j, ++i) {
+//                    std::cout << "Read uncompressed" << std::endl;
+                    for (size_t j = 0; j < 31 && i < bv.size(); ++j, ++i) {
                         bool v = (bool)((value >> (30 - j)) & std::uint32_t(1));
                         bv[i] = v;
                     }

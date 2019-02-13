@@ -31,7 +31,6 @@ class BitOStream {
 
  public:
     inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
-        std::cout << "file: " << file_name << std::endl;
         stream = std::ofstream(file_name, mode);
         reset();
     }
@@ -76,7 +75,6 @@ class BitOStream {
     }
 
     inline void close() {
-        std::cout << "close" << std::endl;
         char last = static_cast<char>(7 - cursor);
         if (cursor >= 2) {
             buffer |= last;
@@ -132,7 +130,7 @@ class BitOStream {
      */
     template<typename value_t>
     inline void write_int(value_t value, size_t bits = sizeof(value_t) * CHAR_BIT) {
-        std::cout << "Bits: " << bits << std::endl;
+//        std::cout << "Bits: " << bits << std::endl;
         for (int i = bits - 1; i >= 0; --i) {
 //            std::cout << "writing bit: " << i << std::endl;
 //            std::cout << "Writing bit: " << i << ", val: " << ((value & (value_t(value_t(1) << i))) != value_t(0)) << std::endl;
@@ -141,13 +139,13 @@ class BitOStream {
     }
 
     inline void write_bitvector_compressed(std::vector<bool>& bv) {
-        std::cout << "writing bv size: " << bv.size() << std::endl;
+//        std::cout << "writing bv size: " << bv.size() << std::endl;
         write_int<size_t>(bv.size());
         if (!bv.empty()) {
 //            std::cout << "not empty" << std::endl;
             bool val = bv[0];
             std::uint32_t len = 0;
-            for (size_t i = 0; i < bv.size(); ++i) {
+            for (size_t i = 0; i < bv.size();) {
 //                std::cout << "val: " << ((int) val) << std::endl;
                 while (i < bv.size() && bv[i] == val) {
                     len++;
@@ -162,8 +160,19 @@ class BitOStream {
                     }
                     std::uint32_t check_len = len & (std::uint32_t(3) << 30);
                     if (check_len) {
-                        std::cout << "too long" << std::endl;
-                        // TODO(Chris): verkleinern
+                        i -= len;
+                        if (len & (std::uint32_t(1) << 31)) {
+//                            std::cout << "Shift by 2" << std::endl;
+                            len = len >> 2;
+                        } else {
+//                            std::cout << "Shift by 1" << std::endl;
+                            len = len >> 1;
+                        }
+//                        std::cout << "write len: " << len << std::endl;
+                        i += len;
+                        value |= len;
+                        // TODO(Chris): we already know the total length, split it here and write all but the last out,
+                        //  the last is handled by the loop itself
                     } else {
                         value |= len;
                     }
