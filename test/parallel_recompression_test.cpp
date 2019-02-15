@@ -238,7 +238,7 @@ TEST(parallel_partition, repreated_pair) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -262,7 +262,7 @@ TEST(parallel_partition, repreated_pair_same_occ) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -286,7 +286,7 @@ TEST(parallel_partition, 212181623541741623541321) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -316,7 +316,7 @@ TEST(parallel_partition, 131261051171161051139) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -347,7 +347,7 @@ TEST(parallel_partition, 18161517161514) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[14] = false;
@@ -374,7 +374,7 @@ TEST(parallel_partition, 21201619) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -400,7 +400,7 @@ TEST(parallel_partition, 2322) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
     ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[22] = false;

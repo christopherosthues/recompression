@@ -404,7 +404,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param adj_list[in] The adjacency list of the text
      * @param partition[out] The partition
      */
-    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition, bool& part_l) {
+    inline void compute_partition(const text_t& text,
+                                  const adj_list_t& adj_list,
+                                  partition_t& partition,
+                                  bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -445,25 +448,32 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         int lr_count = 0;
         int rl_count = 0;
 #pragma omp parallel for num_threads(cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
-        for (size_t i = 0; i < adj_list.size(); ++i) {
-            if (std::get<2>(adj_list[i])) {
-                if (!partition[std::get<0>(adj_list[i])] &&
-                    partition[std::get<1>(adj_list[i])]) {  // bc in text and b in right set and c in left
-                    rl_count++;
-                } else if (partition[std::get<0>(adj_list[i])] &&
-                           !partition[std::get<1>(adj_list[i])]) {  // bc in text and b in left set and c in right
-                    lr_count++;
-                }
-            } else {
-                if (!partition[std::get<0>(adj_list[i])] &&
-                    partition[std::get<1>(adj_list[i])]) {  // cb in text and c in left set and b in right
-                    lr_count++;
-                } else if (partition[std::get<0>(adj_list[i])] &&
-                           !partition[std::get<1>(adj_list[i])]) {  // cb in text and c in right set and b in left
-                    rl_count++;
-                }
+        for (size_t i = 0; i < text.size() - 1; ++i) {
+            if (!partition[text[i]] && partition[text[i + 1]]) {
+                lr_count++;
+            } else if (partition[text[i]] && !partition[text[i + 1]]) {
+                rl_count++;
             }
         }
+//        for (size_t i = 0; i < adj_list.size(); ++i) {
+//            if (std::get<2>(adj_list[i])) {
+//                if (!partition[std::get<0>(adj_list[i])] &&
+//                    partition[std::get<1>(adj_list[i])]) {  // bc in text and b in right set and c in left
+//                    rl_count++;
+//                } else if (partition[std::get<0>(adj_list[i])] &&
+//                           !partition[std::get<1>(adj_list[i])]) {  // bc in text and b in left set and c in right
+//                    lr_count++;
+//                }
+//            } else {
+//                if (!partition[std::get<0>(adj_list[i])] &&
+//                    partition[std::get<1>(adj_list[i])]) {  // cb in text and c in left set and b in right
+//                    lr_count++;
+//                } else if (partition[std::get<0>(adj_list[i])] &&
+//                           !partition[std::get<1>(adj_list[i])]) {  // cb in text and c in right set and b in left
+//                    rl_count++;
+//                }
+//            }
+//        }
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
         const auto timeSpanCount = endTimeCount - startTimeCount;
@@ -547,7 +557,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition(adj_list, partition, part_l);
+        compute_partition(text, adj_list, partition, part_l);
 //        compute_partition_full_parallel<variable_t, adj_list_t, alphabet_t, partition_t>(adj_list, partition, cores);
 
 #ifdef BENCH
