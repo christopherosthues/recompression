@@ -127,29 +127,29 @@ TEST(parallel_order_ls_adj_list, 212181623541741623541321) {
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(1, 1, 2);
     exp_adj_list.emplace_back(0, 1, 2);
-    exp_adj_list.emplace_back(1, 1, 2);
-    exp_adj_list.emplace_back(0, 1, 8);
-    exp_adj_list.emplace_back(1, 1, 8);
-    exp_adj_list.emplace_back(0, 1, 6);
-    exp_adj_list.emplace_back(1, 2, 6);
-    exp_adj_list.emplace_back(0, 2, 3);
-    exp_adj_list.emplace_back(0, 3, 5);
-    exp_adj_list.emplace_back(1, 4, 5);
-    exp_adj_list.emplace_back(1, 1, 4);
-    exp_adj_list.emplace_back(0, 1, 7);
-    exp_adj_list.emplace_back(1, 4, 7);
-    exp_adj_list.emplace_back(1, 1, 4);
-    exp_adj_list.emplace_back(0, 1, 6);
-    exp_adj_list.emplace_back(1, 2, 6);
-    exp_adj_list.emplace_back(0, 2, 3);
-    exp_adj_list.emplace_back(0, 3, 5);
-    exp_adj_list.emplace_back(1, 4, 5);
-    exp_adj_list.emplace_back(1, 1, 4);
     exp_adj_list.emplace_back(0, 1, 3);
-    exp_adj_list.emplace_back(1, 2, 3);
+    exp_adj_list.emplace_back(0, 1, 6);
+    exp_adj_list.emplace_back(0, 1, 6);
+    exp_adj_list.emplace_back(0, 1, 7);
+    exp_adj_list.emplace_back(0, 1, 8);
+    exp_adj_list.emplace_back(0, 2, 3);
+    exp_adj_list.emplace_back(0, 2, 3);
+    exp_adj_list.emplace_back(0, 3, 5);
+    exp_adj_list.emplace_back(0, 3, 5);
     exp_adj_list.emplace_back(1, 1, 2);
+    exp_adj_list.emplace_back(1, 1, 2);
+    exp_adj_list.emplace_back(1, 1, 2);
+    exp_adj_list.emplace_back(1, 1, 4);
+    exp_adj_list.emplace_back(1, 1, 4);
+    exp_adj_list.emplace_back(1, 1, 4);
+    exp_adj_list.emplace_back(1, 1, 8);
+    exp_adj_list.emplace_back(1, 2, 3);
+    exp_adj_list.emplace_back(1, 2, 6);
+    exp_adj_list.emplace_back(1, 2, 6);
+    exp_adj_list.emplace_back(1, 4, 5);
+    exp_adj_list.emplace_back(1, 4, 5);
+    exp_adj_list.emplace_back(1, 4, 7);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -163,19 +163,19 @@ TEST(parallel_order_ls_adj_list, 131261051171161051139) {
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(1, 12, 13);
-    exp_adj_list.emplace_back(1, 6, 12);
-    exp_adj_list.emplace_back(0, 6, 10);
-    exp_adj_list.emplace_back(1, 5, 10);
-    exp_adj_list.emplace_back(0, 5, 11);
-    exp_adj_list.emplace_back(1, 7, 11);
-    exp_adj_list.emplace_back(0, 7, 11);
-    exp_adj_list.emplace_back(1, 6, 11);
-    exp_adj_list.emplace_back(0, 6, 10);
-    exp_adj_list.emplace_back(1, 5, 10);
-    exp_adj_list.emplace_back(0, 5, 11);
-    exp_adj_list.emplace_back(1, 3, 11);
     exp_adj_list.emplace_back(0, 3, 9);
+    exp_adj_list.emplace_back(0, 5, 11);
+    exp_adj_list.emplace_back(0, 5, 11);
+    exp_adj_list.emplace_back(0, 6, 10);
+    exp_adj_list.emplace_back(0, 6, 10);
+    exp_adj_list.emplace_back(0, 7, 11);
+    exp_adj_list.emplace_back(1, 3, 11);
+    exp_adj_list.emplace_back(1, 5, 10);
+    exp_adj_list.emplace_back(1, 5, 10);
+    exp_adj_list.emplace_back(1, 6, 11);
+    exp_adj_list.emplace_back(1, 6, 12);
+    exp_adj_list.emplace_back(1, 7, 11);
+    exp_adj_list.emplace_back(1, 12, 13);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -189,12 +189,12 @@ TEST(parallel_order_ls_adj_list, 18161517161514) {
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(1, 16, 18);
-    exp_adj_list.emplace_back(1, 15, 16);
     exp_adj_list.emplace_back(0, 15, 17);
-    exp_adj_list.emplace_back(1, 16, 17);
-    exp_adj_list.emplace_back(1, 15, 16);
     exp_adj_list.emplace_back(1, 14, 15);
+    exp_adj_list.emplace_back(1, 15, 16);
+    exp_adj_list.emplace_back(1, 15, 16);
+    exp_adj_list.emplace_back(1, 16, 17);
+    exp_adj_list.emplace_back(1, 16, 18);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -208,9 +208,9 @@ TEST(parallel_order_ls_adj_list, 21201619) {
     recomp.compute_adj_list(text, adj_list, begin);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(1, 20, 21);
-    exp_adj_list.emplace_back(1, 16, 20);
     exp_adj_list.emplace_back(0, 16, 19);
+    exp_adj_list.emplace_back(1, 16, 20);
+    exp_adj_list.emplace_back(1, 20, 21);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -243,8 +243,8 @@ TEST(parallel_order_ls_partition, repreated_pair) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -268,8 +268,8 @@ TEST(parallel_order_ls_partition, repreated_pair_same_occ) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -293,8 +293,8 @@ TEST(parallel_order_ls_partition, 212181623541741623541321) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -324,8 +324,8 @@ TEST(parallel_order_ls_partition, 131261051171161051139) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -356,8 +356,8 @@ TEST(parallel_order_ls_partition, 18161517161514) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[14] = false;
@@ -384,8 +384,8 @@ TEST(parallel_order_ls_partition, 21201619) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -411,8 +411,8 @@ TEST(parallel_order_ls_partition, 2322) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition, begin, part_l);
+//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[22] = false;
