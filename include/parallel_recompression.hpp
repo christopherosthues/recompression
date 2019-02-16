@@ -31,7 +31,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-    typedef std::tuple<variable_t, variable_t, bool> adj_t;
+//    typedef std::tuple<variable_t, variable_t, bool> adj_t;
+    typedef size_t adj_t;
     typedef std::vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
@@ -384,17 +385,63 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp parallel for schedule(static) num_threads(cores)
         for (size_t i = 0; i < adj_list.size(); ++i) {
-            if (text[i] > text[i + 1]) {
-                adj_list[i] = std::make_tuple(text[i], text[i + 1], false);
-            } else {
-                adj_list[i] = std::make_tuple(text[i + 1], text[i], true);
-            }
+            adj_list[i] = i;
+//            if (text[i] > text[i + 1]) {
+//                adj_list[i] = std::make_tuple(text[i], text[i + 1], false);
+//            } else {
+//                adj_list[i] = std::make_tuple(text[i + 1], text[i], true);
+//            }
         }
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+#endif
+
+#ifdef BENCH
+        const auto startTimeMult = recomp::timer::now();
+#endif
+//        partitioned_radix_sort(adj_list);
+//        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), std::less<adj_t>(), cores);
+        auto sort_adj = [&](size_t i, size_t j) {
+            if (text[i] > text[i + 1]) {
+                if (text[j] > text[j + 1]) {
+                    bool less = text[i] < text[j];
+                    if (text[i] == text[j]) {
+                        less = text[i + 1] < text[j + 1];
+                    }
+                    return less;
+                } else {
+                    bool less = text[i] < text[j + 1];
+                    if (text[i] == text[j + 1]) {
+                        less = text[i + 1] < text[j];
+                    }
+                    return less;
+                }
+            } else {
+                if (text[j] > text[j + 1]) {
+                    bool less = text[i + 1] < text[j];
+                    if (text[i + 1] == text[j]) {
+                        less = text[i] < text[j + 1];
+                    }
+                    return less;
+                } else {
+                    bool less = text[i + 1] < text[j + 1];
+                    if (text[i + 1] == text[j + 1]) {
+                        less = text[i] < text[j];
+                    }
+                    return less;
+                }
+            }
+        };
+
+        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), sort_adj, cores);
+#ifdef BENCH
+        const auto endTimeMult = recomp::timer::now();
+        const auto timeSpanMult = endTimeMult - startTimeMult;
+        std::cout << " sort_adj_list="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
 #endif
     }
 
@@ -413,28 +460,74 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
         int l_count = 0;
         int r_count = 0;
-        if (adj_list.size() > 0) {
-            if (partition[std::get<0>(adj_list[0])]) {
-                r_count++;
+        variable_t val = 0;
+        if (!adj_list.empty()) {
+            if (text[adj_list[0]] > text[adj_list[0] + 1]) {
+                val = text[adj_list[0]];
+                if (!partition[text[adj_list[0]]]) {
+                    l_count++;
+                } else {
+                    r_count++;
+                }
             } else {
-                l_count++;
+                val = text[adj_list[0] + 1];
+                if (!partition[text[adj_list[0] + 1]]) {
+                    l_count++;
+                } else {
+                    r_count++;
+                }
             }
         }
         for (size_t i = 1; i < adj_list.size(); ++i) {
-            if (std::get<0>(adj_list[i - 1]) < std::get<0>(adj_list[i])) {
-//            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
-//                      << l_count << ", " << r_count;
-                partition[std::get<0>(adj_list[i - 1])] = l_count > r_count;
-                l_count = 0;
-                r_count = 0;
-            }
-            if (partition[std::get<1>(adj_list[i])]) {
-                r_count++;
+            if (text[adj_list[i]] > text[adj_list[i] + 1]) {
+                if (val < text[adj_list[i]]) {
+                    partition[val] = l_count > r_count;
+                    l_count = 0;
+                    r_count = 0;
+                    val = text[adj_list[i]];
+                }
+                if (partition[text[adj_list[i] + 1]]) {
+                    r_count++;
+                } else {
+                    l_count++;
+                }
             } else {
-                l_count++;
+                if (val < text[adj_list[i] + 1]) {
+                    partition[val] = l_count > r_count;
+                    l_count = 0;
+                    r_count = 0;
+                    val = text[adj_list[i] + 1];
+                }
+                if (partition[text[adj_list[i]]]) {
+                    r_count++;
+                } else {
+                    l_count++;
+                }
             }
         }
-        partition[std::get<0>(adj_list[adj_list.size() - 1])] = l_count > r_count;
+        partition[val] = l_count > r_count;
+//        if (!adj_list.empty()) {
+//            if (partition[std::get<0>(adj_list[0])]) {
+//                r_count++;
+//            } else {
+//                l_count++;
+//            }
+//        }
+//        for (size_t i = 1; i < adj_list.size(); ++i) {
+//            if (std::get<0>(adj_list[i - 1]) < std::get<0>(adj_list[i])) {
+////            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
+////                      << l_count << ", " << r_count;
+//                partition[std::get<0>(adj_list[i - 1])] = l_count > r_count;
+//                l_count = 0;
+//                r_count = 0;
+//            }
+//            if (partition[std::get<1>(adj_list[i])]) {
+//                r_count++;
+//            } else {
+//                l_count++;
+//            }
+//        }
+//        partition[std::get<0>(adj_list[adj_list.size() - 1])] = l_count > r_count;
 
 #ifdef BENCH
         const auto endTimePar = recomp::timer::now();
@@ -542,18 +635,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
         adj_list_t adj_list(text.size() - 1);
         compute_adj_list(text, adj_list);
-
-#ifdef BENCH
-        const auto startTimeMult = recomp::timer::now();
-#endif
-//        partitioned_radix_sort(adj_list);
-        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), std::less<adj_t>(), cores);
-#ifdef BENCH
-        const auto endTimeMult = recomp::timer::now();
-        const auto timeSpanMult = endTimeMult - startTimeMult;
-        std::cout << " sort_adj_list="
-                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
-#endif
 
         size_t pair_count = 0;
         bool part_l = false;
