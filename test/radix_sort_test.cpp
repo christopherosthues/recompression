@@ -15,7 +15,8 @@
 using namespace recomp;
 
 typedef var_t variable_t;
-typedef parallel::parallel_recompression<var_t, term_t>::adj_list_t adj_list_t;
+typedef std::tuple<variable_t, variable_t, bool> adj_t;
+typedef std::vector<adj_t> adj_list_t;
 
 
 //TEST(digits, output_digits) {
