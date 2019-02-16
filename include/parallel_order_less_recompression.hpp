@@ -362,7 +362,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
-        std::cout << " sort_multiset="
+        std::cout << " sort_adj_list="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
 #endif
     }

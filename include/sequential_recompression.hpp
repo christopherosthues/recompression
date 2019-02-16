@@ -277,6 +277,18 @@ class sequential_recompression : public recompression<variable_t, terminal_count
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
+
+#ifdef BENCH
+        const auto startTimeMult = recomp::timer::now();
+#endif
+//        std::sort(adj_list.begin(), adj_list.end());
+        ips4o::sort(adj_list.begin(), adj_list.end());
+#ifdef BENCH
+        const auto endTimeMult = recomp::timer::now();
+        const auto timeSpanMult = endTimeMult - startTimeMult;
+        std::cout << " sort_adj_list="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
+#endif
     }
 
     /**
@@ -286,7 +298,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
      * @param alphabet
      * @param partition
      */
-    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition) {
+    inline void compute_partition(const text_t& text, const adj_list_t& adj_list, partition_t& partition) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -327,23 +339,11 @@ class sequential_recompression : public recompression<variable_t, terminal_count
 #endif
         int lr_count = 0;
         int rl_count = 0;
-        for (size_t i = 0; i < adj_list.size(); ++i) {
-            if (std::get<2>(adj_list[i])) {
-                if (!partition[std::get<0>(adj_list[i])] &&
-                    partition[std::get<1>(adj_list[i])]) {  // bc in text and b in right set and c in left
-                    rl_count++;
-                } else if (partition[std::get<0>(adj_list[i])] &&
-                           !partition[std::get<1>(adj_list[i])]) {  // bc in text and b in left set and c in right
-                    lr_count++;
-                }
-            } else {
-                if (!partition[std::get<0>(adj_list[i])] &&
-                    partition[std::get<1>(adj_list[i])]) {  // cb in text and c in left set and b in right
-                    lr_count++;
-                } else if (partition[std::get<0>(adj_list[i])] &&
-                           !partition[std::get<1>(adj_list[i])]) {  // cb in text and c in right set and b in left
-                    rl_count++;
-                }
+        for (size_t i = 0; i < text.size() - 1; ++i) {
+            if (!partition[text[i]] && partition[text[i + 1]]) {
+                lr_count++;
+            } else if (partition[text[i]] && !partition[text[i + 1]]) {
+                rl_count++;
             }
         }
 #ifdef BENCH
@@ -386,21 +386,9 @@ class sequential_recompression : public recompression<variable_t, terminal_count
         adj_list_t adj_list(text.size() - 1);
         compute_adj_list(text, adj_list);
 
-#ifdef BENCH
-        const auto startTimeMult = recomp::timer::now();
-#endif
-//        std::sort(adj_list.begin(), adj_list.end());
-        ips4o::sort(adj_list.begin(), adj_list.end());
-#ifdef BENCH
-        const auto endTimeMult = recomp::timer::now();
-        const auto timeSpanMult = endTimeMult - startTimeMult;
-        std::cout << " sort_adj_list="
-                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
-#endif
-
         size_t pair_count = 0;
 
-        compute_partition(adj_list, partition);
+        compute_partition(text, adj_list, partition);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();

@@ -121,28 +121,28 @@ TEST(adj_list, 212181623541741623541321) {
 
     adj_list_t exp_adj_list;
     exp_adj_list.emplace_back(2, 1, 0);
-    exp_adj_list.emplace_back(2, 1, 1);
     exp_adj_list.emplace_back(2, 1, 0);
-    exp_adj_list.emplace_back(8, 1, 1);
-    exp_adj_list.emplace_back(8, 1, 0);
-    exp_adj_list.emplace_back(6, 1, 1);
-    exp_adj_list.emplace_back(6, 2, 0);
-    exp_adj_list.emplace_back(3, 2, 1);
-    exp_adj_list.emplace_back(5, 3, 1);
-    exp_adj_list.emplace_back(5, 4, 0);
-    exp_adj_list.emplace_back(4, 1, 0);
-    exp_adj_list.emplace_back(7, 1, 1);
-    exp_adj_list.emplace_back(7, 4, 0);
-    exp_adj_list.emplace_back(4, 1, 0);
-    exp_adj_list.emplace_back(6, 1, 1);
-    exp_adj_list.emplace_back(6, 2, 0);
-    exp_adj_list.emplace_back(3, 2, 1);
-    exp_adj_list.emplace_back(5, 3, 1);
-    exp_adj_list.emplace_back(5, 4, 0);
-    exp_adj_list.emplace_back(4, 1, 0);
+    exp_adj_list.emplace_back(2, 1, 0);
+    exp_adj_list.emplace_back(2, 1, 1);
     exp_adj_list.emplace_back(3, 1, 1);
     exp_adj_list.emplace_back(3, 2, 0);
-    exp_adj_list.emplace_back(2, 1, 0);
+    exp_adj_list.emplace_back(3, 2, 1);
+    exp_adj_list.emplace_back(3, 2, 1);
+    exp_adj_list.emplace_back(4, 1, 0);
+    exp_adj_list.emplace_back(4, 1, 0);
+    exp_adj_list.emplace_back(4, 1, 0);
+    exp_adj_list.emplace_back(5, 3, 1);
+    exp_adj_list.emplace_back(5, 3, 1);
+    exp_adj_list.emplace_back(5, 4, 0);
+    exp_adj_list.emplace_back(5, 4, 0);
+    exp_adj_list.emplace_back(6, 1, 1);
+    exp_adj_list.emplace_back(6, 1, 1);
+    exp_adj_list.emplace_back(6, 2, 0);
+    exp_adj_list.emplace_back(6, 2, 0);
+    exp_adj_list.emplace_back(7, 1, 1);
+    exp_adj_list.emplace_back(7, 4, 0);
+    exp_adj_list.emplace_back(8, 1, 0);
+    exp_adj_list.emplace_back(8, 1, 1);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -154,19 +154,19 @@ TEST(adj_list, 131261051171161051139) {
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(13, 12, 0);
-    exp_adj_list.emplace_back(12, 6, 0);
-    exp_adj_list.emplace_back(10, 6, 1);
+    exp_adj_list.emplace_back(9, 3, 1);
     exp_adj_list.emplace_back(10, 5, 0);
+    exp_adj_list.emplace_back(10, 5, 0);
+    exp_adj_list.emplace_back(10, 6, 1);
+    exp_adj_list.emplace_back(10, 6, 1);
+    exp_adj_list.emplace_back(11, 3, 0);
     exp_adj_list.emplace_back(11, 5, 1);
+    exp_adj_list.emplace_back(11, 5, 1);
+    exp_adj_list.emplace_back(11, 6, 0);
     exp_adj_list.emplace_back(11, 7, 0);
     exp_adj_list.emplace_back(11, 7, 1);
-    exp_adj_list.emplace_back(11, 6, 0);
-    exp_adj_list.emplace_back(10, 6, 1);
-    exp_adj_list.emplace_back(10, 5, 0);
-    exp_adj_list.emplace_back(11, 5, 1);
-    exp_adj_list.emplace_back(11, 3, 0);
-    exp_adj_list.emplace_back(9, 3, 1);
+    exp_adj_list.emplace_back(12, 6, 0);
+    exp_adj_list.emplace_back(13, 12, 0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -178,12 +178,12 @@ TEST(adj_list, 18161517161514) {
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(18, 16, 0);
+    exp_adj_list.emplace_back(15, 14, 0);
+    exp_adj_list.emplace_back(16, 15, 0);
     exp_adj_list.emplace_back(16, 15, 0);
     exp_adj_list.emplace_back(17, 15, 1);
     exp_adj_list.emplace_back(17, 16, 0);
-    exp_adj_list.emplace_back(16, 15, 0);
-    exp_adj_list.emplace_back(15, 14, 0);
+    exp_adj_list.emplace_back(18, 16, 0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -195,9 +195,9 @@ TEST(adj_list, 21201619) {
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(21, 20, 0);
-    exp_adj_list.emplace_back(20, 16, 0);
     exp_adj_list.emplace_back(19, 16, 1);
+    exp_adj_list.emplace_back(20, 16, 0);
+    exp_adj_list.emplace_back(21, 20, 0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -225,8 +225,8 @@ TEST(partition, repreated_pair) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
-    ips4o::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+//    ips4o::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition);
 
     partition_t exp_partition;
     exp_partition[1] = true;
@@ -245,8 +245,8 @@ TEST(partition, repreated_pair_same_occ) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list);
-    ips4o::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(adj_list, partition);
+//    ips4o::sort(adj_list.begin(), adj_list.end());
+    recomp.compute_partition(text, adj_list, partition);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -265,8 +265,8 @@ TEST(partition, 212181623541741623541321) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
-    ips4o::sort(multiset.begin(), multiset.end());
-    recomp.compute_partition(multiset, partition);
+//    ips4o::sort(multiset.begin(), multiset.end());
+    recomp.compute_partition(text, multiset, partition);
 
     partition_t exp_partition;
     exp_partition[1] = true;
@@ -291,8 +291,8 @@ TEST(partition, 131261051171161051139) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
-    ips4o::sort(multiset.begin(), multiset.end());
-    recomp.compute_partition(multiset, partition);
+//    ips4o::sort(multiset.begin(), multiset.end());
+    recomp.compute_partition(text, multiset, partition);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -318,8 +318,8 @@ TEST(partition, 18161517161514) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
-    ips4o::sort(multiset.begin(), multiset.end());
-    recomp.compute_partition(multiset, partition);
+//    ips4o::sort(multiset.begin(), multiset.end());
+    recomp.compute_partition(text, multiset, partition);
 
     partition_t exp_partition;
     exp_partition[14] = true;
@@ -341,8 +341,8 @@ TEST(partition, 21201619) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
-    ips4o::sort(multiset.begin(), multiset.end());
-    recomp.compute_partition(multiset, partition);
+//    ips4o::sort(multiset.begin(), multiset.end());
+    recomp.compute_partition(text, multiset, partition);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -363,8 +363,8 @@ TEST(partition, 2322) {
     }
     sequential_recompression<var_t, term_t> recomp;
     recomp.compute_adj_list(text, multiset);
-    ips4o::sort(multiset.begin(), multiset.end());
-    recomp.compute_partition(multiset, partition);
+//    ips4o::sort(multiset.begin(), multiset.end());
+    recomp.compute_partition(text, multiset, partition);
 
     partition_t exp_partition;
     exp_partition[22] = true;

@@ -220,6 +220,17 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
+
+#ifdef BENCH
+        const auto startTimeAdj = recomp::timer::now();
+#endif
+        ips4o::sort(adj[0].begin(), adj[0].end());
+        ips4o::sort(adj[1].begin(), adj[1].end());
+#ifdef BENCH
+        const auto endTimeAdj = recomp::timer::now();
+        const auto timeSpanAdj = endTimeAdj - startTimeAdj;
+        std::cout << " sort_adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdj).count();
+#endif
     }
 
     /**
@@ -244,7 +255,8 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
      *
      * @return The partition of the letters in the current alphabet represented by a bitvector
      */
-    inline void compute_partition(adj_list_t& adj,
+    inline void compute_partition(const text_t& text,
+                                  const adj_list_t& adj,
                                   partition_t& partition,
                                   bool& part_l) {
 #ifdef BENCH
@@ -314,20 +326,27 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 #endif
         int lr_count = 0;
         int rl_count = 0;
-        for (size_t i = 0; i < adj[0].size(); ++i) {
-            if (!partition[std::get<0>(adj[0][i])] && partition[std::get<1>(adj[0][i])]) {
-                lr_count += std::get<2>(adj[0][i]);
-            } else if (partition[std::get<0>(adj[0][i])] && !partition[std::get<1>(adj[0][i])]) {
-                rl_count += std::get<2>(adj[0][i]);
+        for (size_t k = 0; k < text.size() - 1; ++k) {
+            if (!partition[text[k]] && partition[text[k + 1]]) {
+                lr_count++;
+            } else if (partition[text[k]] && !partition[text[k + 1]]) {
+                rl_count++;
             }
         }
-        for (size_t i = 0; i < adj[1].size(); ++i) {
-            if (!partition[std::get<0>(adj[1][i])] && partition[std::get<1>(adj[1][i])]) {
-                rl_count += std::get<2>(adj[1][i]);
-            } else if (partition[std::get<0>(adj[1][i])] && !partition[std::get<1>(adj[1][i])]) {
-                lr_count += std::get<2>(adj[1][i]);
-            }
-        }
+//        for (size_t i = 0; i < adj[0].size(); ++i) {
+//            if (!partition[std::get<0>(adj[0][i])] && partition[std::get<1>(adj[0][i])]) {
+//                lr_count += std::get<2>(adj[0][i]);
+//            } else if (partition[std::get<0>(adj[0][i])] && !partition[std::get<1>(adj[0][i])]) {
+//                rl_count += std::get<2>(adj[0][i]);
+//            }
+//        }
+//        for (size_t i = 0; i < adj[1].size(); ++i) {
+//            if (!partition[std::get<0>(adj[1][i])] && partition[std::get<1>(adj[1][i])]) {
+//                rl_count += std::get<2>(adj[1][i]);
+//            } else if (partition[std::get<0>(adj[1][i])] && !partition[std::get<1>(adj[1][i])]) {
+//                lr_count += std::get<2>(adj[1][i]);
+//            }
+//        }
 #ifdef BENCH
         const auto endTimeDir = recomp::timer::now();
         const auto timeSpanDir = endTimeDir - startTimeDir;
@@ -367,19 +386,8 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
         std::cout << " alphabet=" << part.size();
 #endif
 
-#ifdef BENCH
-        const auto startTimeAdj = recomp::timer::now();
-#endif
-        ips4o::sort(adj[0].begin(), adj[0].end());
-        ips4o::sort(adj[1].begin(), adj[1].end());
-#ifdef BENCH
-        const auto endTimeAdj = recomp::timer::now();
-        const auto timeSpanAdj = endTimeAdj - startTimeAdj;
-        std::cout << " sort_adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdj).count();
-#endif
-
         bool part_l = false;
-        compute_partition(adj, part, part_l);
+        compute_partition(text, adj, part, part_l);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();

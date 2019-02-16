@@ -121,8 +121,8 @@ TEST(adj_list_hash, 212181623541741623541321) {
     recompression_hash<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list, partition);
 
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
+//    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
+//    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
 
     adj_list_t exp_adj_list;
     exp_adj_list[0].emplace_back(2, 1, 3);
@@ -153,8 +153,8 @@ TEST(adj_list_hash, 131261051171161051139) {
     recompression_hash<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list, partition);
 
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
+//    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
+//    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
 
     adj_list_t exp_adj_list;
     exp_adj_list[0].emplace_back(13, 12, 1);
@@ -181,8 +181,8 @@ TEST(adj_list_hash, 18161517161514) {
     recompression_hash<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list, partition);
 
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
+//    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
+//    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
 
     adj_list_t exp_adj_list;
     exp_adj_list[0].emplace_back(18, 16, 1);
@@ -204,8 +204,8 @@ TEST(adj_list_hash, 21201619) {
     recompression_hash<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list, partition);
 
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
+//    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
+//    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
 
     adj_list_t exp_adj_list;
     exp_adj_list[0].emplace_back(21, 20, 1);
@@ -225,8 +225,8 @@ TEST(adj_list_hash, 2322) {
     recompression_hash<var_t, term_t> recomp;
     recomp.compute_adj_list(text, adj_list, partition);
 
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
+//    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
+//    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
 
     adj_list_t exp_adj_list;
     exp_adj_list[0].emplace_back(23, 22, 1);
@@ -247,7 +247,7 @@ TEST(partition_hash, repreated_pair) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -267,7 +267,7 @@ TEST(partition_hash, repreated_pair_same_occ) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -287,7 +287,7 @@ TEST(partition_hash, 212181623541741623541321) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -313,7 +313,7 @@ TEST(partition_hash, 131261051171161051139) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -340,7 +340,7 @@ TEST(partition_hash, 18161517161514) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[14] = false;
@@ -363,7 +363,7 @@ TEST(partition_hash, 21201619) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -385,7 +385,7 @@ TEST(partition_hash, 2322) {
     recomp.compute_adj_list(text, adj_list, partition);
     ips4o::sort(adj_list[0].begin(), adj_list[0].end());
     ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(adj_list, partition, part_l);
+    recomp.compute_partition(text, adj_list, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[22] = false;
