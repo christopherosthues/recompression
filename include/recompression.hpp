@@ -50,21 +50,17 @@ class recompression {
         if (rlslp.size() > 0) {
             rlslp.blocks = rlslp.size() - rlslp.blocks;
 
-//            std::cout << "root" << std::endl;
             if (!bv[rlslp.root - rlslp.terminals]) {
                 rlslp.root = rlslp.blocks + rlslp.terminals - 1;
             }
-//            std::cout << "root fin" << std::endl;
 
             std::vector<variable_t> renamed(rlslp.size());
             std::vector<typename recomp::rlslp<variable_t, terminal_count_t>::non_terminal> renamed_rules(
                     rlslp.size() - rlslp.blocks);
             variable_t block_i = 0;  // rlslp.blocks;
             variable_t pair_i = 0;
-//            std::cout << "copy" << std::endl;
             for (size_t i = 0; i < rlslp.size(); ++i) {
                 if (bv[i]) {
-//                    std::cout << "copy " << i << " to " << block_i << std::endl;
                     renamed_rules[block_i] = rlslp[i];
                     renamed[i] = block_i + rlslp.blocks + rlslp.terminals;
                     block_i++;
@@ -74,40 +70,27 @@ class recompression {
                     pair_i++;
                 }
             }
-//            std::cout << "copy fin" << std::endl;
 
-//            std::cout << "rename pairs" << std::endl;
             for (size_t i = 0; i < rlslp.blocks; ++i) {
-//                std::cout << "i: " << i << std::endl;
                 if (!rlslp.is_terminal(rlslp[i].first())) {
-//                    std::cout << "first" << std::endl;
                     rlslp[i].first() = renamed[rlslp[i].first() - rlslp.terminals];
                 }
                 if (!rlslp.is_terminal(rlslp[i].second())) {
-//                    std::cout << "second" << std::endl;
                     rlslp[i].second() = renamed[rlslp[i].second() - rlslp.terminals];
                 }
             }
-//            for (size_t i = 0; i < renamed.size(); ++i) {
-//                std::cout << renamed[i] << ", ";
-//            }
-//            std::cout << std::endl;
-//            std::cout << "rename blocks" << std::endl;
             for (size_t i = 0; i < renamed_rules.size(); ++i) {
-//                std::cout << "i: " << i << std::endl;
                 if (!rlslp.is_terminal(renamed_rules[i].first())) {
-//                    std::cout << "rule: " << renamed_rules[i].first() << " term: " << rlslp.terminals << std::endl;
                     renamed_rules[i].first() = renamed[renamed_rules[i].first() - rlslp.terminals];
                 }
-//                std::cout << "assign" << std::endl;
                 rlslp[i + rlslp.blocks] = renamed_rules[i];
             }
-//            std::cout << "rename fin" << std::endl;
         }
 #ifdef BENCH
         const auto endTimeRlslp = recomp::timer::now();
         const auto timeSpanRlslp = endTimeRlslp - startTimeRlslp;
-        std::cout << "RESULT algo=" << this->name << "_rlslp dataset=" << this->dataset << " time="
+        std::cout << "RESULT algo=" << this->name << "_rlslp dataset=" << this->dataset << " blocks="
+                  << (rlslp.size() - rlslp.blocks) << " time="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRlslp).count() << std::endl;
 #endif
     }

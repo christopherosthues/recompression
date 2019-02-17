@@ -94,7 +94,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
-                  << " cores=" << cores << " blocks=" << (rlslp.size() - rlslp.blocks) << std::endl;
+                  << " cores=" << cores << std::endl;
 #endif
     }
 
