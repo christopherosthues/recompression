@@ -31,6 +31,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
 //    typedef std::tuple<variable_t, variable_t, bool> adj_t;
     typedef size_t adj_t;
     typedef std::vector<adj_t> adj_list_t;
@@ -68,13 +69,14 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
         this->cores = cores;
         rlslp.terminals = alphabet_size;
+        bv_t bv;
 
         while (text.size() > 1) {
-            bcomp(text, rlslp);
+            bcomp(text, rlslp, bv);
             this->level++;
 
             if (text.size() > 1) {
-                pcomp(text, rlslp);
+                pcomp(text, rlslp, bv);
                 this->level++;
             }
         }
@@ -83,6 +85,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
+            this->rename_rlslp(rlslp, bv);
         }
 
 #ifdef BENCH_RECOMP
@@ -91,7 +94,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
-                  << " cores=" << cores << std::endl;
+                  << " cores=" << cores << " blocks=" << (rlslp.size() - rlslp.blocks) << std::endl;
 #endif
     }
 
@@ -107,7 +110,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -276,8 +279,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         block_count = sort_blocks.size();
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + block_count);
-        rlslp.resize(nt_count + block_count, true);
-        rlslp.block_count += block_count;
+        rlslp.resize(nt_count + block_count/*, true*/);
+        rlslp.blocks += block_count;
+        bv.resize(nt_count + block_count, true);
+//        rlslp.block_count += block_count;
 
         auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
 
@@ -597,7 +602,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -756,6 +761,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + pair_count);
         rlslp.resize(nt_count + pair_count);
+        bv.resize(nt_count + pair_count, false);
 
         variable_t next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
 
