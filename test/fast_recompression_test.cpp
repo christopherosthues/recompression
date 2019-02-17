@@ -10,6 +10,7 @@ typedef recompression_fast<var_t, term_t>::text_t text_t;
 typedef recompression_fast<var_t, term_t>::adj_list_t adj_list_t;
 typedef recompression_fast<var_t, term_t>::partition_t partition_t;
 typedef recompression_fast<var_t, term_t>::alphabet_t alphabet_t;
+typedef recompression_fast<var_t, term_t>::bv_t bv_t;
 
 
 TEST(replace_letters, 212141323141341323141321) {
@@ -163,10 +164,11 @@ TEST(fast_bcomp, no_block) {
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     std::vector<var_t> mapping;
+    bv_t bv;
 
     rlslp.terminals = 5;
     recomp.replace_letters(text, alphabet_size, mapping);
-    recomp.bcomp(text, rlslp, alphabet_size, mapping);
+    recomp.bcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text = {1, 0, 1, 0, 3, 0, 2, 1, 2, 0, 3, 0, 2, 3, 0, 2, 1, 2, 0, 3, 0, 2, 1, 0};
     std::vector<var_t> exp_mapping = {1, 2, 3, 4};
@@ -184,11 +186,13 @@ TEST(fast_bcomp, no_block) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
+    bv_t exp_bv;
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_bcomp, 21214441332311413334133231141321) {
@@ -197,10 +201,11 @@ TEST(fast_bcomp, 21214441332311413334133231141321) {
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     std::vector<var_t> mapping;
+    bv_t bv;
 
     rlslp.terminals = 5;
     recomp.replace_letters(text, alphabet_size, mapping);
-    recomp.bcomp(text, rlslp, alphabet_size, mapping);
+    recomp.bcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text = {1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0};
     std::vector<var_t> exp_mapping = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -222,17 +227,20 @@ TEST(fast_bcomp, 21214441332311413334133231141321) {
     exp_rlslp.non_terminals.emplace_back(3, 2, 2);
     exp_rlslp.non_terminals.emplace_back(3, 3, 3);
     exp_rlslp.non_terminals.emplace_back(4, 3, 3);
-    exp_rlslp.blocks = {true, true, true, true};
+    exp_rlslp.blocks = 4;
+    bv_t exp_bv{true, true, true, true};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_bcomp, 991261051171161051139) {
     text_t text = {4, 4, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4};
     std::vector<var_t> mapping{3, 5, 6, 7, 9, 10, 11, 12};
+    bv_t bv = {true, true, true, true, false, false, false, false};
     rlslp<var_t, term_t> rlslp;
     rlslp.terminals = 5;
     rlslp.root = 0;
@@ -244,11 +252,11 @@ TEST(fast_bcomp, 991261051171161051139) {
     rlslp.non_terminals.emplace_back(2, 3, 2);
     rlslp.non_terminals.emplace_back(4, 1, 2);
     rlslp.non_terminals.emplace_back(8, 1, 4);
-    rlslp.blocks = {true, true, true, true, false, false, false, false};
+    rlslp.blocks = 8;
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 8;
 
-    recomp.bcomp(text, rlslp, alphabet_size, mapping);
+    recomp.bcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text = {8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4};
     std::vector<var_t> exp_mapping{3, 5, 6, 7, 9, 10, 11, 12, 13};
@@ -275,12 +283,14 @@ TEST(fast_bcomp, 991261051171161051139) {
     exp_rlslp.non_terminals.emplace_back(4, 1, 2);
     exp_rlslp.non_terminals.emplace_back(8, 1, 4);
     exp_rlslp.non_terminals.emplace_back(9, 2, 4);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true};
+    exp_rlslp.blocks = 9;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_bcomp, 222222222222222222222) {
@@ -289,10 +299,11 @@ TEST(fast_bcomp, 222222222222222222222) {
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     std::vector<var_t> mapping;
+    bv_t bv;
 
     rlslp.terminals = 3;
     recomp.replace_letters(text, alphabet_size, mapping);
-    recomp.bcomp(text, rlslp, alphabet_size, mapping);
+    recomp.bcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text = {1};
     std::vector<var_t> exp_mapping = {2, 3};
@@ -311,12 +322,14 @@ TEST(fast_bcomp, 222222222222222222222) {
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.non_terminals.emplace_back(2, 21, 21);
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 1;
+    bv_t exp_bv{true};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_bcomp, 22222222211111112222) {
@@ -325,10 +338,11 @@ TEST(fast_bcomp, 22222222211111112222) {
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     std::vector<var_t> mapping;
+    bv_t bv;
 
     rlslp.terminals = 3;
     recomp.replace_letters(text, alphabet_size, mapping);
-    recomp.bcomp(text, rlslp, alphabet_size, mapping);
+    recomp.bcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text = {4, 2, 3};
     std::vector<var_t> exp_mapping = {1, 2, 3, 4, 5};
@@ -349,12 +363,14 @@ TEST(fast_bcomp, 22222222211111112222) {
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
-    exp_rlslp.blocks = {true, true, true};
+    exp_rlslp.blocks = 3;
+    bv_t exp_bv{true, true, true};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_bcomp, 2222222221111111222200) {
@@ -363,10 +379,11 @@ TEST(fast_bcomp, 2222222221111111222200) {
     recompression_fast<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     std::vector<var_t> mapping;
+    bv_t bv;
 
     rlslp.terminals = 3;
     recomp.replace_letters(text, alphabet_size, mapping);
-    recomp.bcomp(text, rlslp, alphabet_size, mapping);
+    recomp.bcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text = {6, 4, 5, 3};
     std::vector<var_t> exp_mapping = {0, 1, 2, 3, 4, 5, 6};
@@ -379,7 +396,7 @@ TEST(fast_bcomp, 2222222221111111222200) {
     recomp.compute_alphabet(text, alphabet_size, mapping);
 
     text_t exp_text_alpha = {3, 1, 2, 0};
-    std::vector<var_t>exp_mapping_alpha = {3, 4, 5, 6};
+    std::vector<var_t> exp_mapping_alpha = {3, 4, 5, 6};
     term_t exp_alphabet_size_alpha = 4;
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 3;
@@ -388,12 +405,14 @@ TEST(fast_bcomp, 2222222221111111222200) {
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
-    exp_rlslp.blocks = {true, true, true, true};
+    exp_rlslp.blocks = 4;
+    bv_t exp_bv{true, true, true, true};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 
@@ -727,7 +746,8 @@ TEST(fast_pcomp, repeated_pair) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     rlslp.terminals = 3;
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    bv_t bv;
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     std::vector<var_t> exp_mapping = {1, 2, 3};
@@ -746,12 +766,14 @@ TEST(fast_pcomp, repeated_pair) {
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.non_terminals.emplace_back(2, 1, 2);
-    exp_rlslp.blocks = {false};
+    exp_rlslp.blocks = 0;
+    bv_t exp_bv{false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_pcomp, repeated_pair_same_occ) {
@@ -761,7 +783,8 @@ TEST(fast_pcomp, repeated_pair_same_occ) {
     rlslp<var_t, term_t> rlslp;
     recompression_fast<var_t, term_t> recomp;
     rlslp.terminals = 3;
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    bv_t bv;
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     std::vector<var_t> exp_mapping = {1, 2, 3};
@@ -780,12 +803,14 @@ TEST(fast_pcomp, repeated_pair_same_occ) {
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
-    exp_rlslp.blocks = {false};
+    exp_rlslp.blocks = 0;
+    bv_t exp_bv{false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_pcomp, 212181623541741623541321) {
@@ -799,8 +824,9 @@ TEST(fast_pcomp, 212181623541741623541321) {
     rlslp.non_terminals.emplace_back(3, 2, 2);
     rlslp.non_terminals.emplace_back(3, 3, 3);
     rlslp.non_terminals.emplace_back(4, 3, 3);
-    rlslp.blocks = {true, true, true, true};
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    rlslp.blocks = 4;
+    bv_t bv{true, true, true, true};
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{8, 8, 11, 5, 9, 4, 10, 6, 10, 5, 9, 4, 10, 2, 8};
     std::vector<var_t> exp_mapping = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -826,12 +852,14 @@ TEST(fast_pcomp, 212181623541741623541321) {
     exp_rlslp.non_terminals.emplace_back(2, 3, 2);
     exp_rlslp.non_terminals.emplace_back(4, 1, 2);
     exp_rlslp.non_terminals.emplace_back(8, 1, 4);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false};
+    exp_rlslp.blocks = 4;
+    bv_t exp_bv{true, true, true, true, false, false, false, false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_pcomp, 131261051171161051139) {
@@ -850,9 +878,10 @@ TEST(fast_pcomp, 131261051171161051139) {
     rlslp.non_terminals.emplace_back(4, 1, 2);
     rlslp.non_terminals.emplace_back(8, 1, 4);
     rlslp.non_terminals.emplace_back(9, 2, 4);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true};
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true};
 
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{13, 11, 10, 12, 11, 10, 9};
     std::vector<var_t> exp_mapping = {3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
@@ -884,12 +913,14 @@ TEST(fast_pcomp, 131261051171161051139) {
     exp_rlslp.non_terminals.emplace_back(6, 10, 4);
     exp_rlslp.non_terminals.emplace_back(7, 11, 5);
     exp_rlslp.non_terminals.emplace_back(13, 12, 8);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_pcomp, 18161517161514) {
@@ -913,8 +944,9 @@ TEST(fast_pcomp, 18161517161514) {
     rlslp.non_terminals.emplace_back(6, 10, 4);
     rlslp.non_terminals.emplace_back(7, 11, 5);
     rlslp.non_terminals.emplace_back(13, 12, 8);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false};
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false};
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{7, 6, 2, 5};
     std::vector<var_t> exp_mapping = {14, 15, 16, 17, 18, 19, 20, 21};
@@ -949,13 +981,15 @@ TEST(fast_pcomp, 18161517161514) {
     exp_rlslp.non_terminals.emplace_back(15, 14, 7);
     exp_rlslp.non_terminals.emplace_back(15, 17, 9);
     exp_rlslp.non_terminals.emplace_back(18, 16, 12);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
+                false, false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_pcomp, 21201619) {
@@ -982,9 +1016,10 @@ TEST(fast_pcomp, 21201619) {
     rlslp.non_terminals.emplace_back(15, 14, 7);
     rlslp.non_terminals.emplace_back(15, 17, 9);
     rlslp.non_terminals.emplace_back(18, 16, 12);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
-                    false, false};
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false, false,
+            false};
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{5, 4};
     std::vector<var_t> exp_mapping = {16, 19, 20, 21, 22, 23};
@@ -1021,13 +1056,15 @@ TEST(fast_pcomp, 21201619) {
     exp_rlslp.non_terminals.emplace_back(18, 16, 12);
     exp_rlslp.non_terminals.emplace_back(16, 19, 11);
     exp_rlslp.non_terminals.emplace_back(21, 20, 21);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
+                false, false, false, false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(fast_pcomp, 2322) {
@@ -1056,9 +1093,10 @@ TEST(fast_pcomp, 2322) {
     rlslp.non_terminals.emplace_back(18, 16, 12);
     rlslp.non_terminals.emplace_back(16, 19, 11);
     rlslp.non_terminals.emplace_back(21, 20, 21);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
-                    false, false, false, false};
-    recomp.pcomp(text, rlslp, alphabet_size, mapping);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false, false,
+            false, false, false};
+    recomp.pcomp(text, rlslp, bv, alphabet_size, mapping);
 
     text_t exp_text{2};
     std::vector<var_t> exp_mapping = {22, 23, 24};
@@ -1097,13 +1135,15 @@ TEST(fast_pcomp, 2322) {
     exp_rlslp.non_terminals.emplace_back(16, 19, 11);
     exp_rlslp.non_terminals.emplace_back(21, 20, 21);
     exp_rlslp.non_terminals.emplace_back(23, 22, 32);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false, false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
+                false, false, false, false, false};
 
     ASSERT_EQ(exp_text_alpha, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_alphabet_size_alpha, alphabet_size);
     ASSERT_EQ(exp_mapping_alpha, mapping);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 
@@ -1156,7 +1196,7 @@ TEST(fast_recomp, short_block2) {
     exp_rlslp.root = 113;
     exp_rlslp.non_terminals.emplace_back(112, 2, 2);
     exp_rlslp.is_empty = false;
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 0;  // {true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -1176,7 +1216,7 @@ TEST(fast_recomp, short_block3) {
     exp_rlslp.root = 113;
     exp_rlslp.non_terminals.emplace_back(112, 3, 3);
     exp_rlslp.is_empty = false;
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 0;  // {true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -1193,29 +1233,50 @@ TEST(fast_recomp, recompression) {
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 5;
-    exp_rlslp.root = 24;
+    exp_rlslp.root = 19;
+    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
+    exp_rlslp.non_terminals.emplace_back(2, 3, 2);
+    exp_rlslp.non_terminals.emplace_back(4, 1, 2);
+    exp_rlslp.non_terminals.emplace_back(23, 1, 4);
+    exp_rlslp.non_terminals.emplace_back(3, 5, 3);
+    exp_rlslp.non_terminals.emplace_back(20, 7, 4);
+    exp_rlslp.non_terminals.emplace_back(21, 6, 4);
+    exp_rlslp.non_terminals.emplace_back(22, 7, 5);
+    exp_rlslp.non_terminals.emplace_back(24, 8, 8);
+    exp_rlslp.non_terminals.emplace_back(10, 9, 7);
+    exp_rlslp.non_terminals.emplace_back(10, 12, 9);
+    exp_rlslp.non_terminals.emplace_back(13, 11, 12);
+    exp_rlslp.non_terminals.emplace_back(11, 14, 11);
+    exp_rlslp.non_terminals.emplace_back(16, 15, 21);
+    exp_rlslp.non_terminals.emplace_back(18, 17, 32);
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
     exp_rlslp.non_terminals.emplace_back(3, 2, 2);
     exp_rlslp.non_terminals.emplace_back(3, 3, 3);
     exp_rlslp.non_terminals.emplace_back(4, 3, 3);
-    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
-    exp_rlslp.non_terminals.emplace_back(2, 3, 2);
-    exp_rlslp.non_terminals.emplace_back(4, 1, 2);
-    exp_rlslp.non_terminals.emplace_back(8, 1, 4);
-    exp_rlslp.non_terminals.emplace_back(9, 2, 4);
-    exp_rlslp.non_terminals.emplace_back(3, 9, 3);
-    exp_rlslp.non_terminals.emplace_back(5, 11, 4);
-    exp_rlslp.non_terminals.emplace_back(6, 10, 4);
-    exp_rlslp.non_terminals.emplace_back(7, 11, 5);
-    exp_rlslp.non_terminals.emplace_back(13, 12, 8);
-    exp_rlslp.non_terminals.emplace_back(15, 14, 7);
-    exp_rlslp.non_terminals.emplace_back(15, 17, 9);
-    exp_rlslp.non_terminals.emplace_back(18, 16, 12);
-    exp_rlslp.non_terminals.emplace_back(16, 19, 11);
-    exp_rlslp.non_terminals.emplace_back(21, 20, 21);
-    exp_rlslp.non_terminals.emplace_back(23, 22, 32);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false, false, false, false};
+    exp_rlslp.non_terminals.emplace_back(5, 2, 4);
+//    exp_rlslp.non_terminals.emplace_back(1, 2, 2);    5   20
+//    exp_rlslp.non_terminals.emplace_back(3, 2, 2);    6   21
+//    exp_rlslp.non_terminals.emplace_back(3, 3, 3);    7   22
+//    exp_rlslp.non_terminals.emplace_back(4, 3, 3);    8   23
+//    exp_rlslp.non_terminals.emplace_back(2, 1, 2);    9   5
+//    exp_rlslp.non_terminals.emplace_back(2, 3, 2);    10  6
+//    exp_rlslp.non_terminals.emplace_back(4, 1, 2);    11  7
+//    exp_rlslp.non_terminals.emplace_back(8, 1, 4);    12  8
+//    exp_rlslp.non_terminals.emplace_back(9, 2, 4);    13  24
+//    exp_rlslp.non_terminals.emplace_back(3, 9, 3);    14  9
+//    exp_rlslp.non_terminals.emplace_back(5, 11, 4);   15  10
+//    exp_rlslp.non_terminals.emplace_back(6, 10, 4);   16  11
+//    exp_rlslp.non_terminals.emplace_back(7, 11, 5);   17  12
+//    exp_rlslp.non_terminals.emplace_back(13, 12, 8);  18  13
+//    exp_rlslp.non_terminals.emplace_back(15, 14, 7);  19  14
+//    exp_rlslp.non_terminals.emplace_back(15, 17, 9);  20  15
+//    exp_rlslp.non_terminals.emplace_back(18, 16, 12); 21  16
+//    exp_rlslp.non_terminals.emplace_back(16, 19, 11); 22  17
+//    exp_rlslp.non_terminals.emplace_back(21, 20, 21); 23  18
+//    exp_rlslp.non_terminals.emplace_back(23, 22, 32); 24  19
+    exp_rlslp.blocks = 15;
+//    {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
+//                        false, false, false, false, false, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -1234,7 +1295,7 @@ TEST(fast_recomp, one_block) {
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
     exp_rlslp.non_terminals.emplace_back(2, 21, 21);
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 0;  // {true};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -1252,10 +1313,13 @@ TEST(fast_recomp, two_blocks) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 5;
+    exp_rlslp.non_terminals.emplace_back(5, 4, 16);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
-    exp_rlslp.non_terminals.emplace_back(4, 3, 16);
-    exp_rlslp.blocks = {true, true, false};
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);    3   4
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);    4   5
+//    exp_rlslp.non_terminals.emplace_back(4, 3, 16);   5   3
+    exp_rlslp.blocks = 1;  // {true, true, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -1272,13 +1336,18 @@ TEST(fast_recomp, three_blocks) {
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 7;
+    exp_rlslp.root = 4;
+    exp_rlslp.non_terminals.emplace_back(5, 6, 11);
+    exp_rlslp.non_terminals.emplace_back(7, 3, 20);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
-    exp_rlslp.non_terminals.emplace_back(3, 4, 11);
-    exp_rlslp.non_terminals.emplace_back(5, 6, 20);
-    exp_rlslp.blocks = {true, true, true, false, false};
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);    3   5
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 4);    4   6
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);    5   7
+//    exp_rlslp.non_terminals.emplace_back(3, 4, 11);   6   3
+//    exp_rlslp.non_terminals.emplace_back(5, 6, 20);   7   4
+    exp_rlslp.blocks = 2;  // {true, true, true, false, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -1295,15 +1364,22 @@ TEST(fast_recomp, four_blocks) {
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 9;
+    exp_rlslp.root = 5;
+    exp_rlslp.non_terminals.emplace_back(8, 6, 6);
+    exp_rlslp.non_terminals.emplace_back(9, 7, 16);
+    exp_rlslp.non_terminals.emplace_back(4, 3, 22);
     exp_rlslp.non_terminals.emplace_back(0, 2, 2);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
-    exp_rlslp.non_terminals.emplace_back(5, 3, 6);
-    exp_rlslp.non_terminals.emplace_back(6, 4, 16);
-    exp_rlslp.non_terminals.emplace_back(8, 7, 22);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false};
+//    exp_rlslp.non_terminals.emplace_back(0, 2, 2);    3   6
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);    4   7
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 4);    5   8
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);    6   9
+//    exp_rlslp.non_terminals.emplace_back(5, 3, 6);    7
+//    exp_rlslp.non_terminals.emplace_back(6, 4, 16);   8
+//    exp_rlslp.non_terminals.emplace_back(8, 7, 22);   9
+    exp_rlslp.blocks = 3;  // {true, true, true, true, false, false, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -1323,7 +1399,7 @@ TEST(fast_recomp, repeated_pair) {
     exp_rlslp.root = 4;
     exp_rlslp.non_terminals.emplace_back(2, 1, 2);
     exp_rlslp.non_terminals.emplace_back(3, 11, 22);
-    exp_rlslp.blocks = {false, true};
+    exp_rlslp.blocks = 1;  // {false, true};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -1340,11 +1416,14 @@ TEST(fast_recomp, repeated_pair_same_occ) {
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 5;
+    exp_rlslp.root = 4;
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
+    exp_rlslp.non_terminals.emplace_back(2, 5, 23);
     exp_rlslp.non_terminals.emplace_back(3, 11, 22);
-    exp_rlslp.non_terminals.emplace_back(2, 4, 23);
-    exp_rlslp.blocks = {false, true, false};
+//    exp_rlslp.non_terminals.emplace_back(1, 2, 2);    3
+//    exp_rlslp.non_terminals.emplace_back(3, 11, 22);  4
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 23);   5
+    exp_rlslp.blocks = 2;  // {false, true, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);

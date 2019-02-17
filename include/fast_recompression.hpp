@@ -20,6 +20,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
 
@@ -53,30 +54,32 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 #endif
         std::vector<variable_t> mapping;
         rlslp.terminals = alphabet_size;
+        bv_t bv;
 
         terminal_count_t alpha_size = alphabet_size;
 
         replace_letters(text, alpha_size, mapping);
 
         while (text.size() > 1) {
-            bcomp(text, rlslp, alpha_size, mapping);
+            bcomp(text, rlslp, bv, alpha_size, mapping);
             compute_alphabet(text, alpha_size, mapping);
             this->level++;
 
             if (text.size() > 1) {
-                pcomp(text, rlslp, alpha_size, mapping);
+                pcomp(text, rlslp, bv, alpha_size, mapping);
                 compute_alphabet(text, alpha_size, mapping);
                 this->level++;
             }
         }
 
+        rlslp.resize(rlslp.size());
+
         if (!text.empty()) {
 //            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(mapping[text[0]]);
             rlslp.is_empty = false;
+            this->rename_rlslp(rlslp, bv);
         }
-
-        rlslp.resize(rlslp.size());
 
 #ifdef BENCH_RECOMP
         const auto endTime = recomp::timer::now();
@@ -155,6 +158,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
      */
     inline void bcomp(text_t& text,
                       rlslp<variable_t, terminal_count_t>& rlslp,
+                      bv_t& bv,
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
 #ifdef BENCH
@@ -219,7 +223,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 for (auto& block : blocks[i]) {
                     block.second = alphabet_size++;
                     block_count++;  // Here needed to count the number of different blocks
-                    rlslp.block_count++;
+//                    rlslp.block_count++;
                     variable_t len = block.first;
                     if (mapping[i] >= rlslp.terminals) {
                         len *= rlslp[mapping[i] - rlslp.terminals].len;
@@ -237,7 +241,9 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 #endif
 
         if (block_count > 0) {
-            rlslp.blocks.resize(rlslp.blocks.size() + block_count, true);
+//            rlslp.blocks.resize(rlslp.blocks.size() + block_count, true);
+            rlslp.blocks += block_count;
+            bv.resize(rlslp.size(), true);
         }
 
 #ifdef BENCH
@@ -435,6 +441,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
      */
     inline void pcomp(text_t& text,
                       rlslp<variable_t, terminal_count_t>& rlslp,
+                      bv_t& bv,
                       variable_t& alphabet_size,
                       std::vector<variable_t>& mapping) {
 #ifdef BENCH
@@ -510,7 +517,8 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 }
             }
         }
-        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
+//        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
+        bv.resize(rlslp.size(), false);
 
 #ifdef BENCH
         const auto endTimeAss = recomp::timer::now();

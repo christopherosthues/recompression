@@ -100,7 +100,7 @@ struct rlslp {
     }
 
  public:
-    typedef std::vector<bool> block_t;
+//    typedef std::vector<bool> block_t;
 
     /**
      * @brief A structure to represent a non-terminal.
@@ -146,6 +146,13 @@ struct rlslp {
             return this->production == nt.production && this->len == nt.len;
         }
 
+        non_terminal& operator=(const non_terminal& nt) {
+            this->production[0] = nt.production[0];
+            this->production[1] = nt.production[1];
+            this->len = nt.len;
+            return *this;
+        }
+
         variable_t& first() {
             return this->production[0];
         }
@@ -186,12 +193,12 @@ struct rlslp {
     /**
      * The number of blocks.
      */
-    size_t block_count = 0;
+    variable_t blocks = 0;
 
-    /**
-     * Bitvector marking which productions derive blocks.
-     */
-    block_t blocks;
+//    /**
+//     * Bitvector marking which productions derive blocks.
+//     */
+//    block_t blocks;
 
     non_terminal& operator[](size_t i) {
         return this->non_terminals[i];
@@ -216,24 +223,29 @@ struct rlslp {
 
     void reserve(size_t size) {
         non_terminals.reserve(size);
-        blocks.reserve(size);
+//        blocks.reserve(size);
     }
 
-    void resize(size_t size, bool block = false) {
+    void resize(size_t size/*, bool block = false*/) {
         non_terminals.resize(size);
-        blocks.resize(size, block);
+//        blocks.resize(size, block);
     }
 
     void shrink_to_fit() {
         non_terminals.shrink_to_fit();
-        blocks.shrink_to_fit();
+//        blocks.shrink_to_fit();
+    }
+
+    bool is_terminal(variable_t nt) const {
+        return nt < terminals;
     }
 
     bool is_block(variable_t nt) const {
-        if (nt < terminals) {
-            return false;
-        }
-        return this->blocks[nt - terminals];
+        return nt - terminals >= blocks;
+//        if (nt < terminals) {
+//            return false;
+//        }
+//        return this->blocks[nt - terminals];
     }
 
     void derive(std::stringstream& sstream, variable_t nt) {
@@ -326,9 +338,10 @@ std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>
         i++;
     }
     sstream << "blocks: ";
-    for (const auto& block : rlslp.blocks) {
-        sstream << block;
-    }
+    sstream << rlslp.blocks;
+//    for (const auto& block : rlslp.blocks) {
+//        sstream << block;
+//    }
     sstream << std::endl;
 
     return sstream.str();
