@@ -5,7 +5,7 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("parallel_order_less_recompression")
 
     build_test("fast_recompression")
-#    build_test("sequential_recompression")
+    build_test("sequential_recompression")
     build_test("recompression_hash")
 #
 #    build_test("radix_sort")

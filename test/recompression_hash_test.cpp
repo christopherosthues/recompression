@@ -53,9 +53,6 @@ TEST(bcomp_hash, 21214441332311413334133231141321) {
     exp_rlslp.blocks = 4;
     bv_t exp_bv{true, true, true, true};
 
-    std::cout << std::to_string(rlslp) << std::endl;
-    std::cout << std::to_string(exp_rlslp) << std::endl;
-
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
     ASSERT_EQ(exp_bv, bv);
@@ -843,9 +840,6 @@ TEST(recomp_hash, recompression) {
 //    {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
 //                        false, false, false, false, false, false};
     exp_rlslp.is_empty = false;
-
-    std::cout << std::to_string(rlslp) << std::endl;
-    std::cout << std::to_string(exp_rlslp) << std::endl;
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);

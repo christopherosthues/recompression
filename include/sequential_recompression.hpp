@@ -27,6 +27,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
     typedef std::vector<std::tuple<variable_t, variable_t, bool>> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
@@ -60,13 +61,14 @@ class sequential_recompression : public recompression<variable_t, terminal_count
         const auto startTime = recomp::timer::now();
 #endif
         rlslp.terminals = alphabet_size;
+        bv_t bv;
 
         while (text.size() > 1) {
-            bcomp(text, rlslp);
+            bcomp(text, rlslp, bv);
             this->level++;
 
             if (text.size() > 1) {
-                pcomp(text, rlslp);
+                pcomp(text, rlslp, bv);
                 this->level++;
             }
         }
@@ -75,6 +77,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
 //            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
+            this->rename_rlslp(rlslp, bv);
         }
 
 #ifdef BENCH_RECOMP
@@ -99,7 +102,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
      * @param text The text
      * @param rlslp The rlslp
      */
-    void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -178,8 +181,9 @@ class sequential_recompression : public recompression<variable_t, terminal_count
         block_count = sort_blocks.size();
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + block_count);
-        rlslp.resize(nt_count + block_count, true);
-        rlslp.block_count += block_count;
+        rlslp.resize(nt_count + block_count/*, true*/);
+        rlslp.blocks += block_count;
+        bv.resize(rlslp.size(), true);
 
         auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
 
@@ -370,7 +374,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
  * @param text The text
  * @param rlslp The rlslp
  */
-    void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -450,6 +454,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
         auto nt_count = rlslp.non_terminals.size();
         rlslp.reserve(nt_count + pair_count);
         rlslp.resize(nt_count + pair_count);
+        bv.resize(rlslp.size(), false);
 
         variable_t next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
 
