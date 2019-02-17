@@ -1312,7 +1312,7 @@ TEST(fast_recomp, two_blocks) {
     text_t exp_text = {0};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 5;
+    exp_rlslp.root = 3;
     exp_rlslp.non_terminals.emplace_back(5, 4, 16);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);

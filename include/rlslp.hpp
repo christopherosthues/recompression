@@ -241,6 +241,9 @@ struct rlslp {
     }
 
     bool is_block(variable_t nt) const {
+        if (nt < terminals) {
+            return false;
+        }
         return nt - terminals >= blocks;
 //        if (nt < terminals) {
 //            return false;
