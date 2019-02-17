@@ -11,6 +11,7 @@ typedef recompression_hash<var_t, term_t>::text_t text_t;
 typedef recompression_hash<var_t, term_t>::adj_list_t adj_list_t;
 typedef recompression_hash<var_t, term_t>::partition_t partition_t;
 typedef recompression_hash<var_t, term_t>::alphabet_t alphabet_t;
+typedef recompression_hash<var_t, term_t>::bv_t bv_t;
 
 TEST(bcomp_hash, no_block) {
     text_t text = {2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1};
@@ -18,15 +19,18 @@ TEST(bcomp_hash, no_block) {
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
-    recomp.bcomp(text, rlslp);
+    bv_t bv;
+    recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = {2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
+    bv_t exp_bv;
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(bcomp_hash, 21214441332311413334133231141321) {
@@ -35,7 +39,8 @@ TEST(bcomp_hash, 21214441332311413334133231141321) {
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
-    recomp.bcomp(text, rlslp);
+    bv_t bv;
+    recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = {2, 1, 2, 1, 5, 1, 6, 2, 3, 7, 4, 1, 8, 4, 1, 6, 2, 3, 7, 4, 1, 3, 2, 1};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -45,10 +50,15 @@ TEST(bcomp_hash, 21214441332311413334133231141321) {
     exp_rlslp.non_terminals.emplace_back(3, 2, 2);
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
     exp_rlslp.non_terminals.emplace_back(3, 3, 3);
-    exp_rlslp.blocks = {true, true, true, true};
+    exp_rlslp.blocks = 4;
+    bv_t exp_bv{true, true, true, true};
+
+    std::cout << std::to_string(rlslp) << std::endl;
+    std::cout << std::to_string(exp_rlslp) << std::endl;
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(bcomp_hash, 222222222222222222222) {
@@ -57,17 +67,20 @@ TEST(bcomp_hash, 222222222222222222222) {
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
-    recomp.bcomp(text, rlslp);
+    bv_t bv;
+    recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = {3};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
     exp_rlslp.non_terminals.emplace_back(2, 21, 21);
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 1;
+    bv_t exp_bv{true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(bcomp_hash, 22222222211111112222) {
@@ -76,7 +89,8 @@ TEST(bcomp_hash, 22222222211111112222) {
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
-    recomp.bcomp(text, rlslp);
+    bv_t bv;
+    recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = {3, 4, 5};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -85,10 +99,12 @@ TEST(bcomp_hash, 22222222211111112222) {
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
-    exp_rlslp.blocks = {true, true, true};
+    exp_rlslp.blocks = 3;
+    bv_t exp_bv{true, true, true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(bcomp_hash, 2222222221111111222200) {
@@ -97,7 +113,8 @@ TEST(bcomp_hash, 2222222221111111222200) {
     recompression_hash<var_t, term_t> recomp;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
-    recomp.bcomp(text, rlslp);
+    bv_t bv;
+    recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = {3, 4, 5, 6};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -107,10 +124,12 @@ TEST(bcomp_hash, 2222222221111111222200) {
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
     exp_rlslp.non_terminals.emplace_back(0, 2, 2);
-    exp_rlslp.blocks = {true, true, true, true};
+    exp_rlslp.blocks = 4;
+    bv_t exp_bv{true, true, true, true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 
@@ -402,17 +421,20 @@ TEST(pcomp_hash, repeated_pair) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     rlslp.terminals = 3;
-    recomp.pcomp(text, rlslp);
+    bv_t bv;
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.non_terminals.emplace_back(2, 1, 2);
-    exp_rlslp.blocks = {false};
+    exp_rlslp.blocks = 0;
+    bv_t exp_bv{false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(pcomp_hash, repeated_pair_same_occ) {
@@ -420,17 +442,20 @@ TEST(pcomp_hash, repeated_pair_same_occ) {
     rlslp<var_t, term_t> rlslp;
     recompression_hash<var_t, term_t> recomp;
     rlslp.terminals = 3;
-    recomp.pcomp(text, rlslp);
+    bv_t bv;
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
-    exp_rlslp.blocks = {false};
+    exp_rlslp.blocks = 0;
+    bv_t exp_bv{false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(pcomp_hash, 212151623741841623741321) {
@@ -442,8 +467,9 @@ TEST(pcomp_hash, 212151623741841623741321) {
     rlslp.non_terminals.emplace_back(3, 2, 2);
     rlslp.non_terminals.emplace_back(1, 2, 2);
     rlslp.non_terminals.emplace_back(3, 3, 3);
-    rlslp.blocks = {true, true, true, true};
-    recomp.pcomp(text, rlslp);
+    rlslp.blocks = 4;
+    bv_t bv{true, true, true, true};
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{9, 9, 10, 6, 11, 7, 12, 8, 12, 6, 11, 7, 12, 3, 9};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -457,11 +483,12 @@ TEST(pcomp_hash, 212151623741841623741321) {
     exp_rlslp.non_terminals.emplace_back(5, 1, 4);
     exp_rlslp.non_terminals.emplace_back(2, 3, 2);
     exp_rlslp.non_terminals.emplace_back(4, 1, 2);
-
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false};
+    exp_rlslp.blocks = 4;
+    bv_t exp_bv{true, true, true, true, false, false, false, false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(pcomp_hash, 131061171281261171239) {
@@ -478,8 +505,9 @@ TEST(pcomp_hash, 131061171281261171239) {
     rlslp.non_terminals.emplace_back(2, 3, 2);
     rlslp.non_terminals.emplace_back(4, 1, 2);
     rlslp.non_terminals.emplace_back(9, 2, 4);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true};
-    recomp.pcomp(text, rlslp);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true};
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{14, 15, 16, 17, 15, 16, 18};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -499,10 +527,12 @@ TEST(pcomp_hash, 131061171281261171239) {
     exp_rlslp.non_terminals.emplace_back(7, 12, 4);
     exp_rlslp.non_terminals.emplace_back(8, 12, 5);
     exp_rlslp.non_terminals.emplace_back(3, 9, 3);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(pcomp_hash, 14151617151618) {
@@ -524,8 +554,9 @@ TEST(pcomp_hash, 14151617151618) {
     rlslp.non_terminals.emplace_back(7, 12, 4);
     rlslp.non_terminals.emplace_back(8, 12, 5);
     rlslp.non_terminals.emplace_back(3, 9, 3);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false};
-    recomp.pcomp(text, rlslp);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false};
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{19, 16, 20, 21};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -548,11 +579,13 @@ TEST(pcomp_hash, 14151617151618) {
     exp_rlslp.non_terminals.emplace_back(14, 15, 12);
     exp_rlslp.non_terminals.emplace_back(17, 15, 9);
     exp_rlslp.non_terminals.emplace_back(16, 18, 7);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
+                false, false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(pcomp_hash, 19162021) {
@@ -577,9 +610,10 @@ TEST(pcomp_hash, 19162021) {
     rlslp.non_terminals.emplace_back(14, 15, 12);
     rlslp.non_terminals.emplace_back(17, 15, 9);
     rlslp.non_terminals.emplace_back(16, 18, 7);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
-                    false, false};
-    recomp.pcomp(text, rlslp);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false, false,
+            false};
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{22, 23};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -604,11 +638,13 @@ TEST(pcomp_hash, 19162021) {
     exp_rlslp.non_terminals.emplace_back(16, 18, 7);
     exp_rlslp.non_terminals.emplace_back(19, 16, 16);
     exp_rlslp.non_terminals.emplace_back(20, 21, 16);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
+                false, false, false, false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 TEST(pcomp_hash, 2223) {
@@ -635,9 +671,10 @@ TEST(pcomp_hash, 2223) {
     rlslp.non_terminals.emplace_back(16, 18, 7);
     rlslp.non_terminals.emplace_back(19, 16, 16);
     rlslp.non_terminals.emplace_back(20, 21, 16);
-    rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
-                    false, false, false, false};
-    recomp.pcomp(text, rlslp);
+    rlslp.blocks = 5;
+    bv_t bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false, false,
+            false, false, false};
+    recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text{24};
     recomp::rlslp<var_t, term_t> exp_rlslp;
@@ -663,11 +700,13 @@ TEST(pcomp_hash, 2223) {
     exp_rlslp.non_terminals.emplace_back(19, 16, 16);
     exp_rlslp.non_terminals.emplace_back(20, 21, 16);
     exp_rlslp.non_terminals.emplace_back(22, 23, 32);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false, false, false, false};
+    exp_rlslp.blocks = 5;
+    bv_t exp_bv{true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
+                false, false, false, false, false};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
+    ASSERT_EQ(exp_bv, bv);
 }
 
 
@@ -722,7 +761,7 @@ TEST(recomp_hash, short_block2) {
     exp_rlslp.root = 113;
     exp_rlslp.non_terminals.emplace_back(112, 2, 2);
     exp_rlslp.is_empty = false;
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 0;  // {true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -742,7 +781,7 @@ TEST(recomp_hash, short_block3) {
     exp_rlslp.root = 113;
     exp_rlslp.non_terminals.emplace_back(112, 3, 3);
     exp_rlslp.is_empty = false;
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 0;  // {true};
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -759,30 +798,54 @@ TEST(recomp_hash, recompression) {
 
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 24;
+    exp_rlslp.root = 19;
+    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
+    exp_rlslp.non_terminals.emplace_back(20, 1, 4);
+    exp_rlslp.non_terminals.emplace_back(2, 3, 2);
+    exp_rlslp.non_terminals.emplace_back(4, 1, 2);
+    exp_rlslp.non_terminals.emplace_back(24, 6, 8);
+    exp_rlslp.non_terminals.emplace_back(21, 7, 4);
+    exp_rlslp.non_terminals.emplace_back(22, 8, 4);
+    exp_rlslp.non_terminals.emplace_back(23, 8, 5);
+    exp_rlslp.non_terminals.emplace_back(3, 5, 3);
+    exp_rlslp.non_terminals.emplace_back(9, 10, 12);
+    exp_rlslp.non_terminals.emplace_back(12, 10, 9);
+    exp_rlslp.non_terminals.emplace_back(11, 13, 7);
+    exp_rlslp.non_terminals.emplace_back(14, 11, 16);
+    exp_rlslp.non_terminals.emplace_back(15, 16, 16);
+    exp_rlslp.non_terminals.emplace_back(17, 18, 32);
     exp_rlslp.non_terminals.emplace_back(4, 3, 3);
     exp_rlslp.non_terminals.emplace_back(3, 2, 2);
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
     exp_rlslp.non_terminals.emplace_back(3, 3, 3);
-    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
-    exp_rlslp.non_terminals.emplace_back(5, 1, 4);
-    exp_rlslp.non_terminals.emplace_back(2, 3, 2);
-    exp_rlslp.non_terminals.emplace_back(4, 1, 2);
-    exp_rlslp.non_terminals.emplace_back(9, 2, 4);
-    exp_rlslp.non_terminals.emplace_back(13, 10, 8);
-    exp_rlslp.non_terminals.emplace_back(6, 11, 4);
-    exp_rlslp.non_terminals.emplace_back(7, 12, 4);
-    exp_rlslp.non_terminals.emplace_back(8, 12, 5);
-    exp_rlslp.non_terminals.emplace_back(3, 9, 3);
-    exp_rlslp.non_terminals.emplace_back(14, 15, 12);
-    exp_rlslp.non_terminals.emplace_back(17, 15, 9);
-    exp_rlslp.non_terminals.emplace_back(16, 18, 7);
-    exp_rlslp.non_terminals.emplace_back(19, 16, 16);
-    exp_rlslp.non_terminals.emplace_back(20, 21, 16);
-    exp_rlslp.non_terminals.emplace_back(22, 23, 32);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
-                        false, false, false, false, false, false};
+    exp_rlslp.non_terminals.emplace_back(5, 2, 4);
+//    exp_rlslp.non_terminals.emplace_back(4, 3, 3);    5   20
+//    exp_rlslp.non_terminals.emplace_back(3, 2, 2);    6   21
+//    exp_rlslp.non_terminals.emplace_back(1, 2, 2);    7   22
+//    exp_rlslp.non_terminals.emplace_back(3, 3, 3);    8   23
+//    exp_rlslp.non_terminals.emplace_back(2, 1, 2);    9   5
+//    exp_rlslp.non_terminals.emplace_back(5, 1, 4);    10  6
+//    exp_rlslp.non_terminals.emplace_back(2, 3, 2);    11  7
+//    exp_rlslp.non_terminals.emplace_back(4, 1, 2);    12  8
+//    exp_rlslp.non_terminals.emplace_back(9, 2, 4);    13  24
+//    exp_rlslp.non_terminals.emplace_back(13, 10, 8);  14  9
+//    exp_rlslp.non_terminals.emplace_back(6, 11, 4);   15  10
+//    exp_rlslp.non_terminals.emplace_back(7, 12, 4);   16  11
+//    exp_rlslp.non_terminals.emplace_back(8, 12, 5);   17  12
+//    exp_rlslp.non_terminals.emplace_back(3, 9, 3);    18  13
+//    exp_rlslp.non_terminals.emplace_back(14, 15, 12); 19  14
+//    exp_rlslp.non_terminals.emplace_back(17, 15, 9);  20  15
+//    exp_rlslp.non_terminals.emplace_back(16, 18, 7);  21  16
+//    exp_rlslp.non_terminals.emplace_back(19, 16, 16); 22  17
+//    exp_rlslp.non_terminals.emplace_back(20, 21, 16); 23  18
+//    exp_rlslp.non_terminals.emplace_back(22, 23, 32); 24  19
+    exp_rlslp.blocks = 15;
+//    {true, true, true, true, false, false, false, false, true, false, false, false, false, false,
+//                        false, false, false, false, false, false};
     exp_rlslp.is_empty = false;
+
+    std::cout << std::to_string(rlslp) << std::endl;
+    std::cout << std::to_string(exp_rlslp) << std::endl;
 
     ASSERT_EQ(exp_text, text);
     ASSERT_EQ(exp_rlslp, rlslp);
@@ -801,7 +864,7 @@ TEST(recomp_hash, one_block) {
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
     exp_rlslp.non_terminals.emplace_back(2, 21, 21);
-    exp_rlslp.blocks = {true};
+    exp_rlslp.blocks = 0;  // {true};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -819,11 +882,14 @@ TEST(recomp_hash, two_blocks) {
     text_t exp_text = {5};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 5;
+    exp_rlslp.root = 3;
+    exp_rlslp.non_terminals.emplace_back(4, 5, 16);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
-    exp_rlslp.non_terminals.emplace_back(3, 4, 16);
-    exp_rlslp.blocks = {true, true, false};
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
+//    exp_rlslp.non_terminals.emplace_back(3, 4, 16);
+    exp_rlslp.blocks = 1;  // {true, true, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -841,13 +907,18 @@ TEST(recomp_hash, three_blocks) {
     text_t exp_text = {7};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 7;
+    exp_rlslp.root = 4;
+    exp_rlslp.non_terminals.emplace_back(5, 6, 16);
+    exp_rlslp.non_terminals.emplace_back(3, 7, 20);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
-    exp_rlslp.non_terminals.emplace_back(3, 4, 16);
-    exp_rlslp.non_terminals.emplace_back(6, 5, 20);
-    exp_rlslp.blocks = {true, true, true, false, false};
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);    3   5
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);    4   6
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 4);    5   7
+//    exp_rlslp.non_terminals.emplace_back(3, 4, 16);   6   3
+//    exp_rlslp.non_terminals.emplace_back(6, 5, 20);   7   4
+    exp_rlslp.blocks = 2;  // {true, true, true, false, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -865,15 +936,22 @@ TEST(recomp_hash, four_blocks) {
     text_t exp_text = {9};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 9;
+    exp_rlslp.root = 5;
+    exp_rlslp.non_terminals.emplace_back(6, 7, 16);
+    exp_rlslp.non_terminals.emplace_back(8, 9, 6);
+    exp_rlslp.non_terminals.emplace_back(3, 4, 22);
     exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.non_terminals.emplace_back(1, 7, 7);
     exp_rlslp.non_terminals.emplace_back(2, 4, 4);
     exp_rlslp.non_terminals.emplace_back(0, 2, 2);
-    exp_rlslp.non_terminals.emplace_back(3, 4, 16);
-    exp_rlslp.non_terminals.emplace_back(5, 6, 6);
-    exp_rlslp.non_terminals.emplace_back(7, 8, 22);
-    exp_rlslp.blocks = {true, true, true, true, false, false, false};
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);    3   6
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);    4   7
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 4);    5   8
+//    exp_rlslp.non_terminals.emplace_back(0, 2, 2);    6   9
+//    exp_rlslp.non_terminals.emplace_back(3, 4, 16);   7   3
+//    exp_rlslp.non_terminals.emplace_back(5, 6, 6);    8   4
+//    exp_rlslp.non_terminals.emplace_back(7, 8, 22);   9   5
+    exp_rlslp.blocks = 3;  // {true, true, true, true, false, false, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -894,7 +972,7 @@ TEST(recomp_hash, repeated_pair) {
     exp_rlslp.root = 4;
     exp_rlslp.non_terminals.emplace_back(2, 1, 2);
     exp_rlslp.non_terminals.emplace_back(3, 11, 22);
-    exp_rlslp.blocks = {false, true};
+    exp_rlslp.blocks = 1;  // {false, true};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);
@@ -911,11 +989,14 @@ TEST(recomp_hash, repeated_pair_same_occ) {
     text_t exp_text = {5};
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
-    exp_rlslp.root = 5;
+    exp_rlslp.root = 4;
     exp_rlslp.non_terminals.emplace_back(1, 2, 2);
+    exp_rlslp.non_terminals.emplace_back(2, 5, 23);
     exp_rlslp.non_terminals.emplace_back(3, 11, 22);
-    exp_rlslp.non_terminals.emplace_back(2, 4, 23);
-    exp_rlslp.blocks = {false, true, false};
+//    exp_rlslp.non_terminals.emplace_back(1, 2, 2);    3   3
+//    exp_rlslp.non_terminals.emplace_back(3, 11, 22);  4   5
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 23);   5   4
+    exp_rlslp.blocks = 2;  // {false, true, false};
     exp_rlslp.is_empty = false;
 
     ASSERT_EQ(exp_text, text);

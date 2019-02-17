@@ -23,6 +23,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
 //    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
 //    typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::array<std::unordered_map<std::pair<variable_t, variable_t>, size_t, pair_hash>, 2> adj_list_comp_t;
@@ -58,13 +59,14 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
         const auto startTime = recomp::timer::now();
 #endif
         rlslp.terminals = alphabet_size;
+        bv_t bv;
 
         while (text.size() > 1) {
-            bcomp(text, rlslp);
+            bcomp(text, rlslp, bv);
             this->level++;
 
             if (text.size() > 1) {
-                pcomp(text, rlslp);
+                pcomp(text, rlslp, bv);
                 this->level++;
             }
         }
@@ -73,6 +75,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 //            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
+            this->rename_rlslp(rlslp, bv);
         }
 
 #ifdef BENCH_RECOMP
@@ -95,7 +98,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
      * @param text[in,out] The text
      * @param rlslp[in,out] The rlslp
      */
-    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp) {
+    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -161,7 +164,9 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
 #endif
 
         if (blocks.size() > 0) {
-            rlslp.blocks.resize(rlslp.blocks.size() + blocks.size(), true);
+//            rlslp.blocks.resize(rlslp.blocks.size() + blocks.size(), true);
+            rlslp.blocks += blocks.size();
+            bv.resize(rlslp.size(), true);
         }
 
         text.resize(new_text_size);
@@ -371,8 +376,7 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
-    inline void pcomp(text_t& text,
-                      rlslp<variable_t, terminal_count_t>& rlslp) {
+    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -445,7 +449,8 @@ class recompression_hash : public recompression<variable_t, terminal_count_t> {
                   << " elements=" << pairs.size() << " pairs=" << pair_count;
 #endif
 
-        rlslp.blocks.resize(rlslp.blocks.size() + pairs.size(), false);
+//        rlslp.blocks.resize(rlslp.blocks.size() + pairs.size(), false);
+        bv.resize(rlslp.size(), false);
 
         text.resize(new_text_size);
         text.shrink_to_fit();
