@@ -93,7 +93,7 @@ class recompression {
         const auto endTimeRlslp = recomp::timer::now();
         const auto timeSpanRlslp = endTimeRlslp - startTimeRlslp;
         std::cout << "RESULT algo=" << this->name << "_rlslp dataset=" << this->dataset << " blocks="
-                  << (rlslp.size() - rlslp.blocks) << " time="
+                  << (rlslp.size() - rlslp.blocks) << " cores=" << this->cores << " time="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRlslp).count() << std::endl;
 #endif
     }
