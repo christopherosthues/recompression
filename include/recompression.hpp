@@ -20,6 +20,7 @@ class recompression {
     std::string name;
     std::string dataset = "data";
     size_t level = 0;
+    size_t cores = 1;
 
     inline recompression() = default;
 
@@ -71,6 +72,7 @@ class recompression {
                 }
             }
 
+#pragma omp parallel for schedule(static) num_threads(cores)
             for (size_t i = 0; i < rlslp.blocks; ++i) {
                 if (!rlslp.is_terminal(rlslp[i].first())) {
                     rlslp[i].first() = renamed[rlslp[i].first() - rlslp.terminals];
@@ -79,6 +81,7 @@ class recompression {
                     rlslp[i].second() = renamed[rlslp[i].second() - rlslp.terminals];
                 }
             }
+#pragma omp parallel for schedule(static) num_threads(cores)
             for (size_t i = 0; i < renamed_rules.size(); ++i) {
                 if (!rlslp.is_terminal(renamed_rules[i].first())) {
                     renamed_rules[i].first() = renamed[renamed_rules[i].first() - rlslp.terminals];
