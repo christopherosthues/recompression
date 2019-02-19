@@ -356,18 +356,17 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 //                }
 //            }
 //        }
-#ifdef BENCH
-            const auto endTimeCompact = recomp::timer::now();
-            const auto timeSpanCompact = endTimeCompact - startTimeCompact;
-            std::cout << " compact_text="
-                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
-#endif
-
             text = std::move(new_text);
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
             text.shrink_to_fit();
         }
+#ifdef BENCH
+        const auto endTimeCompact = recomp::timer::now();
+        const auto timeSpanCompact = endTimeCompact - startTimeCompact;
+        std::cout << " compact_text="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
+#endif
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
