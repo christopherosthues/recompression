@@ -650,33 +650,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //#endif
 
         part_l = rl_count > lr_count;
-//        if (rl_count > lr_count) {
-//#ifdef BENCH
-//            const auto startTimeSwap = recomp::timer::now();
-//#endif
-//#pragma omp parallel num_threads(this->cores)
-//            {
-//#pragma omp single
-//                {
-//                    for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
-//#pragma omp task
-//                        {
-//                            (*iter).second = !(*iter).second;
-//                        }
-//                    }
-//                }
-//            }
-//#ifdef BENCH
-//            const auto endTimeSwap = recomp::timer::now();
-//            const auto timeSpanSwap = endTimeSwap - startTimeSwap;
-//            std::cout << " swap="
-//                      << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSwap).count();
-//#endif
-//        } else {
-//#ifdef BENCH
-//            std::cout << " swap=0";
-//#endif
-//        }
+
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
@@ -698,16 +672,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                   << " level=" << this->level << " cores=" << this->cores;
 #endif
         partition_t partition;
-//        for (size_t i = 0; i < text.size(); ++i) {
-//            partition[text[i]] = false;
-//        }
-//
-//#ifdef BENCH
-//        const auto endTimeCreate = recomp::timer::now();
-//        const auto timeSpanCreate = endTimeCreate - startTime;
-//        std::cout << " alphabet=" << partition.size() << " create_partition="
-//                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCreate).count();
-//#endif
         adj_list_t adj_list(text.size() - 1);
         compute_adj_list(text, adj_list);
 
@@ -720,7 +684,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
         std::unordered_map<pair_t, variable_t, pair_hash> pairs;
         std::vector<pair_position_t> positions;
-//        std::vector<std::vector<pair_position_t>> positions;
 
         std::vector<size_t> bounds;
         std::vector<size_t> pair_counts;
@@ -733,8 +696,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp single
             {
-//                positions.resize(n_threads);
-
                 bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
@@ -764,13 +725,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     auto pair = std::make_pair(text[i], text[i + 1]);
                     t_pairs[pair] = 1;
                     t_positions.emplace_back(i);
-//                    positions[thread_id].emplace_back(i);
                     pair_count++;
                     pair_counts[thread_id + 1]++;
                 }
             }
 
-//            bounds[thread_id + 1] = positions[thread_id].size();
             bounds[thread_id + 1] = t_positions.size();
 #pragma omp barrier
 #pragma omp single
@@ -797,7 +756,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp critical
             pairs.insert(t_pairs.begin(), t_pairs.end());
-            // TODO(Chris): maybe use std::vector, sort it and than make pairs unique, possibly better scaling
         }
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
@@ -936,54 +894,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             {
                 auto thread_id = omp_get_thread_num();
                 size_t copy_i = pair_counts[thread_id];
-//                size_t j = 0;
-//                pair_position_t act_pos = text.size();
-//                if (!positions[thread_id].empty()) {
-//                    act_pos = positions[thread_id][j];
-//                }
-//                size_t i = compact_bounds[thread_id];
-//                if (i < compact_bounds[thread_id + 1]) {
-//#pragma omp critical
-//                    {
-//                        if (i > 0) {
-//                            std::cout << "i: " << i << " last pos: "
-//                                      << positions[thread_id - 1][positions[thread_id - 1].size() - 1] << " by "
-//                                      << thread_id << std::endl;
-//                        }
-//                    }
-//                    // TODO(Chris): problem if positions[thread - 1] is empty
-//                    if (i > 0 && i - 1 == positions[thread_id - 1][positions[thread_id - 1].size() - 1]) {
-//                        i++;
-//                    }
-//                }
-//                for (; i < compact_bounds[thread_id + 1]; ++i) {
-//#pragma omp critical
-//                    {
-//                        std::cout << "i: " << i << " thread: " << thread_id << std::endl;
-//                    }
-//                    if (j < positions[thread_id].size() && act_pos == i) {
-//#pragma omp critical
-//                        {
-//                            std::cout << "Replace: i: " << i << ", text: " << text[i] << ", act: " << act_pos << " by "
-//                                      << thread_id << ", copy: " << copy_i << std::endl;
-//                        }
-//                        new_text[copy_i++] = pairs[std::make_pair(text[i], text[i + 1])];
-//                        i++;
-//                        j++;
-//                        if (j < positions[thread_id].size()) {
-//                            act_pos = positions[thread_id][j];
-//                        }
-//                    } else {
-////                    if (text[i] != DELETED) {
-//#pragma omp critical
-//                        {
-//                            std::cout << "Copy: " << copy_i << ", i: " << i << ", text: " << text[i] << " by " << thread_id
-//                                      << std::endl;
-//                        }
-//                        new_text[copy_i++] = text[i];
-//                    }
-//                }
-//            }
                 for (size_t i = compact_bounds[thread_id]; i < compact_bounds[thread_id + 1]; ++i) {
                     if (text[i] != DELETED) {
                         new_text[copy_i++] = text[i];
@@ -991,19 +901,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 }
             }
 
-//        if (new_text_size > 1 && pair_count > 0) {
-//            size_t copy_i = positions[0] + 1;
-//            size_t i = positions[0] + 2;  // jump to first position to copy
-//
-//            for (; i < text.size(); ++i) {
-//                if (text[i] != DELETED) {
-//                    text[copy_i++] = text[i];
-//                }
-//            }
-//        }
             text = std::move(new_text);
         } else if (new_text_size == 1) {
-//            text[0] = pairs[std::make_pair(text[0], text[1])];
             text.resize(new_text_size);
             text.shrink_to_fit();
         }
