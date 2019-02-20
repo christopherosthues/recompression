@@ -147,7 +147,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 block_overlaps.resize(n_threads, 0);
             }
             std::vector<position_t> t_positions;
-//            bool begin = true;
             bool add = false;
 
 #pragma omp for schedule(static)
@@ -166,15 +165,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             }
 #pragma omp barrier
 
-//#pragma omp single
-//            {
-//                std::cout << std::endl << "compact: ";
-//                for (size_t k = 0; k < compact_bounds.size(); ++k) {
-//                    std::cout << compact_bounds[k] << ", ";
-//                }
-//                std::cout << std::endl;
-//            }
-
             size_t i = compact_bounds[thread_id];
             if (i > 0 && i < compact_bounds[thread_id + 1]) {
                 while (i < text.size() - 1 && text[i] == text[i + 1]) {
@@ -182,16 +172,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     i++;
                 }
                 if (!add) {
-//#pragma omp critical
-//                    {std::cout << "skipping block (" << text[i] << "," << block_len << ") by " << thread_id << std::endl;}
                     block_overlaps[thread_id] = block_len;
                     block_len = 1;
                     add = true;
                 }
                 if (block_len > 1) {
-//#pragma omp critical
-//                    {std::cout << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
-//                               << " by thread " << thread_id << std::endl;}
                     t_positions.emplace_back(block_len, i - block_len + 1);
                     block_count++;
                     block_counts[thread_id + 1] += block_len - 1;
@@ -200,18 +185,12 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 i++;
             }
 
-//#pragma omp critical
-//            {std::cout << "i: " << i << " by " << thread_id << std::endl;}
-
             for (; i < compact_bounds[thread_id + 1]; ++i) {
                 while (i < text.size() - 1 && text[i] == text[i + 1]) {
                     block_len++;
                     i++;
                 }
                 if (block_len > 1) {
-//#pragma omp critical
-//                    {std::cout << "Block (" << text[i] << "," << block_len << ") found at " << (i - block_len + 1)
-//                               << " by thread " << thread_id << std::endl;}
                     t_positions.emplace_back(block_len, i - block_len + 1);
                     block_count++;
                     block_counts[thread_id + 1] += block_len - 1;
@@ -249,12 +228,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
 
-//        std::cout << std::endl << "Blocks: ";
-//        for (const auto& block : positions) {
-//            std::cout << "(" << text[block.second] << ", " << block.first << ", " << block.second << "),";
-//        }
-//        std::cout << std::endl;
-
         if (!positions.empty()) {
 #ifdef BENCH
             const auto startTimeSort = recomp::timer::now();
@@ -276,13 +249,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                       << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count());
 #endif
 
-//            std::cout << std::endl << "sorted blocks: ";
-//            for (const auto& block : positions) {
-//                std::cout << "(" << text[block.second] << ", " << block.first << ", " << block.second << "),";
-//            }
-//            std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
 
-
+#ifdef BENCH
+            const auto startTimeRules = recomp::timer::now();
+#endif
             auto nt_count = rlslp.non_terminals.size();
             auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
 
@@ -320,16 +290,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp barrier
                 for (; i < assign_bounds[thread_id + 1]; ++i) {
-//#pragma omp critical
-//                    {
-//                        std::cout << "i: " << i << " by " << thread_id << std::endl;
-//                    }
                     if (positions[i].first != positions[i - 1].first ||
                         text[positions[i].second] != text[positions[i - 1].second]) {
-//#pragma omp critical
-//                        {
-//                            std::cout << "found distinct: " << i << " by " << thread_id << std::endl;
-//                        }
                         distinct_blocks[thread_id + 1]++;
                     }
                 }
@@ -341,63 +303,35 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                         distinct_blocks[j] += distinct_blocks[j - 1];
                     }
 
-//                    std::cout << "assign bounds: ";
-//                    for (size_t k = 0; k < assign_bounds.size(); ++k) {
-//                        std::cout << assign_bounds[k] << ", ";
-//                    }
-//                    std::cout << std::endl << "distinct blocks: ";
-//                    for (size_t k = 0; k < distinct_blocks.size(); ++k) {
-//                        std::cout << distinct_blocks[k] << ", ";
-//                    }
-//                    std::cout << std::endl;
-
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
                     rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
-
-//                    std::cout << "bc: " << bc << std::endl;
-//                    std::cout << "rlslp_size: " << rlslp_size << std::endl;
-//                    std::cout << "next_nt: " << next_nt << std::endl;
-//                    std::cout << "nt_count: " << nt_count << std::endl;
                 }
 
                 i = assign_bounds[thread_id];
-                auto last_var = next_nt + distinct_blocks[thread_id] - 1;  // TODO: catch case that block with text[position[i-1]] = text[position[i]]
+                auto last_var = next_nt + distinct_blocks[thread_id] - 1;
                 variable_t last_char = 0;
                 if (i > 0 && i < assign_bounds[thread_id + 1]) {
                     last_char = text[positions[i - 1].second];
                 }
 #pragma omp barrier
 
-//#pragma omp critical
-//                {
-//                    std::cout << "last: " << last_var << ", i: " << i << " by " << thread_id << std::endl;
-//                }
-
                 size_t j = 0;
                 if (thread_id == 0) {
                     last_char = text[positions[i].second];
                     auto b_len = positions[i].first;
                     auto len = b_len;
-//#pragma omp critical
-//                    {
-//                        std::cout << "(" << last_char << ", " << b_len << ") by " << thread_id << std::endl;
-//                    }
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
                     rlslp[nt_count + distinct_blocks[thread_id] + j] = recomp::rlslp<>::non_terminal(last_char, b_len,
                                                                                                      len);
                     j++;
-                    last_var++;  // = next_nt + distinct_blocks[thread_id] + j;
+                    last_var++;
                     text[positions[i].second] = last_var;
-//#pragma omp critical
-//                    {
-//                        std::cout << "Set pos " << positions[i].second << " to " << last_var << " by " << thread_id << std::endl;
-//                    }
                     for (size_t k = 1; k < b_len; ++k) {
                         text[positions[i].second + k] = DELETED;
                     }
@@ -407,16 +341,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 for (; i < assign_bounds[thread_id + 1]; ++i) {
                     auto char_i = text[positions[i].second];
                     auto b_len = positions[i].first;
-//#pragma omp critical
-//                    {
-//                        std::cout << "(" << char_i << ", " << b_len << "), (" << text[positions[i - 1].second] << ", " << positions[i - 1].first << ") by " << thread_id << std::endl;
-//                    }
                     if (char_i == last_char && b_len == positions[i - 1].first) {
                         text[positions[i].second] = last_var;
-//#pragma omp critical
-//                        {
-//                            std::cout << "Set pos " << positions[i].second << " to " << last_var << " by " << thread_id << std::endl;
-//                        }
                     } else {
                         auto len = b_len;
                         if (char_i >= rlslp.terminals) {
@@ -425,76 +351,22 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                         rlslp[nt_count + distinct_blocks[thread_id] + j] = recomp::rlslp<>::non_terminal(char_i, b_len,
                                                                                                          len);
                         j++;
-                        last_var++;  // = next_nt + distinct_blocks[thread_id] + j;
+                        last_var++;
                         text[positions[i].second] = last_var;
                         last_char = char_i;
-//#pragma omp critical
-//                        {
-//                            std::cout << "Set pos " << positions[i].second << " to " << last_var << " by " << thread_id << std::endl;
-//                        }
                     }
                     for (size_t k = 1; k < b_len; ++k) {
                         text[positions[i].second + k] = DELETED;
                     }
                 }
             }
-
 #ifdef BENCH
-        std::cout << " elements=" << distinct_blocks[distinct_blocks.size() - 1] << " blocks=" << block_count;
+            const auto endTimeRules = recomp::timer::now();
+            const auto timeSpanRules = endTimeRules - startTimeRules;
+            std::cout << " block_rules="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count())
+                      << " elements=" << distinct_blocks[distinct_blocks.size() - 1] << " blocks=" << block_count;
 #endif
-
-//#ifdef BENCH
-//        const auto startTimeAss = recomp::timer::now();
-//#endif
-//        block_count = sort_blocks.size();
-//        auto nt_count = rlslp.non_terminals.size();
-//        rlslp.reserve(nt_count + block_count);
-//        rlslp.resize(nt_count + block_count/*, true*/);
-//        rlslp.blocks += block_count;
-//        bv.resize(nt_count + block_count, true);
-////        rlslp.block_count += block_count;
-//
-//        auto next_nt = rlslp.terminals + static_cast<variable_t>(nt_count);
-//
-//#pragma omp parallel for schedule(static) num_threads(this->cores)
-//        for (size_t i = 0; i < sort_blocks.size(); ++i) {
-////            DLOG(INFO) << "Adding production rule " << next_nt + i << " -> (" << sort_blocks[i].first << ","
-////                       << sort_blocks[i].second << ") at index " << nt_count + i;
-//            blocks[sort_blocks[i]] = next_nt + static_cast<variable_t>(i);
-//            auto len = static_cast<size_t>(sort_blocks[i].second);
-//            if (sort_blocks[i].first >= rlslp.terminals) {
-//                len *= rlslp[sort_blocks[i].first - rlslp.terminals].len;
-//            }
-//            rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_blocks[i].first, sort_blocks[i].second, len);
-//        }
-//#ifdef BENCH
-//        const auto endTimeAss = recomp::timer::now();
-//        const auto timeSpanAss = endTimeAss - startTimeAss;
-//        std::cout << " block_rules="
-//                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
-//#endif
-
-
-//        std::cout << std::endl << "compact_bounds: ";
-//        for (size_t i = 0; i < compact_bounds.size(); ++i) {
-//            std::cout << compact_bounds[i] << ", ";
-//        }
-//        std::cout << std::endl << "block_counts: ";
-//        for (size_t i = 0; i < block_counts.size(); ++i) {
-//            std::cout << block_counts[i] << ", ";
-//        }
-//        std::cout << std::endl << "positions: ";
-//        for (size_t i = 0; i < positions.size(); ++i) {
-//            for (size_t j = 0; j < positions[i].size(); ++j) {
-//                std::cout << "(" << positions[i][j].first << ", " << positions[i][j].second << "), ";
-//            }
-//        }
-//        std::cout << std::endl << "map: ";
-//        for (const auto& b : blocks) {
-//            std::cout << "(" << b.first.first << "," << b.first.second << ")->" << b.second << "; " << std::endl;
-//        }
-//
-//        std::cout << util::text_vector_to_string(text) << std::endl;
 
 #ifdef BENCH
             const auto startTimeCompact = recomp::timer::now();
@@ -516,16 +388,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     }
                 }
 
-//        if (new_text_size > 1 && block_count > 0) {
-//            size_t copy_i = positions[0].second + 1;
-//            size_t i = positions[0].second + positions[0].first;  // jump to first position to copy
-//
-//            for (; i < text.size(); ++i) {
-//                if (text[i] != DELETED) {
-//                    text[copy_i++] = text[i];
-//                }
-//            }
-//        }
                 text = std::move(new_text);
             } else if (new_text_size == 1) {
                 text.resize(new_text_size);
@@ -537,13 +399,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             std::cout << " compact_text="
                       << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
 #endif
-        } else {
 #ifdef BENCH
-            std::cout << " sort=0 elements=0 blocks=0 compact_text=0";
+        } else {
+            std::cout << " sort=0 block_rules=0 elements=0 blocks=0 compact_text=0";
 #endif
         }
-
-//        std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
