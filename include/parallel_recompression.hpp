@@ -750,6 +750,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     pair_counts[j] += pair_counts[j - 1];
                 }
                 positions.resize(positions.size() + bounds[n_threads]);
+
+                std::cout << std::endl << "pair_counts: ";
+                for (size_t j = 0; j < pair_counts.size(); ++j) {
+                    std::cout << pair_counts[j] << ", ";
+                }
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
@@ -765,6 +770,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 }
             }
         }
+        std::cout << std::endl << "overlaps: ";
+        for (size_t i = 0; i < pair_overlaps.size(); ++i) {
+            std::cout << pair_overlaps[i] << ", ";
+        }
+        std::cout << std::endl;
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
@@ -773,6 +783,16 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 #endif
+
+        std::cout << std::endl << "compact_bounds: ";
+        for (size_t i = 0; i < compact_bounds.size(); ++i) {
+            std::cout << compact_bounds[i] << ", ";
+        }
+        std::cout << std::endl << "pair_counts: ";
+        for (size_t i = 0; i < pair_counts.size(); ++i) {
+            std::cout << pair_counts[i] << ", ";
+        }
+        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeSort = recomp::timer::now();
