@@ -690,7 +690,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
         std::vector<pair_position_t> positions;
 
-        std::cout << std::endl << "Partition finished" << std::endl;
+//        std::cout << std::endl << "Partition finished" << std::endl;
 
         std::vector<size_t> bounds;
         std::vector<size_t> pair_counts;
