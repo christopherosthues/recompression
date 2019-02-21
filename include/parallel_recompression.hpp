@@ -727,10 +727,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             }
 #pragma omp barrier
 
-#pragma omp single
-            {
-                std::cout << "compact bounds finished" << std::endl;
-            }
+//#pragma omp single
+//            {
+//                std::cout << "compact bounds finished" << std::endl;
+//            }
 
             size_t i = compact_bounds[thread_id];
             for (; i < compact_bounds[thread_id + 1]; ++i) {
@@ -740,10 +740,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     pair_counts[thread_id + 1]++;
                 }
             }
-#pragma omp single
-            {
-                std::cout << "find finished" << std::endl;
-            }
+//#pragma omp single
+//            {
+//                std::cout << "find finished" << std::endl;
+//            }
 
             bounds[thread_id + 1] = t_positions.size();
 
@@ -757,17 +757,17 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 }
                 positions.resize(positions.size() + bounds[n_threads]);
 
-                std::cout << std::endl << "pair_counts: ";
-                for (size_t j = 0; j < pair_counts.size(); ++j) {
-                    std::cout << pair_counts[j] << ", ";
-                }
+//                std::cout << std::endl << "pair_counts: ";
+//                for (size_t j = 0; j < pair_counts.size(); ++j) {
+//                    std::cout << pair_counts[j] << ", ";
+//                }
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-#pragma omp single
-            {
-                std::cout << "copy finished" << std::endl;
-            }
+//#pragma omp single
+//            {
+//                std::cout << "copy finished" << std::endl;
+//            }
 
             if (compact_bounds[thread_id] == text.size() - 1) {
                 compact_bounds[thread_id] = text.size();
@@ -789,11 +789,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 }
             }
         }
-        std::cout << std::endl << "overlaps: ";
-        for (size_t i = 0; i < pair_overlaps.size(); ++i) {
-            std::cout << pair_overlaps[i] << ", ";
-        }
-        std::cout << std::endl;
+//        std::cout << std::endl << "overlaps: ";
+//        for (size_t i = 0; i < pair_overlaps.size(); ++i) {
+//            std::cout << pair_overlaps[i] << ", ";
+//        }
+//        std::cout << std::endl;
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
@@ -803,15 +803,15 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 #endif
 
-        std::cout << std::endl << "compact_bounds: ";
-        for (size_t i = 0; i < compact_bounds.size(); ++i) {
-            std::cout << compact_bounds[i] << ", ";
-        }
-        std::cout << std::endl << "pair_counts: ";
-        for (size_t i = 0; i < pair_counts.size(); ++i) {
-            std::cout << pair_counts[i] << ", ";
-        }
-        std::cout << std::endl;
+//        std::cout << std::endl << "compact_bounds: ";
+//        for (size_t i = 0; i < compact_bounds.size(); ++i) {
+//            std::cout << compact_bounds[i] << ", ";
+//        }
+//        std::cout << std::endl << "pair_counts: ";
+//        for (size_t i = 0; i < pair_counts.size(); ++i) {
+//            std::cout << pair_counts[i] << ", ";
+//        }
+//        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeSort = recomp::timer::now();
@@ -835,7 +835,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         std::cout << " sort="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count());
 #endif
-        std::cout << std::endl;
+//        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeRules = recomp::timer::now();
@@ -857,7 +857,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 assign_bounds[n_threads] = positions.size();
                 distinct_pairs.reserve(n_threads + 1);
                 distinct_pairs.resize(n_threads + 1, 0);
-                std::cout << "create assign" << std::endl;
+//                std::cout << "create assign" << std::endl;
             }
 
 #pragma omp for schedule(static)
@@ -876,10 +876,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 i++;
             }
 
-#pragma omp single
-            {
-                std::cout << "assign bounds finished" << std::endl;
-            }
+//#pragma omp single
+//            {
+//                std::cout << "assign bounds finished" << std::endl;
+//            }
 
 #pragma omp barrier
             for (; i < assign_bounds[thread_id + 1]; ++i) {
@@ -891,7 +891,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #pragma omp barrier
 #pragma omp single
             {
-                std::cout << "distinct pair in sections finised" << std::endl;
+//                std::cout << "distinct pair in sections finised" << std::endl;
                 for (size_t j = 1; j < distinct_pairs.size(); ++j) {
                     distinct_pairs[j] += distinct_pairs[j - 1];
                 }
@@ -902,8 +902,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
 
-                std::cout << "pc: " << pc << std::endl;
-                std::cout << "distinct pair finised" << std::endl;
+//                std::cout << "pc: " << pc << std::endl;
+//                std::cout << "distinct pair finised" << std::endl;
             }
 
             i = assign_bounds[thread_id];
