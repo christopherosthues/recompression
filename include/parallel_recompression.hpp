@@ -549,6 +549,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         if (!adj_list.empty()) {
             if (text[adj_list[0]] > text[adj_list[0] + 1]) {
                 val = text[adj_list[0]];
+                partition[text[adj_list[0] + 1]] = false;
 //                if (partition.find(val) == partition.end()) {
 //                    partition[val] = false;
 //                }
@@ -559,6 +560,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //                }
             } else {
                 val = text[adj_list[0] + 1];
+                partition[text[adj_list[0]]] = false;
 //                if (partition.find(val) == partition.end()) {
 //                    partition[val] = false;
 //                }
@@ -568,7 +570,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //                    r_count++;
 //                }
             }
-            partition[val] = false;
+
             l_count++;
         }
         for (size_t i = 1; i < adj_list.size(); ++i) {
@@ -719,9 +721,9 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
         size_t pair_count = 0;
         bool part_l = false;
-        std::cout << std::endl << "Begin partition" << std::endl;
+//        std::cout << std::endl << "Begin partition" << std::endl;
         compute_partition(text, adj_list, partition, part_l);
-        std::cout << std::endl << "fin part" << std::endl;
+//        std::cout << std::endl << "fin part" << std::endl;
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
@@ -853,7 +855,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();
         const auto timeSpanPairs = endTimePairs - startTimePairs;
-        std::cout << std::endl << " find_pairs="
+        std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 #endif
 
