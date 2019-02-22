@@ -1,6 +1,6 @@
 if (RECOMPRESSION_ENABLE_BENCHMARKS)
 #    build_bench("recompression")
-#    build_bench("recompression_all")
+    build_bench("recompression_all")
     build_bench("scale_recompression")
 #    build_bench("recompression_mem")
 
