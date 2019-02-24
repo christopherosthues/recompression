@@ -129,6 +129,13 @@ int main(int argc, char *argv[]) {
                     recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
                     recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
 
+                    std::ifstream in_enc(coder_file, std::ios::binary | std::ios::ate);
+                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
+                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
+                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg() << std::endl;
+                    in.close();
+                    in_enc.close();
+
                     if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
                         std::cout << "Correct store" << std::endl;
                     } else {
