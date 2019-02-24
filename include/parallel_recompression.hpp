@@ -257,7 +257,9 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //                }
 //            }
         }
-        block_counts[block_counts.size() - 1] = compact_bounds[block_counts.size() - 1] + block_overlaps[block_counts.size() - 1] - block_counts[block_counts.size() - 1];
+        block_counts[block_counts.size() - 1] =
+                compact_bounds[block_counts.size() - 1] + block_overlaps[block_counts.size() - 1] -
+                block_counts[block_counts.size() - 1];
 //        std::cout << std::endl << "overlaps: ";
 //        for (size_t i = 0; i < block_overlaps.size(); ++i) {
 //            std::cout << block_overlaps[i] << ", ";
@@ -392,8 +394,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
-                    rlslp[nt_count + distinct_blocks[thread_id] + j] = recomp::rlslp<>::non_terminal(last_char, b_len,
-                                                                                                     len);
+                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char, b_len, len);
                     j++;
                     last_var++;
                     text[positions[i].second] = last_var;
@@ -413,8 +414,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                         if (char_i >= rlslp.terminals) {
                             len *= rlslp[char_i - rlslp.terminals].len;
                         }
-                        rlslp[nt_count + distinct_blocks[thread_id] + j] = recomp::rlslp<>::non_terminal(char_i, b_len,
-                                                                                                         len);
+                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i, b_len, len);
                         j++;
                         last_var++;
                         text[positions[i].second] = last_var;
@@ -433,7 +433,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                       << " productions=" << distinct_blocks[distinct_blocks.size() - 1] << " elements=" << block_count;
 #endif
 
-        compact(text, compact_bounds, block_counts, block_count);
+            compact(text, compact_bounds, block_counts, block_count);
 #ifdef BENCH
         } else {
             std::cout << " sort=0 block_rules=0 elements=0 blocks=0 compact_text=0";
@@ -827,7 +827,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //                {std::cout << "Checking " << text[cb - 1] << " at " << (cb - 1) << " and " << text[cb] << " at " << (cb) << " by " << thread_id << std::endl;}
             if (cb > 0) {
                 if (cb < text.size()) {
-                    pair_overlaps[thread_id] = (partition[text[cb - 1]] == part_l && partition[text[cb]] != part_l)? 1 : 0;
+                    pair_overlaps[thread_id] = (partition[text[cb - 1]] == part_l && partition[text[cb]] != part_l) ? 1
+                                                                                                                    : 0;
                 }
                 pair_counts[thread_id] = cb + pair_overlaps[thread_id] - bounds[thread_id];
 //                if (cb + pair_overlaps[thread_id] > pair_counts[thread_id]) {
@@ -929,7 +930,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 #pragma omp barrier
             for (; i < assign_bounds[thread_id + 1]; ++i) {
-                if (text[positions[i]] != text[positions[i - 1]] || text[positions[i] + 1] != text[positions[i - 1] + 1]) {
+                if (text[positions[i]] != text[positions[i - 1]] ||
+                    text[positions[i] + 1] != text[positions[i - 1] + 1]) {
                     distinct_pairs[thread_id + 1]++;
                 }
             }
@@ -987,8 +989,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
-                rlslp[nt_count + distinct_pairs[thread_id] + j] = recomp::rlslp<>::non_terminal(last_char1, last_char2,
-                                                                                                len);
+                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char1, last_char2, len);
                 j++;
                 last_var++;
                 text[positions[i]] = last_var;
@@ -1013,8 +1014,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     } else {
                         len += 1;
                     }
-                    rlslp[nt_count + distinct_pairs[thread_id] + j] = recomp::rlslp<>::non_terminal(char_i1,
-                                                                                                    char_i2, len);
+                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i1, char_i2, len);
                     j++;
                     last_var++;
                     text[positions[i]] = last_var;

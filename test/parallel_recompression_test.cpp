@@ -1177,7 +1177,7 @@ TEST(parallel_recomp, repeated_pair_same_occ) {
 }
 
 TEST(parallel_recomp, left_end) {
-    text_t text{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
+    text_t text = {1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
     rlslp<var_t, term_t> rlslp;
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.cores = 4;

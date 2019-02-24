@@ -329,8 +329,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
-                    rlslp[nt_count + distinct_blocks[thread_id] + j] = recomp::rlslp<>::non_terminal(last_char, b_len,
-                                                                                                     len);
+                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char, b_len, len);
                     j++;
                     last_var++;
                     text[positions[i].second] = last_var;
@@ -350,8 +349,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                         if (char_i >= rlslp.terminals) {
                             len *= rlslp[char_i - rlslp.terminals].len;
                         }
-                        rlslp[nt_count + distinct_blocks[thread_id] + j] = recomp::rlslp<>::non_terminal(char_i, b_len,
-                                                                                                         len);
+                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i, b_len, len);
                         j++;
                         last_var++;
                         text[positions[i].second] = last_var;

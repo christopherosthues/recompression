@@ -196,7 +196,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
             if (sort_blocks[i].first >= static_cast<variable_t>(rlslp.terminals)) {
                 len *= rlslp[sort_blocks[i].first - rlslp.terminals].len;
             }
-            rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_blocks[i].first, sort_blocks[i].second, len);
+            rlslp[nt_count + i] = non_terminal<variable_t, terminal_count_t>(sort_blocks[i].first, sort_blocks[i].second, len);
         }
 #ifdef BENCH
         const auto endTimeAss = recomp::timer::now();
@@ -473,7 +473,7 @@ class sequential_recompression : public recompression<variable_t, terminal_count
             } else {
                 len += 1;
             }
-            rlslp[nt_count + i] = recomp::rlslp<>::non_terminal(sort_pairs[i].first, sort_pairs[i].second, len);
+            rlslp[nt_count + i] = non_terminal<variable_t, terminal_count_t>(sort_pairs[i].first, sort_pairs[i].second, len);
         }
 #ifdef BENCH
         const auto endTimeAss = recomp::timer::now();

@@ -33,7 +33,7 @@ class recompression {
 
     virtual void recomp(text_t& text,
                         rlslp <variable_t, terminal_count_t>& rlslp,
-                        const size_t cores = std::thread::hardware_concurrency()) {
+                        const size_t cores) {
         this->recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
     }
 
@@ -56,8 +56,7 @@ class recompression {
             }
 
             std::vector<variable_t> renamed(rlslp.size());
-            std::vector<typename recomp::rlslp<variable_t, terminal_count_t>::non_terminal> renamed_rules(
-                    rlslp.size() - rlslp.blocks);
+            std::vector<typename recomp::non_terminal<variable_t, terminal_count_t>> renamed_rules(rlslp.size() - rlslp.blocks);
             variable_t block_i = 0;  // rlslp.blocks;
             variable_t pair_i = 0;
             for (size_t i = 0; i < rlslp.size(); ++i) {
