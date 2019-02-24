@@ -12,11 +12,9 @@ set(SOURCES
     src/sequential_recompression.cpp
     src/recompression_hash.cpp
     src/defs.cpp
-        src/coders/rlslp_rule_sorter.cpp
     src/coders/coder.cpp
+    src/coders/plain_rlslp_coder.cpp
     src/coders/delta_coder.cpp
-    src/coders/tmp.cpp
-    src/coders/rlslp_coder.cpp
     src/io/bitostream.cpp
     src/io/bitistream.cpp
 )
@@ -34,9 +32,7 @@ set(HEADERS
     include/recompression_hash.hpp
     include/util.hpp
     include/parallel_order_great_recompression.hpp
-        include/coders/rlslp_coder.hpp
-    include/coders/tmp.hpp
-    include/coders/rlslp_rule_sorter.hpp
+    include/coders/plain_rlslp_coder.hpp
     include/coders/delta_coder.hpp
     include/coders/coder.hpp
     include/io/bitistream.hpp
