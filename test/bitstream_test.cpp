@@ -26,6 +26,22 @@ TEST(bitstream, empty) {
     remove(file_name.c_str());
 }
 
+TEST(bitstream, bit) {
+    std::string file_name = "bit.txt";
+
+    BitOStream bos{file_name};
+    bos.write_bit(true);
+    bos.close();
+
+    BitIStream bis(file_name);
+    bool bit = bis.read_bit();
+    bis.close();
+
+    ASSERT_EQ(true, bit);
+
+    remove(file_name.c_str());
+}
+
 TEST(bitstream, bitvector31) {
     std::string file_name = "bv0.txt";
     std::vector<bool> bv = {true, true, false, true, false, false, false, true, false, false, true, false, true, false,

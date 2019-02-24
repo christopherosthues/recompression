@@ -35,30 +35,31 @@ class BitOStream {
         reset();
     }
 
-    inline BitOStream(BitOStream& ostream) {
-        stream = std::move(ostream.stream);
-        dirty = ostream.dirty;
-        buffer = ostream.buffer;
-        cursor = ostream.cursor;
-        reset();
-    }
-
-    inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {
-        reset();
-    }
+//    inline BitOStream(std::ofstream& ostream) {
+////        stream = ostream.stream;
+////        dirty = ostream.dirty;
+////        buffer = ostream.buffer;
+////        cursor = ostream.cursor;
+//        reset();
+//    }
+//
+//    inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {
+//        reset();
+//    }
 
     ~BitOStream() {
-//        std::cout << "delete" << std::endl;
-//        char last = static_cast<char>(7 - cursor);
-//        if (cursor >= 2) {
-//            buffer |= last;
-//        } else {
-//            write_buffer();
-//            buffer = static_cast<std::uint8_t>(last);
-//        }
-//
-//        dirty = true;
-//        write_buffer();
+        if (stream.is_open()) {
+            char last = static_cast<char>(7 - cursor);
+            if (cursor >= 2) {
+                buffer |= last;
+            } else {
+                write_buffer();
+                buffer = static_cast<std::uint8_t>(last);
+            }
+
+            dirty = true;
+            write_buffer();
+        }
     }
 
     /**
@@ -96,6 +97,7 @@ class BitOStream {
     inline void write_bit(bool bit) {
         if (bit) {
             buffer |= (1 << cursor);
+//            std::cout << "buffer: " << (int)buffer << std::endl;
         }
 
         dirty = true;

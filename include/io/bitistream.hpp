@@ -44,24 +44,24 @@ class BitIStream {
     }
 
  public:
-    inline BitIStream(BitIStream& istream) {
-        stream = std::move(istream.stream);
-        current = istream.current;
-        buffer = istream.buffer;
-        end = istream.end;
-        end_bits = istream.end_bits;
-        cursor = istream.cursor;
-        char c;
-        if (stream.get(c)) {
-            end = false;
-            buffer = static_cast<std::uint8_t>(c);
-
-            read_buffer();
-        } else {
-            end = true;
-            end_bits = 0;
-        }
-    }
+//    inline BitIStream(BitIStream& istream) {
+//        stream = std::move(istream.stream);
+//        current = istream.current;
+//        buffer = istream.buffer;
+//        end = istream.end;
+//        end_bits = istream.end_bits;
+//        cursor = istream.cursor;
+//        char c;
+//        if (stream.get(c)) {
+//            end = false;
+//            buffer = static_cast<std::uint8_t>(c);
+//
+//            read_buffer();
+//        } else {
+//            end = true;
+//            end_bits = 0;
+//        }
+//    }
 
     inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
         stream = std::ifstream(file_name, mode);
@@ -77,18 +77,18 @@ class BitIStream {
         }
     }
 
-    inline BitIStream(std::ifstream&& stream) : stream(std::move(stream)) {
-        char c;
-        if (this->stream.get(c)) {
-            end = false;
-            buffer = static_cast<std::uint8_t>(c);
-
-            read_buffer();
-        } else {
-            end = true;
-            end_bits = 0;
-        }
-    }
+//    inline BitIStream(std::ifstream&& stream) : stream(std::move(stream)) {
+//        char c;
+//        if (this->stream.get(c)) {
+//            end = false;
+//            buffer = static_cast<std::uint8_t>(c);
+//
+//            read_buffer();
+//        } else {
+//            end = true;
+//            end_bits = 0;
+//        }
+//    }
 
     ~BitIStream() {}
 
