@@ -13,6 +13,91 @@ namespace recomp {
 const term_t CHAR_ALPHABET = 256;
 
 /**
+     * @brief A structure to represent a non-terminal.
+     *
+     * A non-terminal consists of the length of the string that is derived by the non-terminal and its production rule
+     */
+template<typename variable_t, typename terminal_count_t>
+struct non_terminal {
+ public:
+    typedef variable_t value_t;
+    typedef terminal_count_t terminals_t;
+
+    /**
+     * The length of the (sub)string derived by this non-terminal.
+     */
+    size_t len;
+
+    /**
+     * The production rule
+     */
+    std::array<value_t, 2> production;
+
+    /**
+     * Default constructor
+     */
+    non_terminal() = default;
+
+    /**
+     * @brief Constructs a non-terminal that maps to a pair or a block of non-terminals.
+     *
+     * @param first The first non-terminal
+     * @param second The second non-terminal or the size of the block
+     */
+    non_terminal(value_t first, value_t second) : production() {
+        this->production[0] = first;
+        this->production[1] = second;
+        this->len = 1;
+    }
+
+    /**
+     * @brief Constructs a non-terminal that maps to a pair or a block of non-terminals.
+     *
+     * @param first The first non-terminal
+     * @param second The second non-terminal or the size of the block
+     * @param len The length of the derived (sub)string
+     */
+    non_terminal(value_t first, value_t second, size_t len) : production() {
+        this->production[0] = first;
+        this->production[1] = second;
+        this->len = len;
+    }
+
+    /**
+     * @brief Compares this non-terminal with the given non-terminal.
+     *
+     * @param nt The non-terminal to compare with
+     * @return @code{true} if the production rules are equal and the lengths of the derived (sub)strings
+     */
+    bool operator==(const non_terminal<value_t, terminals_t >& nt) const {
+        return this->production == nt.production && this->len == nt.len;
+    }
+
+    non_terminal<value_t, terminals_t>& operator=(const non_terminal<value_t, terminals_t>& nt) {
+        this->production[0] = nt.production[0];
+        this->production[1] = nt.production[1];
+        this->len = nt.len;
+        return *this;
+    }
+
+    value_t& first() {
+        return this->production[0];
+    }
+
+    value_t& second() {
+        return this->production[1];
+    }
+
+    const value_t& first() const {
+        return this->production[0];
+    }
+
+    const value_t& second() const {
+        return this->production[1];
+    }
+};
+
+/**
  * @brief A structure to represent a rlslp.
  *
  * A run-length Straight-line program is a context free grammar in Chomsky normal form that is extended by production
@@ -20,8 +105,12 @@ const term_t CHAR_ALPHABET = 256;
  */
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 struct rlslp {
+ public:
+    typedef variable_t value_t;
+    typedef terminal_count_t terminals_t;
+
  private:
-    size_t compute_length(const variable_t nt) {
+    size_t compute_length(const value_t nt) {
         if (nt < terminals) {
             return 1;
         } else {
@@ -50,15 +139,15 @@ struct rlslp {
         return 0;
     }
 
-    void extract(std::stringstream& sstream, size_t i, size_t len, variable_t nt) const {
+    void extract(std::stringstream& sstream, size_t i, size_t len, value_t nt) const {
         if (len > 0) {
-            if (nt < static_cast<variable_t>(terminals)) {
+            if (nt < static_cast<value_t>(terminals)) {
                 sstream << static_cast<char>(nt);
             } else {
                 auto first = non_terminals[nt - terminals].first();
                 auto second = non_terminals[nt - terminals].second();
                 size_t first_len = 1;
-                if (first >= static_cast<variable_t>(terminals)) {
+                if (first >= static_cast<value_t>(terminals)) {
                     first_len = non_terminals[first - terminals].len;
                 }
 
@@ -100,90 +189,20 @@ struct rlslp {
     }
 
  public:
-//    typedef std::vector<bool> block_t;
-
-    /**
-     * @brief A structure to represent a non-terminal.
-     *
-     * A non-terminal consists of the length of the string that is derived by the non-terminal and its production rule
-     */
-    struct non_terminal {
-        /**
-         * The length of the (sub)string derived by this non-terminal.
-         */
-        size_t len;
-
-        /**
-         * The production rule
-         */
-        std::array<variable_t, 2> production;
-
-        /**
-         * Default constructor
-         */
-        non_terminal() = default;
-
-        /**
-         * @brief Constructs a non-terminal that maps to a pair or a block of non-terminals.
-         *
-         * @param first The first non-terminal
-         * @param second The second non-terminal or the size of the block
-         * @param len The length of the derived (sub)string
-         */
-        non_terminal(variable_t first, variable_t second, size_t len) : len(), production() {
-            this->production[0] = first;
-            this->production[1] = second;
-            this->len = len;
-        }
-
-        /**
-         * @brief Compares this non-terminal with the given non-terminal.
-         *
-         * @param nt The non-terminal to compare with
-         * @return @code{true} if the production rules are equal and the lengths of the derived (sub)strings
-         */
-        bool operator==(const non_terminal& nt) const {
-            return this->production == nt.production && this->len == nt.len;
-        }
-
-        non_terminal& operator=(const non_terminal& nt) {
-            this->production[0] = nt.production[0];
-            this->production[1] = nt.production[1];
-            this->len = nt.len;
-            return *this;
-        }
-
-        variable_t& first() {
-            return this->production[0];
-        }
-
-        variable_t& second() {
-            return this->production[1];
-        }
-
-        const variable_t& first() const {
-            return this->production[0];
-        }
-
-        const variable_t& second() const {
-            return this->production[1];
-        }
-    };
-
     /**
      * The root variable.
      */
-    variable_t root = 0;
+    value_t root = 0;
 
     /**
      * All production rules of the rlslp.
      */
-    std::vector<non_terminal> non_terminals;
+    std::vector<non_terminal<value_t, terminals_t>> non_terminals;
 
     /**
      * The number of terminals.
      */
-    terminal_count_t terminals = CHAR_ALPHABET;
+    terminals_t terminals = CHAR_ALPHABET;
 
     /**
      * @code{true} if the rlslp is empty, @code{false} if not
@@ -193,18 +212,18 @@ struct rlslp {
     /**
      * The number of blocks.
      */
-    variable_t blocks = 0;
+    value_t blocks = 0;
 
 //    /**
 //     * Bitvector marking which productions derive blocks.
 //     */
 //    block_t blocks;
 
-    non_terminal& operator[](size_t i) {
+    non_terminal<value_t, terminals_t>& operator[](size_t i) {
         return this->non_terminals[i];
     }
 
-    const non_terminal& operator[](size_t i) const {
+    const non_terminal<value_t, terminals_t>& operator[](size_t i) const {
         return this->non_terminals[i];
     }
 
@@ -216,7 +235,7 @@ struct rlslp {
         return is_empty;
     }
 
-    bool operator==(const rlslp& rlslp) const {
+    bool operator==(const rlslp<value_t, terminals_t>& rlslp) const {
         return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals &&
                is_empty == rlslp.is_empty && blocks == rlslp.blocks;
     }
@@ -236,11 +255,11 @@ struct rlslp {
 //        blocks.shrink_to_fit();
     }
 
-    bool is_terminal(variable_t nt) const {
+    bool is_terminal(value_t nt) const {
         return nt < terminals;
     }
 
-    bool is_block(variable_t nt) const {
+    bool is_block(value_t nt) const {
         if (nt < terminals) {
             return false;
         }
@@ -251,15 +270,15 @@ struct rlslp {
 //        return this->blocks[nt - terminals];
     }
 
-    void derive(std::stringstream& sstream, variable_t nt) {
-        if (nt < static_cast<variable_t>(terminals)) {
+    void derive(std::stringstream& sstream, value_t nt) {
+        if (nt < static_cast<value_t>(terminals)) {
             sstream << static_cast<char>(nt);
         } else {
             auto first = non_terminals[nt - terminals].first();
             auto second = non_terminals[nt - terminals].second();
 
             if (is_block(nt)) {  // block
-                variable_t b_len = second;
+                value_t b_len = second;
                 while (b_len--) {
                     derive(sstream, first);
                 }
@@ -274,7 +293,7 @@ struct rlslp {
         compute_length(root);
     }
 
-    size_t len(variable_t nt) const {
+    size_t len(value_t nt) const {
         if (nt < terminals) {
             return 1;
         } else {
@@ -313,7 +332,7 @@ namespace std {
  * @return A string representation of the non-terminal
  */
 template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
-std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>::non_terminal& nt) {
+std::string to_string(const typename recomp::non_terminal<variable_t, terminal_count_t>& nt) {
     std::stringstream sstream;
     sstream << "production: (";
     sstream << std::to_string(nt.production[0]) << "," << std::to_string(nt.production[1])
