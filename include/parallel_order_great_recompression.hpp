@@ -399,7 +399,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 #endif
 #ifdef BENCH
         } else {
-            std::cout << " sort=0 block_rules=0 elements=0 blocks=0 compact_text=0";
+            std::cout << " sort=0 rules=0 elements=0 blocks=0 compact_text=0";
 #endif
         }
 

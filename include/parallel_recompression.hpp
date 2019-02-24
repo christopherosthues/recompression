@@ -436,7 +436,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             compact(text, compact_bounds, block_counts, block_count);
 #ifdef BENCH
         } else {
-            std::cout << " sort=0 block_rules=0 elements=0 blocks=0 compact_text=0";
+            std::cout << " sort=0 rules=0 elements=0 blocks=0 compact_text=0";
 #endif
         }
 

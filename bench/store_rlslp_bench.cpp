@@ -132,7 +132,8 @@ int main(int argc, char *argv[]) {
                     std::ifstream in_enc(coder_file, std::ios::binary | std::ios::ate);
                     std::ifstream in(file_name, std::ios::binary | std::ios::ate);
                     std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
-                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg() << std::endl;
+                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
+                              << " productions=" << rlslp.size() << std::endl;
                     in.close();
                     in_enc.close();
 
