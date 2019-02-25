@@ -6,7 +6,8 @@ if (RECOMPRESSION_ENABLE_BENCHMARKS)
     build_bench("store_rlslp")
 
 #    build_bench("radix_sort")
-#    build_bench("lce_query")
+    build_bench("lce_query")
+    build_bench("random_access")
 
     build_bench("statistics")
 endif (RECOMPRESSION_ENABLE_BENCHMARKS)
