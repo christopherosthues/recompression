@@ -12,7 +12,7 @@ set(Prezzalce_FIND_REQUIRED 0)
 
 set(Prezzalce_ROOT_DIR ${Prezzalce_INSTALL_DIR})
 
-find_path(Prezzalce_INCLUDE_DIR lce.hpp PATHS ${Prezzalce_ROOT_DIR} ${Prezzalce_ROOT_DIR}/include /usr/local/include /usr/include)
+find_path(Prezzalce_INCLUDE_DIR prezzalce/lce.hpp PATHS ${Prezzalce_ROOT_DIR} ${Prezzalce_ROOT_DIR}/include /usr/local/include /usr/include)
 
 find_package_handle_standard_args(Prezzalce DEFAULT_MSG Prezzalce_INCLUDE_DIR)
 

@@ -9,6 +9,7 @@ if (RECOMPRESSION_ENABLE_BENCHMARKS)
     build_bench("lce_query")
     build_bench("random_access")
 
-    build_bench("statistics")
+#    build_bench("statistics")
+    build_bench("compression_statistics")
 endif (RECOMPRESSION_ENABLE_BENCHMARKS)
 

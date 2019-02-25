@@ -6,6 +6,9 @@
 #include <sdsl/suffix_arrays.hpp>
 #include <sdsl/lcp_support_sada.hpp>
 #include <sdsl/rmq_support.hpp>
+
+#include <prezzalce/lce.hpp>
+#include <prezzalce/util.hpp>
 //#include <sdsl/construct_sa.hpp>
 //#include <sdsl/lcp_support_sada.hpp>
 //#include <sdsl/rmq_support.hpp>

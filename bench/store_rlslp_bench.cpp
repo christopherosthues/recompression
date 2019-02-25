@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
                 } else if (coder == "sorted") {
                     std::cout << "not supported jet" << std::endl;
                 } else {
-                    std::cout << "Coder '" << coder << "' unkown." << std::endl;
+                    std::cout << "Unkown coder '" << coder << "'." << std::endl;
                 }
 
             }
