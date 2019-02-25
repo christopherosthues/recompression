@@ -14,5 +14,6 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("lce_query")
 
     build_test("plain_rlslp_coder")
+    build_test("plain_rlslp_wlz_coder")
 #    build_test("bitstream")
 endif (RECOMPRESSION_ENABLE_TESTS)

@@ -283,5 +283,9 @@ int str_to_int(std::string s) {
     return n;
 }
 
+inline constexpr uint8_t bits_for(size_t value) {
+    return value == 0 ? (uint8_t)1 : 64 - __builtin_clzll(value);
+}
+
 }  // namespace util
 }  // namespace recomp

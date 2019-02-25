@@ -14,6 +14,7 @@ set(SOURCES
     src/defs.cpp
     src/coders/coder.cpp
     src/coders/plain_rlslp_coder.cpp
+    src/coders/plain_rlslp_wlz_coder.cpp
     src/coders/delta_coder.cpp
     src/io/bitostream.cpp
     src/io/bitistream.cpp
@@ -33,6 +34,7 @@ set(HEADERS
     include/util.hpp
     include/parallel_order_great_recompression.hpp
     include/coders/plain_rlslp_coder.hpp
+    include/coders/plain_rlslp_wlz_coder.hpp
     include/coders/delta_coder.hpp
     include/coders/coder.hpp
     include/io/bitistream.hpp
