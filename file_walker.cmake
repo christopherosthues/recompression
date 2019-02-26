@@ -2,6 +2,7 @@ set(SOURCES
     src/parallel_recompression.cpp
     src/full_parallel_recompression.cpp
     src/rlslp.cpp
+    src/parallel_lp_recompression.cpp
     src/recompression.cpp
     src/fast_recompression.cpp
     src/util.cpp
@@ -20,6 +21,7 @@ set(SOURCES
     src/io/bitistream.cpp
 )
 set(HEADERS
+    include/parallel_lp_recompression.hpp
     include/full_parallel_recompression.hpp
     include/defs.hpp
     include/lce_query.hpp

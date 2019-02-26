@@ -13,6 +13,7 @@
 #include "full_parallel_recompression.hpp"
 #include "parallel_order_less_recompression.hpp"
 #include "parallel_order_great_recompression.hpp"
+#include "parallel_lp_recompression.hpp"
 
 #include "sequential_recompression.hpp"
 #include "fast_recompression.hpp"
@@ -25,7 +26,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./bench_recompression_mem [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | fast | hash] [cores] [repeats]" << std::endl;
+        std::cerr << "./bench_recompression_mem [path] [file_name(s)] [sequential | parallel | parallel_lp | full_parallel | parallel_ls | parallel_gr | fast | hash] [cores] [repeats]" << std::endl;
         return -1;
     }
 
@@ -75,6 +76,9 @@ int main(int argc, char *argv[]) {
 
                 if (algo == "sequential") {
                     recomp = std::make_unique<recomp::sequential_recompression<recomp::var_t, recomp::term_t>>(dataset);
+                } else if (algo == "parallel_ls") {
+                    recomp = std::make_unique<recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>>(
+                            dataset);
                 } else if (algo == "parallel") {
                     recomp = std::make_unique<recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t>>(
                             dataset);

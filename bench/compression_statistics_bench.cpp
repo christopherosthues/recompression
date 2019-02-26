@@ -74,7 +74,11 @@ int main(int argc, char *argv[]) {
 
             std::ifstream in_enc(coder_file, std::ios::binary | std::ios::ate);
             std::ifstream in(path + file_name, std::ios::binary | std::ios::ate);
-            std::cout << "RESULT dataset=" << dataset << " coder=" << coder << " size=" << in.tellg() << " enc_size="
+
+            std::string out_coder = coder;
+            recomp::util::replace_all(out_coder, "-", "_");
+
+            std::cout << "RESULT dataset=" << dataset << " coder=" << out_coder << " size=" << in.tellg() << " enc_size="
                       << in_enc.tellg() << std::endl;
             in.close();
             in_enc.close();
