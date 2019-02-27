@@ -28,7 +28,7 @@ void read_file_fast(const std::string& file_name, text_t& text) {
     auto file_size = ifs.tellg();
     if (file_size < 0) {
         std::cerr << "Failed to read file " << file_name << std::endl;
-        return;
+        exit(1);
     }
     ifs.seekg(0, std::ios::beg);
 
@@ -57,7 +57,7 @@ void read_file(const std::string& file_name, text_t& text) {
     auto file_size = ifs.tellg();
     if (file_size < 0) {
         std::cerr << "Failed to read file " << file_name << std::endl;
-        return;
+        exit(1);
     }
     ifs.seekg(0, std::ios::beg);
 
@@ -86,7 +86,7 @@ void read_text_file(const std::string& file_name, std::string& text) {
     auto file_size = ifs.tellg();
     if (file_size < 0) {
         std::cerr << "Failed to read file " << file_name << std::endl;
-        return;
+        exit(1);
     }
     ifs.seekg(0, std::ios::beg);
 
