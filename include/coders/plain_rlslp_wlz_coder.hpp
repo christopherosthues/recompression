@@ -60,10 +60,6 @@ class PlainRLSLPWLZCoder {
                     ostream.write_int<variable_t>(rlslp.non_terminals[i].first(), block_bits);
                     ostream.write_int<variable_t>(rlslp.non_terminals[i].second(), block_bits);
                 }
-//                for (const auto& rule : rlslp.non_terminals) {
-//                    ostream.write_int<variable_t>(rule.first(), bits);
-//                    ostream.write_int<variable_t>(rule.second());
-//                }
             }
 
             ostream.close();
