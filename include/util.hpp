@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -13,6 +14,23 @@
 
 namespace recomp {
 namespace util {
+
+size_t file_size_in_bytes(std::string& file_name) {
+    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
+    size_t size = in.tellg();
+    in.close();
+    return size;
+}
+
+/**
+ * @brief Generates (pseudo) random number from 0 (inclusive) to max (exclusive).
+ *
+ * @param max_val The maximum value (exclusive)
+ * @return A random number
+ */
+size_t random_number(size_t max_val) {
+    return ((((size_t)std::rand()) << 32) + std::rand()) % max_val;
+}
 
 /**
  * @brief Faster loading of a file but with more memory consumption.

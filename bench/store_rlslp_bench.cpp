@@ -127,14 +127,14 @@ int main(int argc, char *argv[]) {
                 }
 
                 if (coder == "plain") {
-                    std::string coder_file = to_path + files[j] + ".plain";
+                    std::string coder_file = to_path + files[j];
                     recomp::coder::PlainRLSLPCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
                     recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
                     recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file, std::ios::binary | std::ios::ate);
+                    std::ifstream in_enc(coder_file + recomp::coder::PlainRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
                     std::ifstream in(file_name, std::ios::binary | std::ios::ate);
                     std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
                               << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
@@ -148,14 +148,14 @@ int main(int argc, char *argv[]) {
                         std::cout << "Failure store" << std::endl;
                     }
                 } else if (coder == "wlz") {
-                    std::string coder_file = to_path + files[j] + ".wlz";
+                    std::string coder_file = to_path + files[j];
                     recomp::coder::PlainRLSLPWLZCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
                     recomp::coder::PlainRLSLPWLZCoder::Decoder dec{coder_file};
                     recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file, std::ios::binary | std::ios::ate);
+                    std::ifstream in_enc(coder_file + recomp::coder::PlainRLSLPWLZCoder::k_extension, std::ios::binary | std::ios::ate);
                     std::ifstream in(file_name, std::ios::binary | std::ios::ate);
                     std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
                               << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
