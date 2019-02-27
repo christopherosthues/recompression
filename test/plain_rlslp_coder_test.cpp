@@ -23,7 +23,7 @@ TEST(plain_rlslp_coder, empty) {
 
     std::cout << "recomp finished" << std::endl;
 
-    std::string file_name = "empty" + extension;
+    std::string file_name = "empty";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -33,6 +33,7 @@ TEST(plain_rlslp_coder, empty) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -42,7 +43,7 @@ TEST(plain_rlslp_coder, terminal) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, CHAR_ALPHABET, 4);
 
-    std::string file_name = "terminal" + extension;
+    std::string file_name = "terminal";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -52,6 +53,7 @@ TEST(plain_rlslp_coder, terminal) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -61,7 +63,7 @@ TEST(plain_rlslp_coder, short_block) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 113, 4);
 
-    std::string file_name = "short_block" + extension;
+    std::string file_name = "short_block";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -71,6 +73,7 @@ TEST(plain_rlslp_coder, short_block) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -80,7 +83,7 @@ TEST(plain_rlslp_coder, short_block3) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 113, 4);
 
-    std::string file_name = "short_block3" + extension;
+    std::string file_name = "short_block3";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -90,6 +93,7 @@ TEST(plain_rlslp_coder, short_block3) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -99,7 +103,7 @@ TEST(plain_rlslp_coder, recompression) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 5, 4);
 
-    std::string file_name = "recompression" + extension;
+    std::string file_name = "recompression";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -109,6 +113,7 @@ TEST(plain_rlslp_coder, recompression) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -118,7 +123,7 @@ TEST(plain_rlslp_coder, one_block) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "one_block" + extension;
+    std::string file_name = "one_block";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -128,6 +133,7 @@ TEST(plain_rlslp_coder, one_block) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -137,7 +143,7 @@ TEST(plain_rlslp_coder, two_blocks) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "two_blocks" + extension;
+    std::string file_name = "two_blocks";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -147,6 +153,7 @@ TEST(plain_rlslp_coder, two_blocks) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -156,7 +163,7 @@ TEST(plain_rlslp_coder, three_blocks) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "three_blocks" + extension;
+    std::string file_name = "three_blocks";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -166,6 +173,7 @@ TEST(plain_rlslp_coder, three_blocks) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -175,7 +183,7 @@ TEST(plain_rlslp_coder, four_blocks) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "four_blocks" + extension;
+    std::string file_name = "four_blocks";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -185,6 +193,7 @@ TEST(plain_rlslp_coder, four_blocks) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -194,7 +203,7 @@ TEST(plain_rlslp_coder, repeated_pair) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "repeated_pair" + extension;
+    std::string file_name = "repeated_pair";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -204,6 +213,7 @@ TEST(plain_rlslp_coder, repeated_pair) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -213,7 +223,7 @@ TEST(plain_rlslp_coder, repeated_pair_same_occ) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "repeated_pair_same" + extension;
+    std::string file_name = "repeated_pair_same";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -223,6 +233,7 @@ TEST(plain_rlslp_coder, repeated_pair_same_occ) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }
 
@@ -232,7 +243,7 @@ TEST(plain_rlslp_coder, left_end) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 4, 4);
 
-    std::string file_name = "left_end" + extension;
+    std::string file_name = "left_end";  // + extension;
     coder::PlainRLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -242,5 +253,6 @@ TEST(plain_rlslp_coder, left_end) {
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
 
+    file_name += coder::PlainRLSLPCoder::k_extension;
     remove(file_name.c_str());
 }

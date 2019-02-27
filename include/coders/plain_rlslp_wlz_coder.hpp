@@ -13,6 +13,8 @@ namespace coder {
 
 class PlainRLSLPWLZCoder {
  public:
+    static const std::string k_extension;
+
     PlainRLSLPWLZCoder() = delete;
 
     class Encoder : coder::Encoder {
@@ -23,7 +25,7 @@ class PlainRLSLPWLZCoder {
         using coder::Encoder::encode;
 
 //        inline Encoder(std::ofstream& ostream) : ostream(ostream) {}
-        inline Encoder(std::string& file_name) : ostream(file_name) {}
+        inline Encoder(std::string& file_name) : ostream(file_name + k_extension) {}
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
@@ -76,7 +78,7 @@ class PlainRLSLPWLZCoder {
         using coder::Decoder::decode;
 
 //        inline Decoder(BitIStream& istream) : istream(istream) {}
-        inline Decoder(std::string& file_name) : istream(file_name) {}
+        inline Decoder(std::string& file_name) : istream(file_name + k_extension) {}
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline rlslp<variable_t, terminal_count_t> decode() {
@@ -114,6 +116,8 @@ class PlainRLSLPWLZCoder {
         }
     };
 };
+
+const std::string PlainRLSLPWLZCoder::k_extension = ".wlz";
 
 }  // namespace coder
 }  // namespace recomp
