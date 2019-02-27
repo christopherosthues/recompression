@@ -42,6 +42,10 @@ int main(int argc, char *argv[]) {
         rlslp_path = std::string(argv[7]);
     }
 
+    std::vector<std::vector<std::string>> access(algos.size());
+    for (size_t i = 0; i < algos.size(); ++i) {
+        access[i] = std::vector<std::string>(accesses);
+    }
     for (size_t k = 0; k < files.size(); ++k) {
         std::string file_name = argv[1] + files[k];
         size_t file_size = recomp::util::file_size_in_bytes(file_name);
@@ -102,10 +106,6 @@ int main(int argc, char *argv[]) {
         recomp::util::read_text_file(file_name, plain_text);
 
         for (size_t repeat = 0; repeat < repeats; ++repeat) {
-            std::vector<std::vector<std::string>> access(algos.size());
-            for (size_t i = 0; i < algos.size(); ++i) {
-                access[i] = std::vector<std::string>(accesses);
-            }
             for (size_t l = 0; l < algos.size(); ++l) {
                 std::cout << "Iteration: " << repeat << std::endl;
                 std::string algo = algos[l];
