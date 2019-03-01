@@ -45,20 +45,23 @@ class PlainRLSLPWLZCoder {
                 }
 
                 variable_t max_val = 0;
+                variable_t max_len = 0;
                 for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                     if (max_val < rlslp.non_terminals[i].first()) {
                         max_val = rlslp.non_terminals[i].first();
                     }
-                    if (max_val < rlslp.non_terminals[i].second()) {
-                        max_val = rlslp.non_terminals[i].second();
+                    if (max_len < rlslp.non_terminals[i].second()) {
+                        max_len = rlslp.non_terminals[i].second();
                     }
                 }
 
                 auto block_bits = util::bits_for(max_val);
+                auto len_bits = util::bits_for(max_len);
                 ostream.write_int<uint8_t>(block_bits, 6);
+                ostream.write_int<uint8_t>(len_bits, 6);
                 for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                     ostream.write_int<variable_t>(rlslp.non_terminals[i].first(), block_bits);
-                    ostream.write_int<variable_t>(rlslp.non_terminals[i].second(), block_bits);
+                    ostream.write_int<variable_t>(rlslp.non_terminals[i].second(), len_bits);
                 }
             }
 
@@ -96,10 +99,11 @@ class PlainRLSLPWLZCoder {
                     rlslp[i] = non_terminal<variable_t, terminal_count_t>(first, second);
                 }
                 auto block_bits = istream.read_int<uint8_t>(6);
+                auto len_bits = istream.read_int<uint8_t>(6);
                 if (block_bits > 0) {
                     for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                         variable_t first = istream.read_int<variable_t>(block_bits);
-                        variable_t second = istream.read_int<variable_t>(block_bits);
+                        variable_t second = istream.read_int<variable_t>(len_bits);
                         rlslp[i] = non_terminal<variable_t, terminal_count_t>(first, second);
                     }
                 }
