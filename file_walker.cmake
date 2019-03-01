@@ -7,6 +7,7 @@ set(SOURCES
     src/fast_recompression.cpp
     src/util.cpp
     src/parallel_order_less_recompression.cpp
+    src/parallel_rnd_recompression.cpp
     src/lce_query.cpp
     src/radix_sort.cpp
     src/parallel_order_great_recompression.cpp
@@ -31,6 +32,7 @@ set(HEADERS
     include/parallel_recompression.hpp
     include/radix_sort.hpp
     include/parallel_order_less_recompression.hpp
+    include/parallel_rnd_recompression.hpp
     include/fast_recompression.hpp
     include/recompression_hash.hpp
     include/util.hpp
