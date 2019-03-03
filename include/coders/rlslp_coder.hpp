@@ -1,6 +1,10 @@
 #pragma once
 
+#include <io/bitistream.hpp>
+#include "defs.hpp"
 #include "coders/coder.hpp"
+#include "io/bitostream.hpp"
+#include "rlslp.hpp"
 
 namespace recomp {
 namespace coder {
@@ -13,47 +17,73 @@ namespace coder {
  *
  * @tparam value_t The type of values to delta-encode.
  */
-template<typename value_t>
 class RLSLPCoder {
  public:
+    static const std::string k_extension;
+
     RLSLPCoder() = delete;
 
     class Encoder : coder::Encoder {
      protected:
-        value_t last = 0;
+        BitOStream ostream;
 
      public:
         using coder::Encoder::encode;
 
-        inline void reset() {
-            last = 0;
-        }
+        inline Encoder(std::string& file_name) : ostream(file_name + k_extension) {}
 
-        template<typename out_t>
-        inline out_t encode(value_t v) {
-            auto out = v - last;
-            last = v;
-            return out;
+        template<typename variable_t = var_t, typename terminal_count_t = term_t>
+        inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
+            ostream.write_bit(rlslp.is_empty);
+
+            if (!rlslp.is_empty) {
+                auto bits = util::bits_for(rlslp.size() + rlslp.terminals);
+                ostream.write_int<uint8_t>(bits, 6);
+                ostream.write_int<size_t>(rlslp.size(), bits);
+                ostream.write_int<terminal_count_t>(rlslp.terminals, bits);
+                ostream.write_int<variable_t>(rlslp.root, bits);
+                ostream.write_int<variable_t>(rlslp.blocks, bits);
+            }
+
+            ostream.close();
         }
     };
 
     class Decoder : public coder::Decoder {
      protected:
-        value_t last = 0;
+        BitIStream istream;
 
      public:
         using coder::Decoder::decode;
 
-        inline void reset() {
-            last = 0;
-        }
+        inline Decoder(std::string& file_name) : istream(file_name + k_extension) {}
 
-        template<typename in_t>
-        inline value_t decode(in_t in) {
-            last = in + last;
-            return last;
+        template<typename variable_t = var_t, typename terminal_count_t = term_t>
+        inline rlslp<variable_t, terminal_count_t> decode() {
+            rlslp<variable_t, terminal_count_t> rlslp;
+            bool empty = istream.read_bit();
+
+            if (!empty) {
+                auto bits = istream.read_int<uint8_t>(6);
+                auto size = istream.read_int<size_t>(bits);
+                rlslp.reserve(size);
+                rlslp.resize(size);
+                rlslp.terminals = istream.read_int<terminal_count_t>(bits);
+                rlslp.root = istream.read_int<variable_t>(bits);
+                rlslp.blocks = istream.read_int<variable_t>(bits);
+
+
+                rlslp.compute_lengths();
+            }
+
+            rlslp.is_empty = empty;
+            istream.close();
+            return rlslp;
         }
     };
 };
+
+const std::string RLSLPCoder::k_extension = ".rlslp";
+
 }  // namespace coder
 }  // namespace recomp
