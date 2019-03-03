@@ -200,7 +200,7 @@ class rlslp {
     std::vector<non_terminal<value_t, terminals_t>> non_terminals;
 
     /**
-     * The number of terminals.
+     * The number of terminals. (determines the first non-terminal)
      */
     terminals_t terminals = CHAR_ALPHABET;
 
@@ -210,7 +210,7 @@ class rlslp {
     bool is_empty = true;
 
     /**
-     * The number of blocks.
+     * The index of the first block.
      */
     value_t blocks = 0;
 

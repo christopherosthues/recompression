@@ -1107,6 +1107,26 @@ TEST(parallel_recomp, one_block) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
+TEST(parallel_recomp, pair) {
+    text_t text = {112, 111};
+    rlslp<var_t, term_t> rlslp;
+    parallel::parallel_recompression<var_t, term_t> recomp;
+    recomp.cores = 4;
+    term_t alphabet_size = 113;
+    recomp.recomp(text, rlslp, alphabet_size, 4);
+
+    text_t exp_text = {113};
+    recomp::rlslp<var_t, term_t> exp_rlslp;
+    exp_rlslp.terminals = alphabet_size;
+    exp_rlslp.root = 113;
+    exp_rlslp.non_terminals.emplace_back(112, 111, 2);
+    exp_rlslp.blocks = 1;
+    exp_rlslp.is_empty = false;
+
+    ASSERT_EQ(exp_text, text);
+    ASSERT_EQ(exp_rlslp, rlslp);
+}
+
 TEST(parallel_recomp, two_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1};
     rlslp<var_t, term_t> rlslp;
