@@ -22,6 +22,7 @@
 
 #include "coders/plain_rlslp_coder.hpp"
 #include "coders/plain_rlslp_wlz_coder.hpp"
+#include "coders/rlslp_rule_sorter.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 8) {
@@ -130,8 +131,8 @@ int main(int argc, char *argv[]) {
                     std::cout << "Failure extract" << std::endl;
                 }
 
+                std::string coder_file = to_path + files[j];
                 if (coder == "plain") {
-                    std::string coder_file = to_path + files[j];
                     recomp::coder::PlainRLSLPCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
@@ -152,7 +153,6 @@ int main(int argc, char *argv[]) {
                         std::cout << "Failure store" << std::endl;
                     }
                 } else if (coder == "wlz") {
-                    std::string coder_file = to_path + files[j];
                     recomp::coder::PlainRLSLPWLZCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
@@ -174,6 +174,29 @@ int main(int argc, char *argv[]) {
                     }
                 } else if (coder == "sorted") {
                     std::cout << "not supported jet" << std::endl;
+
+                    recomp::sort_rlslp_rules(rlslp);
+
+                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
+                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+                            std::cout << "Pairs not sorted" << std::endl;
+                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                        }
+                    }
+
+                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
+                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+                            std::cout << "Blocks not sorted" << std::endl;
+                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                        }
+                    }
+
+
+                    if (rlslp.derive_text() == c_text) {
+                        std::cout << "Correct store" << std::endl;
+                    } else {
+                        std::cout << "Failure store" << std::endl;
+                    }
                 } else {
                     std::cout << "Unkown coder '" << coder << "'." << std::endl;
                 }

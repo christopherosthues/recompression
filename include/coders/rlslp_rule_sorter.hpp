@@ -18,7 +18,7 @@ namespace recomp {
  * @param rlslp
  */
 template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
-void sort_rlslp_rules(rlslp<variable_t, terminal_count_t>& rlslp, size_t cores = std::thread::hardware_concurrency()) {
+inline void sort_rlslp_rules(rlslp<variable_t, terminal_count_t>& rlslp, size_t cores = std::thread::hardware_concurrency()) {
     std::vector<variable_t> first(rlslp.size() + rlslp.terminals);
     std::vector<variable_t> next(rlslp.size() + rlslp.terminals);
 
