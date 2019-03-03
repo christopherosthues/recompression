@@ -20,6 +20,7 @@ set(SOURCES
     src/coders/delta_coder.cpp
     src/io/bitostream.cpp
     src/io/bitistream.cpp
+    src/coders/rlslp_rule_sorter.cpp
 )
 set(HEADERS
     include/parallel_lp_recompression.hpp
@@ -40,6 +41,7 @@ set(HEADERS
     include/coders/plain_rlslp_coder.hpp
     include/coders/plain_rlslp_wlz_coder.hpp
     include/coders/delta_coder.hpp
+    include/coders/rlslp_rule_sorter.hpp
     include/coders/coder.hpp
     include/io/bitistream.hpp
     include/io/bitostream.hpp

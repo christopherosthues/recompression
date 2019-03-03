@@ -104,7 +104,7 @@ struct non_terminal {
  * rules of the form X^d where X is a non-terminal and d is the number of repeats of the non-terminal.
  */
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-struct rlslp {
+class rlslp {
  public:
     typedef variable_t value_t;
     typedef terminal_count_t terminals_t;
