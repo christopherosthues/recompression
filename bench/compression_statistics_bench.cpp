@@ -20,6 +20,7 @@
 
 #include "coders/plain_rlslp_coder.hpp"
 #include "coders/plain_rlslp_wlz_coder.hpp"
+#include "coders/rlslp_coder.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 5) {
@@ -55,11 +56,11 @@ int main(int argc, char *argv[]) {
 
             std::string coder_file = coder_path;
             if (coder == "plain") {
-                coder_file += file_name + ".plain";
+                coder_file += file_name + recomp::coder::PlainRLSLPCoder::k_extension;
             } else if (coder == "wlz") {
-                coder_file += file_name + ".wlz";
+                coder_file += file_name + recomp::coder::PlainRLSLPWLZCoder::k_extension;
             } else if (coder == "sorted") {
-                std::cout << "not supported jet" << std::endl;
+                coder_file += file_name + recomp::coder::RLSLPCoder::k_extension;
             } else if (coder == "gzip-1") {
                 coder_file += file_name + ".1.gz";
             } else if (coder == "gzip-9") {

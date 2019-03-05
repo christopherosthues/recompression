@@ -40,13 +40,14 @@ class RLSLPCoder {
 
             if (!rlslp.is_empty) {
                 auto bits = util::bits_for(rlslp.size() + rlslp.terminals);
+
+                sort_rlslp_rules(rlslp);
+
                 ostream.write_int<uint8_t>(bits, 6);
                 ostream.write_int<size_t>(rlslp.size(), bits);
                 ostream.write_int<terminal_count_t>(rlslp.terminals, bits);
                 ostream.write_int<variable_t>(rlslp.root, bits);
                 ostream.write_int<variable_t>(rlslp.blocks, bits);
-
-                sort_rlslp_rules(rlslp);
 
                 variable_t delta = 0;
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
@@ -54,25 +55,45 @@ class RLSLPCoder {
                     delta = rlslp[i].first();
                 }
 
-                delta = 0;
-                variable_t max_val = 0;
-                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
-                    ostream.write_unary(rlslp[i].first() - delta);
-                    delta = rlslp[i].first();
-                    if (max_val < rlslp[i].second()) {
-                        max_val = rlslp[i].second();
-                    }
-                }
+//                delta = 0;
+//                variable_t max_val = 0;
+//                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
+//                    ostream.write_unary(rlslp[i].first() - delta);
+//                    delta = rlslp[i].first();
+//                    if (max_val < rlslp[i].second()) {
+//                        max_val = rlslp[i].second();
+//                    }
+//                }
 
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
                     ostream.write_int<variable_t>(rlslp[i].second(), bits);
                 }
 
-                bits = util::bits_for(max_val);
-                ostream.write_int<uint8_t>(bits, 6);
+                variable_t max_val = 0;
+                variable_t max_len = 0;
                 for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
-                    ostream.write_int<variable_t>(rlslp[i].second(), bits);
+                    if (max_val < rlslp[i].first()) {
+                        max_val = rlslp[i].first();
+                    }
+                    if (max_len < rlslp[i].second()) {
+                        max_len = rlslp[i].second();
+                    }
                 }
+
+                auto block_bits = util::bits_for(max_val);
+                auto len_bits = util::bits_for(max_len);
+                ostream.write_int<uint8_t>(block_bits, 6);
+                ostream.write_int<uint8_t>(len_bits, 6);
+                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
+                    ostream.write_int<variable_t>(rlslp[i].first(), block_bits);
+                    ostream.write_int<variable_t>(rlslp[i].second(), len_bits);
+                }
+
+//                bits = util::bits_for(max_val);
+//                ostream.write_int<uint8_t>(bits, 6);
+//                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
+//                    ostream.write_int<variable_t>(rlslp[i].second(), bits);
+//                }
             }
 
             ostream.close();
@@ -108,19 +129,26 @@ class RLSLPCoder {
                     rlslp[i] = non_terminal<variable_t, terminal_count_t>{delta, 0};
                 }
 
-                delta = 0;
-                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
-                    delta = istream.read_unary<variable_t>() + delta;
-                    rlslp[i] = non_terminal<variable_t, terminal_count_t>{delta, 0};
-                }
+//                delta = 0;
+//                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
+//                    delta = istream.read_unary<variable_t>() + delta;
+//                    rlslp[i] = non_terminal<variable_t, terminal_count_t>{delta, 0};
+//                }
 
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
                     rlslp[i].second() = istream.read_int<variable_t>(bits);
                 }
 
-                bits = istream.read_int<uint8_t>(6);
+//                bits = istream.read_int<uint8_t>(6);
+//                for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
+//                    rlslp[i].second() = istream.read_int<variable_t>(bits);
+//                }
+                auto block_bits = istream.read_int<uint8_t>(6);
+                auto len_bits = istream.read_int<uint8_t>(6);
                 for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
-                    rlslp[i].second() = istream.read_int<variable_t>(bits);
+                    variable_t first = istream.read_int<variable_t>(block_bits);
+                    variable_t second = istream.read_int<variable_t>(len_bits);
+                    rlslp[i] = non_terminal<variable_t, terminal_count_t>(first, second);
                 }
 
                 rlslp.compute_lengths();
