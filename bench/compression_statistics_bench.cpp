@@ -21,10 +21,11 @@
 #include "coders/plain_rlslp_coder.hpp"
 #include "coders/plain_rlslp_wlz_coder.hpp"
 #include "coders/rlslp_coder.hpp"
+#include "coders/rlslp_dr_coder.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 5) {
-        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | wlz | sorted | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
+        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | wlz | sorted | sorted_dr | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
                   << std::endl;
         return -1;
     }
@@ -61,6 +62,8 @@ int main(int argc, char *argv[]) {
                 coder_file += file_name + recomp::coder::PlainRLSLPWLZCoder::k_extension;
             } else if (coder == "sorted") {
                 coder_file += file_name + recomp::coder::RLSLPCoder::k_extension;
+            } else if (coder == "sorted_dr") {
+                coder_file += file_name + recomp::coder::RLSLPDRCoder::k_extension;
             } else if (coder == "gzip-1") {
                 coder_file += file_name + ".1.gz";
             } else if (coder == "gzip-9") {
