@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 
+#ifdef BENCH
+#include <iostream>
+#endif
+
 #include "defs.hpp"
 
 namespace recomp {
@@ -124,8 +128,6 @@ class rlslp {
             } else {
                 size_t first_len = compute_length(first);
                 size_t second_len = compute_length(second);
-//                non_terminals[first - terminals].len = first_len;
-//                non_terminals[second - terminals].len = second_len;
                 non_terminals[nt - terminals].len = first_len + second_len;
                 return first_len + second_len;
             }
@@ -214,10 +216,6 @@ class rlslp {
      */
     value_t blocks = 0;
 
-//    /**
-//     * Bitvector marking which productions derive blocks.
-//     */
-//    block_t blocks;
 
     non_terminal<value_t, terminals_t>& operator[](size_t i) {
         return this->non_terminals[i];
@@ -242,17 +240,14 @@ class rlslp {
 
     void reserve(size_t size) {
         non_terminals.reserve(size);
-//        blocks.reserve(size);
     }
 
-    void resize(size_t size/*, bool block = false*/) {
+    void resize(size_t size) {
         non_terminals.resize(size);
-//        blocks.resize(size, block);
     }
 
     void shrink_to_fit() {
         non_terminals.shrink_to_fit();
-//        blocks.shrink_to_fit();
     }
 
     bool is_terminal(value_t nt) const {
@@ -264,10 +259,6 @@ class rlslp {
             return false;
         }
         return nt - terminals >= blocks;
-//        if (nt < terminals) {
-//            return false;
-//        }
-//        return this->blocks[nt - terminals];
     }
 
     void derive(std::stringstream& sstream, value_t nt) {
@@ -290,7 +281,16 @@ class rlslp {
     }
 
     void compute_lengths() {
+#ifdef BENCH
+        const auto startTime = recomp::timer::now();
+#endif
         compute_length(root);
+#ifdef BENCH
+        const auto endTime = recomp::timer::now();
+        const auto timeSpan = endTime - startTime;
+        std::cout << "RESULT algo=lengths time="
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
+#endif
     }
 
     size_t len(value_t nt) const {
@@ -302,14 +302,26 @@ class rlslp {
     }
 
     std::string derive_text() {
+#ifdef BENCH
+        const auto startTime = recomp::timer::now();
+#endif
         std::stringstream sstream;
         if (!empty()) {
             derive(sstream, root);
         }
+#ifdef BENCH
+        const auto endTime = recomp::timer::now();
+        const auto timeSpan = endTime - startTime;
+        std::cout << "RESULT algo=derive time="
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
+#endif
         return sstream.str();
     }
 
     std::string extract(size_t i, size_t len) const {
+#ifdef BENCH
+        const auto startTime = recomp::timer::now();
+#endif
         std::stringstream sstream;
         if (!empty() && i < this->len(root) && len > 0) {
             if (i + len > this->len(root)) {
@@ -317,6 +329,12 @@ class rlslp {
             }
             extract(sstream, i, len, root);
         }
+#ifdef BENCH
+        const auto endTime = recomp::timer::now();
+        const auto timeSpan = endTime - startTime;
+        std::cout << "RESULT algo=extract i=" << i << " len=" << len << " time="
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
+#endif
         return sstream.str();
     }
 };
@@ -361,9 +379,6 @@ std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>
     }
     sstream << "blocks: ";
     sstream << rlslp.blocks;
-//    for (const auto& block : rlslp.blocks) {
-//        sstream << block;
-//    }
     sstream << std::endl;
 
     return sstream.str();

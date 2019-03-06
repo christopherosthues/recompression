@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef BENCH
+#include <iostream>
+#endif
+
 #include "io/bitistream.hpp"
 #include "defs.hpp"
 #include "coders/coder.hpp"
@@ -35,6 +39,9 @@ class RLSLPCoder {
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
+#ifdef BENCH
+            const auto startTime = recomp::timer::now();
+#endif
             ostream.write_bit(rlslp.is_empty);
 
             if (!rlslp.is_empty) {
@@ -80,6 +87,20 @@ class RLSLPCoder {
             }
 
             ostream.close();
+#ifdef BENCH
+            const auto endTime = recomp::timer::now();
+            const auto timeSpan = endTime - startTime;
+            std::string dataset = ostream.get_file_name();
+
+            util::file_name_without_path(dataset);
+            util::file_name_without_extension(dataset);
+            util::replace_all(dataset, "_", "\\_");
+
+            std::cout << "RESULT algo=enc_rlslp dataset=" << dataset
+                      << " time=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
+                      << " productions=" << rlslp.size() << " blocks=" << (rlslp.size() - rlslp.blocks)
+                      << " empty=" << rlslp.is_empty << std::endl;
+#endif
         }
     };
 
@@ -94,6 +115,9 @@ class RLSLPCoder {
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline rlslp<variable_t, terminal_count_t> decode() {
+#ifdef BENCH
+            const auto startTime = recomp::timer::now();
+#endif
             rlslp<variable_t, terminal_count_t> rlslp;
             bool empty = istream.read_bit();
 
@@ -129,6 +153,20 @@ class RLSLPCoder {
 
             rlslp.is_empty = empty;
             istream.close();
+#ifdef BENCH
+            const auto endTime = recomp::timer::now();
+            const auto timeSpan = endTime - startTime;
+            std::string dataset = istream.get_file_name();
+
+            util::file_name_without_path(dataset);
+            util::file_name_without_extension(dataset);
+            util::replace_all(dataset, "_", "\\_");
+
+            std::cout << "RESULT algo=dec_rlslp dataset=" << dataset
+                      << " time=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
+                      << " productions=" << rlslp.size() << " blocks=" << (rlslp.size() - rlslp.blocks)
+                      << " empty=" << rlslp.is_empty << std::endl;
+#endif
             return rlslp;
         }
     };

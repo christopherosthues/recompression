@@ -1,6 +1,11 @@
 #pragma once
 
+#include <unordered_set>
 #include <vector>
+
+#ifdef BENCH
+#include <iostream>
+#endif
 
 #include "io/bitistream.hpp"
 #include "defs.hpp"
@@ -8,6 +13,7 @@
 #include "io/bitostream.hpp"
 #include "rlslp.hpp"
 #include "coders/rlslp_rule_sorter.hpp"
+#include "util.hpp"
 
 namespace recomp {
 namespace coder {
@@ -37,16 +43,15 @@ class RLSLPDRCoder {
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
+#ifdef BENCH
+            const auto startTime = recomp::timer::now();
+#endif
             ostream.write_bit(rlslp.is_empty);
 
             if (!rlslp.is_empty) {
                 auto bits = util::bits_for(rlslp.size() + rlslp.terminals);
 
-//                std::cout << "Begin rule sort" << std::endl;
-
                 sort_rlslp_rules(rlslp);
-
-//                std::cout << "rules sorted" << std::endl;
 
                 ostream.write_int<uint8_t>(bits, 6);
                 ostream.write_int<size_t>(rlslp.size(), bits);
@@ -60,9 +65,8 @@ class RLSLPDRCoder {
                     delta = rlslp[i].first();
                 }
 
-//                std::cout << "Begin" << std::endl;
                 int64_t delta_dr = 0;
-//                int64_t max = 0;
+                std::unordered_set<int64_t> different;
                 std::vector<bool> neg(rlslp.blocks);
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
                     int64_t diff = rlslp[i].second() - delta_dr;
@@ -70,19 +74,15 @@ class RLSLPDRCoder {
                     if (diff < 0) {
                         diff = -diff;
                     }
+                    different.insert(diff);
                     ostream.write_elias_gamma_code<int64_t>(diff);
-//                    std::cout << "Writing pair " << diff << std::endl;
-//                    max = std::max(max, diff);
 //                    ostream.write_unary(diff);
                     delta_dr = rlslp[i].second();
                 }
-//                std::cout << "Max pair: " << max << std::endl;
+                std::cout << "Different pair second: " << different.size() << std::endl;
+                different.clear();
                 if (rlslp.blocks > 0) {
                     ostream.write_bitvector_compressed(neg);
-//                    for (size_t i = 0; i < neg.size(); ++i) {
-//                        std::cout << neg[i] << ", ";
-//                    }
-//                    std::cout << std::endl;
                 }
 
                 if (rlslp.size() != rlslp.blocks) {
@@ -90,7 +90,6 @@ class RLSLPDRCoder {
                     size_t number = 0;
                     neg.resize(rlslp.size() - rlslp.blocks);
                     neg.shrink_to_fit();
-//                    max = 0;
                     for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                         int64_t diff = rlslp[i].first() - delta_dr;
                         neg[i - rlslp.blocks] = diff < 0;
@@ -98,13 +97,12 @@ class RLSLPDRCoder {
                             diff = -diff;
                             number++;
                         }
-//                        max = std::max(max, diff);
-//                        std::cout << "Writing block first " << diff << std::endl;
+                        different.insert(diff);
                         ostream.write_elias_gamma_code<int64_t>(diff);
 //                        ostream.write_unary(diff);
                         delta_dr = rlslp[i].first();
                     }
-//                    std::cout << "Max block first: " << max << std::endl;
+                    std::cout << "Different block fist: " << different.size() << std::endl;
                     if (number > 0) {
                         ostream.write_bit(true);
                         ostream.write_bitvector_compressed(neg);
@@ -112,14 +110,9 @@ class RLSLPDRCoder {
                         ostream.write_bit(false);
                     }
 
-//                    for (size_t i = 0; i < neg.size(); ++i) {
-//                        std::cout << neg[i] << ", ";
-//                    }
-//                    std::cout << std::endl;
-
                     delta_dr = 0;
                     number = 0;
-//                    max = 0;
+                    different.clear();
                     for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                         int64_t diff = rlslp[i].second() - delta_dr;
                         neg[i - rlslp.blocks] = diff < 0;
@@ -127,27 +120,36 @@ class RLSLPDRCoder {
                             diff = -diff;
                             number++;
                         }
-//                        std::cout << "Writing block sec " << diff << std::endl;
-//                        max = std::max(max, diff);
+                        different.insert(diff);
 //                        ostream.write_unary(diff);
                         ostream.write_elias_gamma_code<int64_t>(diff);
                         delta_dr = rlslp[i].second();
                     }
-//                    std::cout << "Max block second: " << max << std::endl;
+                    std::cout << "Different block second: " << different.size() << std::endl;
                     if (number > 0) {
                         ostream.write_bit(true);
                         ostream.write_bitvector_compressed(neg);
                     } else {
                         ostream.write_bit(false);
                     }
-//                    for (size_t i = 0; i < neg.size(); ++i) {
-//                        std::cout << neg[i] << ", ";
-//                    }
-//                    std::cout << std::endl;
                 }
             }
 
             ostream.close();
+#ifdef BENCH
+            const auto endTime = recomp::timer::now();
+            const auto timeSpan = endTime - startTime;
+            std::string dataset = ostream.get_file_name();
+
+            util::file_name_without_path(dataset);
+            util::file_name_without_extension(dataset);
+            util::replace_all(dataset, "_", "\\_");
+
+            std::cout << "RESULT algo=enc_rlslp_dr dataset=" << dataset
+                      << " time=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
+                      << " productions=" << rlslp.size() << " blocks=" << (rlslp.size() - rlslp.blocks)
+                      << " empty=" << rlslp.is_empty << std::endl;
+#endif
         }
     };
 
@@ -162,6 +164,9 @@ class RLSLPDRCoder {
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline rlslp<variable_t, terminal_count_t> decode() {
+#ifdef BENCH
+            const auto startTime = recomp::timer::now();
+#endif
             rlslp<variable_t, terminal_count_t> rlslp;
             bool empty = istream.read_bit();
 
@@ -247,6 +252,20 @@ class RLSLPDRCoder {
 
             rlslp.is_empty = empty;
             istream.close();
+#ifdef BENCH
+            const auto endTime = recomp::timer::now();
+            const auto timeSpan = endTime - startTime;
+            std::string dataset = istream.get_file_name();
+
+            util::file_name_without_path(dataset);
+            util::file_name_without_extension(dataset);
+            util::replace_all(dataset, "_", "\\_");
+
+            std::cout << "RESULT algo=dec_rlslp_dr dataset=" << dataset
+                      << " time=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count()
+                      << " productions=" << rlslp.size() << " blocks=" << (rlslp.size() - rlslp.blocks)
+                      << " empty=" << rlslp.is_empty << std::endl;
+#endif
             return rlslp;
         }
     };

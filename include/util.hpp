@@ -288,6 +288,20 @@ void split(std::string s, std::string delimiter, std::vector<std::string>& split
     split.push_back(s.substr(pos));
 }
 
+void file_name_without_path(std::string& file_name) {
+    size_t pos = file_name.find_last_of('/');
+    if (pos != std::string::npos) {
+        file_name = file_name.substr(pos + 1);
+    }
+}
+
+void file_name_without_extension(std::string& file_name) {
+    size_t pos = file_name.find_last_of('.');
+    if (pos != std::string::npos) {
+        file_name = file_name.substr(0, pos);
+    }
+}
+
 int str_to_int(std::string s) {
     std::istringstream ss(s);
     int n;
