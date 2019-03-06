@@ -63,7 +63,7 @@ class BitIStream {
 //        }
 //    }
 
-    inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
+    inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) : file_name(file_name) {
         stream = std::ifstream(file_name, mode);
         char c;
         if (stream.get(c)) {
@@ -91,6 +91,10 @@ class BitIStream {
 //    }
 
     ~BitIStream() {}
+
+    const std::string& get_file_name() const {
+        return file_name;
+    }
 
     /**
      * @brief Resets the internal state.
@@ -227,4 +231,7 @@ class BitIStream {
 //        write_int(value);
 //        // write_int(value, bits_for(value));
 //    }
+
+ private:
+    std::string file_name;
 };

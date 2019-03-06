@@ -30,7 +30,7 @@ class BitOStream {
     }
 
  public:
-    inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) {
+    inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) : file_name(file_name) {
         stream = std::ofstream(file_name, mode);
         reset();
     }
@@ -60,6 +60,10 @@ class BitOStream {
             dirty = true;
             write_buffer();
         }
+    }
+
+    const std::string& get_file_name() const {
+        return file_name;
     }
 
     /**
@@ -226,4 +230,7 @@ class BitOStream {
         write_int(value);
         // write_int(value, bits_for(value));
     }
+
+ private:
+    std::string file_name;
 };
