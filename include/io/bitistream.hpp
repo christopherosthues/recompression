@@ -142,6 +142,12 @@ class BitIStream {
         return value;
     }
 
+    template<typename value_t>
+    inline value_t read_elias_gamma_code() {
+        auto bits = read_unary<uint8_t>();
+        return read_int<value_t>(bits);
+    }
+
     /**
      * @brief Writes the bit representation of the integer to the output stream.
      *

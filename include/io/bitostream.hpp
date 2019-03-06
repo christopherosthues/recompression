@@ -121,6 +121,13 @@ class BitOStream {
         write_bit(false);
     }
 
+    template<typename value_t>
+    inline void write_elias_gamma_code(value_t value) {
+        std::uint8_t bits = recomp::util::bits_for(value);
+        write_unary(bits);
+        write_int(value, bits);
+    }
+
     /**
      * @brief Writes the bit representation of the integer to the output stream.
      *
