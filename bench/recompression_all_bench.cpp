@@ -23,7 +23,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./recompression_all_bench [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | parallel_lp | fast | hash | parallel_rnd] [cores] [repeats]" << std::endl;
+        std::cerr << "./recompression_all_bench [path] [file_name(s)] [sequential | parallel | full_parallel | parallel_ls | parallel_gr | parallel_lp | fast | hash | parallel_rnd] [cores] [repeats] [prefix]" << std::endl;
         return -1;
     }
 
@@ -37,6 +37,11 @@ int main(int argc, char *argv[]) {
     std::cout << "Using " << repeats << " repeats" << std::endl;
     if (repeats <= 0) {
         return -1;
+    }
+
+    size_t prefix = 0;
+    if (argc > 6) {
+        prefix = (size_t)recomp::util::str_to_int(argv[6]);
     }
 
     std::vector<std::string> files;
@@ -98,7 +103,7 @@ int main(int argc, char *argv[]) {
 
                 typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                 text_t text;
-                recomp::util::read_file<text_t>(file_name, text);
+                recomp::util::read_file(file_name, text, prefix);
 
                 recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
 
@@ -118,7 +123,7 @@ int main(int argc, char *argv[]) {
                 rlslp.shrink_to_fit();
 
                 std::string c_text;
-                recomp::util::read_text_file(file_name, c_text);
+                recomp::util::read_text_file(file_name, c_text, prefix);
                 if (res == c_text) {
                     std::cout << "Correct" << std::endl;
                 } else {

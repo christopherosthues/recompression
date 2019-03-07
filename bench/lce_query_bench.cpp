@@ -1,4 +1,4 @@
-
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <vector>
@@ -25,7 +25,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [accesses] [coder (wlz | plain)] [rlslp_path]" << std::endl;
+        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [accesses] [coder (wlz | plain)] [rlslp_path] [prefix]" << std::endl;
         return -1;
     }
 
@@ -51,6 +51,11 @@ int main(int argc, char *argv[]) {
         rlslp_path = std::string(argv[7]);
     }
 
+    size_t prefix = 0;
+    if (argc > 8) {
+        prefix = (size_t)recomp::util::str_to_int(argv[8]);
+    }
+
 //    std::vector<std::vector<std::string>> access(algos.size());
 //    for (size_t i = 0; i < algos.size(); ++i) {
 //        access[i] = std::vector<std::string>(accesses);
@@ -58,6 +63,9 @@ int main(int argc, char *argv[]) {
     for (size_t k = 0; k < files.size(); ++k) {
         std::string file_name = argv[1] + files[k];
         size_t file_size = recomp::util::file_size_in_bytes(file_name);
+        if (prefix > 0) {
+            file_size = std::min(file_size, prefix);
+        }
 
         for (size_t i = 0; i < accesses; ++i) {
             indices[i] = recomp::util::random_number(file_size);
@@ -105,14 +113,14 @@ int main(int argc, char *argv[]) {
         if (coder.empty()) {
             typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
             text_t text;
-            recomp::util::read_file(file_name, text);
+            recomp::util::read_file(file_name, text, prefix);
 
             recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
             recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
         }
 
         std::string plain_text;
-        recomp::util::read_text_file(file_name, plain_text);
+        recomp::util::read_text_file(file_name, plain_text, prefix);
 
         for (size_t repeat = 0; repeat < repeats; ++repeat) {
             std::vector<size_t> lces(algos.size(), 0);

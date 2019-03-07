@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -28,7 +29,7 @@ size_t file_size_in_bytes(std::string& file_name) {
  * @param max_val The maximum value (exclusive)
  * @return A random number
  */
-size_t random_number(size_t max_val) {
+inline size_t random_number(size_t max_val) {
     return ((((size_t)std::rand()) << 32) + std::rand()) % max_val;
 }
 
@@ -40,21 +41,26 @@ size_t random_number(size_t max_val) {
  * @param[out] text The read text
  */
 template<typename text_t>
-void read_file_fast(const std::string& file_name, text_t& text) {
+void read_file_fast(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size = 0) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-    auto file_size = ifs.tellg();
-    if (file_size < 0) {
+    if (!ifs) {
         std::cerr << "Failed to read file " << file_name << std::endl;
         exit(1);
     }
-    ifs.seekg(0, std::ios::beg);
+    ifs.seekg(0, std::ios::end);
+    uint64_t file_size = ifs.tellg();
+    if (prefix_size > 0) {
+        file_size = std::min(file_size, prefix_size);
+    }
 
-    text.resize(static_cast<size_t>(file_size), '\0');
+    ifs.seekg(0, std::ios::beg);
+    text.resize(file_size, 0);
+//    ifs.read(reinterpret_cast<char*>(text.data()), file_size);
     std::vector<char> in(file_size);
     ifs.read(reinterpret_cast<char*>(in.data()), file_size);
     for (size_t i = 0; i < in.size(); ++i) {
-        text[i] = static_cast<typename text_t::value_type>(in[i]);
+        text[i] = static_cast<text_t>(in[i]);
     }
     ifs.close();
     std::cout << "Read " << file_size << " bytes" << std::endl;
@@ -69,22 +75,26 @@ void read_file_fast(const std::string& file_name, text_t& text) {
  * @param text[out] The read text
  */
 template<typename text_t>
-void read_file(const std::string& file_name, text_t& text) {
+void read_file(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size = 0) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-    auto file_size = ifs.tellg();
-    if (file_size < 0) {
+    uint64_t file_size = ifs.tellg();
+    if (!ifs) {
         std::cerr << "Failed to read file " << file_name << std::endl;
         exit(1);
     }
     ifs.seekg(0, std::ios::beg);
 
-    text.resize(static_cast<size_t>(file_size), 0);
+    if (prefix_size > 0) {
+        file_size = std::min(file_size, prefix_size);
+    }
+
+    text.resize(file_size, 0);
 
     char c;
-    auto index = 0;
-    while (ifs.get(c)) {
-        text[index++] = static_cast<typename text_t::value_type>((unsigned char)c);
+    size_t index = 0;
+    while (ifs.get(c) && index < file_size) {
+        text[index++] = static_cast<text_t>((unsigned char)c);
     }
     ifs.close();
 
@@ -98,27 +108,25 @@ void read_file(const std::string& file_name, text_t& text) {
  * @param file_name The file name
  * @param text[out] The read text
  */
-void read_text_file(const std::string& file_name, std::string& text) {
-    std::cout << "Reading file: " << file_name << std::endl;
+void read_text_file(const std::string& file_name, std::string& text, const size_t prefix_size = 0) {
+    std::cout << "Reading text file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-    auto file_size = ifs.tellg();
-    if (file_size < 0) {
+    uint64_t file_size = ifs.tellg();
+    if (!ifs) {
         std::cerr << "Failed to read file " << file_name << std::endl;
         exit(1);
     }
     ifs.seekg(0, std::ios::beg);
 
-    // std::vector<char> bytes(((size_t)file_size)+1);
-    text.resize(static_cast<size_t>(file_size), '\0');
+    if (prefix_size > 0) {
+        file_size = std::min(file_size, prefix_size);
+    }
+
+    text.resize(file_size, '\0');
     ifs.read((char*)text.data(), file_size);
-    // bytes.data()[file_size] = '$';
     ifs.close();
     std::cout << "Read " << file_size << " bytes" << std::endl;
     std::cout << "Finished reading file" << std::endl;
-    // return std::string(bytes.data(), file_size);
-//    std::ifstream ifs(file_name.c_str());
-//    std::istream_iterator<char> input(ifs);
-//    std::copy(input, std::istream_iterator<char>(), std::back_inserter(text));
 }
 
 /**
@@ -129,7 +137,7 @@ void read_text_file(const std::string& file_name, std::string& text) {
  * @return The string representation of the text
  */
 template<typename text_t>
-std::string text_vector_to_string(const text_t& text) {
+std::string text_vector_to_string(const std::vector<text_t>& text) {
     std::stringstream text_stream;
     for (const auto& c : text) {
         text_stream << c << " ";

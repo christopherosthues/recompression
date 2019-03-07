@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 
                     typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                     text_t text;
-                    recomp::util::read_file<text_t>(file_name, text);
+                    recomp::util::read_file(file_name, text);
 
                     recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
 
