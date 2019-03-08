@@ -178,7 +178,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 bounds[0] = 0;
                 compact_bounds.reserve(n_threads + 1);
                 compact_bounds.resize(n_threads + 1, text.size());
-//                compact_bounds[n_threads] = text.size();
                 block_counts.reserve(n_threads + 1);
                 block_counts.resize(n_threads + 1, 0);
                 block_overlaps.reserve(n_threads + 1);
@@ -198,10 +197,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 i = text.size();
             }
 
-//            if (thread_id > 0 && compact_bounds[thread_id] == 0) {
-//                compact_bounds[thread_id] = text.size();
-//            }
-//
 #pragma omp barrier
             size_t i = compact_bounds[thread_id];
             if (i > 0 && i < compact_bounds[thread_id + 1]) {
@@ -249,30 +244,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
             block_counts[thread_id] = compact_bounds[thread_id] + block_overlaps[thread_id] - block_counts[thread_id];
-//            if (compact_bounds[thread_id] > 0 && compact_bounds[thread_id] < text.size()) {
-//                if (compact_bounds[thread_id] + block_overlaps[thread_id] > block_counts[thread_id]) {
-//                    block_counts[thread_id] = compact_bounds[thread_id] + block_overlaps[thread_id] - block_counts[thread_id];
-//                } else {
-//                    block_counts[thread_id] = 0;
-//                }
-//            }
         }
         block_counts[block_counts.size() - 1] =
                 compact_bounds[block_counts.size() - 1] + block_overlaps[block_counts.size() - 1] -
                 block_counts[block_counts.size() - 1];
-//        std::cout << std::endl << "overlaps: ";
-//        for (size_t i = 0; i < block_overlaps.size(); ++i) {
-//            std::cout << block_overlaps[i] << ", ";
-//        }
-//        std::cout << std::endl << "compact_bounds: ";
-//        for (size_t i = 0; i < compact_bounds.size(); ++i) {
-//            std::cout << compact_bounds[i] << ", ";
-//        }
-//        std::cout << std::endl << "block_counts: ";
-//        for (size_t i = 0; i < block_counts.size(); ++i) {
-//            std::cout << block_counts[i] << ", ";
-//        }
-//        std::cout << std::endl;
         block_overlaps.resize(0);
         block_overlaps.shrink_to_fit();
 #ifdef BENCH
@@ -321,7 +296,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 {
                     assign_bounds.reserve(n_threads + 1);
                     assign_bounds.resize(n_threads + 1, positions.size());
-//                    assign_bounds[n_threads] = positions.size();
                     distinct_blocks.reserve(n_threads + 1);
                     distinct_blocks.resize(n_threads + 1, 0);
                 }
@@ -331,10 +305,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     assign_bounds[thread_id] = i;
                     i = positions.size();
                 }
-
-//                if (thread_id > 0 && assign_bounds[thread_id] == 0) {
-//                    assign_bounds[thread_id] = positions.size();
-//                }
 
                 size_t i = assign_bounds[thread_id];
                 if (i == 0) {
@@ -363,19 +333,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
-
-//                    std::cout << "bc: " << bc << std::endl;
-//                    std::cout << "rlslp: " << rlslp_size << std::endl;
-////                std::cout << "distinct pair finised" << std::endl;
-//                    std::cout << std::endl << "distinct: ";
-//                    for (size_t j = 0; j < distinct_blocks.size(); ++j) {
-//                        std::cout << distinct_blocks[j] << ", ";
-//                    }
-//                    std::cout << std::endl << "assign_bounds: ";
-//                    for (size_t j = 0; j < assign_bounds.size(); ++j) {
-//                        std::cout << assign_bounds[j] << ", ";
-//                    }
-//                    std::cout << std::endl;
                 }
 
                 i = assign_bounds[thread_id];
@@ -425,6 +382,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     }
                 }
             }
+            positions.resize(0);
+            positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
             const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -465,11 +424,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #pragma omp parallel for schedule(static) num_threads(this->cores)
         for (size_t i = 0; i < adj_list.size(); ++i) {
             adj_list[i] = i;
-//            if (text[i] > text[i + 1]) {
-//                adj_list[i] = std::make_tuple(text[i], text[i + 1], false);
-//            } else {
-//                adj_list[i] = std::make_tuple(text[i + 1], text[i], true);
-//            }
         }
 
 #ifdef BENCH
@@ -536,13 +490,13 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline void compute_partition(const text_t& text,
-                                  const adj_list_t& adj_list,
-                                  partition_t& partition,
-                                  bool& part_l) {
+    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
+        adj_list_t adj_list(text.size() - 1);
+        compute_adj_list(text, adj_list);
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
+
         int l_count = 0;
         int r_count = 0;
         variable_t val = 0;
@@ -550,25 +504,9 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             if (text[adj_list[0]] > text[adj_list[0] + 1]) {
                 val = text[adj_list[0]];
                 partition[text[adj_list[0] + 1]] = false;
-//                if (partition.find(val) == partition.end()) {
-//                    partition[val] = false;
-//                }
-//                if (!partition[val]) {
-//                    l_count++;
-//                } else {
-//                    r_count++;
-//                }
             } else {
                 val = text[adj_list[0] + 1];
                 partition[text[adj_list[0]]] = false;
-//                if (partition.find(val) == partition.end()) {
-//                    partition[val] = false;
-//                }
-//                if (!partition[val]) {
-//                    l_count++;
-//                } else {
-//                    r_count++;
-//                }
             }
 
             l_count++;
@@ -609,28 +547,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             }
         }
         partition[val] = l_count > r_count;
-//        if (!adj_list.empty()) {
-//            if (partition[std::get<0>(adj_list[0])]) {
-//                r_count++;
-//            } else {
-//                l_count++;
-//            }
-//        }
-//        for (size_t i = 1; i < adj_list.size(); ++i) {
-//            if (std::get<0>(adj_list[i - 1]) < std::get<0>(adj_list[i])) {
-////            LOG(INFO) << "Setting " << std::get<0>(adj_list[i - 1]) << " to " << (l_count > r_count) << " ; "
-////                      << l_count << ", " << r_count;
-//                partition[std::get<0>(adj_list[i - 1])] = l_count > r_count;
-//                l_count = 0;
-//                r_count = 0;
-//            }
-//            if (partition[std::get<1>(adj_list[i])]) {
-//                r_count++;
-//            } else {
-//                l_count++;
-//            }
-//        }
-//        partition[std::get<0>(adj_list[adj_list.size() - 1])] = l_count > r_count;
+        adj_list.resize(0);
+        adj_list.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTimePar = recomp::timer::now();
@@ -651,49 +569,13 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 rl_count++;
             }
         }
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            if (std::get<0>(adj_list[i])) {
-//                if (!partition[std::get<1>(adj_list[i])] &&
-//                    partition[std::get<2>(adj_list[i])]) {  // cb in text and c in right set and b in left
-//                    rl_count++;
-//                } else if (partition[std::get<1>(adj_list[i])] &&
-//                           !partition[std::get<2>(adj_list[i])]) {  // cb in text and c in left set and b in right
-//                    lr_count++;
-//                }
-//            } else {
-//                if (!partition[std::get<1>(adj_list[i])] &&
-//                    partition[std::get<2>(adj_list[i])]) {  // bc in text and b in left set and c in right
-//                    lr_count++;
-//                } else if (partition[std::get<1>(adj_list[i])] &&
-//                           !partition[std::get<2>(adj_list[i])]) {  // bc in text and b in right set and c in left
-//                    rl_count++;
-//                }
-//            }
-//        }
+        part_l = rl_count > lr_count;
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
         const auto timeSpanCount = endTimeCount - startTimeCount;
         std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
 #endif
-
-//#ifdef BENCH
-//        const auto startTimeProds = recomp::timer::now();
-//#endif
-//        int distinct_l = 0;
-//        int distinct_r = 0;
-//#pragma omp parallel for num_threads(this->cores) schedule(static) reduction(+:distinct_l) reduction(+:distinct_r)
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//
-//        }
-//#ifdef BENCH
-//        const auto endTimeProds = recomp::timer::now();
-//        const auto timeSpanProds = endTimeProds - startTimeProds;
-//        std::cout << " dist_l=" << distinct_l << " dist_r=" << distinct_r << " distinct_time="
-//                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanProds).count();
-//#endif
-
-        part_l = rl_count > lr_count;
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
@@ -716,14 +598,10 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                   << " level=" << this->level << " cores=" << this->cores;
 #endif
         partition_t partition;
-        adj_list_t adj_list(text.size() - 1);
-        compute_adj_list(text, adj_list);
 
         size_t pair_count = 0;
         bool part_l = false;
-//        std::cout << std::endl << "Begin partition" << std::endl;
-        compute_partition(text, adj_list, partition, part_l);
-//        std::cout << std::endl << "fin part" << std::endl;
+        compute_partition(text, partition, part_l);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
@@ -751,7 +629,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 size_t end_text = text.size() - 1;
                 compact_bounds.reserve(n_threads + 1);
                 compact_bounds.resize(n_threads + 1, end_text);
-//                compact_bounds[n_threads] = text.size() - 1;
                 pair_counts.reserve(n_threads + 1);
                 pair_counts.resize(n_threads + 1, 0);
                 pair_overlaps.reserve(n_threads + 1);
@@ -764,15 +641,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 compact_bounds[thread_id] = i;
                 i = text.size();
             }
-//            if (thread_id > 0 && compact_bounds[thread_id] == 0) {
-//                compact_bounds[thread_id] = text.size() - 1;
-//            }
-//#pragma omp barrier
-
-//#pragma omp single
-//            {
-//                std::cout << "compact bounds finished" << std::endl;
-//            }
 
             size_t i = compact_bounds[thread_id];
 #pragma omp barrier
@@ -780,14 +648,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 if (part_l == partition[text[i]] && part_l != partition[text[i + 1]]) {
                     t_positions.emplace_back(i);
                     pair_count++;
-//                    pair_counts[thread_id + 1]++;
                 }
             }
-//#pragma omp single
-//            {
-//                std::cout << "find finished" << std::endl;
-//            }
-
             bounds[thread_id + 1] = t_positions.size();
 
 #pragma omp barrier
@@ -796,61 +658,29 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 compact_bounds[n_threads] = text.size();
                 for (size_t j = 1; j < n_threads + 1; ++j) {
                     bounds[j] += bounds[j - 1];
-//                    pair_counts[j] += pair_counts[j - 1];
                 }
                 positions.resize(positions.size() + bounds[n_threads]);
 
-//                std::cout << std::endl << "bounds: ";
-//                for (size_t j = 0; j < pair_counts.size(); ++j) {
-//                    std::cout << bounds[j] << ", ";
-//                }
                 pair_counts[n_threads] = compact_bounds[n_threads] + pair_overlaps[n_threads] - bounds[n_threads];
             }
             std::copy(t_positions.begin(), t_positions.end(), positions.begin() + bounds[thread_id]);
 
-//#pragma omp single
-//            {
-//                std::cout << "copy finished" << std::endl;
-//            }
-
             if (compact_bounds[thread_id] == text.size() - 1) {
                 compact_bounds[thread_id] = text.size();
             }
-//#pragma omp single
-//            {
-//                std::cout << "adjust compact finished" << std::endl;
-//            }
 
             size_t cb = compact_bounds[thread_id];
-//            if (cb > 0 && cb < text.size()) {
-//#pragma omp critical
-//                {std::cout << "Checking " << text[cb - 1] << " at " << (cb - 1) << " and " << text[cb] << " at " << (cb) << " by " << thread_id << std::endl;}
             if (cb > 0) {
                 if (cb < text.size()) {
                     pair_overlaps[thread_id] = (partition[text[cb - 1]] == part_l && partition[text[cb]] != part_l) ? 1
                                                                                                                     : 0;
                 }
                 pair_counts[thread_id] = cb + pair_overlaps[thread_id] - bounds[thread_id];
-//                if (cb + pair_overlaps[thread_id] > pair_counts[thread_id]) {
-//                    pair_counts[thread_id] = cb + pair_overlaps[thread_id] - pair_counts[thread_id];
-//                } else {
-//                    pair_counts[thread_id] = 0;
-//                }
             }
         }
-//        std::cout << std::endl << "overlaps: ";
-//        for (size_t i = 0; i < pair_overlaps.size(); ++i) {
-//            std::cout << pair_overlaps[i] << ", ";
-//        }
-//        std::cout << std::endl << "compact_bounds: ";
-//        for (size_t i = 0; i < compact_bounds.size(); ++i) {
-//            std::cout << compact_bounds[i] << ", ";
-//        }
-//        std::cout << std::endl << "pair_counts: ";
-//        for (size_t i = 0; i < pair_counts.size(); ++i) {
-//            std::cout << pair_counts[i] << ", ";
-//        }
-//        std::cout << std::endl;
+        {
+            auto discard = std::move(partition);
+        }
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
@@ -882,7 +712,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         std::cout << " sort="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count());
 #endif
-//        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeRules = recomp::timer::now();
@@ -901,10 +730,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             {
                 assign_bounds.reserve(n_threads + 1);
                 assign_bounds.resize(n_threads + 1, positions.size());
-//                assign_bounds[n_threads] = positions.size();
                 distinct_pairs.reserve(n_threads + 1);
                 distinct_pairs.resize(n_threads + 1, 0);
-//                std::cout << "create assign" << std::endl;
             }
 
 #pragma omp for schedule(static)
@@ -913,20 +740,11 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 i = positions.size();
             }
 
-//            if (thread_id > 0 && assign_bounds[thread_id] == 0) {
-//                assign_bounds[thread_id] = positions.size();
-//            }
-
             size_t i = assign_bounds[thread_id];
             if (i == 0) {
                 distinct_pairs[thread_id + 1]++;
                 i++;
             }
-
-//#pragma omp single
-//            {
-//                std::cout << "assign bounds finished" << std::endl;
-//            }
 
 #pragma omp barrier
             for (; i < assign_bounds[thread_id + 1]; ++i) {
@@ -939,7 +757,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #pragma omp barrier
 #pragma omp single
             {
-//                std::cout << "distinct pair in sections finised" << std::endl;
                 for (size_t j = 1; j < distinct_pairs.size(); ++j) {
                     distinct_pairs[j] += distinct_pairs[j - 1];
                 }
@@ -949,19 +766,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 rlslp.reserve(rlslp_size);
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
-
-//                std::cout << "pc: " << pc << std::endl;
-//                std::cout << "rlslp: " << rlslp_size << std::endl;
-////                std::cout << "distinct pair finised" << std::endl;
-//                std::cout << std::endl << "distinct: ";
-//                for (size_t j = 0; j < distinct_pairs.size(); ++j) {
-//                    std::cout << distinct_pairs[j] << ", ";
-//                }
-//                std::cout << std::endl << "assign_bounds: ";
-//                for (size_t j = 0; j < assign_bounds.size(); ++j) {
-//                    std::cout << assign_bounds[j] << ", ";
-//                }
-//                std::cout << std::endl;
             }
 
             i = assign_bounds[thread_id];
@@ -1024,6 +828,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 text[positions[i] + 1] = DELETED;
             }
         }
+        positions.resize(0);
+        positions.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -1033,37 +839,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
 
         compact(text, compact_bounds, pair_counts, pair_count);
-//#ifdef BENCH
-//        const auto startTimeCompact = recomp::timer::now();
-//#endif
-//        size_t new_text_size = pair_counts[pair_counts.size() - 1];  // text.size() - pair_counts[pair_counts.size() - 1];
-//        if (new_text_size > 1 && pair_count > 0) {
-//            text_t new_text;
-//            new_text.reserve(new_text_size);
-//            new_text.resize(new_text_size);
-//
-//#pragma omp parallel num_threads(this->cores)
-//            {
-//                auto thread_id = omp_get_thread_num();
-//                size_t copy_i = pair_counts[thread_id];
-//                for (size_t i = compact_bounds[thread_id]; i < compact_bounds[thread_id + 1]; ++i) {
-//                    if (text[i] != DELETED) {
-//                        new_text[copy_i++] = text[i];
-//                    }
-//                }
-//            }
-//
-//            text = std::move(new_text);
-//        } else if (new_text_size == 1) {
-//            text.resize(new_text_size);
-//            text.shrink_to_fit();
-//        }
-//#ifdef BENCH
-//        const auto endTimeCompact = recomp::timer::now();
-//        const auto timeSpanCompact = endTimeCompact - startTimeCompact;
-//        std::cout << " compact_text="
-//                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
-//#endif
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();

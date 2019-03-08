@@ -360,6 +360,8 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                     }
                 }
             }
+            positions.resize(0);
+            positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
             const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -463,11 +465,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
      * @param adj_list[in] The adjacency list of the text
      * @param partition[out] The partition
      */
-    inline void compute_partition(const text_t& text,
-                                  const adj_list_t& adj_list,
-                                  partition_t& partition,
-                                  size_t& begin,
-                                  bool& part_l) {
+    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition, size_t& begin, bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -541,13 +539,6 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                 }
             }
         }
-//        for (size_t i = 0; i < text.size() - 1; ++i) {
-//            if (!partition[text[i]] && partition[text[i + 1]]) {
-//                lr_count++;
-//            } else if (partition[text[i]] && !partition[text[i + 1]]) {
-//                rl_count++;
-//            }
-//        }
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
         const auto timeSpanCount = endTimeCount - startTimeCount;
@@ -593,7 +584,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
         std::unordered_map<pair_t, variable_t, pair_hash> pairs;
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition(text, adj_list, partition, begin, part_l);
+        compute_partition(adj_list, partition, begin, part_l);
 
 #ifdef BENCH
         const auto startTimeRules = recomp::timer::now();
@@ -667,6 +658,8 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                 rlslp.non_terminals.emplace_back(left, right, len);
             }
         }
+        adj_list.resize(0);
+        adj_list.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -674,8 +667,6 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count());
 #endif
 
-//        rlslp.blocks.reserve(rlslp.size());
-//        rlslp.blocks.resize(rlslp.size(), false);
         bv.resize(rlslp.size(), false);
 
 #ifdef BENCH
@@ -715,8 +706,6 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                     bool p_l = (*ti).second;
                     bool p_r = (*tn).second;
                     if (p_l == part_l && p_l != p_r) {
-//                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
-//                               << thread_id;
                         auto pair = std::make_pair(text[i], text[i + 1]);
                         text[i++] = pairs[pair];
                         text[i] = DELETED;
@@ -745,16 +734,9 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                     pair_counts[thread_id] = 0;
                 }
             }
-//#pragma omp barrier
-//#pragma omp single
-//            {
-//                std::cout << std::endl << util::text_vector_to_string(text) << std::endl;
-//                std::cout << std::endl << "pair_overlaps: ";
-//                for (size_t i = 0; i < pair_overlaps.size(); ++i) {
-//                    std::cout << pair_overlaps[i] << ", ";
-//                }
-//                std::cout << std::endl;
-//            }
+        }
+        {
+            auto discard = std::move(partition);
         }
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
@@ -765,38 +747,6 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count())
                   << " productions=" << pairs.size() << " elements=" << pair_count;;
 #endif
-
-//#ifdef BENCH
-//        const auto startTimeCompact = recomp::timer::now();
-//#endif
-//        size_t new_text_size = text.size() - pair_count;
-//        if (new_text_size > 1 && pair_count > 0) {
-//            size_t copy_i = 1;
-//            for (size_t i = 1; i < text.size(); ++i) {
-//                if (text[i] != DELETED) {
-//                    text[copy_i++] = text[i];
-//                }
-//            }
-//        }
-//#ifdef BENCH
-//        const auto endTimeCompact = recomp::timer::now();
-//        const auto timeSpanCompact = endTimeCompact - startTimeCompact;
-//        std::cout << " compact_text="
-//                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCompact).count());
-//#endif
-//
-//        text.resize(new_text_size);
-//        text.shrink_to_fit();
-
-//        std::cout << std::endl << "compact_bounds: ";
-//        for (size_t i = 0; i < compact_bounds.size(); ++i) {
-//            std::cout << compact_bounds[i] << ", ";
-//        }
-//        std::cout << std::endl << "pair_counts: ";
-//        for (size_t i = 0; i < pair_counts.size(); ++i) {
-//            std::cout << pair_counts[i] << ", ";
-//        }
-//        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeCompact = recomp::timer::now();

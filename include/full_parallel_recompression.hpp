@@ -82,7 +82,6 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         }
 
         if (!text.empty()) {
-//            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -361,6 +360,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                     }
                 }
             }
+            positions.resize(0);
+            positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
             const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -460,7 +461,9 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
      * @param adj_list[in] The adjacency list of the text
      * @param partition[out] The partition
      */
-    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition, bool& part_l) {
+    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
+        adj_list_t adj_list(text.size() - 1);
+        compute_adj_list(text, adj_list);
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -545,13 +548,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             }
 
             for (size_t i = bounds[thread_id]; i < bounds[thread_id + 1]; ++i) {
-// #pragma omp critical
-//            {std::cout << "Locking write " << std::get<0>(adj_list[starts[i]]) << " by thread " << thread_id
-//                       << std::endl;}
                 mutexes[mapping[std::get<0>(adj_list[starts[i]])]].lock();
-// #pragma omp critical
-//            {std::cout << "Locked write " << std::get<0>(adj_list[starts[i]]) << " by thread " << thread_id
-//                       << std::endl;}
             }
 #pragma omp barrier
 
@@ -562,45 +559,20 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 index = starts[i];
 
                 while (index < starts[i + 1]) {
-// #pragma omp critical
-//                {std::cout << "Index " << index << " to " << starts[i+1] << " by thread " << thread_id << " char "
-//                           << mapping[std::get<0>(adj_list[index])] << std::endl;}
-
-// #pragma omp critical
-//                {std::cout << "Locking shared " << std::get<1>(adj_list[index]) << " by thread " << thread_id
-//                           << std::endl;}
                     mutexes[mapping[std::get<1>(adj_list[index])]].lock_shared();
-// #pragma omp critical
-//                {std::cout << "Locked shared " << std::get<1>(adj_list[index]) << " by thread " << thread_id
-//                           << std::endl;}
                     if (partition[std::get<1>(adj_list[index])]) {
                         r_count++;
                     } else {
                         l_count++;
                     }
-// #pragma omp critical
-//                {std::cout << "Unlocking shared " << std::get<1>(adj_list[index]) << " by thread " << thread_id
-//                           << std::endl;}
                     mutexes[mapping[std::get<1>(adj_list[index])]].unlock_shared();
-// #pragma omp critical
-//                {std::cout << "Unlocked shared " << std::get<1>(adj_list[index]) << " by thread " << thread_id
-//                           << std::endl;}
                     index++;
                 }
-// #pragma omp critical
-//            {std::cout << "finished " << std::get<0>(adj_list[index - 1]) << " by thread " << thread_id
-//                       << " at index " << (index-1) << std::endl;}
 #pragma omp critical
                 {
                     partition[std::get<0>(adj_list[index - 1])] = l_count > r_count;
                 }
-// #pragma omp critical
-//            {std::cout << "Unlocking write " << std::get<0>(adj_list[index - 1]) << " by thread " << thread_id
-//                       << std::endl;}
                 mutexes[mapping[std::get<0>(adj_list[index - 1])]].unlock();
-// #pragma omp critical
-//            {std::cout << "Unlocked write " << std::get<0>(adj_list[index - 1]) << " by thread " << thread_id
-//                       << std::endl;}
 
                 l_count = 0;
                 r_count = 0;
@@ -638,28 +610,17 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 }
             }
         }
+        part_l = rl_count > lr_count;
+
+        adj_list.resize(0);
+        adj_list.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
         const auto timeSpanCount = endTimeCount - startTimeCount;
         std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
 #endif
-        part_l = rl_count > lr_count;
-//        if (rl_count > lr_count) {
-//#pragma omp parallel num_threads(this->cores)
-//            {
-//#pragma omp single
-//                {
-//                    for (auto iter = partition.begin(); iter != partition.end(); ++iter) {
-//#pragma omp task
-//                        {
-//                            (*iter).second = !(*iter).second;
-//                        }
-//                    }
-//                }
-//#pragma omp barrier
-//            }
-//        }
+
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
@@ -684,13 +645,10 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             partition[text[i]] = false;
         }
 
-        adj_list_t adj_list(text.size() - 1);
-        compute_adj_list(text, adj_list);
-
         size_t pair_count = 0;
 
         bool part_l = false;
-        compute_partition(adj_list, partition, part_l);
+        compute_partition(text, partition, part_l);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
@@ -770,6 +728,9 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                     pair_counts[thread_id] = 0;
                 }
             }
+        }
+        {
+            auto discard = std::move(partition);
         }
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
@@ -923,6 +884,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 text[positions[i] + 1] = DELETED;
             }
         }
+        positions.resize(0);
+        positions.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;

@@ -259,8 +259,7 @@ TEST(parallel_order_ls_partition, repreated_pair) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -284,8 +283,7 @@ TEST(parallel_order_ls_partition, repreated_pair_same_occ) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -309,8 +307,7 @@ TEST(parallel_order_ls_partition, 212181623541741623541321) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -340,8 +337,7 @@ TEST(parallel_order_ls_partition, 131261051171161051139) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -372,8 +368,7 @@ TEST(parallel_order_ls_partition, 18161517161514) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[14] = false;
@@ -400,8 +395,7 @@ TEST(parallel_order_ls_partition, 21201619) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -427,8 +421,7 @@ TEST(parallel_order_ls_partition, 2322) {
     parallel::recompression_order_ls<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list, begin);
-//    ips4o::parallel::sort(adj_list.begin(), adj_list.end());
-    recomp.compute_partition(text, adj_list, partition, begin, part_l);
+    recomp.compute_partition(adj_list, partition, begin, part_l);
 
     partition_t exp_partition;
     exp_partition[22] = false;

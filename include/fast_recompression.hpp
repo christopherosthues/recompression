@@ -24,8 +24,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
     typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::vector<bool> partition_t;
 
-//    const std::string name = "fast_seq";
-
     recompression_fast() {
         this->name = "fast_seq";
     }
@@ -75,7 +73,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         rlslp.resize(rlslp.size());
 
         if (!text.empty()) {
-//            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(mapping[text[0]]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -223,7 +220,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 for (auto& block : blocks[i]) {
                     block.second = alphabet_size++;
                     block_count++;  // Here needed to count the number of different blocks
-//                    rlslp.block_count++;
                     variable_t len = block.first;
                     if (mapping[i] >= rlslp.terminals) {
                         len *= rlslp[mapping[i] - rlslp.terminals].len;
@@ -241,7 +237,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 #endif
 
         if (block_count > 0) {
-//            rlslp.blocks.resize(rlslp.blocks.size() + block_count, true);
             rlslp.blocks += block_count;
             bv.resize(rlslp.size(), true);
         }
@@ -276,8 +271,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
      * @param text[in] The text
      * @return The multiset
      */
-    inline void compute_adj_list(const text_t& text,
-                                 adj_list_t& adj_list) {
+    inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -317,8 +311,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
      *
      * @return The partition of the symbols in the alphabet to maximize the number of pairs to be compressed
      */
-    inline void compute_partition(const adj_list_t& adj_list,
-                                  partition_t& partition) {
+    inline void compute_partition(const adj_list_t& adj_list, partition_t& partition) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
