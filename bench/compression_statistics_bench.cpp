@@ -10,13 +10,6 @@
 #include "recompression.hpp"
 
 #include "parallel_recompression.hpp"
-#include "full_parallel_recompression.hpp"
-#include "parallel_order_less_recompression.hpp"
-#include "parallel_order_great_recompression.hpp"
-
-#include "sequential_recompression.hpp"
-#include "fast_recompression.hpp"
-#include "recompression_hash.hpp"
 
 #include "coders/plain_rlslp_coder.hpp"
 #include "coders/plain_rlslp_wlz_coder.hpp"

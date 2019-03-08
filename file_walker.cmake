@@ -11,8 +11,7 @@ set(SOURCES
     src/lce_query.cpp
     src/radix_sort.cpp
     src/parallel_order_great_recompression.cpp
-    src/sequential_recompression.cpp
-    src/recompression_hash.cpp
+        src/recompression_hash.cpp
     src/defs.cpp
     src/coders/rlslp_rule_sorter.cpp
     src/coders/coder.cpp
@@ -30,8 +29,7 @@ set(HEADERS
     include/lce_query.hpp
     include/rlslp.hpp
     include/recompression.hpp
-    include/sequential_recompression.hpp
-    include/parallel_recompression.hpp
+        include/parallel_recompression.hpp
     include/radix_sort.hpp
     include/parallel_order_less_recompression.hpp
     include/parallel_rnd_recompression.hpp

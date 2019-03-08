@@ -14,7 +14,6 @@
 #include "parallel_order_less_recompression.hpp"
 #include "parallel_order_great_recompression.hpp"
 
-#include "sequential_recompression.hpp"
 #include "fast_recompression.hpp"
 
 int str_to_int(std::string s) {
@@ -42,7 +41,7 @@ void replace_all(std::string& s, std::string replace, std::string replace_with) 
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
-        std::cerr << "./recompression_bench [file name] [sequential | parallel | full_parallel | parallel_ls | "
+        std::cerr << "./recompression_bench [file name] [parallel | full_parallel | parallel_ls | "
                      "parallel_gr | fast] [cores] [output]" << std::endl;
         return -1;
     }
@@ -57,8 +56,6 @@ int main(int argc, char *argv[]) {
         dataset = file_name;
     }
 
-//    std::regex reg("_");
-//    dataset = std::regex_replace(dataset, reg, "\\_");
     replace_all(dataset, "_", "\\_");
 
     std::string algo = argv[2];
@@ -73,9 +70,7 @@ int main(int argc, char *argv[]) {
 
     std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp;
 
-    if (algo == "sequential") {
-        recomp = std::make_unique<recomp::sequential_recompression<recomp::var_t, recomp::term_t>>(dataset);
-    } else if (algo == "parallel") {
+    if (algo == "parallel") {
         recomp = std::make_unique<recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t>>(dataset);
     } else if (algo == "full_parallel") {
         recomp = std::make_unique<recomp::parallel::full_parallel_recompression<recomp::var_t, recomp::term_t>>(dataset);
