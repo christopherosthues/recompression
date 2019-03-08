@@ -72,29 +72,6 @@ int main(int argc, char *argv[]) {
                         return -1;
                     }
 
-//                    if (algo == "parallel") {
-//                        recomp = std::make_unique<recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t>>(
-//                                dataset);
-//                    } else if (algo == "parallel_lp") {
-//                        recomp = std::make_unique<recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>>(
-//                                dataset);
-//                    } else if (algo == "parallel_rnd") {
-//                        recomp = std::make_unique<recomp::parallel::parallel_rnd_recompression<recomp::var_t, recomp::term_t>>(
-//                                dataset);
-//                    } else if (algo == "full_parallel") {
-//                        recomp = std::make_unique<recomp::parallel::full_parallel_recompression<recomp::var_t, recomp::term_t>>(
-//                                dataset);
-//                    } else if (algo == "parallel_ls") {
-//                        recomp = std::make_unique<recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t>>(
-//                                dataset);
-//                    } else if (algo == "parallel_gr") {
-//                        recomp = std::make_unique<recomp::parallel::recompression_order_gr<recomp::var_t, recomp::term_t>>(
-//                                dataset);
-//                    } else {
-//                        std::cerr << "No such algo " << algo << std::endl;
-//                        return -1;
-//                    }
-
                     typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                     text_t text;
                     recomp::util::read_file(file_name, text);

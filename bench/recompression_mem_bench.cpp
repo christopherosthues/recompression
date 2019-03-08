@@ -71,33 +71,6 @@ int main(int argc, char *argv[]) {
                     return -1;
                 }
 
-//                if (algo == "parallel_lp") {
-//                    recomp = std::make_unique<recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>>(
-//                            dataset);
-//                } else if (algo == "parallel_rnd") {
-//                    recomp = std::make_unique<recomp::parallel::parallel_rnd_recompression<recomp::var_t, recomp::term_t>>(
-//                            dataset);
-//                } else if (algo == "parallel") {
-//                    recomp = std::make_unique<recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t>>(
-//                            dataset);
-//                } else if (algo == "full_parallel") {
-//                    recomp = std::make_unique<recomp::parallel::full_parallel_recompression<recomp::var_t, recomp::term_t>>(
-//                            dataset);
-//                } else if (algo == "parallel_ls") {
-//                    recomp = std::make_unique<recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t>>(
-//                            dataset);
-//                } else if (algo == "parallel_gr") {
-//                    recomp = std::make_unique<recomp::parallel::recompression_order_gr<recomp::var_t, recomp::term_t>>(
-//                            dataset);
-//                } else if (algo == "fast") {
-//                    recomp = std::make_unique<recomp::recompression_fast<recomp::var_t, recomp::term_t>>(dataset);
-//                } else if (algo == "hash") {
-//                    recomp = std::make_unique<recomp::recompression_hash<recomp::var_t, recomp::term_t>>(dataset);
-//                } else {
-//                    std::cerr << "No such algo " << algo << std::endl;
-//                    return -1;
-//                }
-
                 typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                 text_t text;
                 recomp::util::read_file(file_name, text, prefix);
@@ -110,7 +83,7 @@ int main(int argc, char *argv[]) {
                 const auto endTime = recomp::timer::now();
                 const auto timeSpan = endTime - startTime;
 #ifdef MALLOC_COUNT
-                malloc_count_reset_peak();
+//                malloc_count_reset_peak();
                 std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset
                           << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level="
                           << recomp->level << " cores=" << cores << " memory=" << malloc_count_peak() << std::endl;
@@ -120,27 +93,6 @@ int main(int argc, char *argv[]) {
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << "[ms]"
                           << std::endl;
-////
-////#ifdef MALLOC_COUNT
-////                malloc_count_reset_peak();
-////                std::cout << "Memory: " << malloc_count_peak() << std::endl;
-////#endif // MALLOC_COUNT
-//                std::string res = rlslp.derive_text();
-//                rlslp.resize(0);
-//                rlslp.shrink_to_fit();
-//
-//                std::string c_text;
-//                recomp::util::read_text_file(file_name, c_text, prefix);
-//                if (res == c_text) {
-//                    std::cout << "Correct" << std::endl;
-//                } else {
-//                    std::cout << "Failure" << std::endl;
-//                }
-////#ifdef MALLOC_COUNT
-////                std::cout << "Memory: " << malloc_count_peak() << std::endl;
-////                malloc_count_reset_peak();
-////                std::cout << "Memory: " << malloc_count_peak() << std::endl;
-////#endif // MALLOC_COUNT
             }
         }
     }

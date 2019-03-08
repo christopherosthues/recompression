@@ -40,15 +40,6 @@ int main(int argc, char *argv[]) {
             recomp::util::replace_all(dataset, "_", "\\_");
 
             std::string coder_file = coder_path;
-//            if (coder == "plain") {
-//                coder_file += file_name + recomp::coder::PlainRLSLPCoder::k_extension;
-//            } else if (coder == "wlz") {
-//                coder_file += file_name + recomp::coder::PlainFixedRLSLPCoder::k_extension;
-//            } else if (coder == "sorted") {
-//                coder_file += file_name + recomp::coder::SortedRLSLPCoder::k_extension;
-//            } else if (coder == "sorted_dr") {
-//                coder_file += file_name + recomp::coder::SortedRLSLPDRCoder::k_extension;
-//            } else
             if (coder == "gzip-1") {
                 coder_file += file_name + ".1.gz";
             } else if (coder == "gzip-9") {
