@@ -5,25 +5,7 @@
 #include <thread>
 #include <vector>
 
-#include "recompression/defs.hpp"
-#include "recompression/util.hpp"
-#include "recompression/recompression.hpp"
-
-#include "recompression/parallel_recompression.hpp"
-#include "recompression/full_parallel_recompression.hpp"
-#include "recompression/parallel_order_less_recompression.hpp"
-#include "recompression/parallel_order_great_recompression.hpp"
-#include "recompression/parallel_lp_recompression.hpp"
-#include "recompression/parallel_rnd_recompression.hpp"
-
-#include "recompression/fast_recompression.hpp"
-#include "recompression/hash_recompression.hpp"
-
-#include "recompression/coders/plain_rlslp_coder.hpp"
-#include "recompression/coders/plain_fixed_rlslp_coder.hpp"
-#include "recompression/coders/rlslp_coder.hpp"
-#include "recompression/coders/rlslp_dr_coder.hpp"
-#include "recompression/coders/rlslp_rule_sorter.hpp"
+#include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 8) {
@@ -78,31 +60,8 @@ int main(int argc, char *argv[]) {
 
                 recomp::util::replace_all(dataset, "_", "\\_");
 
-                std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp;
-
-                if (algo == "parallel") {
-                    recomp = std::make_unique<recomp::parallel::parallel_recompression<recomp::var_t, recomp::term_t>>(
-                            dataset);
-                } else if (algo == "parallel_lp") {
-                    recomp = std::make_unique<recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>>(
-                            dataset);
-                } else if (algo == "parallel_rnd") {
-                    recomp = std::make_unique<recomp::parallel::parallel_rnd_recompression<recomp::var_t, recomp::term_t>>(
-                            dataset);
-                } else if (algo == "full_parallel") {
-                    recomp = std::make_unique<recomp::parallel::full_parallel_recompression<recomp::var_t, recomp::term_t>>(
-                            dataset);
-                } else if (algo == "parallel_ls") {
-                    recomp = std::make_unique<recomp::parallel::recompression_order_ls<recomp::var_t, recomp::term_t>>(
-                            dataset);
-                } else if (algo == "parallel_gr") {
-                    recomp = std::make_unique<recomp::parallel::recompression_order_gr<recomp::var_t, recomp::term_t>>(
-                            dataset);
-                } else if (algo == "fast") {
-                    recomp = std::make_unique<recomp::recompression_fast<recomp::var_t, recomp::term_t>>(dataset);
-                } else if (algo == "hash") {
-                    recomp = std::make_unique<recomp::hash_recompression<recomp::var_t, recomp::term_t>>(dataset);
-                } else {
+                std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp = recomp::create_recompression(algo, dataset);
+                if (!recomp) {
                     std::cerr << "No such algo " << algo << std::endl;
                     return -1;
                 }
@@ -136,134 +95,172 @@ int main(int argc, char *argv[]) {
                 }
 
                 std::string coder_file = to_path + files[j];
+                recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp;
                 if (coder == "plain") {
                     recomp::coder::PlainRLSLPCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
                     recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
-                    recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
+                    in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file + recomp::coder::PlainRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
-                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
-                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
-                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
-                              << " productions=" << rlslp.size() << std::endl;
-                    in.close();
-                    in_enc.close();
-
-                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
-                        std::cout << "Correct store" << std::endl;
-                    } else {
-                        std::cout << "Failure store" << std::endl;
-                    }
-                } else if (coder == "wlz") {
+//                    std::ifstream in_enc(coder_file + recomp::coder::PlainRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
+//                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
+//                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
+//                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
+//                              << " productions=" << rlslp.size() << std::endl;
+//                    in.close();
+//                    in_enc.close();
+//
+//                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
+//                        std::cout << "Correct store" << std::endl;
+//                    } else {
+//                        std::cout << "Failure store" << std::endl;
+//                    }
+                } else if (coder == "plain_fixed") {
                     recomp::coder::PlainFixedRLSLPCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
                     recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
-                    recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
+                    in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file + recomp::coder::PlainFixedRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
-                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
-                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
-                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
-                              << " productions=" << rlslp.size() << std::endl;
-                    in.close();
-                    in_enc.close();
-
-                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
-                        std::cout << "Correct store" << std::endl;
-                    } else {
-                        std::cout << "Failure store" << std::endl;
-                    }
+//                    std::ifstream in_enc(coder_file + recomp::coder::PlainFixedRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
+//                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
+//                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
+//                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
+//                              << " productions=" << rlslp.size() << std::endl;
+//                    in.close();
+//                    in_enc.close();
+//
+//                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
+//                        std::cout << "Correct store" << std::endl;
+//                    } else {
+//                        std::cout << "Failure store" << std::endl;
+//                    }
                 } else if (coder == "sorted") {
-                    recomp::coder::RLSLPCoder::Encoder enc{coder_file};
+                    recomp::coder::SortedRLSLPCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
-                    recomp::coder::RLSLPCoder::Decoder dec{coder_file};
-                    recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
+                    recomp::coder::SortedRLSLPCoder::Decoder dec{coder_file};
+                    in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file + recomp::coder::RLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
-                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
-                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
-                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
-                              << " productions=" << rlslp.size() << std::endl;
-                    in.close();
-                    in_enc.close();
+//                    std::ifstream in_enc(coder_file + recomp::coder::SortedRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
+//                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
+//                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
+//                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
+//                              << " productions=" << rlslp.size() << std::endl;
+//                    in.close();
+//                    in_enc.close();
+//
+//                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
+//                        std::cout << "Correct store" << std::endl;
+//                    } else {
+//                        std::cout << "Failure store" << std::endl;
+//                    }
 
-                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
-                        std::cout << "Correct store" << std::endl;
-                    } else {
-                        std::cout << "Failure store" << std::endl;
-                    }
-
-                    recomp::sort_rlslp_rules(rlslp);
-
-                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
-                        if (rlslp[m].first() > rlslp[m + 1].first()) {
-                            std::cout << "Pairs not sorted" << std::endl;
-                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
-                        }
-                    }
-
-                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
-                        if (rlslp[m].first() > rlslp[m + 1].first()) {
-                            std::cout << "Blocks not sorted" << std::endl;
-                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
-                        }
-                    }
-
-                    if (rlslp.derive_text() == c_text) {
-                        std::cout << "Correct store" << std::endl;
-                    } else {
-                        std::cout << "Failure store" << std::endl;
-                    }
+//                    recomp::sort_rlslp_rules(rlslp);
+//
+//                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
+//                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+//                            std::cout << "Pairs not sorted" << std::endl;
+//                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+//                        }
+//                    }
+//
+//                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
+//                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+//                            std::cout << "Blocks not sorted" << std::endl;
+//                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+//                        }
+//                    }
+//
+//                    if (rlslp.derive_text() == c_text) {
+//                        std::cout << "Correct store" << std::endl;
+//                    } else {
+//                        std::cout << "Failure store" << std::endl;
+//                    }
                 } else if (coder == "sorted_dr") {
-                    recomp::coder::RLSLPDRCoder::Encoder enc{coder_file};
+                    recomp::coder::SortedRLSLPDRCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
-                    recomp::coder::RLSLPDRCoder::Decoder dec{coder_file};
-                    recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
+                    recomp::coder::SortedRLSLPDRCoder::Decoder dec{coder_file};
+                    in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file + recomp::coder::RLSLPDRCoder::k_extension, std::ios::binary | std::ios::ate);
-                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
-                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
-                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
-                              << " productions=" << rlslp.size() << std::endl;
-                    in.close();
-                    in_enc.close();
+//                    std::ifstream in_enc(coder_file + recomp::coder::SortedRLSLPDRCoder::k_extension, std::ios::binary | std::ios::ate);
+//                    std::ifstream in(file_name, std::ios::binary | std::ios::ate);
+//                    std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
+//                              << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()
+//                              << " productions=" << rlslp.size() << std::endl;
+//                    in.close();
+//                    in_enc.close();
+//
+//                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
+//                        std::cout << "Correct store" << std::endl;
+//                    } else {
+//                        std::cout << "Failure store" << std::endl;
+//                    }
 
-                    if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
-                        std::cout << "Correct store" << std::endl;
-                    } else {
-                        std::cout << "Failure store" << std::endl;
-                    }
-
-                    recomp::sort_rlslp_rules(rlslp);
-
-                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
-                        if (rlslp[m].first() > rlslp[m + 1].first()) {
-                            std::cout << "Pairs not sorted" << std::endl;
-                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
-                        }
-                    }
-
-                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
-                        if (rlslp[m].first() > rlslp[m + 1].first()) {
-                            std::cout << "Blocks not sorted" << std::endl;
-                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
-                        }
-                    }
-
-                    if (rlslp.derive_text() == c_text) {
-                        std::cout << "Correct store" << std::endl;
-                    } else {
-                        std::cout << "Failure store" << std::endl;
-                    }
+//                    recomp::sort_rlslp_rules(rlslp);
+//
+//                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
+//                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+//                            std::cout << "Pairs not sorted" << std::endl;
+//                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+//                        }
+//                    }
+//
+//                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
+//                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+//                            std::cout << "Blocks not sorted" << std::endl;
+//                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+//                        }
+//                    }
+//
+//                    if (rlslp.derive_text() == c_text) {
+//                        std::cout << "Correct store" << std::endl;
+//                    } else {
+//                        std::cout << "Failure store" << std::endl;
+//                    }
                 } else {
                     std::cout << "Unkown coder '" << coder << "'." << std::endl;
+                    return -1;
                 }
 
+                std::string extension = recomp::coder::get_coder_extension(coder);
+                std::ifstream in_enc(coder_file + extension, std::ios::binary | std::ios::ate);
+                std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
+                          << coder << " size=" << recomp::util::file_size_in_bytes(file_name, prefix) << " enc_size="
+                          << in_enc.tellg() << " productions=" << rlslp.size() << std::endl;
+                in_enc.close();
+
+                if (rlslp == in_rlslp && rlslp.derive_text() == in_rlslp.derive_text()) {
+                    std::cout << "Correct store" << std::endl;
+                } else {
+                    std::cout << "Failure store" << std::endl;
+                }
+
+                if (coder == "sorted" || coder == "sorted_dr") {
+                    recomp::sort_rlslp_rules(rlslp);
+
+                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
+                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+                            std::cout << "Pairs not sorted" << std::endl;
+                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                        }
+                    }
+
+                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
+                        if (rlslp[m].first() > rlslp[m + 1].first()) {
+                            std::cout << "Blocks not sorted" << std::endl;
+                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                        }
+                    }
+
+                    if (rlslp.derive_text() == c_text) {
+                        std::cout << "Correct store" << std::endl;
+                    } else {
+                        std::cout << "Failure store" << std::endl;
+                    }
+                }
             }
         }
     }

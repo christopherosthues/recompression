@@ -5,20 +5,11 @@
 #include <thread>
 #include <vector>
 
-#include "recompression/defs.hpp"
-#include "recompression/util.hpp"
-#include "recompression/recompression.hpp"
-
-#include "recompression/parallel_recompression.hpp"
-
-#include "recompression/coders/plain_rlslp_coder.hpp"
-#include "recompression/coders/plain_fixed_rlslp_coder.hpp"
-#include "recompression/coders/rlslp_coder.hpp"
-#include "recompression/coders/rlslp_dr_coder.hpp"
+#include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 5) {
-        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | wlz | sorted | sorted_dr | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
+        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | plain_fixed | sorted | sorted_dr | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
                   << std::endl;
         return -1;
     }
@@ -49,15 +40,16 @@ int main(int argc, char *argv[]) {
             recomp::util::replace_all(dataset, "_", "\\_");
 
             std::string coder_file = coder_path;
-            if (coder == "plain") {
-                coder_file += file_name + recomp::coder::PlainRLSLPCoder::k_extension;
-            } else if (coder == "wlz") {
-                coder_file += file_name + recomp::coder::PlainFixedRLSLPCoder::k_extension;
-            } else if (coder == "sorted") {
-                coder_file += file_name + recomp::coder::RLSLPCoder::k_extension;
-            } else if (coder == "sorted_dr") {
-                coder_file += file_name + recomp::coder::RLSLPDRCoder::k_extension;
-            } else if (coder == "gzip-1") {
+//            if (coder == "plain") {
+//                coder_file += file_name + recomp::coder::PlainRLSLPCoder::k_extension;
+//            } else if (coder == "wlz") {
+//                coder_file += file_name + recomp::coder::PlainFixedRLSLPCoder::k_extension;
+//            } else if (coder == "sorted") {
+//                coder_file += file_name + recomp::coder::SortedRLSLPCoder::k_extension;
+//            } else if (coder == "sorted_dr") {
+//                coder_file += file_name + recomp::coder::SortedRLSLPDRCoder::k_extension;
+//            } else
+            if (coder == "gzip-1") {
                 coder_file += file_name + ".1.gz";
             } else if (coder == "gzip-9") {
                 coder_file += file_name + ".9.gz";
@@ -66,7 +58,13 @@ int main(int argc, char *argv[]) {
             } else if (coder == "bzip2-9") {
                 coder_file += file_name + ".9.bz2";
             } else {
-                std::cout << "Unkown coder '" << coder << "'." << std::endl;
+                std::string extension = recomp::coder::get_coder_extension(coder);
+                if (extension == "unknown") {
+                    std::cout << "Unkown coder '" << coder << "'." << std::endl;
+                    return -1;
+                } else {
+                    coder_file = file_name + extension;
+                }
             }
 
             std::ifstream in_enc(coder_file, std::ios::binary | std::ios::ate);

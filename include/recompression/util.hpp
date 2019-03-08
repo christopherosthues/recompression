@@ -14,11 +14,15 @@
 #include "defs.hpp"
 
 namespace recomp {
+
 namespace util {
 
-size_t file_size_in_bytes(std::string& file_name) {
+size_t file_size_in_bytes(std::string& file_name, const size_t prefix_size = 0) {
     std::ifstream in(file_name, std::ios::binary | std::ios::ate);
     size_t size = in.tellg();
+    if (prefix_size > 0) {
+        size = std::min(size, prefix_size);
+    }
     in.close();
     return size;
 }

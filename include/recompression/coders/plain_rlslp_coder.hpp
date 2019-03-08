@@ -17,7 +17,7 @@ class PlainRLSLPCoder {
 
     PlainRLSLPCoder() = delete;
 
-    class Encoder : coder::Encoder {
+    class Encoder : public coder::Encoder {
      protected:
         BitOStream ostream;
 

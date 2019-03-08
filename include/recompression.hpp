@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "recompression/defs.hpp"
 #include "recompression/recompression.hpp"
 #include "recompression/fast_recompression.hpp"
@@ -19,6 +21,50 @@
 #include "recompression/coders/coder.hpp"
 #include "recompression/coders/plain_rlslp_coder.hpp"
 #include "recompression/coders/plain_fixed_rlslp_coder.hpp"
-#include "recompression/coders/rlslp_coder.hpp"
-#include "recompression/coders/rlslp_dr_coder.hpp"
+#include "recompression/coders/sorted_rlslp_coder.hpp"
+#include "recompression/coders/sorted_rlslp_dr_coder.hpp"
 #include "recompression/coders/rlslp_rule_sorter.hpp"
+
+namespace recomp {
+
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
+std::unique_ptr<recompression<variable_t, terminal_count_t>> create_recompression(const std::string& name, std::string& dataset) {
+    if (name == "parallel") {
+        return std::make_unique<parallel::parallel_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_lp") {
+        return std::make_unique<parallel::parallel_lp_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_rnd") {
+        return std::make_unique<parallel::parallel_rnd_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "full_parallel") {
+        return std::make_unique<parallel::full_parallel_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_ls") {
+        return std::make_unique<parallel::recompression_order_ls<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_gr") {
+        return std::make_unique<parallel::recompression_order_gr<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "fast") {
+        return std::make_unique<recompression_fast<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "hash") {
+        return std::make_unique<hash_recompression<variable_t, terminal_count_t>>(dataset);
+    } else {
+        return std::unique_ptr<recompression<variable_t, terminal_count_t>>(nullptr);
+    }
+}
+
+namespace coder {
+std::string get_coder_extension(const std::string& name) {
+    if (name == "plain") {
+        return coder::PlainRLSLPCoder::k_extension;
+    } else if (name == "plain_fixed") {
+        return coder::PlainFixedRLSLPCoder::k_extension;
+    } else if (name == "sorted") {
+        return coder::SortedRLSLPCoder::k_extension;
+    } else if (name == "sorted_dr") {
+        return coder::SortedRLSLPDRCoder::k_extension;
+    } else {
+        return "unkown";
+    }
+}
+
+}  // namespace coder
+
+}  // namespace recomp

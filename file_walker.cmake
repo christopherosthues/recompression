@@ -17,10 +17,11 @@ set(SOURCES
         src/recompression/coders/coder.cpp
         src/recompression/coders/plain_rlslp_coder.cpp
         src/recompression/coders/plain_fixed_rlslp_coder.cpp
-        src/recompression/coders/rlslp_dr_coder.cpp
-        src/recompression/coders/rlslp_coder.cpp
+        src/recompression/coders/sorted_rlslp_dr_coder.cpp
+        src/recompression/coders/sorted_rlslp_coder.cpp
         src/recompression/io/bitostream.cpp
         src/recompression/io/bitistream.cpp
+        src/recompression.cpp
 )
 set(HEADERS
         include/recompression/parallel_lp_recompression.hpp
@@ -39,8 +40,8 @@ set(HEADERS
         include/recompression/parallel_order_great_recompression.hpp
         include/recompression/coders/plain_rlslp_coder.hpp
         include/recompression/coders/plain_fixed_rlslp_coder.hpp
-        include/recompression/coders/rlslp_dr_coder.hpp
-        include/recompression/coders/rlslp_coder.hpp
+        include/recompression/coders/sorted_rlslp_dr_coder.hpp
+        include/recompression/coders/sorted_rlslp_coder.hpp
         include/recompression/coders/rlslp_rule_sorter.hpp
         include/recompression/coders/coder.hpp
         include/recompression/io/bitistream.hpp

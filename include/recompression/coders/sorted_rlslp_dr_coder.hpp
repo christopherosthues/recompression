@@ -26,13 +26,13 @@ namespace coder {
  *
  * @tparam value_t The type of values to delta-encode.
  */
-class RLSLPDRCoder {
+class SortedRLSLPDRCoder {
  public:
     static const std::string k_extension;
 
-    RLSLPDRCoder() = delete;
+    SortedRLSLPDRCoder() = delete;
 
-    class Encoder : coder::Encoder {
+    class Encoder : public coder::Encoder {
      protected:
         BitOStream ostream;
 
@@ -267,7 +267,7 @@ class RLSLPDRCoder {
     };
 };
 
-const std::string RLSLPDRCoder::k_extension = ".rlslp_dr";
+const std::string SortedRLSLPDRCoder::k_extension = ".rlslp_dr";
 
 }  // namespace coder
 }  // namespace recomp
