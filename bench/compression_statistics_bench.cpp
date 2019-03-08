@@ -5,16 +5,16 @@
 #include <thread>
 #include <vector>
 
-#include "defs.hpp"
-#include "util.hpp"
-#include "recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/recompression.hpp"
 
-#include "parallel_recompression.hpp"
+#include "recompression/parallel_recompression.hpp"
 
-#include "coders/plain_rlslp_coder.hpp"
-#include "coders/plain_rlslp_wlz_coder.hpp"
-#include "coders/rlslp_coder.hpp"
-#include "coders/rlslp_dr_coder.hpp"
+#include "recompression/coders/plain_rlslp_coder.hpp"
+#include "recompression/coders/plain_fixed_rlslp_coder.hpp"
+#include "recompression/coders/rlslp_coder.hpp"
+#include "recompression/coders/rlslp_dr_coder.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 5) {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
             if (coder == "plain") {
                 coder_file += file_name + recomp::coder::PlainRLSLPCoder::k_extension;
             } else if (coder == "wlz") {
-                coder_file += file_name + recomp::coder::PlainRLSLPWLZCoder::k_extension;
+                coder_file += file_name + recomp::coder::PlainFixedRLSLPCoder::k_extension;
             } else if (coder == "sorted") {
                 coder_file += file_name + recomp::coder::RLSLPCoder::k_extension;
             } else if (coder == "sorted_dr") {

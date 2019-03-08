@@ -2,7 +2,7 @@
 
 #define private public
 
-#include "parallel_order_great_recompression.hpp"
+#include "recompression/parallel_order_great_recompression.hpp"
 
 using namespace recomp;
 

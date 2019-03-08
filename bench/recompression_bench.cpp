@@ -9,12 +9,12 @@
 #include "util.hpp"
 #include "recompression.hpp"
 
-#include "parallel_recompression.hpp"
-#include "full_parallel_recompression.hpp"
-#include "parallel_order_less_recompression.hpp"
-#include "parallel_order_great_recompression.hpp"
+#include "recompression/parallel_recompression.hpp"
+#include "recompression/full_parallel_recompression.hpp"
+#include "recompression/parallel_order_less_recompression.hpp"
+#include "recompression/parallel_order_great_recompression.hpp"
 
-#include "fast_recompression.hpp"
+#include "recompression/fast_recompression.hpp"
 
 int str_to_int(std::string s) {
     std::istringstream ss(s);

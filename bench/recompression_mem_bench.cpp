@@ -5,19 +5,19 @@
 #include <thread>
 #include <vector>
 
-#include "defs.hpp"
-#include "util.hpp"
-#include "recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/recompression.hpp"
 
-#include "parallel_recompression.hpp"
-#include "full_parallel_recompression.hpp"
-#include "parallel_order_less_recompression.hpp"
-#include "parallel_order_great_recompression.hpp"
-#include "parallel_lp_recompression.hpp"
-#include "parallel_rnd_recompression.hpp"
+#include "recompression/parallel_recompression.hpp"
+#include "recompression/full_parallel_recompression.hpp"
+#include "recompression/parallel_order_less_recompression.hpp"
+#include "recompression/parallel_order_great_recompression.hpp"
+#include "recompression/parallel_lp_recompression.hpp"
+#include "recompression/parallel_rnd_recompression.hpp"
 
-#include "fast_recompression.hpp"
-#include "recompression_hash.hpp"
+#include "recompression/fast_recompression.hpp"
+#include "recompression/recompression_hash.hpp"
 
 #ifdef MALLOC_COUNT
 #include "malloc_count.h"

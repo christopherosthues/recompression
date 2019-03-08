@@ -5,25 +5,25 @@
 #include <thread>
 #include <vector>
 
-#include "defs.hpp"
-#include "util.hpp"
-#include "recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/recompression.hpp"
 
-#include "parallel_recompression.hpp"
-#include "full_parallel_recompression.hpp"
-#include "parallel_order_less_recompression.hpp"
-#include "parallel_order_great_recompression.hpp"
-#include "parallel_lp_recompression.hpp"
-#include "parallel_rnd_recompression.hpp"
+#include "recompression/parallel_recompression.hpp"
+#include "recompression/full_parallel_recompression.hpp"
+#include "recompression/parallel_order_less_recompression.hpp"
+#include "recompression/parallel_order_great_recompression.hpp"
+#include "recompression/parallel_lp_recompression.hpp"
+#include "recompression/parallel_rnd_recompression.hpp"
 
-#include "fast_recompression.hpp"
-#include "recompression_hash.hpp"
+#include "recompression/fast_recompression.hpp"
+#include "recompression/hash_recompression.hpp"
 
-#include "coders/plain_rlslp_coder.hpp"
-#include "coders/plain_rlslp_wlz_coder.hpp"
-#include "coders/rlslp_coder.hpp"
-#include "coders/rlslp_dr_coder.hpp"
-#include "coders/rlslp_rule_sorter.hpp"
+#include "recompression/coders/plain_rlslp_coder.hpp"
+#include "recompression/coders/plain_fixed_rlslp_coder.hpp"
+#include "recompression/coders/rlslp_coder.hpp"
+#include "recompression/coders/rlslp_dr_coder.hpp"
+#include "recompression/coders/rlslp_rule_sorter.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 8) {
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
                 } else if (algo == "fast") {
                     recomp = std::make_unique<recomp::recompression_fast<recomp::var_t, recomp::term_t>>(dataset);
                 } else if (algo == "hash") {
-                    recomp = std::make_unique<recomp::recompression_hash<recomp::var_t, recomp::term_t>>(dataset);
+                    recomp = std::make_unique<recomp::hash_recompression<recomp::var_t, recomp::term_t>>(dataset);
                 } else {
                     std::cerr << "No such algo " << algo << std::endl;
                     return -1;
@@ -157,13 +157,13 @@ int main(int argc, char *argv[]) {
                         std::cout << "Failure store" << std::endl;
                     }
                 } else if (coder == "wlz") {
-                    recomp::coder::PlainRLSLPWLZCoder::Encoder enc{coder_file};
+                    recomp::coder::PlainFixedRLSLPCoder::Encoder enc{coder_file};
                     enc.encode(rlslp);
 
-                    recomp::coder::PlainRLSLPWLZCoder::Decoder dec{coder_file};
+                    recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
                     recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp = dec.decode();
 
-                    std::ifstream in_enc(coder_file + recomp::coder::PlainRLSLPWLZCoder::k_extension, std::ios::binary | std::ios::ate);
+                    std::ifstream in_enc(coder_file + recomp::coder::PlainFixedRLSLPCoder::k_extension, std::ios::binary | std::ios::ate);
                     std::ifstream in(file_name, std::ios::binary | std::ios::ate);
                     std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset << " coder="
                               << coder << " size=" << in.tellg() << " enc_size=" << in_enc.tellg()

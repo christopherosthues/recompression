@@ -2,12 +2,12 @@
 
 #include <stdio.h>
 
-#include "defs.hpp"
-#include "rlslp.hpp"
-#include "parallel_recompression.hpp"
-#include "coders/rlslp_coder.hpp"
-#include "io/bitistream.hpp"
-#include "io/bitostream.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/rlslp.hpp"
+#include "recompression/parallel_recompression.hpp"
+#include "recompression/coders/rlslp_coder.hpp"
+#include "recompression/io/bitistream.hpp"
+#include "recompression/io/bitostream.hpp"
 
 using namespace recomp;
 
@@ -21,7 +21,7 @@ TEST(rlslp_coder, empty) {
 
     std::cout << "recomp finished" << std::endl;
 
-    std::string file_name = "empty";  // + extension;
+    std::string file_name = "empty";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -41,7 +41,7 @@ TEST(rlslp_coder, terminal) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, CHAR_ALPHABET, 4);
 
-    std::string file_name = "terminal";  // + extension;
+    std::string file_name = "terminal";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -61,7 +61,7 @@ TEST(rlslp_coder, short_block) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 113, 4);
 
-    std::string file_name = "short_block";  // + extension;
+    std::string file_name = "short_block";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -81,7 +81,7 @@ TEST(rlslp_coder, short_block3) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 113, 4);
 
-    std::string file_name = "short_block3";  // + extension;
+    std::string file_name = "short_block3";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -101,7 +101,7 @@ TEST(rlslp_coder, recompression) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 5, 4);
 
-    std::string file_name = "recompression";  // + extension;
+    std::string file_name = "recompression";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -124,7 +124,7 @@ TEST(rlslp_coder, one_block) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "one_block";  // + extension;
+    std::string file_name = "one_block";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -144,7 +144,7 @@ TEST(rlslp_coder, two_blocks) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "two_blocks";  // + extension;
+    std::string file_name = "two_blocks";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -164,7 +164,7 @@ TEST(rlslp_coder, three_blocks) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "three_blocks";  // + extension;
+    std::string file_name = "three_blocks";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -184,7 +184,7 @@ TEST(rlslp_coder, four_blocks) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "four_blocks";  // + extension;
+    std::string file_name = "four_blocks";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -207,7 +207,7 @@ TEST(rlslp_coder, repeated_pair) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "repeated_pair";  // + extension;
+    std::string file_name = "repeated_pair";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -227,7 +227,7 @@ TEST(rlslp_coder, repeated_pair_same_occ) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    std::string file_name = "repeated_pair_same";  // + extension;
+    std::string file_name = "repeated_pair_same";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 
@@ -247,7 +247,7 @@ TEST(rlslp_coder, left_end) {
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 4, 4);
 
-    std::string file_name = "left_end";  // + extension;
+    std::string file_name = "left_end";
     coder::RLSLPCoder::Encoder enc{file_name};
     enc.encode<var_t, term_t>(rlslp);
 

@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "defs.hpp"
-#include "lce_query.hpp"
-#include "rlslp.hpp"
-#include "parallel_recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/lce_query.hpp"
+#include "recompression/rlslp.hpp"
+#include "recompression/parallel_recompression.hpp"
 
 using namespace recomp;
 

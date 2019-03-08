@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "defs.hpp"
-#include "rlslp.hpp"
-#include "coders/rlslp_rule_sorter.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/rlslp.hpp"
+#include "recompression/coders/rlslp_rule_sorter.hpp"
 
 using namespace recomp;
 

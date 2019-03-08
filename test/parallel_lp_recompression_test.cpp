@@ -2,7 +2,7 @@
 
 #define private public
 
-#include "parallel_lp_recompression.hpp"
+#include "recompression/parallel_lp_recompression.hpp"
 
 using namespace recomp;
 

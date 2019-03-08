@@ -2,7 +2,7 @@
 
 #define private public
 
-#include "fast_recompression.hpp"
+#include "recompression/fast_recompression.hpp"
 
 using namespace recomp;
 

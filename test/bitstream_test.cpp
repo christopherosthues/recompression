@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <vector>
 
-#include <io/bitistream.hpp>
-#include <io/bitostream.hpp>
+#include "recompression/io/bitistream.hpp"
+#include "recompression/io/bitostream.hpp"
 
 using namespace recomp;
 

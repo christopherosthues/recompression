@@ -13,7 +13,7 @@
 //#include <glog/logging.h>
 #include <ips4o.hpp>
 
-#include "radix_sort.hpp"
+#include "recompression/radix_sort.hpp"
 
 int str_to_int(std::string s) {
     std::istringstream ss(s);

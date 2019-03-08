@@ -6,11 +6,11 @@
 
 #include <ips4o.hpp>
 
-#include "defs.hpp"
-#include "radix_sort.hpp"
-#include "util.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/radix_sort.hpp"
+#include "recompression/util.hpp"
 
-#include "parallel_recompression.hpp"
+#include "recompression/parallel_recompression.hpp"
 
 using namespace recomp;
 

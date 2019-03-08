@@ -5,19 +5,19 @@
 #include <thread>
 #include <vector>
 
-#include "defs.hpp"
-#include "util.hpp"
-#include "recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/recompression.hpp"
 
-#include "parallel_recompression.hpp"
-#include "parallel_lp_recompression.hpp"
-#include "full_parallel_recompression.hpp"
-#include "parallel_order_less_recompression.hpp"
-#include "parallel_order_great_recompression.hpp"
-#include "parallel_rnd_recompression.hpp"
+#include "recompression/parallel_recompression.hpp"
+#include "recompression/parallel_lp_recompression.hpp"
+#include "recompression/full_parallel_recompression.hpp"
+#include "recompression/parallel_order_less_recompression.hpp"
+#include "recompression/parallel_order_great_recompression.hpp"
+#include "recompression/parallel_rnd_recompression.hpp"
 
-#include "fast_recompression.hpp"
-#include "recompression_hash.hpp"
+#include "recompression/fast_recompression.hpp"
+#include "recompression/hash_recompression.hpp"
 
 
 int main(int argc, char *argv[]) {
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
                 } else if (algo == "fast") {
                     recomp = std::make_unique<recomp::recompression_fast<recomp::var_t, recomp::term_t>>(dataset);
                 } else if (algo == "hash") {
-                    recomp = std::make_unique<recomp::recompression_hash<recomp::var_t, recomp::term_t>>(dataset);
+                    recomp = std::make_unique<recomp::hash_recompression<recomp::var_t, recomp::term_t>>(dataset);
                 } else {
                     std::cerr << "No such algo " << algo << std::endl;
                     return -1;

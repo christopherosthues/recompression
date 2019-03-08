@@ -2,12 +2,12 @@
 
 #include <stdio.h>
 
-#include "defs.hpp"
-#include "rlslp.hpp"
-#include "parallel_recompression.hpp"
-#include "coders/rlslp_dr_coder.hpp"
-#include "io/bitistream.hpp"
-#include "io/bitostream.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/rlslp.hpp"
+#include "recompression/parallel_recompression.hpp"
+#include "recompression/coders/rlslp_dr_coder.hpp"
+#include "recompression/io/bitistream.hpp"
+#include "recompression/io/bitostream.hpp"
 
 using namespace recomp;
 

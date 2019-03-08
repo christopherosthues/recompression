@@ -2,8 +2,8 @@
 #include <string>
 #include <unordered_set>
 
-#include "defs.hpp"
-#include "util.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {

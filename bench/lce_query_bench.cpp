@@ -15,12 +15,12 @@
 //#include <sdsl/csa_sada.hpp>
 //#include <sdsl/csa_wt.hpp>
 
-#include "defs.hpp"
-#include "lce_query.hpp"
-#include "parallel_lp_recompression.hpp"
-#include "util.hpp"
-#include "coders/plain_rlslp_coder.hpp"
-#include "coders/plain_rlslp_wlz_coder.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/lce_query.hpp"
+#include "recompression/parallel_lp_recompression.hpp"
+#include "recompression/util.hpp"
+#include "recompression/coders/plain_rlslp_coder.hpp"
+#include "recompression/coders/plain_fixed_rlslp_coder.hpp"
 
 
 int main(int argc, char *argv[]) {
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
             } else if (coder == "wlz") {
                 std::cout << "wlz" << std::endl;
                 std::cout << coder_file << std::endl;
-                recomp::coder::PlainRLSLPWLZCoder::Decoder dec{coder_file};
+                recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
                 rlslp = dec.decode();
             } else {
                 std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel recompression." << std::endl;
