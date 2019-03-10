@@ -6,6 +6,7 @@
 #include "recompression/recompression.hpp"
 #include "recompression/fast_recompression.hpp"
 #include "recompression/full_parallel_recompression.hpp"
+#include "recompression/parallel_lock_recompression.hpp"
 #include "recompression/hash_recompression.hpp"
 #include "recompression/parallel_lp_recompression.hpp"
 #include "recompression/parallel_order_great_recompression.hpp"
@@ -31,12 +32,14 @@ template<typename variable_t = var_t, typename terminal_count_t = term_t>
 std::unique_ptr<recompression<variable_t, terminal_count_t>> create_recompression(const std::string& name, std::string& dataset) {
     if (name == "parallel") {
         return std::make_unique<parallel::parallel_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "full_parallel") {
+        return std::make_unique<parallel::full_parallel_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_lp") {
         return std::make_unique<parallel::parallel_lp_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_rnd") {
         return std::make_unique<parallel::parallel_rnd_recompression<variable_t, terminal_count_t>>(dataset);
-    } else if (name == "full_parallel") {
-        return std::make_unique<parallel::full_parallel_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_lock") {
+        return std::make_unique<parallel::parallel_lock_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::recompression_order_ls<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_gr") {

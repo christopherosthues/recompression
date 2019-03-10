@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./scale_recompression_bench [path] [file_name(s)] [parallel | full_parallel | parallel_lp | parallel_ls | parallel_gr | parallel_rnd] [cores] [repeats] [begin] [steps]" << std::endl;
+        std::cerr << "./scale_recompression_bench [path] [file_name(s)] [parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | parallel_rnd] [cores] [repeats] [begin] [steps]" << std::endl;
         return -1;
     }
 

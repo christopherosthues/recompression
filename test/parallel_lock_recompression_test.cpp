@@ -2,20 +2,20 @@
 
 #define private public
 
-#include "recompression/full_parallel_recompression.hpp"
+#include "recompression/parallel_lock_recompression.hpp"
 
 using namespace recomp;
 
-typedef parallel::full_parallel_recompression<var_t, term_t>::text_t text_t;
-typedef parallel::full_parallel_recompression<var_t, term_t>::adj_list_t adj_list_t;
-typedef parallel::full_parallel_recompression<var_t, term_t>::partition_t partition_t;
-typedef parallel::full_parallel_recompression<var_t, term_t>::alphabet_t alphabet_t;
-typedef parallel::full_parallel_recompression<var_t, term_t>::bv_t bv_t;
+typedef parallel::parallel_lock_recompression<var_t, term_t>::text_t text_t;
+typedef parallel::parallel_lock_recompression<var_t, term_t>::adj_list_t adj_list_t;
+typedef parallel::parallel_lock_recompression<var_t, term_t>::partition_t partition_t;
+typedef parallel::parallel_lock_recompression<var_t, term_t>::alphabet_t alphabet_t;
+typedef parallel::parallel_lock_recompression<var_t, term_t>::bv_t bv_t;
 
-TEST(full_parallel_bcomp, no_block) {
+TEST(parallel_lock_bcomp, no_block) {
     text_t text = {2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
@@ -33,10 +33,10 @@ TEST(full_parallel_bcomp, no_block) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_bcomp, 21214441332311413334133231141321) {
+TEST(parallel_lock_bcomp, 21214441332311413334133231141321) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
@@ -59,10 +59,10 @@ TEST(full_parallel_bcomp, 21214441332311413334133231141321) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_bcomp, 222222222222222222222) {
+TEST(parallel_lock_bcomp, 222222222222222222222) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
@@ -82,10 +82,10 @@ TEST(full_parallel_bcomp, 222222222222222222222) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_bcomp, 22222222211111112222) {
+TEST(parallel_lock_bcomp, 22222222211111112222) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
@@ -107,10 +107,10 @@ TEST(full_parallel_bcomp, 22222222211111112222) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_bcomp, 2222222221111111222200) {
+TEST(parallel_lock_bcomp, 2222222221111111222200) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
@@ -134,10 +134,10 @@ TEST(full_parallel_bcomp, 2222222221111111222200) {
 }
 
 
-TEST(full_parallel_adj_list, left_end) {
+TEST(parallel_lock_adj_list, left_end) {
     text_t text{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
     adj_list_t adj_list(text.size() - 1);
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 //    (2, 1, 1) 0
@@ -188,10 +188,10 @@ TEST(full_parallel_adj_list, left_end) {
     ASSERT_EQ(exp_adj_list, adj_list);
 }
 
-TEST(full_parallel_adj_list, 212181623541741623541321) {
+TEST(parallel_lock_adj_list, 212181623541741623541321) {
     text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
     adj_list_t adj_list(text.size() - 1);
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -223,10 +223,10 @@ TEST(full_parallel_adj_list, 212181623541741623541321) {
     ASSERT_EQ(exp_adj_list, adj_list);
 }
 
-TEST(full_parallel_adj_list, 131261051171161051139) {
+TEST(parallel_lock_adj_list, 131261051171161051139) {
     text_t text{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9};
     adj_list_t adj_list(text.size() - 1);
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -248,10 +248,10 @@ TEST(full_parallel_adj_list, 131261051171161051139) {
     ASSERT_EQ(exp_adj_list, adj_list);
 }
 
-TEST(full_parallel_adj_list, 18161517161514) {
+TEST(parallel_lock_adj_list, 18161517161514) {
     text_t text{18, 16, 15, 17, 16, 15, 14};
     adj_list_t adj_list(text.size() - 1);
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -266,10 +266,10 @@ TEST(full_parallel_adj_list, 18161517161514) {
     ASSERT_EQ(exp_adj_list, adj_list);
 }
 
-TEST(full_parallel_adj_list, 21201619) {
+TEST(parallel_lock_adj_list, 21201619) {
     text_t text{21, 20, 16, 19};
     adj_list_t adj_list(text.size() - 1);
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -281,10 +281,10 @@ TEST(full_parallel_adj_list, 21201619) {
     ASSERT_EQ(exp_adj_list, adj_list);
 }
 
-TEST(full_parallel_adj_list, 2322) {
+TEST(parallel_lock_adj_list, 2322) {
     text_t text{23, 22};
     adj_list_t adj_list(text.size() - 1);
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -295,7 +295,7 @@ TEST(full_parallel_adj_list, 2322) {
 }
 
 
-TEST(full_parallel_partition, left_end) {
+TEST(parallel_lock_partition, left_end) {
     text_t text{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
     alphabet_t alphabet{1, 2, 3};
     partition_t partition;
@@ -303,7 +303,7 @@ TEST(full_parallel_partition, left_end) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -317,7 +317,7 @@ TEST(full_parallel_partition, left_end) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, repreated_pair) {
+TEST(parallel_lock_partition, repreated_pair) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     alphabet_t alphabet{1, 2};
     partition_t partition;
@@ -325,7 +325,7 @@ TEST(full_parallel_partition, repreated_pair) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -338,7 +338,7 @@ TEST(full_parallel_partition, repreated_pair) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, repreated_pair_same_occ) {
+TEST(parallel_lock_partition, repreated_pair_same_occ) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     alphabet_t alphabet{1, 2};
     partition_t partition;
@@ -346,7 +346,7 @@ TEST(full_parallel_partition, repreated_pair_same_occ) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -359,7 +359,7 @@ TEST(full_parallel_partition, repreated_pair_same_occ) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, 212181623541741623541321) {
+TEST(parallel_lock_partition, 212181623541741623541321) {
     text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
     alphabet_t alphabet{1, 2, 3, 4, 5, 6, 7, 8};
     partition_t partition;
@@ -367,7 +367,7 @@ TEST(full_parallel_partition, 212181623541741623541321) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -386,7 +386,7 @@ TEST(full_parallel_partition, 212181623541741623541321) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, 131261051171161051139) {
+TEST(parallel_lock_partition, 131261051171161051139) {
     text_t text{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9};
     alphabet_t alphabet{3, 5, 6, 7, 9, 10, 11, 12, 13};
     partition_t partition;
@@ -394,7 +394,7 @@ TEST(full_parallel_partition, 131261051171161051139) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -414,7 +414,7 @@ TEST(full_parallel_partition, 131261051171161051139) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, 18161517161514) {
+TEST(parallel_lock_partition, 18161517161514) {
     text_t text{18, 16, 15, 17, 16, 15, 14};
     alphabet_t alphabet{14, 15, 16, 17, 18};
     partition_t partition;
@@ -422,7 +422,7 @@ TEST(full_parallel_partition, 18161517161514) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -438,7 +438,7 @@ TEST(full_parallel_partition, 18161517161514) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, 21201619) {
+TEST(parallel_lock_partition, 21201619) {
     text_t text{21, 20, 16, 19};
     alphabet_t alphabet{16, 19, 20, 21};
     partition_t partition;
@@ -446,7 +446,7 @@ TEST(full_parallel_partition, 21201619) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -461,7 +461,7 @@ TEST(full_parallel_partition, 21201619) {
     ASSERT_EQ(exp_part_l, part_l);
 }
 
-TEST(full_parallel_partition, 2322) {
+TEST(parallel_lock_partition, 2322) {
     text_t text{23, 22};
     alphabet_t alphabet{22, 23};
     partition_t partition;
@@ -469,7 +469,7 @@ TEST(full_parallel_partition, 2322) {
     for (const auto& a : alphabet) {
         partition[a] = false;
     }
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -483,10 +483,10 @@ TEST(full_parallel_partition, 2322) {
 }
 
 
-TEST(full_parallel_pcomp, left_end) {
+TEST(parallel_lock_pcomp, left_end) {
     text_t text{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 4;
     bv_t bv;
@@ -506,10 +506,10 @@ TEST(full_parallel_pcomp, left_end) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, repeated_pair) {
+TEST(parallel_lock_pcomp, repeated_pair) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 3;
     bv_t bv;
@@ -528,10 +528,10 @@ TEST(full_parallel_pcomp, repeated_pair) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, repeated_pair_same_occ) {
+TEST(parallel_lock_pcomp, repeated_pair_same_occ) {
     text_t text{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 3;
     bv_t bv;
@@ -550,10 +550,10 @@ TEST(full_parallel_pcomp, repeated_pair_same_occ) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, 212181623541741623541321) {
+TEST(parallel_lock_pcomp, 212181623541741623541321) {
     text_t text{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
@@ -584,10 +584,10 @@ TEST(full_parallel_pcomp, 212181623541741623541321) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, 131261051171161051139) {
+TEST(parallel_lock_pcomp, 131261051171161051139) {
     text_t text{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
@@ -629,10 +629,10 @@ TEST(full_parallel_pcomp, 131261051171161051139) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, 18161517161514) {
+TEST(parallel_lock_pcomp, 18161517161514) {
     text_t text{18, 16, 15, 17, 16, 15, 14};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
@@ -683,10 +683,10 @@ TEST(full_parallel_pcomp, 18161517161514) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, 21201619) {
+TEST(parallel_lock_pcomp, 21201619) {
     text_t text{21, 20, 16, 19};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
@@ -743,10 +743,10 @@ TEST(full_parallel_pcomp, 21201619) {
     ASSERT_EQ(exp_bv, bv);
 }
 
-TEST(full_parallel_pcomp, 2322) {
+TEST(parallel_lock_pcomp, 2322) {
     text_t text{23, 22};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.non_terminals.emplace_back(1, 2, 2);
@@ -807,10 +807,10 @@ TEST(full_parallel_pcomp, 2322) {
 }
 
 
-TEST(full_parallel_recomp, empty) {
+TEST(parallel_lock_recomp, empty) {
     text_t text = {};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -825,10 +825,10 @@ TEST(full_parallel_recomp, empty) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, terminal) {
+TEST(parallel_lock_recomp, terminal) {
     text_t text = {112};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -844,10 +844,10 @@ TEST(full_parallel_recomp, terminal) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, short_block2) {
+TEST(parallel_lock_recomp, short_block2) {
     text_t text = {112, 112};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -865,10 +865,10 @@ TEST(full_parallel_recomp, short_block2) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, short_block3) {
+TEST(parallel_lock_recomp, short_block3) {
     text_t text = {112, 112, 112};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.cores = 4;
     term_t alphabet_size = 113;
@@ -887,10 +887,10 @@ TEST(full_parallel_recomp, short_block3) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, recompression) {
+TEST(parallel_lock_recomp, recompression) {
     text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -950,10 +950,10 @@ TEST(full_parallel_recomp, recompression) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, one_block) {
+TEST(parallel_lock_recomp, one_block) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -970,10 +970,10 @@ TEST(full_parallel_recomp, one_block) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, two_blocks) {
+TEST(parallel_lock_recomp, two_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -996,10 +996,10 @@ TEST(full_parallel_recomp, two_blocks) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, three_blocks) {
+TEST(parallel_lock_recomp, three_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -1026,10 +1026,10 @@ TEST(full_parallel_recomp, three_blocks) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, four_blocks) {
+TEST(parallel_lock_recomp, four_blocks) {
     text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -1060,10 +1060,10 @@ TEST(full_parallel_recomp, four_blocks) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, repeated_pair) {
+TEST(parallel_lock_recomp, repeated_pair) {
     text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -1081,10 +1081,10 @@ TEST(full_parallel_recomp, repeated_pair) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, repeated_pair_same_occ) {
+TEST(parallel_lock_recomp, repeated_pair_same_occ) {
     text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -1107,10 +1107,10 @@ TEST(full_parallel_recomp, repeated_pair_same_occ) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, left_end) {
+TEST(parallel_lock_recomp, left_end) {
     text_t text{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 4;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -1135,10 +1135,10 @@ TEST(full_parallel_recomp, left_end) {
     ASSERT_EQ(exp_rlslp, rlslp);
 }
 
-TEST(full_parallel_recomp, pair) {
+TEST(parallel_lock_recomp, pair) {
     text_t text = {112, 111};
     rlslp<var_t, term_t> rlslp;
-    parallel::full_parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_lock_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);

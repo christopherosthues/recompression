@@ -1,6 +1,6 @@
 set(SOURCES
         src/recompression/parallel_recompression.cpp
-        src/recompression/full_parallel_recompression.cpp
+        src/recompression/parallel_lock_recompression.cpp
         src/recompression/rlslp.cpp
         src/recompression/parallel_lp_recompression.cpp
         src/recompression/recompression.cpp
@@ -11,6 +11,7 @@ set(SOURCES
         src/recompression/lce_query.cpp
         src/recompression/radix_sort.cpp
         src/recompression/parallel_order_great_recompression.cpp
+        src/recompression/full_parallel_recompression.cpp
         src/recompression/hash_recompression.cpp
         src/recompression/defs.cpp
         src/recompression/coders/rlslp_rule_sorter.cpp
@@ -21,11 +22,13 @@ set(SOURCES
         src/recompression/coders/sorted_rlslp_coder.cpp
         src/recompression/io/bitostream.cpp
         src/recompression/io/bitistream.cpp
+        src/recompression/generators/text_generator.cpp
+        src/recompression/generators/repeated_text_generator.cpp
         src/recompression.cpp
 )
 set(HEADERS
         include/recompression/parallel_lp_recompression.hpp
-        include/recompression/full_parallel_recompression.hpp
+        include/recompression/parallel_lock_recompression.hpp
         include/recompression/defs.hpp
         include/recompression/lce_query.hpp
         include/recompression/rlslp.hpp
@@ -34,6 +37,7 @@ set(HEADERS
         include/recompression/radix_sort.hpp
         include/recompression/parallel_order_less_recompression.hpp
         include/recompression/parallel_rnd_recompression.hpp
+        include/recompression/full_parallel_recompression.hpp
         include/recompression/fast_recompression.hpp
         include/recompression/hash_recompression.hpp
         include/recompression/util.hpp
@@ -46,5 +50,7 @@ set(HEADERS
         include/recompression/coders/coder.hpp
         include/recompression/io/bitistream.hpp
         include/recompression/io/bitostream.hpp
+        include/recompression/generators/text_generator.hpp
+        include/recompression/generators/repeated_text_generator.hpp
         include/recompression.hpp
 )
