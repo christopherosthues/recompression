@@ -898,6 +898,12 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 }
             }
         }
+        adj_bounds.resize(0);
+        adj_bounds.shrink_to_fit();
+        reverse_adj_list.resize(0);
+        reverse_adj_list.shrink_to_fit();
+        flip.resize(0);
+        flip.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeLocalSearch = recomp::timer::now();
         const auto timeSpanLocalSearch = endTimePar - startTime;
