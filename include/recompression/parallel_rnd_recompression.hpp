@@ -549,9 +549,9 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
                 text[alpha[i]] = j - 1;
             }
         }
-        alpha.resize(0);
-        alpha_bounds.resize(0);
-        alpha_counts.resize(0);
+//        alpha.resize(0);
+//        alpha_bounds.resize(0);
+//        alpha_counts.resize(0);
 #ifdef BENCH
         const auto endMappingTime = recomp::timer::now();
         const auto timeSpanMapping = endMappingTime - startTime;

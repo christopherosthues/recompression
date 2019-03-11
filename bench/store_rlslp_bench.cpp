@@ -94,34 +94,40 @@ int main(int argc, char *argv[]) {
 
                 std::string coder_file = to_path + files[j];
                 recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp;
-                if (coder == "plain") {
-                    recomp::coder::PlainRLSLPCoder::Encoder enc{coder_file};
-                    enc.encode(rlslp);
+                recomp::coder::encode(coder, coder_file, rlslp);
+                in_rlslp = recomp::coder::decode(coder, coder_file);
 
-                    recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
-                    in_rlslp = dec.decode();
-                } else if (coder == "plain_fixed") {
-                    recomp::coder::PlainFixedRLSLPCoder::Encoder enc{coder_file};
-                    enc.encode(rlslp);
-
-                    recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
-                    in_rlslp = dec.decode();
-                } else if (coder == "sorted") {
-                    recomp::coder::SortedRLSLPCoder::Encoder enc{coder_file};
-                    enc.encode(rlslp);
-
-                    recomp::coder::SortedRLSLPCoder::Decoder dec{coder_file};
-                    in_rlslp = dec.decode();
-                } else if (coder == "sorted_dr") {
-                    recomp::coder::SortedRLSLPDRCoder::Encoder enc{coder_file};
-                    enc.encode(rlslp);
-
-                    recomp::coder::SortedRLSLPDRCoder::Decoder dec{coder_file};
-                    in_rlslp = dec.decode();
-                } else {
-                    std::cout << "Unkown coder '" << coder << "'." << std::endl;
+                if (in_rlslp.is_empty) {
                     return -1;
                 }
+//                if (coder == "plain") {
+//                    recomp::coder::PlainRLSLPCoder::Encoder enc{coder_file};
+//                    enc.encode(rlslp);
+//
+//                    recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
+//                    in_rlslp = dec.decode();
+//                } else if (coder == "plain_fixed") {
+//                    recomp::coder::PlainFixedRLSLPCoder::Encoder enc{coder_file};
+//                    enc.encode(rlslp);
+//
+//                    recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
+//                    in_rlslp = dec.decode();
+//                } else if (coder == "sorted") {
+//                    recomp::coder::SortedRLSLPCoder::Encoder enc{coder_file};
+//                    enc.encode(rlslp);
+//
+//                    recomp::coder::SortedRLSLPCoder::Decoder dec{coder_file};
+//                    in_rlslp = dec.decode();
+//                } else if (coder == "sorted_dr") {
+//                    recomp::coder::SortedRLSLPDRCoder::Encoder enc{coder_file};
+//                    enc.encode(rlslp);
+//
+//                    recomp::coder::SortedRLSLPDRCoder::Decoder dec{coder_file};
+//                    in_rlslp = dec.decode();
+//                } else {
+//                    std::cout << "Unkown coder '" << coder << "'." << std::endl;
+//                    return -1;
+//                }
 
                 std::string extension = recomp::coder::get_coder_extension(coder);
                 std::ifstream in_enc(coder_file + extension, std::ios::binary | std::ios::ate);

@@ -22,7 +22,7 @@ class PlainRLSLPCoder {
         BitOStream ostream;
 
      public:
-        inline Encoder(std::string& file_name) : ostream(file_name + k_extension) {}
+        inline Encoder(const std::string& file_name) : ostream(file_name + k_extension) {}
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
@@ -49,7 +49,7 @@ class PlainRLSLPCoder {
         BitIStream istream;
 
      public:
-        inline Decoder(std::string& file_name) : istream(file_name + k_extension) {}
+        inline Decoder(const std::string& file_name) : istream(file_name + k_extension) {}
 
         template<typename variable_t = var_t, typename terminal_count_t = term_t>
         inline rlslp<variable_t, terminal_count_t> decode() {

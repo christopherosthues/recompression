@@ -54,6 +54,45 @@ std::unique_ptr<recompression<variable_t, terminal_count_t>> create_recompressio
 }
 
 namespace coder {
+
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
+void encode(const std::string& coder, const std::string& file_name, rlslp<variable_t, terminal_count_t>& rlslp) {
+    if (coder == "plain") {
+        PlainRLSLPCoder::Encoder enc{file_name};
+        enc.encode(rlslp);
+    } else if (coder == "fixed") {
+        PlainFixedRLSLPCoder::Encoder enc{file_name};
+        enc.encode(rlslp);
+    } else if (coder == "sorted") {
+        SortedRLSLPCoder::Encoder enc{file_name};
+        enc.encode(rlslp);
+    } else if (coder == "sorted_dr") {
+        SortedRLSLPDRCoder::Encoder enc{file_name};
+        enc.encode(rlslp);
+//    } else {
+//        std::cout << "Unknown coder '" << coder << "'.\n";
+    }
+}
+
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
+rlslp<variable_t, terminal_count_t> decode(const std::string& coder, const std::string& file_name) {
+    if (coder == "plain") {
+        PlainRLSLPCoder::Decoder dec{file_name};
+        return dec.decode();
+    } else if (coder == "fixed") {
+        PlainFixedRLSLPCoder::Decoder dec{file_name};
+        return dec.decode();
+    } else if (coder == "sorted") {
+        SortedRLSLPCoder::Decoder dec{file_name};
+        return dec.decode();
+    } else if (coder == "sorted_dr") {
+        SortedRLSLPDRCoder::Decoder dec{file_name};
+        return dec.decode();
+    } else {
+        return rlslp<variable_t, terminal_count_t>{};
+    }
+}
+
 std::string get_coder_extension(const std::string& name) {
     if (name == "plain") {
         return coder::PlainRLSLPCoder::k_extension;

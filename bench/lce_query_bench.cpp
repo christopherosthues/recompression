@@ -15,17 +15,12 @@
 //#include <sdsl/csa_sada.hpp>
 //#include <sdsl/csa_wt.hpp>
 
-#include "recompression/defs.hpp"
-#include "recompression/lce_query.hpp"
-#include "recompression/parallel_lp_recompression.hpp"
-#include "recompression/util.hpp"
-#include "recompression/coders/plain_rlslp_coder.hpp"
-#include "recompression/coders/plain_fixed_rlslp_coder.hpp"
+#include "recompression.hpp"
 
 
 int main(int argc, char *argv[]) {
     if (argc < 6) {
-        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [accesses] [coder (wlz | plain)] [rlslp_path] [prefix]" << std::endl;
+        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [accesses] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]" << std::endl;
         return -1;
     }
 
@@ -94,20 +89,35 @@ int main(int argc, char *argv[]) {
             }
 
             std::cout << "Load" << std::endl;
-            if (coder == "plain") {
-                std::cout << "plain" << std::endl;
-                std::cout << coder_file << std::endl;
-                recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
-                rlslp = dec.decode();
-            } else if (coder == "wlz") {
-                std::cout << "wlz" << std::endl;
-                std::cout << coder_file << std::endl;
-                recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
-                rlslp = dec.decode();
-            } else {
-                std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel recompression." << std::endl;
-                coder = "";
+            rlslp = recomp::coder::decode(coder, coder_file);
+            if (rlslp.is_empty) {
+                std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel_lp_recompression." << std::endl;
+                typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+                text_t text;
+                recomp::util::read_file(file_name, text, prefix);
+
+                recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
+                recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
             }
+//            if (coder == "plain") {
+//                std::cout << "plain" << std::endl;
+//                std::cout << coder_file << std::endl;
+//                recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
+//                rlslp = dec.decode();
+//            } else if (coder == "fixed") {
+//                std::cout << "fixed" << std::endl;
+//                std::cout << coder_file << std::endl;
+//                recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
+//                rlslp = dec.decode();
+//            } else if (coder == "sorted") {
+//                std::cout << "sorted" << std::endl;
+//                std::cout << coder_file << std::endl;
+//                recomp::coder::SortedRLSLPCoder::Decoder dec{coder_file};
+//                rlslp = dec.decode();
+//            } else {
+//                std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel_lp_recompression." << std::endl;
+//                coder = "";
+//            }
             std::cout << "Loaded" << std::endl;
         }
         if (coder.empty()) {

@@ -22,8 +22,6 @@ set(SOURCES
         src/recompression/coders/sorted_rlslp_coder.cpp
         src/recompression/io/bitostream.cpp
         src/recompression/io/bitistream.cpp
-        src/recompression/generators/text_generator.cpp
-        src/recompression/generators/repeated_text_generator.cpp
         src/recompression.cpp
 )
 set(HEADERS
@@ -50,7 +48,5 @@ set(HEADERS
         include/recompression/coders/coder.hpp
         include/recompression/io/bitistream.hpp
         include/recompression/io/bitostream.hpp
-        include/recompression/generators/text_generator.hpp
-        include/recompression/generators/repeated_text_generator.hpp
         include/recompression.hpp
 )

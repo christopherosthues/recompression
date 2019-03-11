@@ -319,7 +319,7 @@ class rlslp {
     }
 
     std::string extract(size_t i, size_t len) const {
-#ifdef BENCH
+#ifdef BENCH_SINGLE_EXTRACT
         const auto startTime = recomp::timer::now();
 #endif
         std::stringstream sstream;
@@ -329,7 +329,7 @@ class rlslp {
             }
             extract(sstream, i, len, root);
         }
-#ifdef BENCH
+#ifdef BENCH_SINGLE_EXTRACT
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=extract i=" << i << " len=" << len << " time="
