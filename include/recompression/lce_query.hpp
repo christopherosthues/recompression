@@ -52,8 +52,9 @@ struct lceq {
 };
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-size_t lce_query(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, size_t j, variable_t nt_i, variable_t nt_j,
-                 lceq<variable_t>& i_visited, lceq<variable_t>& j_visited, size_t traverse);
+size_t lce_query_recursive(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, size_t j, variable_t nt_i,
+                           variable_t nt_j,
+                           lceq<variable_t>& i_visited, lceq<variable_t>& j_visited, size_t traverse);
 
 /**
  * @brief Computes the subtree to be traverse downwards from the given variable.
@@ -105,15 +106,242 @@ inline void subtree(const rlslp<variable_t, terminal_count_t>& rlslp, size_t& po
  * @return The length of the longest common prefix of the two given suffices
  */
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-size_t find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
+inline bool find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
+                      size_t& i,
+                      size_t& j,
+                      variable_t& nt_i,
+                      variable_t& nt_j,
+                      lceq<variable_t>& i_visited,
+                      lceq<variable_t>& j_visited,
+                      size_t len,
+                      size_t traverse) {
+    auto parent_i = nt_i;
+    auto comp_i_len = len;
+    i += comp_i_len;
+    while (i >= rlslp.len(parent_i) && parent_i != rlslp.root + rlslp.terminals) {
+//        DLOG(INFO) << "Traverse up for i: " << parent_i << ", " << i << ", " << comp_i_len;
+        i_visited.visited.erase(parent_i);
+        auto child_pos = i;
+//        auto child = parent_i;
+        parent_i = i_visited.parents.top();
+        i_visited.parents.pop();
+        i = i_visited.visited[parent_i].pos;
+        if (i_visited.visited[parent_i].n_trav < traverse - 1) {
+//            DLOG(INFO) << "Variable of previous traverse: " << i_visited.visited[parent_i].n_trav << ", " << traverse;
+            size_t p_i = i;
+            variable_t child_i = parent_i;
+            subtree(rlslp, p_i, child_i);
+            comp_i_len = child_pos - p_i;
+//            DLOG(INFO) << "Values i: pos_old: " << p_i << ", actual_pos: " << child_pos << ", len: " << len
+//                       << ", comp_len: " << comp_i_len;
+        } else {
+            comp_i_len = len;
+        }
+        i += comp_i_len;
+    }
+    i_visited.visited[parent_i].pos = i;
+    i_visited.visited[parent_i].n_trav = traverse;
+//    DLOG(INFO) << "i: " << parent_i << ", " << i << ", " << comp_i_len;
+
+    auto parent_j = nt_j;
+    auto comp_j_len = len;
+    j += comp_j_len;
+    while (j >= rlslp.len(parent_j) && parent_j != rlslp.root + rlslp.terminals) {
+//        DLOG(INFO) << "Traverse up for j: " << parent_j << ", " << j << ", " << comp_j_len;
+        j_visited.visited.erase(parent_j);
+        auto child_pos = j;
+//        auto child = parent_j;
+        parent_j = j_visited.parents.top();
+        j_visited.parents.pop();
+        j = j_visited.visited[parent_j].pos;
+        if (j_visited.visited[parent_j].n_trav < traverse - 1) {
+//            DLOG(INFO) << "Variable of previous traverse: " << j_visited.visited[parent_j].n_trav << ", " << traverse;
+            size_t p_j = j;
+            variable_t child_j = parent_j;
+            subtree(rlslp, p_j, child_j);
+            comp_j_len = child_pos - p_j;
+//            DLOG(INFO) << "Values j: pos_old: " << p_j << ", actual_pos: " << child_pos << ", len: " << len
+//                       << ", comp_len: " << comp_j_len;
+        } else {
+            comp_j_len = len;
+        }
+        j += comp_j_len;
+    }
+    j_visited.visited[parent_j].pos = j;
+    j_visited.visited[parent_j].n_trav = traverse;
+//    DLOG(INFO) << "j: " << parent_j << ", " << j << ", " << comp_j_len;
+
+    if ((parent_i == rlslp.root + rlslp.terminals && i >= rlslp.len(parent_i)) ||
+        (parent_j == rlslp.root + rlslp.terminals && j >= rlslp.len(parent_j))) {
+        return false;
+    } else {
+        nt_i = parent_i;
+        nt_j = parent_j;
+        return true;
+    }
+}
+
+/**
+ * @brief Computes the length of the longest common prefix of the two given suffices (LCE).
+ *
+ * @tparam variable_t The type of variables
+ * @tparam terminal_count_t The type of terminals
+ * @param rlslp The rlslp
+ * @param i The start position inside the subtree of the first variable to be compared
+ * @param j The start position inside the subtree of the second variable to be compared
+ * @param nt_i The actual variable of the first suffix
+ * @param nt_j The actual variable of the second suffix
+ * @param i_visited The visited variables of the first suffix
+ * @param j_visited The visited variable of the second suffix
+ * @param traverse The number of the traverse
+ * @return The length of the longest common prefix of the two given suffices
+ */
+template<typename variable_t, typename terminal_count_t>
+size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
                  size_t i,
                  size_t j,
                  variable_t nt_i,
                  variable_t nt_j,
                  lceq<variable_t>& i_visited,
                  lceq<variable_t>& j_visited,
-                 size_t len,
                  size_t traverse) {
+//    DLOG(INFO) << "Comparing " << nt_i << ", " << i << " with " << nt_j << ", " << j;
+
+    if (nt_i == nt_j && i == j) {  // Found two equal variables with the same position to be compared inside the subtree
+//        DLOG(INFO) << "same level: " << nt_i << " at pos " << i << " and " << nt_j << " at pos " << j;
+        size_t len = rlslp[nt_i].len;
+        traverse++;
+        if (find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, len, traverse)) {
+            return len + lce_query(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
+        } else {
+            return len;
+        }
+    } else if (rlslp.is_block(nt_i) && rlslp.is_block(nt_j) && rlslp[nt_i - rlslp.terminals].first() == rlslp[nt_j - rlslp.terminals].first() &&
+               i % rlslp.len(rlslp[nt_i - rlslp.terminals].first()) == j % rlslp.len(rlslp[nt_j - rlslp.terminals].first())) {
+        size_t len = std::min(rlslp.len(nt_i) - i, rlslp.len(nt_j) - j);
+        traverse++;
+        if (find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, len, traverse)) {
+            return len + lce_query(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
+        } else {
+            return len;
+        }
+    } else {
+        variable_t child_i = nt_i;
+        variable_t child_j = nt_j;
+        size_t pos_i = i;
+        size_t pos_j = j;
+
+        // Compute subtrees to be further traversed down
+        subtree(rlslp, pos_i, child_i);
+        subtree(rlslp, pos_j, child_j);
+
+        if (nt_i != child_i) {
+            i_visited.visited[child_i] = vis_node{pos_i, traverse};
+            i_visited.parents.push(nt_i);
+        }
+        if (nt_j != child_j) {
+            j_visited.visited[child_j] = vis_node{pos_j, traverse};
+            j_visited.parents.push(nt_j);
+        }
+
+        auto found_j = i_visited.visited.find(child_j);
+        auto found_i = j_visited.visited.find(child_i);
+        if (rlslp.is_block(child_i) && rlslp.is_block(child_j) && rlslp[child_i - rlslp.terminals].first() == rlslp[child_j - rlslp.terminals].first() &&
+            pos_i % rlslp.len(rlslp[child_i - rlslp.terminals].first()) == pos_j % rlslp.len(rlslp[child_j - rlslp.terminals].first())) {  // access of len is save because terminals cannot derive blocks
+            // Found two blocks of same symbol and same position but possibly different lengths
+            // => take minimum of the difference between the length of the derived substring and the position to be compared
+//            DLOG(INFO) << "Blocks of same symbol found." << child_i << " at pos " << pos_i << " and " << child_j
+//                       << " at pos " << pos_j
+//                       << " of symbol " << rlslp[child_i - rlslp.terminals].first();
+            size_t len = std::min(rlslp.len(child_i) - pos_i, rlslp.len(child_j) - pos_j);
+            traverse++;
+            if (find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse)) {
+                return len + lce_query(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+            } else {
+                return len;
+            }
+        } else if (found_i != j_visited.visited.end() && (*found_i).second.pos == pos_i && (*found_i).second.n_trav == traverse) {
+            // Found a variable for the first suffix that was traversed by the second before
+//            DLOG(INFO) << "Found same non-terminal at different level for nt_i: " << child_i << " at pos " << pos_i;
+            size_t len = rlslp.len(child_i) - pos_i;
+            while (child_j != child_i) {
+                child_j = j_visited.parents.top();
+                j_visited.parents.pop();
+            }
+            pos_j = j_visited.visited[child_j].pos;
+            traverse++;
+            if (find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse)) {
+                return len + lce_query(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+            } else {
+                return len;
+            }
+        } else if (found_j != j_visited.visited.end() && (*found_j).second.pos == pos_j && (*found_j).second.n_trav == traverse) {
+            // Found a variable for the second suffix that was traversed by the first before
+//            DLOG(INFO) << "Found same non-terminal at different level for nt_j: " << child_j << " at pos " << pos_j;
+            size_t len = rlslp.len(child_j) - pos_j;
+            while (child_i != child_j) {
+                child_i = i_visited.parents.top();
+                i_visited.parents.pop();
+            }
+            pos_i = i_visited.visited[child_i].pos;
+            traverse++;
+            if (find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse)) {
+                return len + lce_query(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+            } else {
+                return len;
+            }
+        } else if (child_i < rlslp.terminals && child_j < rlslp.terminals) {
+            // Reached two terminals
+//            DLOG(INFO) << "Both are terminals";
+            if (child_i == child_j) {
+                // Same terminals, we are not finished so we have to traverse possibly upwards and downwards the tree again
+                // to find the next variable to compare
+//                DLOG(INFO) << "Matching terminals found: " << child_i << " == " << child_j;
+                if (find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, 1, traverse)) {
+                    return 1 + lce_query(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, traverse);
+                } else {
+                    return 1;
+                }
+            } else {
+                // Found two terminals that are a mismatch, we are finished
+//                DLOG(INFO) << "Mismatch of " << child_i << " and " << child_j;
+                return 0;
+            }
+        } else {
+            // We possibly found only one terminal, we have to traverse downwards the tree further
+//            DLOG(INFO) << "No matching non-terminals found. Traverse down further";
+            return lce_query(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+        }
+    }
+}
+
+
+/**
+ * @brief Finds the next node in the derivation tree to compare its children by possibly traversing upwards the tree.
+ *
+ * @tparam variable_t The type of variables
+ * @tparam terminal_count_t The type of terminals
+ * @param rlslp The rlslp
+ * @param i The position inside the last visited variable
+ * @param j The position inside the last visited variable
+ * @param nt_i The last visited variable of the first suffix
+ * @param nt_j The last visited variable of the second suffix
+ * @param i_visited The visited variables of the first suffix
+ * @param j_visited The visited variable of the second suffix
+ * @param len The length of the last compared variables
+ * @param traverse The number of the next downward traverse
+ * @return The length of the longest common prefix of the two given suffices
+ */
+template<typename variable_t = var_t, typename terminal_count_t = term_t>
+size_t find_next_recursive(const rlslp<variable_t, terminal_count_t>& rlslp,
+                           size_t i,
+                           size_t j,
+                           variable_t nt_i,
+                           variable_t nt_j,
+                           lceq<variable_t>& i_visited,
+                           lceq<variable_t>& j_visited,
+                           size_t len,
+                           size_t traverse) {
     auto parent_i = nt_i;
     auto comp_i_len = len;
     i += comp_i_len;
@@ -174,7 +402,7 @@ size_t find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
         (parent_j == rlslp.root + rlslp.terminals && j >= rlslp.len(parent_j))) {
         return 0;
     } else {
-        return lce_query(rlslp, i, j, parent_i, parent_j, i_visited, j_visited, traverse);
+        return lce_query_recursive(rlslp, i, j, parent_i, parent_j, i_visited, j_visited, traverse);
     }
 }
 
@@ -194,20 +422,24 @@ size_t find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
  * @return The length of the longest common prefix of the two given suffices
  */
 template<typename variable_t, typename terminal_count_t>
-size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
-                 size_t i,
-                 size_t j,
-                 variable_t nt_i,
-                 variable_t nt_j,
-                 lceq<variable_t>& i_visited,
-                 lceq<variable_t>& j_visited,
-                 size_t traverse) {
+size_t lce_query_recursive(const rlslp <variable_t, terminal_count_t>& rlslp,
+                           size_t i,
+                           size_t j,
+                           variable_t nt_i,
+                           variable_t nt_j,
+                           lceq<variable_t>& i_visited,
+                           lceq<variable_t>& j_visited,
+                           size_t traverse) {
 //    DLOG(INFO) << "Comparing " << nt_i << ", " << i << " with " << nt_j << ", " << j;
 
     if (nt_i == nt_j && i == j) {  // Found two equal variables with the same position to be compared inside the subtree
 //        DLOG(INFO) << "same level: " << nt_i << " at pos " << i << " and " << nt_j << " at pos " << j;
         size_t len = rlslp[nt_i].len;
-        return len + find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, len, traverse + 1);
+        return len + find_next_recursive(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, len, traverse + 1);
+    } else if (rlslp.is_block(nt_i) && rlslp.is_block(nt_j) && rlslp[nt_i - rlslp.terminals].first() == rlslp[nt_j - rlslp.terminals].first() &&
+               i % rlslp.len(rlslp[nt_i - rlslp.terminals].first()) == j % rlslp.len(rlslp[nt_j - rlslp.terminals].first())) {
+        size_t len = std::min(rlslp.len(nt_i) - i, rlslp.len(nt_j) - j);
+        return len + find_next_recursive(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, len, traverse + 1);
     } else {
         variable_t child_i = nt_i;
         variable_t child_j = nt_j;
@@ -217,9 +449,6 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
         // Compute subtrees to be further traversed down
         subtree(rlslp, pos_i, child_i);
         subtree(rlslp, pos_j, child_j);
-
-//        DLOG(INFO) << "Child of nt_i: " << child_i << " at pos " << pos_i;
-//        DLOG(INFO) << "Child of nt_j: " << child_j << " at pos " << pos_j;
 
         if (nt_i != child_i) {
             i_visited.visited[child_i] = vis_node{pos_i, traverse};
@@ -240,7 +469,8 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
 //                       << " at pos " << pos_j
 //                       << " of symbol " << rlslp[child_i - rlslp.terminals].first();
             size_t len = std::min(rlslp.len(child_i) - pos_i, rlslp.len(child_j) - pos_j);
-            return len + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse + 1);
+            return len +
+                    find_next_recursive(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse + 1);
         } else if (found_i != j_visited.visited.end() && (*found_i).second.pos == pos_i && (*found_i).second.n_trav == traverse) {
             // Found a variable for the first suffix that was traversed by the second before
 //            DLOG(INFO) << "Found same non-terminal at different level for nt_i: " << child_i << " at pos " << pos_i;
@@ -250,7 +480,8 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
                 j_visited.parents.pop();
             }
             pos_j = j_visited.visited[child_j].pos;
-            return len + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse + 1);
+            return len +
+                    find_next_recursive(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse + 1);
         } else if (found_j != j_visited.visited.end() && (*found_j).second.pos == pos_j && (*found_j).second.n_trav == traverse) {
             // Found a variable for the second suffix that was traversed by the first before
 //            DLOG(INFO) << "Found same non-terminal at different level for nt_j: " << child_j << " at pos " << pos_j;
@@ -260,7 +491,8 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
                 i_visited.parents.pop();
             }
             pos_i = i_visited.visited[child_i].pos;
-            return len + find_next(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse + 1);
+            return len +
+                    find_next_recursive(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, len, traverse + 1);
         } else if (child_i < rlslp.terminals && child_j < rlslp.terminals) {
             // Reached two terminals
 //            DLOG(INFO) << "Both are terminals";
@@ -268,7 +500,7 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
                 // Same terminals, we are not finished so we have to traverse possibly upwards and downwards the tree again
                 // to find the next variable to compare
 //                DLOG(INFO) << "Matching terminals found: " << child_i << " == " << child_j;
-                return 1 + find_next(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, 1, traverse);
+                return 1 + find_next_recursive(rlslp, i, j, nt_i, nt_j, i_visited, j_visited, 1, traverse);
             } else {
                 // Found two terminals that are a mismatch, we are finished
 //                DLOG(INFO) << "Mismatch of " << child_i << " and " << child_j;
@@ -277,7 +509,7 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
         } else {
             // We possibly found only one terminal, we have to traverse downwards the tree further
 //            DLOG(INFO) << "No matching non-terminals found. Traverse down further";
-            return lce_query(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
+            return lce_query_recursive(rlslp, pos_i, pos_j, child_i, child_j, i_visited, j_visited, traverse);
         }
     }
 }
@@ -312,6 +544,7 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp, size_t i, si
     lceq<variable_t> j_visited;
 
     return lce_query<variable_t, terminal_count_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
+//    return lce_query_recursive<variable_t, terminal_count_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
 }
 
 

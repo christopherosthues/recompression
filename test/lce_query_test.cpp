@@ -195,3 +195,19 @@ TEST(lcequery, lcequery_complete) {
         }
     }
 }
+
+TEST(lcequery, block) {
+    text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+    text_t text_naive = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t, term_t> rlslp;
+    recomp.recomp(text, rlslp, 3, 4);
+
+    for (size_t i = 0; i < text.size(); ++i) {
+        for (size_t j = 0; j < text.size(); ++j) {
+            auto lceq = lce_query::lce_query(rlslp, i, j);
+            size_t naive = lce_query_naive(i, j, text_naive);
+            ASSERT_EQ(naive, lceq);
+        }
+    }
+}
