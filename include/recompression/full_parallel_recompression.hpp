@@ -549,9 +549,12 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 text[alpha[i]] = j - 1;
             }
         }
-        alpha.resize(0);
-        alpha_bounds.resize(0);
-        alpha_counts.resize(0);
+//        alpha.resize(0);
+//        alpha.shrink_to_fit();
+//        alpha_bounds.resize(0);
+//        alpha_bounds.shrink_to_fit();
+//        alpha_counts.resize(0);
+//        alpha_counts.shrink_to_fit();
 #ifdef BENCH
         const auto endMappingTime = recomp::timer::now();
         const auto timeSpanMapping = endMappingTime - startTime;
@@ -906,7 +909,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         flip.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeLocalSearch = recomp::timer::now();
-        const auto timeSpanLocalSearch = endTimePar - startTime;
+        const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
         std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
 #endif
 
