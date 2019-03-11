@@ -145,17 +145,21 @@ int main(int argc, char *argv[]) {
                 if (coder == "sorted" || coder == "sorted_dr") {
                     recomp::sort_rlslp_rules(rlslp);
 
-                    for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
-                        if (rlslp[m].first() > rlslp[m + 1].first()) {
-                            std::cout << "Pairs not sorted" << std::endl;
-                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                    if (rlslp.blocks > 0) {
+                        for (size_t m = 0; m < rlslp.blocks - 1; ++m) {
+                            if (rlslp[m].first() > rlslp[m + 1].first()) {
+                                std::cout << "Pairs not sorted" << std::endl;
+                                std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                            }
                         }
                     }
 
-                    for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
-                        if (rlslp[m].first() > rlslp[m + 1].first()) {
-                            std::cout << "Blocks not sorted" << std::endl;
-                            std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                    if (rlslp.size() > 0) {
+                        for (size_t m = rlslp.blocks; m < rlslp.size() - 1; ++m) {
+                            if (rlslp[m].first() > rlslp[m + 1].first()) {
+                                std::cout << "Blocks not sorted" << std::endl;
+                                std::cout << rlslp[m].first() << ", " << rlslp[m + 1].first() << std::endl;
+                            }
                         }
                     }
 
