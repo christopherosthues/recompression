@@ -118,7 +118,7 @@ inline bool find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
     auto parent_i = nt_i;
     auto comp_i_len = len;
     i += comp_i_len;
-    while (i >= rlslp.len(parent_i) && parent_i != rlslp.root + rlslp.terminals) {
+    while (i >= rlslp.len(parent_i) && parent_i != rlslp.root) {
 //        DLOG(INFO) << "Traverse up for i: " << parent_i << ", " << i << ", " << comp_i_len;
         i_visited.visited.erase(parent_i);
         auto child_pos = i;
@@ -146,7 +146,7 @@ inline bool find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
     auto parent_j = nt_j;
     auto comp_j_len = len;
     j += comp_j_len;
-    while (j >= rlslp.len(parent_j) && parent_j != rlslp.root + rlslp.terminals) {
+    while (j >= rlslp.len(parent_j) && parent_j != rlslp.root) {
 //        DLOG(INFO) << "Traverse up for j: " << parent_j << ", " << j << ", " << comp_j_len;
         j_visited.visited.erase(parent_j);
         auto child_pos = j;
@@ -171,8 +171,8 @@ inline bool find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
     j_visited.visited[parent_j].n_trav = traverse;
 //    DLOG(INFO) << "j: " << parent_j << ", " << j << ", " << comp_j_len;
 
-    if ((parent_i == rlslp.root + rlslp.terminals && i >= rlslp.len(parent_i)) ||
-        (parent_j == rlslp.root + rlslp.terminals && j >= rlslp.len(parent_j))) {
+    if ((parent_i == rlslp.root && i >= rlslp.len(parent_i)) ||
+        (parent_j == rlslp.root && j >= rlslp.len(parent_j))) {
         return false;
     } else {
         nt_i = parent_i;
@@ -345,7 +345,7 @@ size_t find_next_recursive(const rlslp<variable_t, terminal_count_t>& rlslp,
     auto parent_i = nt_i;
     auto comp_i_len = len;
     i += comp_i_len;
-    while (i >= rlslp.len(parent_i) && parent_i != rlslp.root + rlslp.terminals) {
+    while (i >= rlslp.len(parent_i) && parent_i != rlslp.root) {
 //        DLOG(INFO) << "Traverse up for i: " << parent_i << ", " << i << ", " << comp_i_len;
         i_visited.visited.erase(parent_i);
         auto child_pos = i;
@@ -373,7 +373,7 @@ size_t find_next_recursive(const rlslp<variable_t, terminal_count_t>& rlslp,
     auto parent_j = nt_j;
     auto comp_j_len = len;
     j += comp_j_len;
-    while (j >= rlslp.len(parent_j) && parent_j != rlslp.root + rlslp.terminals) {
+    while (j >= rlslp.len(parent_j) && parent_j != rlslp.root) {
 //        DLOG(INFO) << "Traverse up for j: " << parent_j << ", " << j << ", " << comp_j_len;
         j_visited.visited.erase(parent_j);
         auto child_pos = j;
@@ -398,8 +398,8 @@ size_t find_next_recursive(const rlslp<variable_t, terminal_count_t>& rlslp,
     j_visited.visited[parent_j].n_trav = traverse;
 //    DLOG(INFO) << "j: " << parent_j << ", " << j << ", " << comp_j_len;
 
-    if ((parent_i == rlslp.root + rlslp.terminals && i >= rlslp.len(parent_i)) ||
-        (parent_j == rlslp.root + rlslp.terminals && j >= rlslp.len(parent_j))) {
+    if ((parent_i == rlslp.root && i >= rlslp.len(parent_i)) ||
+        (parent_j == rlslp.root && j >= rlslp.len(parent_j))) {
         return 0;
     } else {
         return lce_query_recursive(rlslp, i, j, parent_i, parent_j, i_visited, j_visited, traverse);
