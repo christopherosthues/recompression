@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 8) {
-        std::cerr << "./store_rlslp_bench [path] [file_name(s)] [parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | fast | hash | parallel_rnd] [plain | wlz | sorted | sorted_dr] [to_path] [cores] [repeats] [prefix]" << std::endl;
+        std::cerr << "./store_rlslp_bench [path] [file_name(s)] [parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | fast | hash | parallel_rnd] [plain | wlz | sorted | sorted_dr] [to_path] [cores] [repeats] [prefix]" << std::endl;
         return -1;
     }
 

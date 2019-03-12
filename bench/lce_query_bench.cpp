@@ -132,6 +132,11 @@ int main(int argc, char *argv[]) {
         std::string plain_text;
         recomp::util::read_text_file(file_name, plain_text, prefix);
 
+//        sdsl::rmq_succinct_sct<> rmq;
+//        sdsl::csa_wt<> sa;
+//        sdsl::construct(sa, file_name, 1);
+//        sa.
+
         for (size_t repeat = 0; repeat < repeats; ++repeat) {
             std::vector<size_t> lces(algos.size(), 0);
             for (size_t l = 0; l < algos.size(); ++l) {
@@ -167,6 +172,16 @@ int main(int argc, char *argv[]) {
                     const auto endTime = recomp::timer::now();
                     const auto timeSpan = endTime - startTime;
                     std::cout << "RESULT algo=prezza dataset=" << dataset << " queries=" << accesses << " lce="
+                              << lces[l] << " time="
+                              << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
+                } else if (algo == "rmq") {
+                    const auto startTime = recomp::timer::now();
+                    for (size_t i = 0; i < accesses; ++i) {
+                        lces[l] += lce::fastlce(&prezza, indices[i], indices[(i + 1) % accesses]);
+                    }
+                    const auto endTime = recomp::timer::now();
+                    const auto timeSpan = endTime - startTime;
+                    std::cout << "RESULT algo=rmq dataset=" << dataset << " queries=" << accesses << " lce="
                               << lces[l] << " time="
                               << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count() << std::endl;
                 } else {
