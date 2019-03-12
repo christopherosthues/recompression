@@ -110,6 +110,9 @@ int main(int argc, char *argv[]) {
         sdsl::lcp_dac<> lcp;
         sdsl::construct(lcp, file_name, 1);
 
+        sdsl::csa_sada<> sa;
+        sdsl::construct(sa, file_name, 1);
+
         sdsl::rmq_succinct_sct<> rmq(&lcp);
 
         for (size_t accesses = begin; accesses <= end; accesses += step) {
@@ -163,13 +166,13 @@ int main(int argc, char *argv[]) {
                     } else if (algo == "rmq") {
                         const auto startTime = recomp::timer::now();
                         for (size_t i = 0; i < accesses; ++i) {
-                            auto left = indices[i];
-                            auto right = indices[(i + 1) % accesses];
+                            auto left = sa.isa[indices[i]];
+                            auto right = sa.isa[indices[(i + 1) % accesses]];
 //                            std::cout << "l: " << left << ", r: " << right << std::endl;
 //                            std::cout << "rmq: " << rmq(std::min(left, right), std::max(left, right)) << std::endl;
 //                            std::cout << "lcp size: " << lcp.size() << std::endl;
-                            std::cout << "lcp: " << lcp[rmq(std::min(l, right), std::max(l, right))] << std::endl;
-                            lces[l] += lcp[rmq(std::min(l, right), std::max(l, right))];
+//                            std::cout << "lcp: " << lcp[rmq(std::min(left, right), std::max(l, right))] << std::endl;
+                            lces[l] += lcp[rmq(std::min(left, right), std::max(left, right))];
                         }
                         const auto endTime = recomp::timer::now();
                         const auto timeSpan = endTime - startTime;
