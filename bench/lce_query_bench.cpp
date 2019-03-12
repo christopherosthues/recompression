@@ -20,7 +20,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 8) {
-        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [begin] [end] [step] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]" << std::endl;
+        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza | rmq] [repeats] [begin] [end] [step] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]" << std::endl;
         return -1;
     }
 
@@ -52,56 +52,40 @@ int main(int argc, char *argv[]) {
         prefix = (size_t)recomp::util::str_to_int(argv[10]);
     }
 
-    for (size_t accesses = begin; accesses <= end; accesses += step) {
-        std::vector<size_t> indices(accesses);
-        for (size_t k = 0; k < files.size(); ++k) {
-            std::string file_name = argv[1] + files[k];
-            size_t file_size = recomp::util::file_size_in_bytes(file_name);
-            if (prefix > 0) {
-                file_size = std::min(file_size, prefix);
-            }
+    for (size_t k = 0; k < files.size(); ++k) {
+        std::string file_name = argv[1] + files[k];
+        size_t file_size = recomp::util::file_size_in_bytes(file_name);
+        if (prefix > 0) {
+            file_size = std::min(file_size, prefix);
+        }
 
-            for (size_t i = 0; i < accesses; ++i) {
-                indices[i] = recomp::util::random_number(file_size);
-            }
+        lce::lceDataStructure prezza;
+        lce::buildLCEDataStructure(&prezza, file_name);
 
-            lce::lceDataStructure prezza;
-            lce::buildLCEDataStructure(&prezza, file_name);
+        size_t pos = file_name.find_last_of('/');
+        std::string dataset;
+        if (pos != std::string::npos) {
+            dataset = file_name.substr(pos + 1);
+        } else {
+            dataset = file_name;
+        }
 
-            size_t pos = file_name.find_last_of('/');
-            std::string dataset;
-            if (pos != std::string::npos) {
-                dataset = file_name.substr(pos + 1);
+        recomp::util::replace_all(dataset, "_", "\\_");
+
+        recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
+        if (!coder.empty()) {
+            std::string coder_file;
+            if (!rlslp_path.empty()) {
+                coder_file = rlslp_path + files[k];
             } else {
-                dataset = file_name;
+                coder_file = file_name;
             }
 
-            recomp::util::replace_all(dataset, "_", "\\_");
-
-            recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
-            if (!coder.empty()) {
-                std::string coder_file;
-                if (!rlslp_path.empty()) {
-                    coder_file = rlslp_path + files[k];
-                } else {
-                    coder_file = file_name;
-                }
-
-                std::cout << "Load" << std::endl;
-                rlslp = recomp::coder::decode(coder, coder_file);
-                if (rlslp.is_empty) {
-                    std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel_lp_recompression."
-                              << std::endl;
-                    typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
-                    text_t text;
-                    recomp::util::read_file(file_name, text, prefix);
-
-                    recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
-                    recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
-                }
-                std::cout << "Loaded" << std::endl;
-            }
-            if (coder.empty()) {
+            std::cout << "Load" << std::endl;
+            rlslp = recomp::coder::decode(coder, coder_file);
+            if (rlslp.is_empty) {
+                std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel_lp_recompression."
+                          << std::endl;
                 typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                 text_t text;
                 recomp::util::read_file(file_name, text, prefix);
@@ -109,14 +93,30 @@ int main(int argc, char *argv[]) {
                 recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
                 recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
             }
+            std::cout << "Loaded" << std::endl;
+        }
+        if (coder.empty()) {
+            typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+            text_t text;
+            recomp::util::read_file(file_name, text, prefix);
 
-            std::string plain_text;
-            recomp::util::read_text_file(file_name, plain_text, prefix);
+            recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
+            recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
+        }
 
-//        sdsl::rmq_succinct_sct<> rmq;
-//        sdsl::csa_wt<> sa;
-//        sdsl::construct(sa, file_name, 1);
-//        sa.
+        std::string plain_text;
+        recomp::util::read_text_file(file_name, plain_text, prefix);
+
+        sdsl::lcp_dac<> lcp;
+        sdsl::construct(lcp, file_name, 1);
+
+        sdsl::rmq_succinct_sct<> rmq(&lcp);
+
+        for (size_t accesses = begin; accesses <= end; accesses += step) {
+            std::vector<size_t> indices(accesses);
+            for (size_t i = 0; i < accesses; ++i) {
+                indices[i] = recomp::util::random_number(file_size);
+            }
 
             for (size_t repeat = 0; repeat < repeats; ++repeat) {
                 std::vector<size_t> lces(algos.size(), 0);
@@ -163,7 +163,13 @@ int main(int argc, char *argv[]) {
                     } else if (algo == "rmq") {
                         const auto startTime = recomp::timer::now();
                         for (size_t i = 0; i < accesses; ++i) {
-                            lces[l] += lce::fastlce(&prezza, indices[i], indices[(i + 1) % accesses]);
+                            auto left = indices[i];
+                            auto right = indices[(i + 1) % accesses];
+//                            std::cout << "l: " << left << ", r: " << right << std::endl;
+//                            std::cout << "rmq: " << rmq(std::min(left, right), std::max(left, right)) << std::endl;
+//                            std::cout << "lcp size: " << lcp.size() << std::endl;
+                            std::cout << "lcp: " << lcp[rmq(std::min(l, right), std::max(l, right))] << std::endl;
+                            lces[l] += lcp[rmq(std::min(l, right), std::max(l, right))];
                         }
                         const auto endTime = recomp::timer::now();
                         const auto timeSpan = endTime - startTime;
