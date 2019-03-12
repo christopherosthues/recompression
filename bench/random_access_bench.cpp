@@ -11,7 +11,7 @@
 #include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
-    if (argc < 6) {
+    if (argc < 8) {
         std::cerr
                 << "./bench_random_access [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [begin] [end] [step] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]"
                 << std::endl;
