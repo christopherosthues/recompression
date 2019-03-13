@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
                             auto left = std::min(isa_i, isa_i1);
                             auto right = std::max(isa_i, isa_i1);
                             if (left == right) {
-                                lces[l] += plain_text.size() - left;
+                                lces[l] += plain_text.size() - indices[i];
                             } else {
                                 //                            std::cout << "l: " << left << ", r: " << right << std::endl;
 //                            std::cout << "rmq: " << rmq(std::min(left, right), std::max(left, right)) << std::endl;
