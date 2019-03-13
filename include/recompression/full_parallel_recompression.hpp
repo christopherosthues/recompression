@@ -679,41 +679,41 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             auto char_i1 = text[i + 1];
             auto char_j = text[j];
             auto char_j1 = text[j + 1];
-            if (char_i > char_i1) {
-                if (char_j > char_j1) {
-                    bool less = char_i < char_j;
+            if (char_i < char_i1) {
+                if (char_j < char_j1) {
+                    bool lt = char_i < char_j;
                     if (char_i == char_j) {
-                        less = char_i1 < char_j1;
+                        lt = char_i1 < char_j1;
                     }
-                    return less;
+                    return lt;
                 } else {
-                    // char_j1 > char_j -> (char_i, char_i1, 0) (char_j1, char_j, 1)
-                    bool less = char_i < char_j1;
+                    // char_j1 < char_j -> (char_i, char_i1, 0) (char_j1, char_j, 1)
+                    bool greater = char_i < char_j1;
                     if (char_i == char_j1) {
                         if (char_i1 == char_j) {
                             return true;
                         }
-                        less = char_i1 < char_j;
+                        greater = char_i1 < char_j;
                     }
-                    return less;
+                    return greater;
                 }
             } else {
-                if (char_j > char_j1) {
+                if (char_j < char_j1) {
                     // char_i1 > char_i -> (char_i1, char_i, 1) (char_j, char_j1, 0)
-                    bool less = char_i1 < char_j;
+                    bool greater = char_i1 < char_j;
                     if (char_i1 == char_j) {
                         if (char_i == char_j1) {
                             return false;
                         }
-                        less = char_i < char_j1;
+                        greater = char_i < char_j1;
                     }
-                    return less;
+                    return greater;
                 } else {
-                    bool less = char_i1 < char_j1;
+                    bool greater = char_i1 < char_j1;
                     if (char_i1 == char_j1) {
-                        less = char_i < char_j;
+                        greater = char_i < char_j;
                     }
-                    return less;
+                    return greater;
                 }
             }
         };
@@ -760,6 +760,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         const auto timeSpanPar = endTimePar - startTime;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
+
+        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeLocalSearch = recomp::timer::now();
@@ -836,6 +838,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 #pragma omp barrier
 #pragma omp single
             {
+                std::cout << "Bounds" << std::endl;
 #pragma omp task
                 {
                     for (size_t j = adj_bounds.size() - 1; j > 0; --j) {
@@ -852,6 +855,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                         }
                     }
                 }
+
+                std::cout << "Bounds finished" << std::endl;
             }
 
             int w_l = 0;
@@ -872,8 +877,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                     }
                 }
                 for (size_t k = reverse_adj_bounds[j]; k < reverse_adj_bounds[j + 1]; ++k) {  // TODO(Chris): check correctness
-                    auto char_i = text[reverse_adj_bounds[k]];
-                    auto char_i1 = text[reverse_adj_bounds[k] + 1];
+                    auto char_i = text[reverse_adj_list[k]];
+                    auto char_i1 = text[reverse_adj_list[k] + 1];
                     if (char_i < char_i1) {
                         char_i = char_i1;
                     }
@@ -890,6 +895,10 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 }
             }
 
+#pragma omp single
+            {
+                std::cout << "Flipping" << std::endl;
+            }
 #pragma omp for schedule(static)
             for (size_t j = 0; j < partition.size(); ++j) {
                 if (flip[j]) {
@@ -901,6 +910,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 }
             }
         }
+        std::cout << std::endl;
         adj_bounds.resize(0);
         adj_bounds.shrink_to_fit();
         reverse_adj_list.resize(0);
@@ -912,6 +922,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
         std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
 #endif
+
+        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeCount = recomp::timer::now();
@@ -930,6 +942,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             {
 //                bounds.reserve(n_threads + 1);
 //                bounds.resize(n_threads + 1, adj_list.size());
+                std::cout << "Bounds" << std::endl;
                 std::fill(bounds.begin(), bounds.end(), adj_list.size());
             }
 
@@ -982,6 +995,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
                   << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
 #endif
+        std::cout << std::endl;
         part_l = rl_count > lr_count;
         if (rl_count == lr_count) {
             part_l = prod_r < prod_l;
@@ -1020,6 +1034,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         const auto startTimePairs = recomp::timer::now();
         std::cout << " alphabet=" << partition.size();
 #endif
+        std::cout << std::endl;
         std::vector<pair_position_t> positions;
 
         std::vector<size_t> bounds;
@@ -1103,6 +1118,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
 #endif
+        std::cout << std::endl;
 
 #ifdef BENCH
         const auto startTimeSort = recomp::timer::now();
@@ -1251,6 +1267,8 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count())
                   << " productions=" << distinct_pairs[distinct_pairs.size() - 1] << " elements=" << pair_count;
 #endif
+
+        std::cout << std::endl;
 
         compact(text, compact_bounds, pair_counts, pair_count, mapping);
 
