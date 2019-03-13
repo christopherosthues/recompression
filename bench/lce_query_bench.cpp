@@ -166,13 +166,19 @@ int main(int argc, char *argv[]) {
                     } else if (algo == "rmq") {
                         const auto startTime = recomp::timer::now();
                         for (size_t i = 0; i < accesses; ++i) {
-                            auto left = sa.isa[indices[i]];
-                            auto right = sa.isa[indices[(i + 1) % accesses]];
-//                            std::cout << "l: " << left << ", r: " << right << std::endl;
+                            auto isa_i = sa.isa[indices[i]];
+                            auto isa_i1 = sa.isa[indices[(i + 1) % accesses]];
+                            auto left = std::min(isa_i, isa_i1);
+                            auto right = std::max(isa_i, isa_i1);
+                            if (left == right) {
+                                lces[l] += plain_text.size() - left;
+                            } else {
+                                //                            std::cout << "l: " << left << ", r: " << right << std::endl;
 //                            std::cout << "rmq: " << rmq(std::min(left, right), std::max(left, right)) << std::endl;
 //                            std::cout << "lcp size: " << lcp.size() << std::endl;
 //                            std::cout << "lcp: " << lcp[rmq(std::min(left, right), std::max(l, right))] << std::endl;
-                            lces[l] += lcp[rmq(std::min(left, right), std::max(left, right))];
+                                lces[l] += lcp[rmq(left + 1, right)];
+                            }
                         }
                         const auto endTime = recomp::timer::now();
                         const auto timeSpan = endTime - startTime;
