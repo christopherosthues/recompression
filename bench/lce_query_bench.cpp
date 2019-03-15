@@ -78,6 +78,10 @@ int main(int argc, char *argv[]) {
                 coder_file = file_name;
             }
 
+            if (z == "w") {
+                coder_file += "_wz";
+            }
+
             std::cout << "Load" << std::endl;
             rlslp = recomp::coder::decode(coder, coder_file);
             if (rlslp.is_empty) {
