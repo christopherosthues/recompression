@@ -187,8 +187,8 @@ TEST(lcequery, lcequery_complete) {
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
 
-    for (size_t i = 0; i < text.size(); ++i) {
-        for (size_t j = 0; j < text.size(); ++j) {
+    for (size_t i = 0; i < text_naive.size(); ++i) {
+        for (size_t j = 0; j < text_naive.size(); ++j) {
             auto lceq = lce_query::lce_query(rlslp, i, j);
             size_t naive = lce_query_naive(i, j, text_naive);
             ASSERT_EQ(naive, lceq);
@@ -203,8 +203,8 @@ TEST(lcequery, block) {
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 3, 4);
 
-    for (size_t i = 0; i < text.size(); ++i) {
-        for (size_t j = 0; j < text.size(); ++j) {
+    for (size_t i = 0; i < text_naive.size(); ++i) {
+        for (size_t j = 0; j < text_naive.size(); ++j) {
             auto lceq = lce_query::lce_query(rlslp, i, j);
             size_t naive = lce_query_naive(i, j, text_naive);
             ASSERT_EQ(naive, lceq);
