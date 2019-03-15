@@ -14,8 +14,8 @@
 
 
 int main(int argc, char *argv[]) {
-    if (argc < 8) {
-        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza | rmq] [repeats] [begin] [end] [step] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]" << std::endl;
+    if (argc < 9) {
+        std::cerr << "./bench_lce_query [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza | rmq] [repeats] [begin] [end] [step] [z | w] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]" << std::endl;
         return -1;
     }
 
@@ -33,18 +33,20 @@ int main(int argc, char *argv[]) {
     size_t end = (size_t) recomp::util::str_to_int(argv[6]);
     size_t step = (size_t) recomp::util::str_to_int(argv[7]);
 
+    std::string z = argv[8];
+
     std::string coder;
-    if (argc > 8) {
-        coder = std::string(argv[8]);
+    if (argc > 9) {
+        coder = std::string(argv[9]);
     }
     std::string rlslp_path;
-    if (argc > 9) {
-        rlslp_path = std::string(argv[9]);
+    if (argc > 10) {
+        rlslp_path = std::string(argv[10]);
     }
 
     size_t prefix = 0;
-    if (argc > 10) {
-        prefix = (size_t)recomp::util::str_to_int(argv[10]);
+    if (argc > 11) {
+        prefix = (size_t)recomp::util::str_to_int(argv[11]);
     }
 
     for (size_t k = 0; k < files.size(); ++k) {
@@ -83,7 +85,11 @@ int main(int argc, char *argv[]) {
                           << std::endl;
                 typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                 text_t text;
-                recomp::util::read_file(file_name, text, prefix);
+                if (z == "z") {
+                    recomp::util::read_file(file_name, text, prefix);
+                } else {
+                    recomp::util::read_file_without_zeroes(file_name, text, prefix);
+                }
 
                 recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
                 recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
@@ -93,14 +99,22 @@ int main(int argc, char *argv[]) {
         if (coder.empty()) {
             typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
             text_t text;
-            recomp::util::read_file(file_name, text, prefix);
+            if (z == "z") {
+                recomp::util::read_file(file_name, text, prefix);
+            } else {
+                recomp::util::read_file_without_zeroes(file_name, text, prefix);
+            }
 
             recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
             recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
         }
 
         std::string plain_text;
-        recomp::util::read_text_file(file_name, plain_text, prefix);
+        if (z == "z") {
+            recomp::util::read_text_file(file_name, plain_text, prefix);
+        } else {
+            recomp::util::read_text_file_without_zeroes(file_name, plain_text, prefix);
+        }
 
         sdsl::lcp_dac<> lcp;
         sdsl::construct(lcp, file_name, 1);

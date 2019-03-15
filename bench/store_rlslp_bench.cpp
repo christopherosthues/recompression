@@ -8,8 +8,8 @@
 #include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
-    if (argc < 8) {
-        std::cerr << "./store_rlslp_bench [path] [file_name(s)] [parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | fast | hash | parallel_rnd] [plain | wlz | sorted | sorted_dr] [to_path] [cores] [repeats] [prefix]" << std::endl;
+    if (argc < 9) {
+        std::cerr << "./store_rlslp_bench [path] [file_name(s)] [parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | fast | hash | parallel_rnd] [plain | wlz | sorted | sorted_dr] [to_path] [cores] [repeats] [w | z] [prefix]" << std::endl;
         return -1;
     }
 
@@ -25,9 +25,11 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    std::string z = argv[8];
+
     size_t prefix = 0;
-    if (argc > 8) {
-        prefix = (size_t)recomp::util::str_to_int(argv[8]);
+    if (argc > 9) {
+        prefix = (size_t)recomp::util::str_to_int(argv[9]);
     }
 
     std::vector<std::string> files;
@@ -68,7 +70,11 @@ int main(int argc, char *argv[]) {
 
                 typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                 text_t text;
-                recomp::util::read_file(file_name, text, prefix);
+                if (z == "z") {
+                    recomp::util::read_file(file_name, text, prefix);
+                } else {
+                    recomp::util::read_file_without_zeroes(file_name, text, prefix);
+                }
 
                 recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
 
@@ -85,7 +91,11 @@ int main(int argc, char *argv[]) {
 
                 std::string res = rlslp.derive_text();
                 std::string c_text;
-                recomp::util::read_text_file(file_name, c_text, prefix);
+                if (z == "z") {
+                    recomp::util::read_text_file(file_name, c_text, prefix);
+                } else {
+                    recomp::util::read_text_file_without_zeroes(file_name, c_text, prefix);
+                }
                 if (res == c_text) {
                     std::cout << "Correct extract" << std::endl;
                 } else {
@@ -93,6 +103,9 @@ int main(int argc, char *argv[]) {
                 }
 
                 std::string coder_file = to_path + files[j];
+                if (z == "w") {
+                    coder_file += "_wz";
+                }
                 recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp;
                 recomp::coder::encode(coder, coder_file, rlslp);
                 in_rlslp = recomp::coder::decode(coder, coder_file);
@@ -100,34 +113,6 @@ int main(int argc, char *argv[]) {
                 if (in_rlslp.is_empty) {
                     return -1;
                 }
-//                if (coder == "plain") {
-//                    recomp::coder::PlainRLSLPCoder::Encoder enc{coder_file};
-//                    enc.encode(rlslp);
-//
-//                    recomp::coder::PlainRLSLPCoder::Decoder dec{coder_file};
-//                    in_rlslp = dec.decode();
-//                } else if (coder == "plain_fixed") {
-//                    recomp::coder::PlainFixedRLSLPCoder::Encoder enc{coder_file};
-//                    enc.encode(rlslp);
-//
-//                    recomp::coder::PlainFixedRLSLPCoder::Decoder dec{coder_file};
-//                    in_rlslp = dec.decode();
-//                } else if (coder == "sorted") {
-//                    recomp::coder::SortedRLSLPCoder::Encoder enc{coder_file};
-//                    enc.encode(rlslp);
-//
-//                    recomp::coder::SortedRLSLPCoder::Decoder dec{coder_file};
-//                    in_rlslp = dec.decode();
-//                } else if (coder == "sorted_dr") {
-//                    recomp::coder::SortedRLSLPDRCoder::Encoder enc{coder_file};
-//                    enc.encode(rlslp);
-//
-//                    recomp::coder::SortedRLSLPDRCoder::Decoder dec{coder_file};
-//                    in_rlslp = dec.decode();
-//                } else {
-//                    std::cout << "Unkown coder '" << coder << "'." << std::endl;
-//                    return -1;
-//                }
 
                 std::string extension = recomp::coder::get_coder_extension(coder);
                 std::ifstream in_enc(coder_file + extension, std::ios::binary | std::ios::ate);

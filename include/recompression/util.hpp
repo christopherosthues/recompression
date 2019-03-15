@@ -107,6 +107,45 @@ void read_file(const std::string& file_name, std::vector<text_t>& text, const si
 }
 
 /**
+ * @brief Reads in a file to the specified data.
+ *
+ * @tparam text_t The type of text
+ * @param file_name The file name
+ * @param text[out] The read text
+ */
+template<typename text_t>
+void read_file_without_zeroes(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size = 0) {
+    std::cout << "Reading file: " << file_name << std::endl;
+    std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+    uint64_t file_size = ifs.tellg();
+    if (!ifs) {
+        std::cerr << "Failed to read file " << file_name << std::endl;
+        exit(1);
+    }
+    ifs.seekg(0, std::ios::beg);
+
+    if (prefix_size > 0) {
+        file_size = std::min(file_size, prefix_size);
+    }
+
+    text.resize(file_size, 0);
+
+    char c;
+    size_t index = 0;
+    while (ifs.get(c) && index < file_size) {
+        if (static_cast<text_t>((unsigned char)c) != 0) {
+            text[index++] = static_cast<text_t>((unsigned char)c);
+        }
+    }
+    ifs.close();
+    text.resize(index);
+    text.shrink_to_fit();
+
+    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Finished reading file" << std::endl;
+}
+
+/**
  * @brief Reads a file to a string.
  *
  * @param file_name The file name
@@ -129,6 +168,44 @@ void read_text_file(const std::string& file_name, std::string& text, const size_
     text.resize(file_size, '\0');
     ifs.read((char*)text.data(), file_size);
     ifs.close();
+
+    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Finished reading file" << std::endl;
+}
+
+/**
+ * @brief Reads a file to a string.
+ *
+ * @param file_name The file name
+ * @param text[out] The read text
+ */
+void read_text_file_without_zeroes(const std::string& file_name, std::string& text, const size_t prefix_size = 0) {
+    std::cout << "Reading text file: " << file_name << std::endl;
+    std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+    uint64_t file_size = ifs.tellg();
+    if (!ifs) {
+        std::cerr << "Failed to read file " << file_name << std::endl;
+        exit(1);
+    }
+    ifs.seekg(0, std::ios::beg);
+
+    if (prefix_size > 0) {
+        file_size = std::min(file_size, prefix_size);
+    }
+
+    text.resize(file_size, '\0');
+    ifs.read((char*)text.data(), file_size);
+    ifs.close();
+    size_t j = 0;
+    for (size_t i = 0; i < text.size(); ++i) {
+        if (text[i] == 0) {
+            i++;
+        } else {
+            text[j++] = text[i];
+        }
+    }
+    text.resize(j);
+    text.shrink_to_fit();
     std::cout << "Read " << file_size << " bytes" << std::endl;
     std::cout << "Finished reading file" << std::endl;
 }
