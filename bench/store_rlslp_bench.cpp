@@ -42,6 +42,38 @@ int main(int argc, char *argv[]) {
 
     std::string to_path(argv[5]);
 
+//    std::string t = "sfsfjadfjdfhj\0\0sds";
+//    std::string wt = "sfsfjadfjdfhjsds";
+//    std::ofstream ostr("test.txt");
+//    ostr << t;
+//
+//    std::string in;
+//    recomp::util::read_text_file("../../data/english", in, 800000000);
+//
+//    for (size_t i = 0; i < in.size(); ++i) {
+//        if (in[i] == 0) {
+//            std::cout << i << std::endl;
+//        }
+//    }
+//    in.resize(0);
+//    in.shrink_to_fit();
+//
+//    recomp::util::read_text_file_without_zeroes("../../data/english", in, 800000000);
+//
+//    for (size_t i = 0; i < in.size(); ++i) {
+//        if (in[i] == 0) {
+//            std::cout << i << std::endl;
+//        }
+//    }
+//
+//    recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t vt;
+//    recomp::util::read_file_without_zeroes("../../data/english", vt, 800000000);
+//    for (size_t i = 0; i < vt.size(); ++i) {
+//        if (in[i] != (char)vt[i]) {
+//            std::cout << i << ": fail" << std::endl;
+//        }
+//    }
+
     for (size_t j = 0; j < files.size(); ++j) {
         for (size_t repeat = 0; repeat < repeats; ++repeat) {
             for (size_t i = 0; i < algos.size(); ++i) {

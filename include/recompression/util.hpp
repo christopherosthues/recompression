@@ -132,16 +132,18 @@ void read_file_without_zeroes(const std::string& file_name, std::vector<text_t>&
 
     char c;
     size_t index = 0;
+    size_t idx = 0;
     while (ifs.get(c) && index < file_size) {
         if (static_cast<text_t>((unsigned char)c) != 0) {
-            text[index++] = static_cast<text_t>((unsigned char)c);
+            text[idx++] = static_cast<text_t>((unsigned char)c);
         }
+        index++;
     }
     ifs.close();
-    text.resize(index);
+    text.resize(idx);
     text.shrink_to_fit();
 
-    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Read " << text.size() << " bytes" << std::endl;
     std::cout << "Finished reading file" << std::endl;
 }
 
@@ -198,15 +200,13 @@ void read_text_file_without_zeroes(const std::string& file_name, std::string& te
     ifs.close();
     size_t j = 0;
     for (size_t i = 0; i < text.size(); ++i) {
-        if (text[i] == 0) {
-            i++;
-        } else {
+        if (text[i] != 0) {
             text[j++] = text[i];
         }
     }
     text.resize(j);
     text.shrink_to_fit();
-    std::cout << "Read " << file_size << " bytes" << std::endl;
+    std::cout << "Read " << text.size() << " bytes" << std::endl;
     std::cout << "Finished reading file" << std::endl;
 }
 
