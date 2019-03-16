@@ -56,9 +56,6 @@ int main(int argc, char *argv[]) {
             file_size = std::min(file_size, prefix);
         }
 
-        lce::lceDataStructure prezza;
-        lce::buildLCEDataStructure(&prezza, file_name);
-
         size_t pos = file_name.find_last_of('/');
         std::string dataset;
         if (pos != std::string::npos) {
@@ -69,17 +66,23 @@ int main(int argc, char *argv[]) {
 
         recomp::util::replace_all(dataset, "_", "\\_");
 
+        if (z == "w") {
+            file_name += "_wz";
+        }
+
+        lce::lceDataStructure prezza;
+        lce::buildLCEDataStructure(&prezza, file_name);
+
         recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
         if (!coder.empty()) {
             std::string coder_file;
             if (!rlslp_path.empty()) {
                 coder_file = rlslp_path + files[k];
+                if (z == "w") {
+                    coder_file += "_wz";
+                }
             } else {
                 coder_file = file_name;
-            }
-
-            if (z == "w") {
-                coder_file += "_wz";
             }
 
             std::cout << "Load" << std::endl;
@@ -89,11 +92,11 @@ int main(int argc, char *argv[]) {
                           << std::endl;
                 typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                 text_t text;
-                if (z == "z") {
+//                if (z == "z") {
                     recomp::util::read_file(file_name, text, prefix);
-                } else {
-                    recomp::util::read_file_without_zeroes(file_name, text, prefix);
-                }
+//                } else {
+//                    recomp::util::read_file_without_zeroes(file_name, text, prefix);
+//                }
 
                 recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
                 recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
@@ -103,22 +106,22 @@ int main(int argc, char *argv[]) {
         if (coder.empty()) {
             typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
             text_t text;
-            if (z == "z") {
+//            if (z == "z") {
                 recomp::util::read_file(file_name, text, prefix);
-            } else {
-                recomp::util::read_file_without_zeroes(file_name, text, prefix);
-            }
+//            } else {
+//                recomp::util::read_file_without_zeroes(file_name, text, prefix);
+//            }
 
             recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
             recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
         }
 
         std::string plain_text;
-        if (z == "z") {
+//        if (z == "z") {
             recomp::util::read_text_file(file_name, plain_text, prefix);
-        } else {
-            recomp::util::read_text_file_without_zeroes(file_name, plain_text, prefix);
-        }
+//        } else {
+//            recomp::util::read_text_file_without_zeroes(file_name, plain_text, prefix);
+//        }
 
         sdsl::lcp_dac<> lcp;
         sdsl::construct(lcp, file_name, 1);
