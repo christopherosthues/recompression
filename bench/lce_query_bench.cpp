@@ -51,10 +51,6 @@ int main(int argc, char *argv[]) {
 
     for (size_t k = 0; k < files.size(); ++k) {
         std::string file_name = argv[1] + files[k];
-        size_t file_size = recomp::util::file_size_in_bytes(file_name);
-        if (prefix > 0) {
-            file_size = std::min(file_size, prefix);
-        }
 
         size_t pos = file_name.find_last_of('/');
         std::string dataset;
@@ -68,6 +64,11 @@ int main(int argc, char *argv[]) {
 
         if (z == "w") {
             file_name += "_wz";
+        }
+
+        size_t file_size = recomp::util::file_size_in_bytes(file_name);
+        if (prefix > 0) {
+            file_size = std::min(file_size, prefix);
         }
 
         lce::lceDataStructure prezza;
