@@ -96,7 +96,7 @@ rlslp<variable_t, terminal_count_t> decode(const std::string& coder, const std::
 std::string get_coder_extension(const std::string& name) {
     if (name == "plain") {
         return coder::PlainRLSLPCoder::k_extension;
-    } else if (name == "plain_fixed") {
+    } else if (name == "fixed") {
         return coder::PlainFixedRLSLPCoder::k_extension;
     } else if (name == "sorted") {
         return coder::SortedRLSLPCoder::k_extension;

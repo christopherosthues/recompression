@@ -10,7 +10,7 @@ if (RECOMPRESSION_ENABLE_BENCHMARKS)
     build_bench("long_lce_query")
     build_bench("random_access")
 
-#    build_bench("statistics")
+    build_bench("statistics")
     build_bench("compression_statistics")
 #    build_bench("compression_mem")
     build_bench("remove_zeroes")

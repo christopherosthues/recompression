@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 5) {
-        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | plain_fixed | sorted | sorted_dr | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
+        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | fixed | sorted | sorted_dr | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
                   << std::endl;
         return -1;
     }
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "Unkown coder '" << coder << "'." << std::endl;
                     return -1;
                 } else {
-                    coder_file = file_name + extension;
+                    coder_file = coder_path + file_name + extension;
                 }
             }
 
