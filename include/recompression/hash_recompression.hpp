@@ -57,6 +57,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                                const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
+        size_t text_size = text.size();
 #endif
         rlslp.terminals = alphabet_size;
         bv_t bv;
@@ -72,7 +73,6 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         }
 
         if (!text.empty()) {
-//            rlslp.root = static_cast<variable_t>(rlslp.size() - 1);
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -84,7 +84,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
-                  << std::endl;
+                  << " size=" << text_size << std::endl;
 #endif
     }
 

@@ -63,6 +63,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
                                const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
+        size_t text_size = text.size();
 #endif
         this->cores = cores;
         rlslp.terminals = alphabet_size;
@@ -90,7 +91,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
-                  << " cores=" << this->cores << std::endl;
+                  << " cores=" << this->cores << " size=" << text_size << std::endl;
 #endif
     }
 
