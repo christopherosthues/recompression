@@ -110,9 +110,19 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
 #endif
         size_t new_text_size = copy_bounds[copy_bounds.size() - 1];
         if (new_text_size > 1 && count > 0) {
+#ifdef BENCH
+            const auto startTimeNewText = recomp::timer::now();
+#endif
             text_t new_text;
             new_text.reserve(new_text_size);
             new_text.resize(new_text_size);
+#ifdef BENCH
+            const auto endTimeNT = recomp::timer::now();
+            const auto timeSpanNT = endTimeNT - startTimeNewText;
+            std::cout << " init_new_text="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanNT).count());
+            const auto startTimeCopy = recomp::timer::now();
+#endif
 
 #pragma omp parallel num_threads(this->cores)
             {
@@ -124,8 +134,21 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
                     }
                 }
             }
+#ifdef BENCH
+            const auto endTimeCopy = recomp::timer::now();
+            const auto timeSpanCopy = endTimeCopy - startTimeCopy;
+            std::cout << " copy="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
+            const auto startTimeMove = recomp::timer::now();
+#endif
 
             text = std::move(new_text);
+#ifdef BENCH
+            const auto endTimeMove = recomp::timer::now();
+            const auto timeSpanMove = endTimeMove - startTimeMove;
+            std::cout << " move="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMove).count());
+#endif
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
             text.shrink_to_fit();
@@ -437,7 +460,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
             compact(text, compact_bounds, block_counts, block_count);
 #ifdef BENCH
             } else {
-            std::cout << " sort=0 rules=0 elements=0 blocks=0 compact_text=0";
+            std::cout << " sort=0 rules=0 elements=0 blocks=0 init_new_text=0 copy=0 move=0 compact_text=0";
 #endif
         }
 
@@ -460,6 +483,12 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
         const auto startTime = recomp::timer::now();
 #endif
         std::vector<size_t> alpha(text.size());
+#ifdef BENCH
+        const auto endTimeInAl = recomp::timer::now();
+        const auto timeSpanInAl = endTimeInAl - startTime;
+        std::cout << " init_alphavec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanInAl).count();
+        const auto startTimeAlpha = recomp::timer::now();
+#endif
 #pragma omp parallel for num_threads(this->cores) schedule(static)
         for (size_t i = 0; i < text.size(); ++i) {
             alpha[i] = i;
@@ -469,7 +498,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
         };
 #ifdef BENCH
         const auto endAlphaTime = recomp::timer::now();
-        const auto timeSpanAlpha = endAlphaTime - startTime;
+        const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
         std::cout << " alpha=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAlpha).count();
         const auto startAlphaSortTime = recomp::timer::now();
 #endif

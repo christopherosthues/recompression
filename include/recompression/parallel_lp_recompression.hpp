@@ -110,9 +110,19 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #endif
         size_t new_text_size = copy_bounds[copy_bounds.size() - 1];
         if (new_text_size > 1 && count > 0) {
+#ifdef BENCH
+            const auto startTimeNewText = recomp::timer::now();
+#endif
             text_t new_text;
             new_text.reserve(new_text_size);
             new_text.resize(new_text_size);
+#ifdef BENCH
+            const auto endTimeNT = recomp::timer::now();
+            const auto timeSpanNT = endTimeNT - startTimeNewText;
+            std::cout << " init_new_text="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanNT).count());
+            const auto startTimeCopy = recomp::timer::now();
+#endif
 
 #pragma omp parallel num_threads(this->cores)
             {
@@ -124,8 +134,21 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                     }
                 }
             }
+#ifdef BENCH
+            const auto endTimeCopy = recomp::timer::now();
+            const auto timeSpanCopy = endTimeCopy - startTimeCopy;
+            std::cout << " copy="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopy).count());
+            const auto startTimeMove = recomp::timer::now();
+#endif
 
             text = std::move(new_text);
+#ifdef BENCH
+            const auto endTimeMove = recomp::timer::now();
+            const auto timeSpanMove = endTimeMove - startTimeMove;
+            std::cout << " move="
+                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMove).count());
+#endif
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
             text.shrink_to_fit();
@@ -395,7 +418,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
             compact(text, compact_bounds, block_counts, block_count);
 #ifdef BENCH
             } else {
-            std::cout << " sort=0 rules=0 elements=0 blocks=0 compact_text=0";
+            std::cout << " sort=0 rules=0 elements=0 blocks=0 init_new_text=0 copy=0 move=0 compact_text=0";
 #endif
         }
 
