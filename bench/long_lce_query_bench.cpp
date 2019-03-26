@@ -133,10 +133,20 @@ int main(int argc, char *argv[]) {
             }
 
             auto sort_cond = [&](const size_t i, const size_t j) {
-                return rmq(j, j) < rmq(i, i);
+//                return rmq(j, j) < rmq(i, i);
+//                return lcp[rmq(j, j)] < lcp[rmq(i, i)];
+                return lcp[j] < lcp[i];
             };
 
             ips4o::parallel::sort(idx.begin(), idx.end(), sort_cond, 4);
+
+//            for (size_t kl = 0; kl < accesses; ++kl) {
+//                std::cout << lcp[idx[kl]] << std::endl;
+//            }
+
+//            for (size_t kl = 0; kl < 20; kl++) {
+//                std::cout << idx[kl] << std::endl;
+//            }
 
 //            size_t max = 0;
 //            for (size_t i = 0; i < plain_text.size(); ++i) {
@@ -159,6 +169,10 @@ int main(int argc, char *argv[]) {
                 if (n >= idx.size()) {
                     n = 0;
                 }
+//                for (size_t kl = 0; kl < accesses; kl+=2) {
+//                    std::cout << indices[i] << ", " << indices[i + 1] << std::endl;
+//                    std::cout << lcp[sa.isa[indices[i]]] << std::endl;
+//                }
             }
             idx.resize(0);
             idx.shrink_to_fit();
@@ -172,7 +186,7 @@ int main(int argc, char *argv[]) {
 
                     if (algo == "recomp") {
                         const auto startTime = recomp::timer::now();
-                        for (size_t i = 0; i < accesses; ++i) {
+                        for (size_t i = 0; i < indices.size(); i+=2) {
                             lces[l] += recomp::lce_query::lce_query(rlslp, indices[i], indices[i + 1]);
                         }
                         const auto endTime = recomp::timer::now();
@@ -184,7 +198,7 @@ int main(int argc, char *argv[]) {
                                   << std::endl;
                     } else if (algo == "naive") {
                         const auto startTime = recomp::timer::now();
-                        for (size_t i = 0; i < accesses; ++i) {
+                        for (size_t i = 0; i < indices.size(); i+=2) {
                             lces[l] += recomp::lce_query::lce_query_naive(plain_text, indices[i], indices[i + 1]);
                         }
                         const auto endTime = recomp::timer::now();
@@ -195,7 +209,7 @@ int main(int argc, char *argv[]) {
                                   << std::endl;
                     } else if (algo == "prezza") {
                         const auto startTime = recomp::timer::now();
-                        for (size_t i = 0; i < accesses; ++i) {
+                        for (size_t i = 0; i < indices.size(); i+=2) {
                             lces[l] += lce::fastlce(&prezza, indices[i], indices[i + 1]);
                         }
                         const auto endTime = recomp::timer::now();
@@ -206,7 +220,7 @@ int main(int argc, char *argv[]) {
                                   << std::endl;
                     } else if (algo == "rmq") {
                         const auto startTime = recomp::timer::now();
-                        for (size_t i = 0; i < accesses; ++i) {
+                        for (size_t i = 0; i < indices.size(); i+=2) {
                             auto isa_i = sa.isa[indices[i]];
                             auto isa_i1 = sa.isa[indices[i + 1]];
                             auto left = std::min(isa_i, isa_i1);

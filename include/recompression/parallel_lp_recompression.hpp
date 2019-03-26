@@ -189,7 +189,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #pragma omp parallel num_threads(this->cores) reduction(+:block_count)
         {
             auto thread_id = omp_get_thread_num();
-            auto n_threads = static_cast<size_t>(omp_get_num_threads());
+            const auto n_threads = static_cast<size_t>(omp_get_num_threads());
             variable_t block_len = 1;
 
 #pragma omp single
@@ -526,7 +526,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
 //        adj_list_t adj_list(text.size() - 1);
         const auto adj_list_size = text.size() - 1;
-        auto adj_list = new adj_t[adj_list_size];
+        auto* adj_list = new adj_t[adj_list_size];
         compute_adj_list(text, adj_list, adj_list_size);
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
