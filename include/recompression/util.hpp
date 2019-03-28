@@ -45,7 +45,7 @@ inline size_t random_number(size_t max_val) {
  * @param[out] text The read text
  */
 template<typename text_t>
-void read_file_fast(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size = 0) {
+void read_file_fast(const std::string& file_name, ui_vector<text_t>& text, const size_t prefix_size = 0) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     if (!ifs) {
@@ -59,7 +59,7 @@ void read_file_fast(const std::string& file_name, std::vector<text_t>& text, con
     }
 
     ifs.seekg(0, std::ios::beg);
-    text.resize(file_size, 0);
+    text.resize(file_size);
 //    ifs.read(reinterpret_cast<char*>(text.data()), file_size);
     std::vector<char> in(file_size);
     ifs.read(reinterpret_cast<char*>(in.data()), file_size);
@@ -79,7 +79,7 @@ void read_file_fast(const std::string& file_name, std::vector<text_t>& text, con
  * @param text[out] The read text
  */
 template<typename text_t>
-void read_file_fill(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size) {
+void read_file_fill(const std::string& file_name, ui_vector<text_t>& text, const size_t prefix_size) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     uint64_t file_size = ifs.tellg();
@@ -93,7 +93,7 @@ void read_file_fill(const std::string& file_name, std::vector<text_t>& text, con
 //        file_size = std::min(file_size, prefix_size);
 //    }
 
-    text.resize(prefix_size, 0);
+    text.resize(prefix_size);
 
     char c;
     size_t index = 0;
@@ -127,7 +127,7 @@ void read_file_fill(const std::string& file_name, std::vector<text_t>& text, con
  * @param text[out] The read text
  */
 template<typename text_t>
-void read_file(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size = 0) {
+void read_file(const std::string& file_name, ui_vector<text_t>& text, const size_t prefix_size = 0) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     uint64_t file_size = ifs.tellg();
@@ -141,7 +141,7 @@ void read_file(const std::string& file_name, std::vector<text_t>& text, const si
         file_size = std::min(file_size, prefix_size);
     }
 
-    text.resize(file_size, 0);
+    text.resize(file_size);
 
     char c;
     size_t index = 0;
@@ -162,7 +162,7 @@ void read_file(const std::string& file_name, std::vector<text_t>& text, const si
  * @param text[out] The read text
  */
 template<typename text_t>
-void read_file_without_zeroes(const std::string& file_name, std::vector<text_t>& text, const size_t prefix_size = 0) {
+void read_file_without_zeroes(const std::string& file_name, ui_vector<text_t>& text, const size_t prefix_size = 0) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
     uint64_t file_size = ifs.tellg();
@@ -176,7 +176,7 @@ void read_file_without_zeroes(const std::string& file_name, std::vector<text_t>&
         file_size = std::min(file_size, prefix_size);
     }
 
-    text.resize(file_size, 0);
+    text.resize(file_size);
 
     char c;
     size_t index = 0;
@@ -189,7 +189,7 @@ void read_file_without_zeroes(const std::string& file_name, std::vector<text_t>&
     }
     ifs.close();
     text.resize(idx);
-    text.shrink_to_fit();
+//    text.shrink_to_fit();
 
     std::cout << "Read " << text.size() << " bytes" << std::endl;
     std::cout << "Finished reading file" << std::endl;

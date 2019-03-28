@@ -80,7 +80,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             }
         }
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -114,9 +114,9 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #ifdef BENCH
             const auto startTimeNewText = recomp::timer::now();
 #endif
-            text_t new_text;
-            new_text.reserve(new_text_size);
-            new_text.resize(new_text_size);
+            text_t new_text(new_text_size);
+//            new_text.reserve(new_text_size);
+//            new_text.resize(new_text_size);
 #ifdef BENCH
             const auto endTimeNT = recomp::timer::now();
             const auto timeSpanNT = endTimeNT - startTimeNewText;
@@ -152,7 +152,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-            text.shrink_to_fit();
+//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();

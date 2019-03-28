@@ -80,7 +80,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
             }
         }
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -372,9 +372,9 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 #endif
             size_t new_text_size = text.size() - block_counts[block_counts.size() - 1];
             if (new_text_size > 1 && block_count > 0) {
-                text_t new_text;
-                new_text.reserve(new_text_size);
-                new_text.resize(new_text_size);
+                text_t new_text(new_text_size);
+//                new_text.reserve(new_text_size);
+//                new_text.resize(new_text_size);
 
 #pragma omp parallel num_threads(this->cores)
                 {
@@ -390,7 +390,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 text = std::move(new_text);
             } else if (new_text_size == 1) {
                 text.resize(new_text_size);
-                text.shrink_to_fit();
+//                text.shrink_to_fit();
             }
 #ifdef BENCH
             const auto endTimeCompact = recomp::timer::now();
@@ -735,7 +735,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 #endif
 
         text.resize(new_text_size);
-        text.shrink_to_fit();
+//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();

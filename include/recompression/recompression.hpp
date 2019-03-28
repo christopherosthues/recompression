@@ -13,7 +13,7 @@ namespace recomp {
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class recompression {
  public:
-    typedef std::vector<variable_t> text_t;
+    typedef ui_vector<variable_t> text_t;
     typedef std::vector<variable_t> alphabet_t;
     typedef std::vector<bool> bv_t;
 

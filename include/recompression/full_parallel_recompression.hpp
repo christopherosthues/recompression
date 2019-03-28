@@ -63,6 +63,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                                const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
+        size_t text_size = text.size();
 #endif
         this->cores = cores;
         rlslp.terminals = alphabet_size;
@@ -78,7 +79,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             }
         }
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -90,7 +91,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
-                  << " cores=" << this->cores << std::endl;
+                  << " cores=" << this->cores << " size=" << text_size << std::endl;
 #endif
     }
 
@@ -109,9 +110,9 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 #endif
         size_t new_text_size = copy_bounds[copy_bounds.size() - 1];
         if (new_text_size > 1 && count > 0) {
-            text_t new_text;
-            new_text.reserve(new_text_size);
-            new_text.resize(new_text_size);
+            text_t new_text(new_text_size);
+//            new_text.reserve(new_text_size);
+//            new_text.resize(new_text_size);
 
 #pragma omp parallel num_threads(this->cores)
             {
@@ -127,7 +128,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             text = std::move(new_text);
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-            text.shrink_to_fit();
+//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();
@@ -147,9 +148,9 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 #endif
         size_t new_text_size = copy_bounds[copy_bounds.size() - 1];
         if (new_text_size > 1 && count > 0) {
-            text_t new_text;
-            new_text.reserve(new_text_size);
-            new_text.resize(new_text_size);
+            text_t new_text(new_text_size);
+//            new_text.reserve(new_text_size);
+//            new_text.resize(new_text_size);
 
 #pragma omp parallel num_threads(this->cores)
             {
@@ -169,7 +170,7 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
             text = std::move(new_text);
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-            text.shrink_to_fit();
+//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();
@@ -761,7 +762,17 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
 
+        std::cout << "Partition: " << std::endl;
+        for (size_t i = 0; i < partition.size(); ++i) {
+            std::cout << "i: " << (int)partition[i] << "\n";
+        }
+
+        std::cout << "AdjList: " << std::endl;
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            std::cout << "(" << text[adj_list[i]] << ", " << text[adj_list[i] + 1] << "), ";
+        }
         std::cout << std::endl;
+
 
 #ifdef BENCH
         const auto startTimeLocalSearch = recomp::timer::now();
@@ -898,6 +909,10 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 #pragma omp single
             {
                 std::cout << "Flipping" << std::endl;
+                std::cout << "Flip: " << std::endl;
+                for (size_t i = 0; i < flip.size(); ++i) {
+                    std::cout << "i: " << (int)flip[i] << "\n";
+                }
             }
 #pragma omp for schedule(static)
             for (size_t j = 0; j < partition.size(); ++j) {
@@ -910,6 +925,11 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
                 }
             }
         }
+        std::cout << "Partition: " << std::endl;
+        for (size_t i = 0; i < partition.size(); ++i) {
+            std::cout << "i: " << (int)partition[i] << "\n";
+        }
+
         std::cout << std::endl;
         adj_bounds.resize(0);
         adj_bounds.shrink_to_fit();
@@ -1023,6 +1043,11 @@ class full_parallel_recompression : public recompression<variable_t, terminal_co
 #endif
         std::vector<variable_t> mapping;
         compute_mapping(text, mapping);
+
+        std::cout << "Mapping: " << std::endl;
+        for (size_t i = 0; i < mapping.size(); ++i) {
+            std::cout << "i: " << i << ", " << mapping[i] << "\n";
+        }
 
         partition_t partition(mapping.size(), 0);
 

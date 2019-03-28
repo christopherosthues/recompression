@@ -73,7 +73,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 
         rlslp.resize(rlslp.size());
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(mapping[text[0]]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -255,7 +255,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
 #endif
         text.resize(new_text_size);
-        text.shrink_to_fit();
+//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
@@ -522,7 +522,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
 #endif
 
         text.resize(new_text_size);
-        text.shrink_to_fit();
+//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();

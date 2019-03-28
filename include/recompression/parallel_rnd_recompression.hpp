@@ -80,7 +80,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
             }
         }
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -114,9 +114,9 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
 #ifdef BENCH
             const auto startTimeNewText = recomp::timer::now();
 #endif
-            text_t new_text;
-            new_text.reserve(new_text_size);
-            new_text.resize(new_text_size);
+            text_t new_text(new_text_size);
+//            new_text.reserve(new_text_size);
+//            new_text.resize(new_text_size);
 #ifdef BENCH
             const auto endTimeNT = recomp::timer::now();
             const auto timeSpanNT = endTimeNT - startTimeNewText;
@@ -152,7 +152,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
 #endif
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-            text.shrink_to_fit();
+//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();
@@ -175,9 +175,9 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
 #ifdef BENCH
             const auto startTimeNewText = recomp::timer::now();
 #endif
-            text_t new_text;
-            new_text.reserve(new_text_size);
-            new_text.resize(new_text_size);
+            text_t new_text(new_text_size);
+//            new_text.reserve(new_text_size);
+//            new_text.resize(new_text_size);
 #ifdef BENCH
             const auto endTimeNT = recomp::timer::now();
             const auto timeSpanNT = endTimeNT - startTimeNewText;
@@ -217,7 +217,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
 #endif
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-            text.shrink_to_fit();
+//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();
@@ -245,7 +245,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
 #ifdef BENCH
         const auto startTimeBlocks = recomp::timer::now();
 #endif
-        std::vector<position_t> positions;
+        ui_vector<position_t> positions;
 
         std::vector<size_t> bounds;
         std::vector<size_t> block_counts;
@@ -346,7 +346,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
 
-        if (!positions.empty()) {
+        if (positions.size() > 0) {
 #ifdef BENCH
             const auto startTimeSort = recomp::timer::now();
 #endif
@@ -472,7 +472,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
                 }
             }
             positions.resize(0);
-            positions.shrink_to_fit();
+//            positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
             const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -840,7 +840,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
         const auto startTimePairs = recomp::timer::now();
         std::cout << " alphabet=" << partition.size();
 #endif
-        std::vector<pair_position_t> positions;
+        ui_vector<pair_position_t> positions;
 
         std::vector<size_t> bounds;
         std::vector<size_t> pair_counts;
@@ -1063,7 +1063,7 @@ class parallel_rnd_recompression : public recompression<variable_t, terminal_cou
             }
         }
         positions.resize(0);
-        positions.shrink_to_fit();
+//        positions.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;

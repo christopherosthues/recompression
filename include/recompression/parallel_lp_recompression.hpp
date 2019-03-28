@@ -15,6 +15,7 @@
 #include <vector>
 
 #include <ips4o.hpp>
+#include <tlx/simple_vector.hpp>
 
 #include "recompression.hpp"
 #include "defs.hpp"
@@ -33,7 +34,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
     typedef size_t adj_t;
-    typedef adj_t* adj_list_t;
+    typedef ui_vector<adj_t> adj_list_t;
 //    typedef std::vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
@@ -80,7 +81,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
             }
         }
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -114,9 +115,9 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #ifdef BENCH
             const auto startTimeNewText = recomp::timer::now();
 #endif
-            text_t new_text;
-            new_text.reserve(new_text_size);
-            new_text.resize(new_text_size);
+            text_t new_text(new_text_size);
+//            new_text.reserve(new_text_size);
+//            new_text.resize(new_text_size);
 #ifdef BENCH
             const auto endTimeNT = recomp::timer::now();
             const auto timeSpanNT = endTimeNT - startTimeNewText;
@@ -152,7 +153,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #endif
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-            text.shrink_to_fit();
+//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();
@@ -180,9 +181,10 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #ifdef BENCH
         const auto startTimeBlocks = recomp::timer::now();
 #endif
-        std::vector<position_t> positions;
+//        std::vector<position_t> positions;
+        ui_vector<position_t> positions;
 
-        size_t* bounds;
+        ui_vector<size_t> bounds;
         std::vector<size_t> block_counts;
         std::vector<size_t> compact_bounds;
         std::vector<size_t> block_overlaps;
@@ -199,7 +201,8 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #endif
 //                bounds.reserve(n_threads + 1);
 //                bounds.resize(n_threads + 1);
-                bounds = new size_t[n_threads + 1];
+                bounds.resize(n_threads + 1);
+//                bounds = new size_t[n_threads + 1];
                 bounds[0] = 0;
                 compact_bounds.reserve(n_threads + 1);
                 compact_bounds.resize(n_threads + 1, text.size());
@@ -270,7 +273,6 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 
             block_counts[thread_id] = compact_bounds[thread_id] + block_overlaps[thread_id] - block_counts[thread_id];
         }
-        delete[] bounds;
         block_counts[block_counts.size() - 1] =
                 compact_bounds[block_counts.size() - 1] + block_overlaps[block_counts.size() - 1] -
                 block_counts[block_counts.size() - 1];
@@ -283,7 +285,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count());
 #endif
 
-        if (!positions.empty()) {
+        if (positions.size() > 0) {
 #ifdef BENCH
             const auto startTimeSort = recomp::timer::now();
 #endif
@@ -409,7 +411,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                 }
             }
             positions.resize(0);
-            positions.shrink_to_fit();
+//            positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
             const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -442,13 +444,13 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
      * @param text The text
      * @param adj_list[out] The adjacency list (represented as text positions)
      */
-    inline void compute_adj_list(const text_t& text, adj_t* adj_list, const size_t adj_list_size) {
+    inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
 
 #pragma omp parallel for schedule(static) num_threads(this->cores)
-        for (size_t i = 0; i < adj_list_size; ++i) {
+        for (size_t i = 0; i < adj_list.size(); ++i) {
             adj_list[i] = i;
         }
 
@@ -505,7 +507,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                 }
             }
         };
-        ips4o::parallel::sort(adj_list, adj_list + adj_list_size, sort_adj, this->cores);
+        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), sort_adj, this->cores);
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
@@ -524,12 +526,19 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
-//        adj_list_t adj_list(text.size() - 1);
-        const auto adj_list_size = text.size() - 1;
-        auto* adj_list = new adj_t[adj_list_size];
-        compute_adj_list(text, adj_list, adj_list_size);
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
+#endif
+        adj_list_t adj_list(text.size() - 1);
+#ifdef BENCH
+        const auto endTimeAdjInit = recomp::timer::now();
+        const auto timeSpanAdjInit = endTimeAdjInit - startTime;
+        std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
+#endif
+        compute_adj_list(text, adj_list);
+
+#ifdef BENCH
+        const auto startTimePar = recomp::timer::now();
 #endif
         int l_count = 0;
         int r_count = 0;
@@ -545,7 +554,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 
             l_count++;
 //        }
-        for (size_t i = 1; i < adj_list_size; ++i) {
+        for (size_t i = 1; i < adj_list.size(); ++i) {
             auto text_i = text[adj_list[i]];
             auto text_i1 = text[adj_list[i] + 1];
             if (text_i > text_i1) {
@@ -584,7 +593,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 
 #ifdef BENCH
         const auto endTimePar = recomp::timer::now();
-        const auto timeSpanPar = endTimePar - startTime;
+        const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
 
@@ -604,13 +613,13 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
 #pragma omp single
             {
                 bounds.reserve(n_threads + 1);
-                bounds.resize(n_threads + 1, adj_list_size);
+                bounds.resize(n_threads + 1, adj_list.size());
             }
 
 #pragma omp for schedule(static)
-            for (size_t i = 0; i < adj_list_size; ++i) {
+            for (size_t i = 0; i < adj_list.size(); ++i) {
                 bounds[thread_id] = i;
-                i = adj_list_size;
+                i = adj_list.size();
             }
 
             variable_t last_i = 0;  // avoid more random access than necessary
@@ -627,7 +636,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                     prod_r++;
                 }
                 i++;
-            } else if (i < adj_list_size) {
+            } else if (i < adj_list.size()) {
                 last_i = text[adj_list[i - 1]];
                 last_i1 = text[adj_list[i - 1] + 1];
             }
@@ -650,7 +659,6 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                 last_i1 = char_i1;
             }
         }
-        delete[] adj_list;
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
         const auto timeSpanCount = endTimeCount - startTimeCount;
@@ -692,9 +700,9 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
         const auto startTimePairs = recomp::timer::now();
         std::cout << " alphabet=" << partition.size();
 #endif
-        std::vector<pair_position_t> positions;
+        ui_vector<pair_position_t> positions;
 
-        size_t* bounds;
+        ui_vector<size_t> bounds;
         std::vector<size_t> pair_counts;
         std::vector<size_t> compact_bounds;
         std::vector<size_t> pair_overlaps;
@@ -709,8 +717,8 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
                 std::cout << " used_cores=" << n_threads;
 #endif
 //                bounds.reserve(n_threads + 1);
-//                bounds.resize(n_threads + 1);
-                bounds = new size_t[n_threads + 1];
+                bounds.resize(n_threads + 1);
+//                bounds = new size_t[n_threads + 1];
                 bounds[0] = 0;
                 size_t end_text = text.size() - 1;
                 compact_bounds.reserve(n_threads + 1);
@@ -768,7 +776,6 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
         {
             auto discard = std::move(partition);
         }
-        delete[] bounds;
         pair_overlaps.resize(0);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
@@ -917,7 +924,7 @@ class parallel_lp_recompression : public recompression<variable_t, terminal_coun
             }
         }
         positions.resize(0);
-        positions.shrink_to_fit();
+//        positions.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;

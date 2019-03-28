@@ -72,7 +72,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
             }
         }
 
-        if (!text.empty()) {
+        if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
             rlslp.is_empty = false;
             this->rename_rlslp(rlslp, bv);
@@ -170,7 +170,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         }
 
         text.resize(new_text_size);
-        text.shrink_to_fit();
+//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
@@ -453,7 +453,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         bv.resize(rlslp.size(), false);
 
         text.resize(new_text_size);
-        text.shrink_to_fit();
+//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
