@@ -3,13 +3,12 @@
 
 #include <omp.h>
 
-#include <parallel/algorithm>
-#include <algorithm>
-#include <chrono>
+#ifdef BENCH
 #include <iostream>
+#endif
+
+#include <algorithm>
 #include <string>
-#include <thread>
-#include <tuple>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -20,7 +19,6 @@
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
-#include "radix_sort.hpp"
 
 namespace recomp {
 
@@ -60,7 +58,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
                                const size_t cores) override {
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto startTime = recomp::timer::now();
         size_t text_size = text.size();
 #endif
@@ -84,7 +82,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             this->rename_rlslp(rlslp, bv);
         }
 
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
@@ -587,23 +585,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 //        const auto startTimeCount = recomp::timer::now();
 #endif
         directed_cut(text, partition, adj_list, part_l);
-//        int lr_count = 0;
-//        int rl_count = 0;
-//#pragma omp parallel for num_threads(this->cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
-//        for (size_t i = 0; i < text.size() - 1; ++i) {
-//            if (!partition[text[i]] && partition[text[i + 1]]) {
-//                lr_count++;
-//            } else if (partition[text[i]] && !partition[text[i + 1]]) {
-//                rl_count++;
-//            }
-//        }
-//        part_l = rl_count > lr_count;
-//#ifdef BENCH
-//        const auto endTimeCount = recomp::timer::now();
-//        const auto timeSpanCount = endTimeCount - startTimeCount;
-//        std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
-//                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
-//#endif
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();

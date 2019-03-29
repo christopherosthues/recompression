@@ -3,14 +3,12 @@
 
 #include <omp.h>
 
-#include <parallel/algorithm>
-#include <algorithm>
-#include <chrono>
+#ifdef BENCH
 #include <iostream>
-#include <random>
+#endif
+
+#include <algorithm>
 #include <string>
-#include <thread>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -56,7 +54,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
                                const size_t cores) override {
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto startTime = recomp::timer::now();
         size_t text_size = text.size();
 #endif
@@ -80,7 +78,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
             this->rename_rlslp(rlslp, bv);
         }
 
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="

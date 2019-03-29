@@ -3,26 +3,19 @@
 
 #include <omp.h>
 
-#include <parallel/algorithm>
-#include <algorithm>
-#include <chrono>
+#ifdef BENCH
 #include <iostream>
+#endif
+
 #include <string>
-#include <thread>
-#include <tuple>
-#include <unordered_map>
-#include <utility>
 #include <vector>
 
 #include <ips4o.hpp>
-#include <tlx/simple_vector.hpp>
 
-//#include "recompression.hpp"
 #include "parallel_recompression.hpp"
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
-#include "radix_sort.hpp"
 
 namespace recomp {
 
@@ -48,14 +41,16 @@ class parallel_lp_recompression : public parallel_recompression<variable_t, term
 
 
  protected:
-
     /**
-     * @brief
+     * @brief Computes a directed cut from the given partition defining an undirected cut.
+     *
+     * If the number of pairs of the partition (left,right) and (right,left) in the text are the same the partition
+     * that generated fewer productions is chosen.
      *
      * @param text The text
      * @param partition[in,out] The partition
      * @param adj_list[in] The adjacency list of the text
-     * @param part_l[in,out] Flag to
+     * @param part_l[in,out] Flag to indicate which partition set is the left set
      */
     inline virtual void directed_cut(const text_t& text,
                                      partition_t& partition,
@@ -125,6 +120,7 @@ class parallel_lp_recompression : public parallel_recompression<variable_t, term
         }
 
         part_l = rl_count > lr_count;
+        // If number of pairs are the same, choose that one that generates fewer productions
         if (rl_count == lr_count) {
             part_l = prod_r < prod_l;
         }
