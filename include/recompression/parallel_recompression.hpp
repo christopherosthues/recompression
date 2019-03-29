@@ -35,8 +35,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
     typedef ui_vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
 
-    typedef std::pair<variable_t, variable_t> block_t;
-    typedef block_t pair_t;
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
 
@@ -55,8 +53,8 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      *
      * @param text The text
      * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
-     * @param cores The number of cores/threads to use
+     * @param alphabet_size The size of the alphabet (biggest symbol used in the text)
+     * @param cores The number of cores to use
      */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t, terminal_count_t>& rlslp,
