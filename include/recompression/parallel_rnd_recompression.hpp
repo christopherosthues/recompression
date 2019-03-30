@@ -8,6 +8,7 @@
 #endif
 
 #include <algorithm>
+#include <limits>
 #include <string>
 #include <utility>
 #include <vector>
@@ -92,7 +93,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
 
 
  private:
-    const variable_t DELETED = UINT_MAX;
+    const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
     inline void compact(text_t& text,
                         const std::vector<size_t>& compact_bounds,
@@ -162,112 +163,104 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
      * @param text
      * @param mapping
      */
-    inline void compute_mapping(text_t& text, ui_vector<variable_t>& mapping) {
+    inline void compute_mapping(text_t& text,
+                                rlslp<variable_t, terminal_count_t>& rlslp,
+                                ui_vector<variable_t>& mapping) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
-        ui_vector<size_t> alpha(text.size());
-#ifdef BENCH
-        const auto endTimeInAl = recomp::timer::now();
-        const auto timeSpanInAl = endTimeInAl - startTime;
-        std::cout << " init_alphavec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanInAl).count();
-        const auto startTimeAlpha = recomp::timer::now();
-#endif
-#pragma omp parallel for num_threads(this->cores) schedule(static)
-        for (size_t i = 0; i < text.size(); ++i) {
-            alpha[i] = i;
-        }
-        auto sort_alpha = [&](size_t i, size_t j) {
-            return text[i] < text[j];
-        };
-#ifdef BENCH
-        const auto endAlphaTime = recomp::timer::now();
-        const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
-        std::cout << " alpha=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAlpha).count();
-        const auto startAlphaSortTime = recomp::timer::now();
-#endif
-        ips4o::parallel::sort(alpha.begin(), alpha.end(), sort_alpha, this->cores);
-#ifdef BENCH
-        const auto endAlphaSortTime = recomp::timer::now();
-        const auto timeSpanAlphaSort = endAlphaSortTime - startAlphaSortTime;
-        std::cout << " sort_alpha=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAlphaSort).count();
-        const auto startMapTime = recomp::timer::now();
-#endif
 
-        std::vector<size_t> alpha_counts;
-        std::vector<size_t> alpha_bounds;
+        std::vector<variable_t> mins;
 #pragma omp parallel num_threads(this->cores)
         {
-            auto thread_id = omp_get_thread_num();
-            const auto n_threads = static_cast<size_t>(omp_get_num_threads());
-
+            auto n_threads = (size_t)omp_get_num_threads();
+            auto thread_id = (size_t)omp_get_thread_num();
 #pragma omp single
             {
-                alpha_counts.reserve(n_threads + 1);
-                alpha_counts.resize(n_threads + 1, 0);
-                alpha_bounds.reserve(n_threads + 1);
-                alpha_bounds.resize(n_threads + 1, alpha.size());
+                mins.resize(n_threads, std::numeric_limits<variable_t>::max());
             }
 
 #pragma omp for schedule(static)
-            for (size_t i = 0; i < alpha.size(); ++i) {
-                alpha_bounds[thread_id] = i;
-                i = alpha.size();
-            }
-
-            size_t i = alpha_bounds[thread_id];
-            if (i == 0) {
-                alpha_counts[thread_id + 1]++;
-                i++;
-            }
-
-            for (; i < alpha_bounds[thread_id + 1]; ++i) {
-                if (text[alpha[i]] != text[alpha[i - 1]]) {
-                    alpha_counts[thread_id + 1]++;
+            for (size_t i = 0; i < text.size(); ++i) {
+                if (text[i] < mins[thread_id]) {
+                    mins[thread_id] = text[i];
                 }
             }
-
-            i = alpha_bounds[thread_id];
-
-#pragma omp barrier
-#pragma omp single
-            {
-                for (size_t j = 1; j < alpha_counts.size(); ++j) {
-                    alpha_counts[j] += alpha_counts[j - 1];
-                }
-                mapping.resize(alpha_counts[n_threads]);
-            }
-
-            size_t j = alpha_counts[thread_id];
-            variable_t old_val = 0;
-            if (i > 0 && i < alpha_bounds[thread_id + 1]) {
-                old_val = text[alpha[i - 1]];
-            }
-
-#pragma omp barrier
-            if (i == 0) {
-                old_val = text[alpha[i]];
-                mapping[j] = old_val;
-                text[alpha[i]] = j++;
-                i++;
-            }
-
-            for (; i < alpha_bounds[thread_id + 1]; ++i) {
-                variable_t val = text[alpha[i]];
-                if (val != old_val) {
-                    mapping[j] = val;
-                    j++;
-                }
-                old_val = val;
-                text[alpha[i]] = j - 1;
+        }
+        variable_t min = std::numeric_limits<variable_t>::max();
+        for (size_t i = 0; i < mins.size(); ++i) {
+            if (mins[i] < min) {
+                min = mins[i];
             }
         }
 #ifdef BENCH
-        const auto endMappingTime = recomp::timer::now();
-        const auto timeSpanMapping = endMappingTime - startTime;
-        const auto timeSpanMap = endMappingTime - startMapTime;
-        std::cout << " mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMap).count()
-                  << " compute_mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMapping).count();
+        const auto endTimeInAl = recomp::timer::now();
+        const auto timeSpanInAl = endTimeInAl - startTime;
+        std::cout << " minimum=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanInAl).count();
+        const auto startTimeAlpha = recomp::timer::now();
+#endif
+
+        const auto max_letters = rlslp.size() + rlslp.terminals - min;
+        ui_vector<variable_t> global_hist(max_letters);
+        global_hist[0] = 0;
+        i_vector<ui_vector<variable_t>> hists;
+#pragma omp parallel num_threads(this->cores)
+        {
+            auto n_threads = (size_t)omp_get_num_threads();
+            auto thread_id = (size_t)omp_get_thread_num();
+#pragma omp single
+            {
+                hists.resize(n_threads);
+                for (size_t i = 0; i < n_threads; ++i) {
+                    hists[i].resize(max_letters);
+                }
+            }
+
+            hists[thread_id].fill(0);
+
+#pragma omp barrier
+#pragma omp for schedule(static)
+            for (size_t i = 0; i < text.size(); ++i) {
+                hists[thread_id][text[i] - min] = 1;
+            }
+
+#pragma omp for schedule(static)
+            for (size_t i = 0; i < global_hist.size(); ++i) {
+                global_hist[i] = hists[0][i];
+                for (size_t j = 1; j < n_threads; ++j) {
+                    global_hist[i] |= hists[j][i];
+                }
+            }
+
+#pragma omp single
+            {
+                for (size_t i = 0; i < n_threads; ++i) {
+                    hists[i].resize(0);
+                }
+                hists.resize(0);
+                mapping.resize(max_letters);
+                size_t j = 0;
+                if (global_hist[0] > 0) {
+                    mapping[j++] = min;
+                }
+                for (size_t i = 1; i < global_hist.size(); ++i) {
+                    if (global_hist[i] > 0) {
+                        mapping[j++] = i + min;
+                    }
+                    global_hist[i] += global_hist[i - 1];
+                }
+                mapping.resize(j);
+            }
+
+#pragma omp for schedule(static)
+            for (size_t i = 0; i < text.size(); ++i) {
+                text[i] = global_hist[text[i] - min] - 1;
+            }
+        }
+#ifdef BENCH
+        const auto endAlphaTime = recomp::timer::now();
+        const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
+        std::cout << " mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAlpha).count();
 #endif
     }
 
@@ -281,11 +274,12 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
-        adj_list_t adj_list(text.size() - 1);
-        this->compute_adj_list(text, adj_list);
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
+        adj_list_t adj_list(text.size() - 1);
+        this->compute_adj_list(text, adj_list);
+
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<uint8_t> distribution(0, 1);
@@ -393,7 +387,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
                   << " level=" << this->level << " cores=" << this->cores;
 #endif
         ui_vector<variable_t> mapping;
-        compute_mapping(text, mapping);
+        compute_mapping(text, rlslp, mapping);
 
         partition_t partition(mapping.size());
 
@@ -407,7 +401,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
 #endif
         ui_vector<pair_position_t> positions;
 
-        std::vector<size_t> bounds;
+        ui_vector<size_t> bounds;
         std::vector<size_t> pair_counts;
         std::vector<size_t> compact_bounds;
         std::vector<size_t> pair_overlaps;
@@ -418,10 +412,6 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
 
 #pragma omp single
             {
-#ifdef BENCH
-                std::cout << " used_cores=" << n_threads;
-#endif
-                bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
                 size_t end_text = text.size() - 1;
@@ -487,9 +477,6 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
         const auto timeSpanPairs = endTimePairs - startTimePairs;
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count());
-#endif
-
-#ifdef BENCH
         const auto startTimeSort = recomp::timer::now();
 #endif
         auto sort_cond = [&](const pair_position_t& i, const pair_position_t& j) {
@@ -510,9 +497,6 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
         const auto timeSpanSort = endTimeSort - startTimeSort;
         std::cout << " sort="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanSort).count());
-#endif
-
-#ifdef BENCH
         const auto startTimeRules = recomp::timer::now();
 #endif
         auto nt_count = rlslp.non_terminals.size();

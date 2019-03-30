@@ -16,6 +16,9 @@ using timer = std::chrono::steady_clock;
 template<typename T>
 using ui_vector = tlx::SimpleVector<T, tlx::SimpleVectorMode::NoInitButDestroy>;
 
+template<typename T>
+using i_vector = tlx::SimpleVector<T, tlx::SimpleVectorMode::Normal>;
+
 typedef std::uint32_t var_t;
 typedef std::uint32_t term_t;
 

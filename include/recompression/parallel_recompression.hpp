@@ -94,7 +94,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
 
  protected:
-    const variable_t DELETED = UINT_MAX;
+    const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
     inline void compact(text_t& text,
                         const std::vector<size_t>& compact_bounds,
