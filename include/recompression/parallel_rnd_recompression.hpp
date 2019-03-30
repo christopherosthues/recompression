@@ -303,7 +303,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
-        ui_vector<size_t> bounds;
+        std::vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {
             auto thread_id = omp_get_thread_num();
@@ -311,12 +311,8 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
 
 #pragma omp single
             {
-                bounds.resize(n_threads + 1);
-            }
-
-#pragma omp for schedule(static)
-            for (size_t i = 0; i < bounds.size(); ++i) {
-                bounds[i] = adj_list.size();
+                bounds.reserve(n_threads + 1);
+                bounds.resize(n_threads + 1, adj_list.size());
             }
 
 #pragma omp for schedule(static)
