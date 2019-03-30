@@ -17,6 +17,7 @@ The build system checks if all dependencies are installed on the target system. 
 Dependencies are:
 
 * [In-place Parallel Super Scalar Samplesort (IPS⁴o)](https://github.com/SaschaWitt/ips4o.git)
+* [tlx](https://github.com/tlx/tlx.git)
 * for testing purposes:
   * [Google test](https://github.com/google/googletest.git)
 * for benchmark puposes:
@@ -28,8 +29,9 @@ For the parallel algorithms, you need to enable OpenMP (``-fopenmp``). To suppor
 ## Installation
 To download the library use to following command.
 
-```
+```bash
 git clone https://github.com/ChristopherOsthues/recompression.git
+cd recompression
 mkdir build
 cd build
 cmake ..
@@ -108,3 +110,7 @@ There are three coders available:
 
 ## License
 The library is published under the [Apache License Version 2.0](LICENSE) license.
+
+## Contributors
+
+* [Christopher Osthues](https://github.com/ChristopherOsthues) (author)
