@@ -25,16 +25,17 @@ macro(add_dependency target external_dependency)
             endif ()
         endif ()
 
-        set(DEP_FOUND ${external_dependency}_FOUND)
         if (NOT ${external_dependency}_FOUND)
             find_package(${external_dependency} ${additional_args})
         endif ()
+        
         include_directories(${${external_dependency}_INCLUDE_DIRS})
         target_link_libraries(${target} ${${external_dependency}_LIBRARIES})
-        if (NOT ${DEP_FOUND})
+        
+        if (${external_dependency}_EXTERNAL)
+            message(STATUS "Adding dependencies of ${external_dependency}")
             add_dependencies(${target} ${external_dependency}-download)
         endif ()
-
 
         if (${external_dependency} STREQUAL "GTest")
             find_package(Threads REQUIRED)

@@ -1,6 +1,7 @@
 set(GTest_INCLUDE_DIRS ${GTest_INSTALL_DIR}/include)
 set(GTest_LIBRARIES ${GTest_INSTALL_DIR}/lib/libgtest.a)
 set(GTest_Main_LIBRARIES ${GTest_INSTALL_DIR}/lib/libgtest_main.a ${GTest_LIBRARIES})
+set(GTest_EXTERNAL TRUE)
 
 message(STATUS "Removing remains of previously downloaded GTest versions")
 file(REMOVE_RECURSE ${GTest_DOWNLOAD_DIR})

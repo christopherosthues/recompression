@@ -1,5 +1,6 @@
 set(Glog_INCLUDE_DIRS ${Glog_INSTALL_DIR}/include)
 set(Glog_LIBRARIES ${Glog_INSTALL_DIR}/lib${LIBSUFFIX}/libglog.a)
+set(Glog_EXTERNAL TRUE)
 
 message(STATUS "Removing remains of previously downloaded Glog versions")
 file(REMOVE_RECURSE ${Glog_DOWNLOAD_DIR})
@@ -14,9 +15,10 @@ ExternalProject_Add(
         BUILD_COMMAND cmake -H. -Bbuild -G "Unix Makefiles" && cmake --build build
         BUILD_IN_SOURCE TRUE
         INSTALL_COMMAND
-        cd build &&
-        mv ../include "${Glog_INSTALL_DIR}/include" &&
-        mkdir "${Glog_INSTALL_DIR}/lib" && cd lib &&
+        cd build && mkdir "${Glog_INSTALL_DIR}/include/" &&
+        mv glog "${Glog_INSTALL_DIR}/include/glog" &&
+        mv ../src/glog/log_severity.h "${Glog_INSTALL_DIR}/include/glog" &&
+        mkdir "${Glog_INSTALL_DIR}/lib" && #cd lib &&
         mv "libglog.a" "${Glog_INSTALL_DIR}/lib${LIBSUFFIX}/"
         INSTALL_DIR "${Glog_INSTALL_DIR}"
 )
