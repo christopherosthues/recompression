@@ -92,7 +92,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
     using recompression<variable_t, terminal_count_t>::recomp;
 
 
- private:
+ protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
     inline void compact(text_t& text,
@@ -273,7 +273,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
+    virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
