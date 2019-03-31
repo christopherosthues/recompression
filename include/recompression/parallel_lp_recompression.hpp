@@ -52,7 +52,6 @@ class parallel_lp_recompression : public parallel_recompression<variable_t, term
     inline virtual void compute_adj_list(const text_t& text, adj_list_t& adj_list) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
-        std::cout << "lp" << std::endl; // TODO(Chris): remove
 #endif
 
 #pragma omp parallel for schedule(static) num_threads(this->cores)
