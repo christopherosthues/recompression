@@ -6,48 +6,65 @@
 
 #include <prezzalce/lce.hpp>
 #include <prezzalce/util.hpp>
-#include <recompression/coders/sorted_rlslp_coder.hpp>
+
+#include <tlx/cmdline_parser.hpp>
 
 #include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
-    if (argc < 8) {
-        std::cerr
-                << "./bench_random_access [path] [file_name(s)] [recomp (parallel_lp) | naive | prezza] [repeats] [begin] [end] [step] [coder (fixed | plain | sorted)] [rlslp_path] [prefix]"
-                << std::endl;
+    tlx::CmdlineParser cmd;
+    cmd.set_description("Benchmark for runtime experiments of random access queries");
+    cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
+
+    std::string path;
+    cmd.add_param_string("path", path, "The path to the directory containing the files");
+
+    std::string filenames;
+    cmd.add_param_string("filenames", filenames,
+                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+
+    std::string algorithms;
+    cmd.add_param_string("algorithms", algorithms,
+                         "The algorithms to benchmark [\"recomp (parallel_lp) | naive | prezza\"]");
+
+    size_t repeats;
+    cmd.add_param_bytes("repeats", repeats, "The number of repeats to process");
+
+    size_t begin;
+    cmd.add_param_bytes("begin", begin, "The number of queries to begin with");
+
+    size_t end;
+    cmd.add_param_bytes("end", end, "The number of queries to end with");
+
+    size_t steps;
+    cmd.add_param_bytes("steps", steps, "The steps");
+
+    std::string z;
+    cmd.add_param_string("zeroes", z, "Read file with zero symbol (z) or without (w)");
+
+    std::string coder = "";
+    cmd.add_string('c', "coder", coder, "The coder to read the rlslp from file (plain | fixed | sorted)");
+
+    std::string rlslp_path = "";
+    cmd.add_string('r', "rlslp_path", rlslp_path, "The path to directory containing the rlslp file");
+
+    size_t prefix = 0;
+    cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
+
+    if (!cmd.process(argc, argv)) {
         return -1;
     }
 
     std::vector<std::string> files;
-    recomp::util::split(argv[2], " ", files);
+    recomp::util::split(filenames, " ", files);
 
     std::vector<std::string> algos;
-    recomp::util::split(argv[3], " ", algos);
-
-    size_t repeats = (size_t) recomp::util::str_to_int(argv[4]);
+    recomp::util::split(algorithms, " ", algos);
 
     std::srand(0);
 
-    size_t begin = (size_t) recomp::util::str_to_int(argv[5]);
-    size_t end = (size_t) recomp::util::str_to_int(argv[6]);
-    size_t step = (size_t) recomp::util::str_to_int(argv[7]);
-
-    std::string coder;
-    if (argc > 8) {
-        coder = std::string(argv[8]);
-    }
-    std::string rlslp_path;
-    if (argc > 9) {
-        rlslp_path = std::string(argv[9]);
-    }
-
-    size_t prefix = 0;
-    if (argc > 10) {
-        prefix = (size_t) recomp::util::str_to_int(argv[10]);
-    }
-
     for (size_t k = 0; k < files.size(); ++k) {
-        std::string file_name = argv[1] + files[k];
+        std::string file_name = path + files[k];
         size_t file_size = recomp::util::file_size_in_bytes(file_name);
         if (prefix > 0) {
             file_size = std::min(file_size, prefix);
@@ -101,7 +118,7 @@ int main(int argc, char *argv[]) {
         std::string plain_text;
         recomp::util::read_text_file(file_name, plain_text, prefix);
 
-        for (size_t accesses = begin; accesses <= end; accesses += step) {
+        for (size_t accesses = begin; accesses <= end; accesses += steps) {
             std::vector<size_t> indices(accesses);
             std::vector<std::vector<std::string>> access(algos.size());
             for (size_t i = 0; i < algos.size(); ++i) {

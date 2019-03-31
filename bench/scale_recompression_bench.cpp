@@ -26,7 +26,6 @@ int main(int argc, char *argv[]) {
     cmd.add_param_string("algorithms", algorithms,
                          "The algorithms to benchmark [\"parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | parallel_rnd\"]");
 
-
     size_t cores;
     cmd.add_param_bytes("cores", cores, "The maximal number of cores");
 
@@ -39,7 +38,7 @@ int main(int argc, char *argv[]) {
     size_t steps;
     cmd.add_param_bytes("steps", steps, "The steps");
 
-    size_t prefix;
+    size_t prefix = 0;
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
 
     if (!cmd.process(argc, argv)) {

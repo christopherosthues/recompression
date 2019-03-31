@@ -5,23 +5,38 @@
 #include <thread>
 #include <vector>
 
+#include <tlx/cmdline_parser.hpp>
+
 #include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
-    if (argc < 5) {
-        std::cerr << "./bench_compression_statistics [path] [file_name(s)] [enc_path] [plain | fixed | sorted | sorted_dr | bzip2-1 | bzip2-9 | gzip-1 | gzip-9]"
-                  << std::endl;
+    tlx::CmdlineParser cmd;
+    cmd.set_description("Generates the rlslp from the recompression and stores it using the given coder.");
+    cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
+
+    std::string path;
+    cmd.add_param_string("path", path, "The path to the directory containing the files");
+
+    std::string filenames;
+    cmd.add_param_string("filenames", filenames,
+                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+
+    std::string coder_path;
+    cmd.add_param_string("coder_path", coder_path,
+                         "The path to the files");
+
+    std::string coders_str;
+    cmd.add_param_string("coders", coders_str, "The coders [\"plain | fixed | sorted | bzip2-1 | bzip2-9 | gzip-1 | gzip-9\"]");
+
+    if (!cmd.process(argc, argv)) {
         return -1;
     }
 
     std::vector<std::string> files;
-    recomp::util::split(argv[2], " ", files);
+    recomp::util::split(filenames, " ", files);
 
     std::vector<std::string> coders;
-    recomp::util::split(argv[4], " ", coders);
-
-    std::string path(argv[1]);
-    std::string coder_path(argv[3]);
+    recomp::util::split(coders_str, " ", coders);
 
     for (size_t j = 0; j < files.size(); ++j) {
         for (const auto& coder : coders) {

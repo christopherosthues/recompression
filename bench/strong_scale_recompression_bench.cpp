@@ -5,46 +5,51 @@
 #include <thread>
 #include <vector>
 
+#include <tlx/cmdline_parser.hpp>
+
 #include "recompression.hpp"
 
 
 int main(int argc, char *argv[]) {
-    if (argc < 9) {
-        std::cerr << "./scale_recompression_bench [path] [file_name(s)] [parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | parallel_rnd] [cores] [repeats] [begin] [steps] [file_size]" << std::endl;
+    tlx::CmdlineParser cmd;
+    cmd.set_description("Benchmark for runtime strong scaling experiments");
+    cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
+
+    std::string path;
+    cmd.add_param_string("path", path, "The path to the directory containing the files");
+
+    std::string filenames;
+    cmd.add_param_string("filenames", filenames,
+                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+
+    std::string algorithms;
+    cmd.add_param_string("algorithms", algorithms,
+                         "The algorithms to benchmark [\"parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | parallel_rnd\"]");
+
+    size_t cores;
+    cmd.add_param_bytes("cores", cores, "The maximal number of cores");
+
+    size_t repeats;
+    cmd.add_param_bytes("repeats", repeats, "The number of repeats to process");
+
+    size_t begin;
+    cmd.add_param_bytes("begin", begin, "The number of cores to use at the beginning");
+
+    size_t steps;
+    cmd.add_param_bytes("steps", steps, "The steps");
+
+    size_t file_size;
+    cmd.add_param_bytes("file_size", file_size, "The file size to begin with");
+
+    if (!cmd.process(argc, argv)) {
         return -1;
     }
-
-    size_t cores = (size_t)recomp::util::str_to_int(argv[4]);
-    std::cout << "Using max " << cores << " cores" << std::endl;
-    if (cores <= 0) {
-        return -1;
-    }
-
-    size_t repeats = (size_t)recomp::util::str_to_int(argv[5]);
-    std::cout << "Using " << repeats << " repeats" << std::endl;
-    if (repeats <= 0) {
-        return -1;
-    }
-
-    size_t begin = (size_t)recomp::util::str_to_int(argv[6]);
-    std::cout << "Begin with " << begin << std::endl;
-    if (begin <= 0) {
-        return -1;
-    }
-
-    size_t steps = (size_t)recomp::util::str_to_int(argv[7]);
-    std::cout << "Using " << steps << " steps" << std::endl;
-    if (steps <= 0) {
-        return -1;
-    }
-
-    size_t file_size = (size_t)recomp::util::str_to_int(argv[8]);
 
     std::vector<std::string> files;
-    recomp::util::split(argv[2], " ", files);
+    recomp::util::split(filenames, " ", files);
 
     std::vector<std::string> algos;
-    recomp::util::split(argv[3], " ", algos);
+    recomp::util::split(algorithms, " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
         for (size_t step = 1; step <= cores; step *= 2) {
@@ -55,7 +60,7 @@ int main(int argc, char *argv[]) {
                     std::cout << "Using algo " << algo << std::endl;
                     std::cout << "Using " << step << " cores" << std::endl;
 
-                    std::string file_name(argv[1]);
+                    std::string file_name = path;
                     file_name += files[j];
 
                     size_t pos = file_name.find_last_of('/');
@@ -106,15 +111,6 @@ int main(int argc, char *argv[]) {
                 }
             }
             file_size *= 2;
-//            if (step == 1) {
-//                if (begin != 1) {
-//                    step = begin;
-//                } else {
-//                    step = 2;
-//                }
-//            } else {
-//                step += steps;
-//            }
         }
     }
 }

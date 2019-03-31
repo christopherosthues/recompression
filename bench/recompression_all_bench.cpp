@@ -26,14 +26,13 @@ int main(int argc, char *argv[]) {
     cmd.add_param_string("algorithms", algorithms,
                          "The algorithms to benchmark [\"parallel | parallel_lock | parallel_ls | parallel_gr | parallel_lp | fast | hash | parallel_rnd | full_parallel\"]");
 
-
     size_t cores;
     cmd.add_param_bytes("cores", cores, "The maximal number of cores");
 
     size_t repeats;
     cmd.add_param_bytes("repeats", repeats, "The number of repeats to process");
 
-    size_t prefix;
+    size_t prefix = 0;
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
 
     if (!cmd.process(argc, argv)) {
@@ -53,7 +52,7 @@ int main(int argc, char *argv[]) {
                 std::string algo = algos[i];
                 std::cout << "Using algo " << algo << std::endl;
 
-                std::string file_name = path;  // (argv[1]);
+                std::string file_name = path;
                 file_name += files[j];
 
                 size_t pos = file_name.find_last_of('/');
