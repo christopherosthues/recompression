@@ -15,18 +15,17 @@
 
 #include <ips4o.hpp>
 
-#include "parallel_recompression.hpp"
+#include "parallel_lp_recompression.hpp"
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
-#include "radix_sort.hpp"
 
 namespace recomp {
 
 namespace parallel {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class parallel_rnd_recompression : public parallel_recompression<variable_t, terminal_count_t> {
+class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, terminal_count_t> {
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
@@ -39,7 +38,7 @@ class parallel_rnd_recompression : public parallel_recompression<variable_t, ter
         this->name = "parallel_rnd";
     }
 
-    inline parallel_rnd_recompression(std::string& dataset) : parallel_recompression<variable_t, terminal_count_t>(dataset) {
+    inline parallel_rnd_recompression(std::string& dataset) : parallel_lp_recompression<variable_t, terminal_count_t>(dataset) {
         this->name = "parallel_rnd";
     }
 

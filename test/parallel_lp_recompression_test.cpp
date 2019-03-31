@@ -8,6 +8,7 @@
 using namespace recomp;
 
 typedef parallel::parallel_lp_recompression<var_t, term_t>::text_t text_t;
+typedef parallel::parallel_lp_recompression<var_t, term_t>::adj_t adj_t;
 typedef parallel::parallel_lp_recompression<var_t, term_t>::adj_list_t adj_list_t;
 typedef parallel::parallel_lp_recompression<var_t, term_t>::partition_t partition_t;
 typedef parallel::parallel_lp_recompression<var_t, term_t>::alphabet_t alphabet_t;
@@ -141,50 +142,29 @@ TEST(parallel_lp_adj_list, left_end) {
     parallel::parallel_lp_recompression<var_t, term_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
-//    (2, 1, 1) 0
-//    (2, 1, 0) 1
-//    (2, 1, 1) 2
-//    (2, 1, 0) 3
-//    (2, 1, 1) 4
-//    (2, 1, 0) 5
-//    (2, 1, 1) 6
-//    (2, 1, 0) 7
-//    (2, 1, 1) 8
-//    (2, 1, 1) 11
-//    (2, 1, 0) 12
-//    (2, 1, 1) 13
-//    (2, 1, 0) 14
-//    (2, 1, 1) 15
-//    (2, 1, 0) 16
-//    (2, 1, 1) 17
-//    (2, 1, 0) 18
-//    (3, 1, 0) 10
-//    (3, 1, 1) 19
-//    (3, 1, 0) 20
-//    (3, 2, 1) 9
 
-    adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(1);
-    exp_adj_list.emplace_back(3);
-    exp_adj_list.emplace_back(5);
-    exp_adj_list.emplace_back(7);
-    exp_adj_list.emplace_back(12);
-    exp_adj_list.emplace_back(14);
-    exp_adj_list.emplace_back(16);
-    exp_adj_list.emplace_back(18);
-    exp_adj_list.emplace_back(0);
-    exp_adj_list.emplace_back(2);
-    exp_adj_list.emplace_back(4);
-    exp_adj_list.emplace_back(6);
-    exp_adj_list.emplace_back(8);
-    exp_adj_list.emplace_back(11);
-    exp_adj_list.emplace_back(13);
-    exp_adj_list.emplace_back(15);
-    exp_adj_list.emplace_back(17);
-    exp_adj_list.emplace_back(10);
-    exp_adj_list.emplace_back(20);
-    exp_adj_list.emplace_back(19);
-    exp_adj_list.emplace_back(9);
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{1, 3, 5, 7, 12, 14, 16, 18, 0, 2, 4, 6, 8, 11, 13, 15, 17, 10, 20, 19, 9});
+//    exp_adj_list.emplace_back(1);
+//    exp_adj_list.emplace_back(3);
+//    exp_adj_list.emplace_back(5);
+//    exp_adj_list.emplace_back(7);
+//    exp_adj_list.emplace_back(12);
+//    exp_adj_list.emplace_back(14);
+//    exp_adj_list.emplace_back(16);
+//    exp_adj_list.emplace_back(18);
+//    exp_adj_list.emplace_back(0);
+//    exp_adj_list.emplace_back(2);
+//    exp_adj_list.emplace_back(4);
+//    exp_adj_list.emplace_back(6);
+//    exp_adj_list.emplace_back(8);
+//    exp_adj_list.emplace_back(11);
+//    exp_adj_list.emplace_back(13);
+//    exp_adj_list.emplace_back(15);
+//    exp_adj_list.emplace_back(17);
+//    exp_adj_list.emplace_back(10);
+//    exp_adj_list.emplace_back(20);
+//    exp_adj_list.emplace_back(19);
+//    exp_adj_list.emplace_back(9);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -196,53 +176,30 @@ TEST(parallel_lp_adj_list, 212181623541741623541321) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
-    adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(0);
-    exp_adj_list.emplace_back(2);
-    exp_adj_list.emplace_back(22);
-    exp_adj_list.emplace_back(1);
-    exp_adj_list.emplace_back(20);
-    exp_adj_list.emplace_back(21);
-    exp_adj_list.emplace_back(7);
-    exp_adj_list.emplace_back(16);
-    exp_adj_list.emplace_back(10);
-    exp_adj_list.emplace_back(13);
-    exp_adj_list.emplace_back(19);
-    exp_adj_list.emplace_back(8);
-    exp_adj_list.emplace_back(17);
-    exp_adj_list.emplace_back(9);
-    exp_adj_list.emplace_back(18);
-    exp_adj_list.emplace_back(5);
-    exp_adj_list.emplace_back(14);
-    exp_adj_list.emplace_back(6);
-    exp_adj_list.emplace_back(15);
-    exp_adj_list.emplace_back(11);
-    exp_adj_list.emplace_back(12);
-    exp_adj_list.emplace_back(4);
-    exp_adj_list.emplace_back(3);
-//    exp_adj_list.emplace_back(2, 1, 0); 0
-//    exp_adj_list.emplace_back(2, 1, 1); 1
-//    exp_adj_list.emplace_back(2, 1, 0); 2
-//    exp_adj_list.emplace_back(2, 1, 0); 22
-//    exp_adj_list.emplace_back(3, 1, 1); 20
-//    exp_adj_list.emplace_back(3, 2, 1); 7
-//    exp_adj_list.emplace_back(3, 2, 1); 16
-//    exp_adj_list.emplace_back(3, 2, 0); 21
-//    exp_adj_list.emplace_back(4, 1, 0); 10
-//    exp_adj_list.emplace_back(4, 1, 0); 13
-//    exp_adj_list.emplace_back(4, 1, 0); 19
-//    exp_adj_list.emplace_back(5, 3, 1); 8
-//    exp_adj_list.emplace_back(5, 3, 1); 17
-//    exp_adj_list.emplace_back(5, 4, 0); 9
-//    exp_adj_list.emplace_back(5, 4, 0); 18
-//    exp_adj_list.emplace_back(6, 1, 1); 5
-//    exp_adj_list.emplace_back(6, 1, 1); 14
-//    exp_adj_list.emplace_back(6, 2, 0); 6
-//    exp_adj_list.emplace_back(6, 2, 0); 15
-//    exp_adj_list.emplace_back(7, 1, 1); 11
-//    exp_adj_list.emplace_back(7, 4, 0); 12
-//    exp_adj_list.emplace_back(8, 1, 1); 3
-//    exp_adj_list.emplace_back(8, 1, 0); 4
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0, 2, 22, 1, 20, 21, 7, 16, 10, 13, 19, 8, 17, 9, 18, 5, 14, 6, 15, 11, 12, 4, 3});
+//    exp_adj_list.emplace_back(0);
+//    exp_adj_list.emplace_back(2);
+//    exp_adj_list.emplace_back(22);
+//    exp_adj_list.emplace_back(1);
+//    exp_adj_list.emplace_back(20);
+//    exp_adj_list.emplace_back(21);
+//    exp_adj_list.emplace_back(7);
+//    exp_adj_list.emplace_back(16);
+//    exp_adj_list.emplace_back(10);
+//    exp_adj_list.emplace_back(13);
+//    exp_adj_list.emplace_back(19);
+//    exp_adj_list.emplace_back(8);
+//    exp_adj_list.emplace_back(17);
+//    exp_adj_list.emplace_back(9);
+//    exp_adj_list.emplace_back(18);
+//    exp_adj_list.emplace_back(5);
+//    exp_adj_list.emplace_back(14);
+//    exp_adj_list.emplace_back(6);
+//    exp_adj_list.emplace_back(15);
+//    exp_adj_list.emplace_back(11);
+//    exp_adj_list.emplace_back(12);
+//    exp_adj_list.emplace_back(4);
+//    exp_adj_list.emplace_back(3);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -254,34 +211,20 @@ TEST(parallel_lp_adj_list, 131261051171161051139) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
-    adj_list_t exp_adj_list;
-//    exp_adj_list.emplace_back(9, 3, 1);   12
-//    exp_adj_list.emplace_back(10, 5, 0);  3
-//    exp_adj_list.emplace_back(10, 5, 0);  9
-//    exp_adj_list.emplace_back(10, 6, 1);  2
-//    exp_adj_list.emplace_back(10, 6, 1);  8
-//    exp_adj_list.emplace_back(11, 3, 0);  11
-//    exp_adj_list.emplace_back(11, 5, 1);  4
-//    exp_adj_list.emplace_back(11, 5, 1);  10
-//    exp_adj_list.emplace_back(11, 6, 0);  7
-//    exp_adj_list.emplace_back(11, 7, 0);  5
-//    exp_adj_list.emplace_back(11, 7, 1);  6
-//    exp_adj_list.emplace_back(12, 6, 0);  1
-//    exp_adj_list.emplace_back(13, 12, 0); 0
-
-    exp_adj_list.emplace_back(12);
-    exp_adj_list.emplace_back(3);
-    exp_adj_list.emplace_back(9);
-    exp_adj_list.emplace_back(2);
-    exp_adj_list.emplace_back(8);
-    exp_adj_list.emplace_back(11);
-    exp_adj_list.emplace_back(4);
-    exp_adj_list.emplace_back(10);
-    exp_adj_list.emplace_back(7);
-    exp_adj_list.emplace_back(5);
-    exp_adj_list.emplace_back(6);
-    exp_adj_list.emplace_back(1);
-    exp_adj_list.emplace_back(0);
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{12, 3, 9, 2, 8, 11, 4, 10, 7, 5, 6, 1, 0});
+//    exp_adj_list.emplace_back(12);
+//    exp_adj_list.emplace_back(3);
+//    exp_adj_list.emplace_back(9);
+//    exp_adj_list.emplace_back(2);
+//    exp_adj_list.emplace_back(8);
+//    exp_adj_list.emplace_back(11);
+//    exp_adj_list.emplace_back(4);
+//    exp_adj_list.emplace_back(10);
+//    exp_adj_list.emplace_back(7);
+//    exp_adj_list.emplace_back(5);
+//    exp_adj_list.emplace_back(6);
+//    exp_adj_list.emplace_back(1);
+//    exp_adj_list.emplace_back(0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -293,20 +236,13 @@ TEST(parallel_lp_adj_list, 18161517161514) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
-    adj_list_t exp_adj_list;
-//    exp_adj_list.emplace_back(15, 14, 0); 5
-//    exp_adj_list.emplace_back(16, 15, 0); 1
-//    exp_adj_list.emplace_back(16, 15, 0); 4
-//    exp_adj_list.emplace_back(17, 15, 1); 2
-//    exp_adj_list.emplace_back(17, 16, 0); 3
-//    exp_adj_list.emplace_back(18, 16, 0); 0
-
-    exp_adj_list.emplace_back(5);
-    exp_adj_list.emplace_back(1);
-    exp_adj_list.emplace_back(4);
-    exp_adj_list.emplace_back(2);
-    exp_adj_list.emplace_back(3);
-    exp_adj_list.emplace_back(0);
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{5, 1, 4, 2, 3, 0});
+//    exp_adj_list.emplace_back(5);
+//    exp_adj_list.emplace_back(1);
+//    exp_adj_list.emplace_back(4);
+//    exp_adj_list.emplace_back(2);
+//    exp_adj_list.emplace_back(3);
+//    exp_adj_list.emplace_back(0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -318,13 +254,10 @@ TEST(parallel_lp_adj_list, 21201619) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
-    adj_list_t exp_adj_list;
-//    exp_adj_list.emplace_back(19, 16, 1); 2
-//    exp_adj_list.emplace_back(20, 16, 0); 1
-//    exp_adj_list.emplace_back(21, 20, 0); 0
-    exp_adj_list.emplace_back(2);
-    exp_adj_list.emplace_back(1);
-    exp_adj_list.emplace_back(0);
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{2, 1, 0});
+//    exp_adj_list.emplace_back(2);
+//    exp_adj_list.emplace_back(1);
+//    exp_adj_list.emplace_back(0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -336,9 +269,8 @@ TEST(parallel_lp_adj_list, 2322) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
-    adj_list_t exp_adj_list;
-//    exp_adj_list.emplace_back(23, 22, 0); 0
-    exp_adj_list.emplace_back(0);
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0});
+//    exp_adj_list.emplace_back(0);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }
@@ -350,15 +282,15 @@ TEST(parallel_lp_adj_list, less_productions) {
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
-    adj_list_t exp_adj_list;
-    exp_adj_list.emplace_back(0);
-    exp_adj_list.emplace_back(2);
-    exp_adj_list.emplace_back(4);
-    exp_adj_list.emplace_back(6);
-    exp_adj_list.emplace_back(1);
-    exp_adj_list.emplace_back(3);
-    exp_adj_list.emplace_back(5);
-    exp_adj_list.emplace_back(7);
+    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0, 2, 4, 6, 1, 3, 5, 7});
+//    exp_adj_list.emplace_back(0);
+//    exp_adj_list.emplace_back(2);
+//    exp_adj_list.emplace_back(4);
+//    exp_adj_list.emplace_back(6);
+//    exp_adj_list.emplace_back(1);
+//    exp_adj_list.emplace_back(3);
+//    exp_adj_list.emplace_back(5);
+//    exp_adj_list.emplace_back(7);
 
     ASSERT_EQ(exp_adj_list, adj_list);
 }

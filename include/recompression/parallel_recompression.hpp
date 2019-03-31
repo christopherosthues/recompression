@@ -418,7 +418,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
      * @param text The text
      * @param adj_list[out] The adjacency list (represented as text positions)
      */
-    inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
+    virtual void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
