@@ -47,7 +47,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
                                const size_t cores) override {
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto startTime = recomp::timer::now();
         size_t text_size = text.size();
 #endif
@@ -79,7 +79,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
             this->rename_rlslp(rlslp, bv);
         }
 
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
@@ -163,9 +163,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level << " alphabet=" << alphabet_size;
         const auto startTime = recomp::timer::now();
-#endif
-
-#ifdef BENCH
         const auto startTimeBlocks = recomp::timer::now();
 #endif
         variable_t next_nt = rlslp.terminals + rlslp.non_terminals.size();
@@ -209,13 +206,9 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         std::cout << " find_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count())
                   << " blocks=" << block_count;
-#endif
-
-        block_count = 0;
-
-#ifdef BENCH
         const auto startTimeAss = recomp::timer::now();
 #endif
+        block_count = 0;
         for (size_t i = 0; i < block_vec.size(); ++i) {
             if (block_vec[i]) {
                 for (auto& block : blocks[i]) {
@@ -230,19 +223,15 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 }
             }
         }
+        if (block_count > 0) {
+            rlslp.blocks += block_count;
+            bv.resize(rlslp.size(), true);
+        }
 #ifdef BENCH
         const auto endTimeAss = recomp::timer::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
         std::cout << " elements=" << block_count << " block_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
-#endif
-
-        if (block_count > 0) {
-            rlslp.blocks += block_count;
-            bv.resize(rlslp.size(), true);
-        }
-
-#ifdef BENCH
         const auto startTimeRep = recomp::timer::now();
 #endif
         for (const auto& pos : positions) {
@@ -255,7 +244,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
 #endif
         text.resize(new_text_size);
-//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
@@ -296,7 +284,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 }
             }
         }
-
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
@@ -368,17 +355,16 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                 }
             }
         }
+        // If there are more pairs in the current text from right set to left set swap partition sets
+        if (rl_count > lr_count) {
+            partition.flip();
+        }
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " lr=" << lr_count << " rl=" << rl_count;
         std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
 #endif
-
-        // If there are more pairs in the current text from right set to left set swap partition sets
-        if (rl_count > lr_count) {
-            partition.flip();
-        }
     }
 
     /**
@@ -406,12 +392,19 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
     inline void partition(const text_t& text,
                           const variable_t& alphabet_size,
                           partition_t& partition) {
-        adj_list_t adj_list(alphabet_size);
-        compute_adj_list(text, adj_list);
-
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
+        adj_list_t adj_list(alphabet_size);
+#ifdef BENCH
+        const auto endTimeIP = recomp::timer::now();
+        const auto timeSpanIP = endTimeIP - startTime;
+        std::cout << " init_adj_list="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanIP).count());
+#endif
+
+        compute_adj_list(text, adj_list);
+
         compute_partition(adj_list, partition);
 
         // Count pairs in the current text based on the pairs build by the partition
@@ -443,8 +436,13 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level << " alphabet=" << alphabet_size;
 #endif
-
         partition_t part(alphabet_size, false);
+#ifdef BENCH
+        const auto endTimeIP = recomp::timer::now();
+        const auto timeSpanIP = endTimeIP - startTime;
+        std::cout << " init_partition="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanIP).count());
+#endif
         partition(text, alphabet_size, part);
 
 #ifdef BENCH
@@ -483,9 +481,6 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count())
                   << " elements=" << pair_count << " pairs=" << pair_c;
-#endif
-
-#ifdef BENCH
         const auto startTimeAss = recomp::timer::now();
 #endif
         size_t alpha_size = alphabet_size;
@@ -513,18 +508,12 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         }
 //        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
         bv.resize(rlslp.size(), false);
-
+        text.resize(new_text_size);
 #ifdef BENCH
         const auto endTimeAss = recomp::timer::now();
         const auto timeSpanAss = endTimeAss - startTimeAss;
         std::cout << " pair_rules="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAss).count());
-#endif
-
-        text.resize(new_text_size);
-//        text.shrink_to_fit();
-
-#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " time="

@@ -582,7 +582,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         const auto endTimePar = recomp::timer::now();
         const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-//        const auto startTimeCount = recomp::timer::now();
 #endif
         directed_cut(text, partition, adj_list, part_l);
 

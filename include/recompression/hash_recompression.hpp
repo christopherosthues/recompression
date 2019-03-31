@@ -24,13 +24,9 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
     typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
     typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
-//    typedef std::tuple<variable_t, variable_t, bool> adj_list_t;
-//    typedef std::vector<std::map<variable_t, std::pair<size_t, size_t>>> adj_list_t;
     typedef std::array<std::unordered_map<std::pair<variable_t, variable_t>, size_t, pair_hash>, 2> adj_list_comp_t;
     typedef std::array<std::vector<std::tuple<variable_t, variable_t, size_t>>, 2> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
-
-//    const std::string name = "hash";
 
     inline hash_recompression() {
         this->name = "hash";
@@ -55,7 +51,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                                rlslp<variable_t, terminal_count_t>& rlslp,
                                const terminal_count_t& alphabet_size,
                                const size_t cores) override {
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto startTime = recomp::timer::now();
         size_t text_size = text.size();
 #endif
@@ -78,7 +74,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
             this->rename_rlslp(rlslp, bv);
         }
 
-#ifdef BENCH_RECOMP
+#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
@@ -103,9 +99,6 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level;
-#endif
-
-#ifdef BENCH
         const auto startTimeBlocks = recomp::timer::now();
 #endif
         variable_t next_nt = rlslp.terminals + rlslp.non_terminals.size();
@@ -161,18 +154,19 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         std::cout << " find_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanBlocks).count())
                   << " elements=" << blocks.size() << " blocks=" << block_count;
+        const auto startTimeIP = recomp::timer::now();
 #endif
-
         if (blocks.size() > 0) {
-//            rlslp.blocks.resize(rlslp.blocks.size() + blocks.size(), true);
             rlslp.blocks += blocks.size();
             bv.resize(rlslp.size(), true);
         }
 
         text.resize(new_text_size);
-//        text.shrink_to_fit();
-
 #ifdef BENCH
+        const auto endTimeIP = recomp::timer::now();
+        const auto timeSpanIP = endTimeIP - startTimeIP;
+        std::cout << " resize_text="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanIP).count());
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " time="
@@ -224,9 +218,6 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
-#endif
-
-#ifdef BENCH
         const auto startTimeAdj = recomp::timer::now();
 #endif
         ips4o::sort(adj[0].begin(), adj[0].end());
@@ -322,13 +313,10 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         const auto endTimeUndir = recomp::timer::now();
         const auto timeSpanUndir = endTimeUndir - startTime;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanUndir).count();
-#endif
-
-        // Count pairs in the current text based on the pairs build by the partition
-        // from left set to right set and vice versa
-#ifdef BENCH
         const auto startTimeDir = recomp::timer::now();
 #endif
+        // Count pairs in the current text based on the pairs build by the partition
+        // from left set to right set and vice versa
         int lr_count = 0;
         int rl_count = 0;
         for (size_t k = 0; k < text.size() - 1; ++k) {
@@ -338,30 +326,13 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                 rl_count++;
             }
         }
-//        for (size_t i = 0; i < adj[0].size(); ++i) {
-//            if (!partition[std::get<0>(adj[0][i])] && partition[std::get<1>(adj[0][i])]) {
-//                lr_count += std::get<2>(adj[0][i]);
-//            } else if (partition[std::get<0>(adj[0][i])] && !partition[std::get<1>(adj[0][i])]) {
-//                rl_count += std::get<2>(adj[0][i]);
-//            }
-//        }
-//        for (size_t i = 0; i < adj[1].size(); ++i) {
-//            if (!partition[std::get<0>(adj[1][i])] && partition[std::get<1>(adj[1][i])]) {
-//                rl_count += std::get<2>(adj[1][i]);
-//            } else if (partition[std::get<0>(adj[1][i])] && !partition[std::get<1>(adj[1][i])]) {
-//                lr_count += std::get<2>(adj[1][i]);
-//            }
-//        }
+        // If there are more pairs in the current text from right set to left set swap partition sets
+        part_l = rl_count > lr_count;
 #ifdef BENCH
         const auto endTimeDir = recomp::timer::now();
         const auto timeSpanDir = endTimeDir - startTimeDir;
         std::cout << " lr=" << lr_count << " rl=" << rl_count;
         std::cout << " dir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDir).count();
-#endif
-
-        // If there are more pairs in the current text from right set to left set swap partition sets
-        part_l = rl_count > lr_count;
-#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
@@ -382,7 +353,6 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level;
 #endif
-
         partition_t part;
         adj_list_t adj;
         compute_adj_list(text, adj, part);
@@ -447,15 +417,17 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         std::cout << " find_pairs="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPairs).count())
                   << " elements=" << pairs.size() << " pairs=" << pair_count;
+        const auto startTimeIP = recomp::timer::now();
 #endif
 
-//        rlslp.blocks.resize(rlslp.blocks.size() + pairs.size(), false);
         bv.resize(rlslp.size(), false);
-
         text.resize(new_text_size);
-//        text.shrink_to_fit();
 
 #ifdef BENCH
+        const auto endTimeIP = recomp::timer::now();
+        const auto timeSpanIP = endTimeIP - startTimeIP;
+        std::cout << " resize_text="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanIP).count());
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " time="
