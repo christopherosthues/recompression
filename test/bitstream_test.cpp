@@ -13,11 +13,11 @@ TEST(bitstream, empty) {
     std::string file_name = "bv_empty.txt";
     std::vector<bool> bv = {};
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -29,11 +29,11 @@ TEST(bitstream, empty) {
 TEST(bitstream, bit) {
     std::string file_name = "bit.txt";
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bit(true);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     bool bit = bis.read_bit();
     bis.close();
 
@@ -48,11 +48,11 @@ TEST(bitstream, bitvector31) {
                             true, true, true, true, false, false, false, true, false, false, true, false, true, false,
                             false, true, true};
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -67,11 +67,11 @@ TEST(bitstream, bitvector32) {
                             true, true, true, true, false, false, false, true, false, false, true, false, true, false,
                             false, true, true, false};
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -86,11 +86,11 @@ TEST(bitstream, bitvector33) {
                             true, true, true, true, false, false, false, true, false, false, true, false, true, false,
                             false, true, true, false, true};
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -103,11 +103,11 @@ TEST(bitstream, bitvector110) {
     std::string file_name = "bv1.txt";
     std::vector<bool> bv = {true, true, false};
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -120,11 +120,11 @@ TEST(bitstream, bitvector110100001) {
     std::string file_name = "bv2.txt";
     std::vector<bool> bv = {true, true, false, true, false, false, false, false, true};
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -137,11 +137,11 @@ TEST(bitstream, bitvector61_1) {
     std::string file_name = "bv3.txt";
     std::vector<bool> bv(61, true);
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -154,11 +154,11 @@ TEST(bitstream, bitvector100_1) {
     std::string file_name = "bv4.txt";
     std::vector<bool> bv(100, true);
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -174,11 +174,11 @@ TEST(bitstream, bitvector100_10) {
         bv[i] = false;
     }
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -194,11 +194,11 @@ TEST(bitstream, bitvector_too_long_1) {
     std::vector<bool> bv(length + 1, true);
     bv[bv.size() - 1] = false;
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -214,11 +214,11 @@ TEST(bitstream, bitvector_too_long_0) {
     std::vector<bool> bv(length, false);
     bv[bv.size() - 1] = true;
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 
@@ -236,11 +236,11 @@ TEST(bitstream, bitvector_random) {
         bv[i] = gen();
     }
 
-    BitOStream bos{file_name};
+    BitOStream bos = {file_name};
     bos.write_bitvector_compressed(bv);
     bos.close();
 
-    BitIStream bis(file_name);
+    BitIStream bis = {file_name};
     std::vector<bool> bv_in = bis.read_bitvector_compressed();
     bis.close();
 

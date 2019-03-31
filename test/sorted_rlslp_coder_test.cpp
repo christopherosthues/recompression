@@ -8,6 +8,7 @@
 #include "recompression/coders/sorted_rlslp_coder.hpp"
 #include "recompression/io/bitistream.hpp"
 #include "recompression/io/bitostream.hpp"
+#include "recompression/util.hpp"
 
 using namespace recomp;
 
@@ -15,17 +16,17 @@ typedef recompression<var_t, term_t>::text_t text_t;
 
 TEST(sorted_rlslp_coder, empty) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {};
+    text_t text = util::create_ui_vector(std::vector<var_t>{});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, CHAR_ALPHABET, 4);
 
     std::cout << "recomp finished" << std::endl;
 
     std::string file_name = "empty";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -37,15 +38,15 @@ TEST(sorted_rlslp_coder, empty) {
 
 TEST(sorted_rlslp_coder, terminal) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {112};
+    text_t text = util::create_ui_vector(std::vector<var_t>{112});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, CHAR_ALPHABET, 4);
 
     std::string file_name = "terminal";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -57,15 +58,15 @@ TEST(sorted_rlslp_coder, terminal) {
 
 TEST(sorted_rlslp_coder, short_block) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {112, 112};
+    text_t text = util::create_ui_vector(std::vector<var_t>{112, 112});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 113, 4);
 
     std::string file_name = "short_block";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -77,15 +78,15 @@ TEST(sorted_rlslp_coder, short_block) {
 
 TEST(sorted_rlslp_coder, short_block3) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {112, 112, 112};
+    text_t text = util::create_ui_vector(std::vector<var_t>{112, 112, 112});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 113, 4);
 
     std::string file_name = "short_block3";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -97,19 +98,16 @@ TEST(sorted_rlslp_coder, short_block3) {
 
 TEST(sorted_rlslp_coder, recompression) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 5, 4);
 
     std::string file_name = "recompression";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
-
-//    std::cout << "rlslp: " << std::to_string(rlslp) << std::endl;
-//    std::cout << "in: " << std::to_string(in_rlslp) << std::endl;
 
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
@@ -120,15 +118,15 @@ TEST(sorted_rlslp_coder, recompression) {
 
 TEST(sorted_rlslp_coder, one_block) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
     std::string file_name = "one_block";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -140,15 +138,15 @@ TEST(sorted_rlslp_coder, one_block) {
 
 TEST(sorted_rlslp_coder, two_blocks) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
     std::string file_name = "two_blocks";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -160,15 +158,15 @@ TEST(sorted_rlslp_coder, two_blocks) {
 
 TEST(sorted_rlslp_coder, three_blocks) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
     std::string file_name = "three_blocks";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -180,19 +178,16 @@ TEST(sorted_rlslp_coder, three_blocks) {
 
 TEST(sorted_rlslp_coder, four_blocks) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
     std::string file_name = "four_blocks";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
-
-//    std::cout << "rlslp: " << std::to_string(rlslp) << std::endl;
-//    std::cout << "in: " << std::to_string(in_rlslp) << std::endl;
 
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
@@ -203,15 +198,15 @@ TEST(sorted_rlslp_coder, four_blocks) {
 
 TEST(sorted_rlslp_coder, repeated_pair) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
     std::string file_name = "repeated_pair";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -223,15 +218,15 @@ TEST(sorted_rlslp_coder, repeated_pair) {
 
 TEST(sorted_rlslp_coder, repeated_pair_same_occ) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 3, 4);
 
     std::string file_name = "repeated_pair_same";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
 
     ASSERT_EQ(rlslp, in_rlslp);
@@ -243,19 +238,16 @@ TEST(sorted_rlslp_coder, repeated_pair_same_occ) {
 
 TEST(sorted_rlslp_coder, left_end) {
     recomp::rlslp<var_t, term_t> rlslp;
-    text_t text = {1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     recomp.recomp(text, rlslp, 4, 4);
 
     std::string file_name = "left_end";
-    coder::SortedRLSLPCoder::Encoder enc{file_name};
+    coder::SortedRLSLPCoder::Encoder enc = {file_name};
     enc.encode<var_t, term_t>(rlslp);
 
-    coder::SortedRLSLPCoder::Decoder dec{file_name};
+    coder::SortedRLSLPCoder::Decoder dec = {file_name};
     recomp::rlslp<var_t, term_t> in_rlslp = dec.decode();
-
-//    std::cout << "rlslp: " << std::to_string(rlslp) << std::endl;
-//    std::cout << "in: " << std::to_string(in_rlslp) << std::endl;
 
     ASSERT_EQ(rlslp, in_rlslp);
     ASSERT_EQ(rlslp.derive_text(), in_rlslp.derive_text());
