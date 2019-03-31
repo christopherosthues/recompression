@@ -10,7 +10,7 @@ using namespace recomp;
 typedef recompression<var_t, term_t>::text_t text_t;
 
 TEST(lcequery, lcequery_empty) {
-    text_t text;
+    text_t text = util::create_ui_vector(std::vector<var_t>{});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -20,7 +20,7 @@ TEST(lcequery, lcequery_empty) {
 }
 
 TEST(lcequery, lcequery_zero) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -30,7 +30,7 @@ TEST(lcequery, lcequery_zero) {
 }
 
 TEST(lcequery, lcequery_max_len_i) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -40,7 +40,7 @@ TEST(lcequery, lcequery_max_len_i) {
 }
 
 TEST(lcequery, lcequery_max_len_j) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -50,7 +50,7 @@ TEST(lcequery, lcequery_max_len_j) {
 }
 
 TEST(lcequery, lcequery) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -60,7 +60,7 @@ TEST(lcequery, lcequery) {
 }
 
 TEST(lcequery, lcequery_long) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -70,7 +70,7 @@ TEST(lcequery, lcequery_long) {
 }
 
 TEST(lcequery, lcequery_asso) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -82,7 +82,7 @@ TEST(lcequery, lcequery_asso) {
 }
 
 TEST(lcequery, lcequery_complete_text) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     auto t_size = text.size();
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
@@ -93,7 +93,7 @@ TEST(lcequery, lcequery_complete_text) {
 }
 
 TEST(lcequery, lcequery_same_position) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     auto t_size = text.size();
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
@@ -104,7 +104,7 @@ TEST(lcequery, lcequery_same_position) {
 }
 
 TEST(lcequery, lcequery_compressed_begin) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -114,7 +114,7 @@ TEST(lcequery, lcequery_compressed_begin) {
 }
 
 TEST(lcequery, lcequery_compressed_within) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -124,7 +124,7 @@ TEST(lcequery, lcequery_compressed_within) {
 }
 
 TEST(lcequery, lcequery_compressed_diff) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -134,7 +134,7 @@ TEST(lcequery, lcequery_compressed_diff) {
 }
 
 TEST(lcequery, lcequery_compressed_in_tree) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -147,8 +147,8 @@ TEST(lcequery, lcequery_compressed_in_tree) {
 }
 
 TEST(lcequery, lcequery_different_block_same_symbol) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1, 2, 1,
-                   2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1, 2, 1,
+                   2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -181,8 +181,8 @@ size_t lce_query_naive(size_t i, size_t j, text_t &text) {
 }
 
 TEST(lcequery, lcequery_complete) {
-    text_t text = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
-    text_t text_naive = {2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
+    text_t text_naive = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 5, 4);
@@ -197,8 +197,8 @@ TEST(lcequery, lcequery_complete) {
 }
 
 TEST(lcequery, block) {
-    text_t text = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
-    text_t text_naive = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
+    text_t text_naive = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
     parallel::parallel_recompression<var_t, term_t> recomp;
     rlslp<var_t, term_t> rlslp;
     recomp.recomp(text, rlslp, 3, 4);
