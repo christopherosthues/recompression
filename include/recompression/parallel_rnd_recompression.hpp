@@ -112,7 +112,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
             const auto endTimeNT = recomp::timer::now();
             const auto timeSpanNT = endTimeNT - startTimeNewText;
             std::cout << " init_new_text="
-                      << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanNT).count());
+                      << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanNT).count();
             const auto startTimeCopy = recomp::timer::now();
 #endif
 
@@ -260,6 +260,9 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
         const auto endAlphaTime = recomp::timer::now();
         const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
         std::cout << " mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAlpha).count();
+        const auto endTimeMapping = recomp::timer::now();
+        const auto timeSpanMapping = endTimeMapping - startTime;
+        std::cout << " compute_mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMapping).count();
 #endif
     }
 
@@ -277,7 +280,15 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
         const auto startTime = recomp::timer::now();
 #endif
         adj_list_t adj_list(text.size() - 1);
+#ifdef BENCH
+        const auto endTimeAdjInit = recomp::timer::now();
+        const auto timeSpanAdjInit = endTimeAdjInit - startTime;
+        std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
+#endif
         this->compute_adj_list(text, adj_list);
+#ifdef BENCH
+        const auto startTimePar = recomp::timer::now();
+#endif
 
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -294,7 +305,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 
 #ifdef BENCH
         const auto endTimePar = recomp::timer::now();
-        const auto timeSpanPar = endTimePar - startTime;
+        const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
         const auto startTimeCount = recomp::timer::now();
 #endif
@@ -614,8 +625,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;
-        std::cout << " rules="
-                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count())
+        std::cout << " rules=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count()
                   << " productions=" << distinct_pairs[distinct_pairs.size() - 1] << " elements=" << pair_count;
 #endif
 

@@ -65,7 +65,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+        std::cout << " rev_adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         const auto startTimeMult = recomp::timer::now();
 #endif
 //        partitioned_radix_sort(adj_list);
@@ -116,7 +116,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
         const auto timeSpanMult = endTimeMult - startTimeMult;
-        std::cout << " sort_adj_list="
+        std::cout << " sort_rev_adj_list="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
 #endif
     }
@@ -131,12 +131,21 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
     inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) override {
+#ifdef BENCH
+        const auto startTime = recomp::timer::now();
+#endif
         adj_list_t adj_list(text.size() - 1);
+#ifdef BENCH
+        const auto endTimeAdjInit = recomp::timer::now();
+        const auto timeSpanAdjInit = endTimeAdjInit - startTime;
+        std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
+#endif
         this->compute_adj_list(text, adj_list);
         adj_list_t reverse_adj_list(text.size() - 1);
         compute_adj_list_reverse(text, reverse_adj_list);
+
 #ifdef BENCH
-        const auto startTime = recomp::timer::now();
+        const auto startTimePar = recomp::timer::now();
 #endif
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -152,7 +161,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
         }
 #ifdef BENCH
         const auto endTimePar = recomp::timer::now();
-        const auto timeSpanPar = endTimePar - startTime;
+        const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
 
