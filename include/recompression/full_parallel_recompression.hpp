@@ -173,14 +173,14 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
         std::vector<size_t> bounds;
         ui_vector<std::uint8_t> flip(partition.size());
 
-#pragma omp parallel for schedule(static) num_threads(this->cores)
-        for (size_t i = 0; i < adj_bounds.size(); ++i) {
-            adj_bounds[i] = adj_list_size;
-            reverse_adj_bounds[i] = adj_list_size;
-        }
-
 #pragma omp parallel num_threads(this->cores)
         {
+#pragma omp for schedule(static)
+            for (size_t i = 0; i < adj_bounds.size(); ++i) {
+                adj_bounds[i] = adj_list_size;
+                reverse_adj_bounds[i] = adj_list_size;
+            }
+
             auto thread_id = omp_get_thread_num();
             auto n_threads = (size_t)omp_get_num_threads();
 
@@ -189,6 +189,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                 bounds.reserve(n_threads + 1);
                 bounds.resize(n_threads + 1, adj_list.size() - 1);
             }
+#pragma omp for schedule(static)
             for (size_t i = 0; i < adj_list.size() - 1; ++i) {
                 bounds[thread_id] = i;
                 i = adj_list.size();
