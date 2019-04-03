@@ -29,6 +29,7 @@ template<typename variable_t = var_t, typename terminal_count_t = term_t>
 class full_parallel_recompression : public parallel_rnd_recompression<variable_t, terminal_count_t> {
  public:
     typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
+    typedef typename parallel_rnd_recompression<variable_t, terminal_count_t>::adj_t adj_t;
     typedef typename parallel_rnd_recompression<variable_t, terminal_count_t>::adj_list_t adj_list_t;
     typedef typename parallel_rnd_recompression<variable_t, terminal_count_t>::partition_t partition_t;
 
@@ -134,14 +135,15 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
-        adj_list_t adj_list(text.size() - 1);
+        const size_t adj_list_size = text.size() - 1;
+        adj_list_t adj_list(adj_list_size);
 #ifdef BENCH
         const auto endTimeAdjInit = recomp::timer::now();
         const auto timeSpanAdjInit = endTimeAdjInit - startTime;
         std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
 #endif
         this->compute_adj_list(text, adj_list);
-        adj_list_t reverse_adj_list(text.size() - 1);
+        adj_list_t reverse_adj_list(adj_list_size);
         compute_adj_list_reverse(text, reverse_adj_list);
 
 #ifdef BENCH
@@ -163,27 +165,31 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
         const auto endTimePar = recomp::timer::now();
         const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-#endif
-
-        std::cout << "Partition: " << std::endl;
-        for (size_t i = 0; i < partition.size(); ++i) {
-            std::cout << "i: " << (int)partition[i] << "\n";
-        }
-
-        std::cout << "AdjList: " << std::endl;
-        for (size_t i = 0; i < adj_list.size(); ++i) {
-            std::cout << "(" << text[adj_list[i]] << ", " << text[adj_list[i] + 1] << "), ";
-        }
-        std::cout << std::endl;
-
-
-#ifdef BENCH
         const auto startTimeLocalSearch = recomp::timer::now();
 #endif
-        std::vector<size_t> adj_bounds(partition.size() + 1, adj_list.size());
-        std::vector<size_t> reverse_adj_bounds(partition.size() + 1, reverse_adj_list.size());
+//
+//        std::cout << "Partition: " << std::endl;
+//        for (size_t i = 0; i < partition.size(); ++i) {
+//            std::cout << "i: " << (int)partition[i] << "\n";
+//        }
+//
+//        std::cout << "AdjList: " << std::endl;
+//        for (size_t i = 0; i < adj_list.size(); ++i) {
+//            std::cout << "(" << text[adj_list[i]] << ", " << text[adj_list[i] + 1] << "), ";
+//        }
+//        std::cout << std::endl;
+
+        ui_vector<size_t> adj_bounds(partition.size() + 1);  // , adj_list.size());
+        ui_vector<size_t> reverse_adj_bounds(partition.size() + 1);  // , reverse_adj_list.size());
         std::vector<size_t> bounds;
-        std::vector<std::uint8_t> flip(partition.size());
+        ui_vector<std::uint8_t> flip(partition.size());
+
+#pragma omp parallel for schedule(static) num_threads(this->cores)
+        for (size_t i = 0; i < adj_bounds.size(); ++i) {
+            adj_bounds[i] = adj_list_size;
+            reverse_adj_bounds[i] = adj_list_size;
+        }
+
 #pragma omp parallel num_threads(this->cores)
         {
             auto thread_id = omp_get_thread_num();
@@ -252,11 +258,11 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #pragma omp barrier
 #pragma omp single
             {
-                std::cout << "Bounds" << std::endl;
+//                std::cout << "Bounds" << std::endl;
 #pragma omp task
                 {
                     for (size_t j = adj_bounds.size() - 1; j > 0; --j) {
-                        if (adj_bounds[j - 1] == adj_list.size()) {  // TODO(Chris): check correctness
+                        if (adj_bounds[j - 1] == adj_list.size()) {
                             adj_bounds[j - 1] = adj_bounds[j];
                         }
                     }
@@ -264,13 +270,12 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #pragma omp task
                 {
                     for (size_t j = reverse_adj_bounds.size() - 1; j > 0; --j) {
-                        if (reverse_adj_bounds[j - 1] == reverse_adj_bounds.size()) {  // TODO(Chris): check correctness
+                        if (reverse_adj_bounds[j - 1] == reverse_adj_bounds.size()) {
                             reverse_adj_bounds[j - 1] = reverse_adj_bounds[j];
                         }
                     }
                 }
-
-                std::cout << "Bounds finished" << std::endl;
+//                std::cout << "Bounds finished" << std::endl;
             }
 
             int w_l = 0;
@@ -278,7 +283,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t j = 0; j < partition.size(); ++j) {
-                for (size_t k = adj_bounds[j]; k < adj_bounds[j + 1]; ++k) {  // TODO(Chris): check correctness
+                for (size_t k = adj_bounds[j]; k < adj_bounds[j + 1]; ++k) {
                     auto char_i = text[adj_list[k]];
                     auto char_i1 = text[adj_list[k] + 1];
                     if (char_i < char_i1) {
@@ -290,7 +295,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                         w_l++;
                     }
                 }
-                for (size_t k = reverse_adj_bounds[j]; k < reverse_adj_bounds[j + 1]; ++k) {  // TODO(Chris): check correctness
+                for (size_t k = reverse_adj_bounds[j]; k < reverse_adj_bounds[j + 1]; ++k) {
                     auto char_i = text[reverse_adj_list[k]];
                     auto char_i1 = text[reverse_adj_list[k] + 1];
                     if (char_i < char_i1) {
@@ -308,15 +313,15 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                     flip[j] = (std::uint8_t)((w_l > w_r)? 1 : 0);
                 }
             }
-
-#pragma omp single
-            {
-                std::cout << "Flipping" << std::endl;
-                std::cout << "Flip: " << std::endl;
-                for (size_t i = 0; i < flip.size(); ++i) {
-                    std::cout << "i: " << (int)flip[i] << "\n";
-                }
-            }
+//
+//#pragma omp single
+//            {
+//                std::cout << "Flipping" << std::endl;
+//                std::cout << "Flip: " << std::endl;
+//                for (size_t i = 0; i < flip.size(); ++i) {
+//                    std::cout << "i: " << (int)flip[i] << "\n";
+//                }
+//            }
 #pragma omp for schedule(static)
             for (size_t j = 0; j < partition.size(); ++j) {
                 if (flip[j]) {
@@ -328,24 +333,40 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                 }
             }
         }
-        std::cout << "Partition: " << std::endl;
-        for (size_t i = 0; i < partition.size(); ++i) {
-            std::cout << "i: " << (int)partition[i] << "\n";
-        }
-
-        std::cout << std::endl;
+//        std::cout << "Partition: " << std::endl;
+//        for (size_t i = 0; i < partition.size(); ++i) {
+//            std::cout << "i: " << (int)partition[i] << "\n";
+//        }
+//
+//        std::cout << std::endl;
         adj_bounds.resize(0);
-        adj_bounds.shrink_to_fit();
         reverse_adj_list.resize(0);
         flip.resize(0);
-        flip.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeLocalSearch = recomp::timer::now();
         const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
         std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
-        std::cout << std::endl;
+        const auto startTimeDiff = recomp::timer::now();
+#endif
+
+        bool different = false;
+#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
+        for (size_t i = 0; i < partition.size() - 1; ++i) {
+            if (partition[i] != partition[i + 1]) {
+                different = true;
+            }
+        }
+        if (!different) {
+            partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
+            partition[partition.size() - 1] = 1;
+        }
+#ifdef BENCH
+        const auto endTimeDiff = recomp::timer::now();
+        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
+        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count();
         const auto startTimeCount = recomp::timer::now();
 #endif
+
         int lr_count = 0;
         int rl_count = 0;
         int prod_l = 0;
@@ -356,7 +377,7 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 
 #pragma omp single
             {
-                std::cout << "Bounds" << std::endl;
+//                std::cout << "Bounds" << std::endl;
                 std::fill(bounds.begin(), bounds.end(), adj_list.size());
             }
 

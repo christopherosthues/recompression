@@ -168,30 +168,35 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
-
-        std::vector<variable_t> mins;
-#pragma omp parallel num_threads(this->cores)
-        {
-            auto n_threads = (size_t)omp_get_num_threads();
-            auto thread_id = (size_t)omp_get_thread_num();
-#pragma omp single
-            {
-                mins.resize(n_threads, std::numeric_limits<variable_t>::max());
-            }
-
-#pragma omp for schedule(static)
-            for (size_t i = 0; i < text.size(); ++i) {
-                if (text[i] < mins[thread_id]) {
-                    mins[thread_id] = text[i];
-                }
-            }
+        variable_t minimum = std::numeric_limits<variable_t>::max();
+#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(min:minimum)
+        for (size_t i = 0; i < text.size(); ++i) {
+            minimum = std::min(minimum, text[i]);
         }
-        variable_t min = std::numeric_limits<variable_t>::max();
-        for (size_t i = 0; i < mins.size(); ++i) {
-            if (mins[i] < min) {
-                min = mins[i];
-            }
-        }
+//        std::vector<variable_t> mins;
+//#pragma omp parallel num_threads(this->cores)
+//        {
+//            auto n_threads = (size_t)omp_get_num_threads();
+//            auto thread_id = (size_t)omp_get_thread_num();
+//#pragma omp single
+//            {
+//                mins.resize(n_threads, std::numeric_limits<variable_t>::max());
+//            }
+//
+//#pragma omp for schedule(static)
+//            for (size_t i = 0; i < text.size(); ++i) {
+//                if (text[i] < mins[thread_id]) {
+//                    mins[thread_id] = text[i];
+//                }
+//            }
+//        }
+//        variable_t min = std::numeric_limits<variable_t>::max();
+//        for (size_t i = 0; i < mins.size(); ++i) {
+//            if (mins[i] < min) {
+//                min = mins[i];
+//            }
+//        }
+
 #ifdef BENCH
         const auto endTimeInAl = recomp::timer::now();
         const auto timeSpanInAl = endTimeInAl - startTime;
@@ -199,7 +204,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
         const auto startTimeAlpha = recomp::timer::now();
 #endif
 
-        const auto max_letters = rlslp.size() + rlslp.terminals - min;
+        const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
         ui_vector<variable_t> global_hist(max_letters);
         global_hist[0] = 0;
         i_vector<ui_vector<variable_t>> hists;
@@ -220,7 +225,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 #pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-                hists[thread_id][text[i] - min] = 1;
+                hists[thread_id][text[i] - minimum] = 1;
             }
 
 #pragma omp for schedule(static)
@@ -240,11 +245,11 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
                 mapping.resize(max_letters);
                 size_t j = 0;
                 if (global_hist[0] > 0) {
-                    mapping[j++] = min;
+                    mapping[j++] = minimum;
                 }
                 for (size_t i = 1; i < global_hist.size(); ++i) {
                     if (global_hist[i] > 0) {
-                        mapping[j++] = i + min;
+                        mapping[j++] = i + minimum;
                     }
                     global_hist[i] += global_hist[i - 1];
                 }
@@ -253,7 +258,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-                text[i] = global_hist[text[i] - min] - 1;
+                text[i] = global_hist[text[i] - minimum] - 1;
             }
         }
 #ifdef BENCH
