@@ -167,20 +167,9 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
         const auto startTimeLocalSearch = recomp::timer::now();
 #endif
-//
-//        std::cout << "Partition: " << std::endl;
-//        for (size_t i = 0; i < partition.size(); ++i) {
-//            std::cout << "i: " << (int)partition[i] << "\n";
-//        }
-//
-//        std::cout << "AdjList: " << std::endl;
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            std::cout << "(" << text[adj_list[i]] << ", " << text[adj_list[i] + 1] << "), ";
-//        }
-//        std::cout << std::endl;
 
-        ui_vector<size_t> adj_bounds(partition.size() + 1);  // , adj_list.size());
-        ui_vector<size_t> reverse_adj_bounds(partition.size() + 1);  // , reverse_adj_list.size());
+        ui_vector<size_t> adj_bounds(partition.size() + 1);
+        ui_vector<size_t> reverse_adj_bounds(partition.size() + 1);
         std::vector<size_t> bounds;
         ui_vector<std::uint8_t> flip(partition.size());
 
@@ -258,7 +247,6 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 #pragma omp barrier
 #pragma omp single
             {
-//                std::cout << "Bounds" << std::endl;
 #pragma omp task
                 {
                     for (size_t j = adj_bounds.size() - 1; j > 0; --j) {
@@ -275,7 +263,6 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                         }
                     }
                 }
-//                std::cout << "Bounds finished" << std::endl;
             }
 
             int w_l = 0;
@@ -313,15 +300,6 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                     flip[j] = (std::uint8_t)((w_l > w_r)? 1 : 0);
                 }
             }
-//
-//#pragma omp single
-//            {
-//                std::cout << "Flipping" << std::endl;
-//                std::cout << "Flip: " << std::endl;
-//                for (size_t i = 0; i < flip.size(); ++i) {
-//                    std::cout << "i: " << (int)flip[i] << "\n";
-//                }
-//            }
 #pragma omp for schedule(static)
             for (size_t j = 0; j < partition.size(); ++j) {
                 if (flip[j]) {
@@ -333,12 +311,6 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
                 }
             }
         }
-//        std::cout << "Partition: " << std::endl;
-//        for (size_t i = 0; i < partition.size(); ++i) {
-//            std::cout << "i: " << (int)partition[i] << "\n";
-//        }
-//
-//        std::cout << std::endl;
         adj_bounds.resize(0);
         reverse_adj_list.resize(0);
         flip.resize(0);
@@ -377,7 +349,6 @@ class full_parallel_recompression : public parallel_rnd_recompression<variable_t
 
 #pragma omp single
             {
-//                std::cout << "Bounds" << std::endl;
                 std::fill(bounds.begin(), bounds.end(), adj_list.size());
             }
 
