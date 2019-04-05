@@ -12,7 +12,7 @@
 
 int main(int argc, char *argv[]) {
     tlx::CmdlineParser cmd;
-    cmd.set_description("Benchmark for time scaling experiments");
+    cmd.set_description("Benchmark for runtime weak scaling experiments");
     cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
 
     std::string path;
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,
-                         "The algorithms to benchmark [\"parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | parallel_rnd\"]");
+                         "The algorithms to benchmark [\"parallel | parallel_ls | parallel_lock | parallel_lp | parallel_order_ls | parallel_order_gr | parallel_rnd\"]");
 
     size_t cores;
     cmd.add_param_bytes("cores", cores, "The maximal number of cores");
@@ -38,8 +38,8 @@ int main(int argc, char *argv[]) {
     size_t steps;
     cmd.add_param_bytes("steps", steps, "The steps");
 
-    size_t prefix = 0;
-    cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
+    size_t file_size;
+    cmd.add_param_bytes("file_size", file_size, "The file size to begin with");
 
     if (!cmd.process(argc, argv)) {
         return -1;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     recomp::util::split(algorithms, " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
-        for (size_t step = 1; step <= cores;) {
+        for (size_t step = 1; step <= cores; step *= 2) {
             for (size_t repeat = 0; repeat < repeats; ++repeat) {
                 for (size_t i = 0; i < algos.size(); ++i) {
                     std::cout << "Iteration: " << repeat << std::endl;
@@ -73,8 +73,7 @@ int main(int argc, char *argv[]) {
 
                     recomp::util::replace_all(dataset, "_", "\\_");
 
-                    std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp = recomp::create_recompression(
-                            algo, dataset);
+                    std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp = recomp::create_recompression(algo, dataset);
                     if (!recomp) {
                         std::cerr << "No such algo " << algo << std::endl;
                         return -1;
@@ -82,7 +81,7 @@ int main(int argc, char *argv[]) {
 
                     typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
                     text_t text;
-                    recomp::util::read_file(file_name, text, prefix);
+                    recomp::util::read_file_fill(file_name, text, file_size);
 
                     recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
 
@@ -103,7 +102,7 @@ int main(int argc, char *argv[]) {
                     rlslp.shrink_to_fit();
 
                     std::string c_text;
-                    recomp::util::read_text_file(file_name, c_text, prefix);
+                    recomp::util::read_text_file_fill(file_name, c_text, file_size);
                     if (res == c_text) {
                         std::cout << "Correct" << std::endl;
                     } else {
@@ -111,15 +110,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
             }
-            if (step == 1) {
-                if (begin != 1) {
-                    step = begin;
-                } else {
-                    step = 2;
-                }
-            } else {
-                step += steps;
-            }
+            file_size *= 2;
         }
     }
 }

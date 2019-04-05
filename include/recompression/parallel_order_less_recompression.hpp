@@ -44,11 +44,11 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
 
 
     inline recompression_order_ls() {
-        this->name = "parallel_ls";
+        this->name = "parallel_order_ls";
     }
 
     inline recompression_order_ls(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
-        this->name = "parallel_ls";
+        this->name = "parallel_order_ls";
     }
 
     /**

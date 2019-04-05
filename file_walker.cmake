@@ -11,7 +11,7 @@ set(SOURCES
         src/recompression/lce_query.cpp
         src/recompression/radix_sort.cpp
         src/recompression/parallel_order_great_recompression.cpp
-        src/recompression/full_parallel_recompression.cpp
+        src/recompression/parallel_ls_recompression.cpp
         src/recompression/hash_recompression.cpp
         src/recompression/defs.cpp
         src/recompression/coders/rlslp_rule_sorter.cpp
@@ -36,7 +36,7 @@ set(HEADERS
         include/recompression/radix_sort.hpp
         include/recompression/parallel_order_less_recompression.hpp
         include/recompression/parallel_rnd_recompression.hpp
-        include/recompression/full_parallel_recompression.hpp
+        include/recompression/parallel_ls_recompression.hpp
         include/recompression/fast_recompression.hpp
         include/recompression/hash_recompression.hpp
         include/recompression/util.hpp

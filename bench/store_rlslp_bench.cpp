@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,
-                         "The algorithms to benchmark [\"parallel | full_parallel | parallel_lock | parallel_lp | parallel_ls | parallel_gr | fast | hash | parallel_rnd\"]");
+                         "The algorithms to benchmark [\"parallel | parallel_ls | parallel_lock | parallel_lp | parallel_order_ls | parallel_order_gr | fast | hash | parallel_rnd\"]");
 
     std::string coder;
     cmd.add_param_string("coder", coder, "The coder to store the rlslp to file (plain | fixed | sorted)");

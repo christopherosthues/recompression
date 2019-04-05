@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,
-                         "The algorithms to benchmark [\"parallel | full_parallel | parallel_lp | parallel_lock | parallel_ls | parallel_gr | fast | hash | parallel_rnd\"]");
+                         "The algorithms to benchmark [\"parallel | parallel_ls | parallel_lp | parallel_lock | parallel_order_ls | parallel_order_gr | fast | hash | parallel_rnd\"]");
 
     size_t cores;
     cmd.add_param_bytes("cores", cores, "The maximal number of cores");
