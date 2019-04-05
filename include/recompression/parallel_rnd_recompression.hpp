@@ -8,6 +8,7 @@
 #endif
 
 #include <algorithm>
+#include <deque>
 #include <limits>
 #include <string>
 #include <utility>
@@ -173,30 +174,6 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
         for (size_t i = 0; i < text.size(); ++i) {
             minimum = std::min(minimum, text[i]);
         }
-//        std::vector<variable_t> mins;
-//#pragma omp parallel num_threads(this->cores)
-//        {
-//            auto n_threads = (size_t)omp_get_num_threads();
-//            auto thread_id = (size_t)omp_get_thread_num();
-//#pragma omp single
-//            {
-//                mins.resize(n_threads, std::numeric_limits<variable_t>::max());
-//            }
-//
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < text.size(); ++i) {
-//                if (text[i] < mins[thread_id]) {
-//                    mins[thread_id] = text[i];
-//                }
-//            }
-//        }
-//        variable_t min = std::numeric_limits<variable_t>::max();
-//        for (size_t i = 0; i < mins.size(); ++i) {
-//            if (mins[i] < min) {
-//                min = mins[i];
-//            }
-//        }
-
 #ifdef BENCH
         const auto endTimeInAl = recomp::timer::now();
         const auto timeSpanInAl = endTimeInAl - startTime;
@@ -437,7 +414,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
                 pair_overlaps.reserve(n_threads + 1);
                 pair_overlaps.resize(n_threads + 1, 0);
             }
-            std::vector<pair_position_t> t_positions;
+            std::deque<pair_position_t> t_positions;
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size() - 1; ++i) {

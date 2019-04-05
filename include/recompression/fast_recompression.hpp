@@ -237,15 +237,12 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         for (const auto& pos : positions) {
             text[pos.second] = blocks[text[pos.second]][pos.first];
         }
+        text.resize(new_text_size);
 #ifdef BENCH
         const auto endTimeRep = recomp::timer::now();
         const auto timeSpanRep = endTimeRep - startTimeRep;
         std::cout << " replace_blocks="
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRep).count());
-#endif
-        text.resize(new_text_size);
-
-#ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " time="

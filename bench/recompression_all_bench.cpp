@@ -45,6 +45,10 @@ int main(int argc, char *argv[]) {
     std::vector<std::string> algos;
     recomp::util::split(algorithms, " ", algos);
 
+#ifdef GRAPH_STATS
+    std::cout << "Printing graph statistics..." << std::endl;
+#endif
+
     for (size_t j = 0; j < files.size(); ++j) {
         for (size_t repeat = 0; repeat < repeats; ++repeat) {
             for (size_t i = 0; i < algos.size(); ++i) {
