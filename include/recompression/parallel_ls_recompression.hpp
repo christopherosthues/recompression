@@ -45,83 +45,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
 
 
  protected:
-//    /**
-//     * @brief Computes and sorts the adjacency list of the text in ascending order.
-//     *
-//     * The adjacency list is stored as a list of text positions.
-//     *
-//     * @param text The text
-//     * @param adj_list[out] The adjacency list (represented as text positions)
-//     */
-//    inline void compute_adj_list_reverse(const text_t& text, adj_list_t& adj_list) {
-//#ifdef BENCH
-//        const auto startTime = recomp::timer::now();
-//#endif
-//
-//#pragma omp parallel for schedule(static) num_threads(this->cores)
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            adj_list[i] = i;
-//        }
-//
-//#ifdef BENCH
-//        const auto endTime = recomp::timer::now();
-//        const auto timeSpan = endTime - startTime;
-//        std::cout << " rev_adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
-//        const auto startTimeMult = recomp::timer::now();
-//#endif
-////        partitioned_radix_sort(adj_list);
-//        auto sort_adj = [&](size_t i, size_t j) {
-//            auto char_i = text[i];
-//            auto char_i1 = text[i + 1];
-//            auto char_j = text[j];
-//            auto char_j1 = text[j + 1];
-//            if (char_i < char_i1) {
-//                if (char_j < char_j1) {
-//                    bool lt = char_i < char_j;
-//                    if (char_i == char_j) {
-//                        lt = char_i1 < char_j1;
-//                    }
-//                    return lt;
-//                } else {
-//                    // char_j1 < char_j -> (char_i, char_i1, 0) (char_j1, char_j, 1)
-//                    bool greater = char_i < char_j1;
-//                    if (char_i == char_j1) {
-//                        if (char_i1 == char_j) {
-//                            return true;
-//                        }
-//                        greater = char_i1 < char_j;
-//                    }
-//                    return greater;
-//                }
-//            } else {
-//                if (char_j < char_j1) {
-//                    // char_i1 > char_i -> (char_i1, char_i, 1) (char_j, char_j1, 0)
-//                    bool greater = char_i1 < char_j;
-//                    if (char_i1 == char_j) {
-//                        if (char_i == char_j1) {
-//                            return false;
-//                        }
-//                        greater = char_i < char_j1;
-//                    }
-//                    return greater;
-//                } else {
-//                    bool greater = char_i1 < char_j1;
-//                    if (char_i1 == char_j1) {
-//                        greater = char_i < char_j;
-//                    }
-//                    return greater;
-//                }
-//            }
-//        };
-//        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), sort_adj, this->cores);
-//#ifdef BENCH
-//        const auto endTimeMult = recomp::timer::now();
-//        const auto timeSpanMult = endTimeMult - startTimeMult;
-//        std::cout << " sort_rev_adj_list="
-//                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
-//#endif
-//    }
-
     /**
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
      *
@@ -137,14 +60,12 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
 #endif
         const size_t adj_list_size = text.size() - 1;
         adj_list_t adj_list(adj_list_size);
-//        adj_list_t reverse_adj_list(adj_list_size);
 #ifdef BENCH
         const auto endTimeAdjInit = recomp::timer::now();
         const auto timeSpanAdjInit = endTimeAdjInit - startTime;
         std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
 #endif
         this->compute_adj_list(text, adj_list);
-//        compute_adj_list_reverse(text, reverse_adj_list);
 
 #ifdef BENCH
         const auto startTimePar = recomp::timer::now();
@@ -216,153 +137,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
             flip[i].resize(0);
         }
         flip.resize(0);
-//        ui_vector<size_t> adj_bounds(partition.size() + 1);
-//        ui_vector<size_t> reverse_adj_bounds(partition.size() + 1);
-//        std::vector<size_t> bounds;
-//        ui_vector<std::uint8_t> flip(partition.size());
-//
-//#pragma omp parallel num_threads(this->cores)
-//        {
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < adj_bounds.size(); ++i) {
-//                adj_bounds[i] = adj_list_size;
-//                reverse_adj_bounds[i] = adj_list_size;
-//            }
-//
-//            auto thread_id = omp_get_thread_num();
-//            auto n_threads = (size_t)omp_get_num_threads();
-//
-//#pragma omp single
-//            {
-//                bounds.reserve(n_threads + 1);
-//                bounds.resize(n_threads + 1, adj_list.size() - 1);
-//            }
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < adj_list.size() - 1; ++i) {
-//                bounds[thread_id] = i;
-//                i = adj_list.size();
-//            }
-//
-//            size_t i = bounds[thread_id];
-//            variable_t val = 0;
-//            variable_t rev_val = 0;
-//            if (i == 0) {
-//                if (text[adj_list[0]] > text[adj_list[0] + 1]) {
-//                    val = text[adj_list[0]];
-//                } else {
-//                    val = text[adj_list[0] + 1];
-//                }
-//                if (text[reverse_adj_list[0]] < text[reverse_adj_list[0] + 1]) {
-//                    rev_val = text[reverse_adj_list[0]];
-//                } else {
-//                    rev_val = text[reverse_adj_list[0] + 1];
-//                }
-//                adj_bounds[val] = 0;
-//                reverse_adj_bounds[rev_val] = 0;
-//            } else if (i < bounds[thread_id + 1]) {
-//                if (text[adj_list[i - 1]] > text[adj_list[i - 1] + 1]) {
-//                    val = text[adj_list[i - 1]];
-//                } else {
-//                    val = text[adj_list[i - 1] + 1];
-//                }
-//                if (text[reverse_adj_list[i - 1]] < text[reverse_adj_list[i - 1] + 1]) {
-//                    rev_val = text[reverse_adj_list[i - 1]];
-//                } else {
-//                    rev_val = text[reverse_adj_list[i - 1] + 1];
-//                }
-//            }
-//
-//            for (; i < bounds[thread_id + 1]; ++i) {
-//                auto char_i = text[adj_list[i]];
-//                auto char_i1 = text[adj_list[i] + 1];
-//                if (char_i < char_i1) {
-//                    char_i = char_i1;
-//                }
-//                if (char_i > val) {
-//                    adj_bounds[char_i] = i;
-//                    val = char_i;
-//                }
-//                char_i = text[reverse_adj_list[i]];
-//                char_i1 = text[reverse_adj_list[i] + 1];
-//                if (char_i < char_i1) {
-//                    char_i = char_i1;
-//                }
-//                if (char_i > rev_val) {
-//                    reverse_adj_bounds[char_i] = i;
-//                    rev_val = char_i;
-//                }
-//            }
-//
-//#pragma omp barrier
-//#pragma omp single
-//            {
-//#pragma omp task
-//                {
-//                    for (size_t j = adj_bounds.size() - 1; j > 0; --j) {
-//                        if (adj_bounds[j - 1] == adj_list.size()) {
-//                            adj_bounds[j - 1] = adj_bounds[j];
-//                        }
-//                    }
-//                }
-//#pragma omp task
-//                {
-//                    for (size_t j = reverse_adj_bounds.size() - 1; j > 0; --j) {
-//                        if (reverse_adj_bounds[j - 1] == reverse_adj_bounds.size()) {
-//                            reverse_adj_bounds[j - 1] = reverse_adj_bounds[j];
-//                        }
-//                    }
-//                }
-//            }
-//
-//            int w_l = 0;
-//            int w_r = 0;
-//#pragma omp barrier
-//#pragma omp for schedule(static)
-//            for (size_t j = 0; j < partition.size(); ++j) {
-//                for (size_t k = adj_bounds[j]; k < adj_bounds[j + 1]; ++k) {
-//                    auto char_i = text[adj_list[k]];
-//                    auto char_i1 = text[adj_list[k] + 1];
-//                    if (char_i < char_i1) {
-//                        char_i = char_i1;
-//                    }
-//                    if (partition[char_i]) {
-//                        w_r++;
-//                    } else {
-//                        w_l++;
-//                    }
-//                }
-//                for (size_t k = reverse_adj_bounds[j]; k < reverse_adj_bounds[j + 1]; ++k) {
-//                    auto char_i = text[reverse_adj_list[k]];
-//                    auto char_i1 = text[reverse_adj_list[k] + 1];
-//                    if (char_i < char_i1) {
-//                        char_i = char_i1;
-//                    }
-//                    if (partition[char_i]) {
-//                        w_r++;
-//                    } else {
-//                        w_l++;
-//                    }
-//                }
-//                if (partition[j]) {
-//                    flip[j] = (std::uint8_t)((w_r > w_l)? 1 : 0);
-//                } else {
-//                    flip[j] = (std::uint8_t)((w_l > w_r)? 1 : 0);
-//                }
-//            }
-//#pragma omp for schedule(static)
-//            for (size_t j = 0; j < partition.size(); ++j) {
-//                if (flip[j]) {
-//                    if (partition[j]) {
-//                        partition[j] = 0;
-//                    } else {
-//                        partition[j] = 1;
-//                    }
-//                }
-//            }
-//        }
-//        adj_bounds.resize(0);
-//        reverse_adj_list.resize(0);
-//        flip.resize(0);
 #ifdef BENCH
         const auto endTimeLocalSearch = recomp::timer::now();
         const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
@@ -384,7 +158,8 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
 #ifdef BENCH
         const auto endTimeDiff = recomp::timer::now();
         const auto timeSpanDiff = endTimeDiff - startTimeDiff;
-        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count();
+        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
+                  << " different=" << std::to_string(different);
         const auto startTimeCount = recomp::timer::now();
 #endif
 
