@@ -45,6 +45,15 @@ class graph {
         std::sort(nodes.begin(), nodes.end());
     }
 
+    inline void density() {
+        size_t n_edges = 0;
+        // Each edge is counted twice
+        for (const auto& edge : edges) {
+            n_edges += edge.second.size();
+        }
+        std::cout << " density=" << ((double)(n_edges)) / (double)(nodes.size() * (nodes.size() - 1));
+    }
+
     inline void components() {
         std::unordered_map<T, bool> visited;
         for (size_t i = 0; i < nodes.size(); ++i) {
@@ -67,7 +76,7 @@ class graph {
         }
 
         bool all_visited = false;
-        int count = 0;
+        size_t count = 0;
         for (const auto& vis : visited) {
             if (vis.second) {
                 count++;

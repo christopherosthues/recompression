@@ -581,7 +581,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         partition[val] = l_count > r_count;
 
 #ifdef GRAPH_STATS
-        compute_graph_stats(text, adj_list, partition.size());
+        compute_graph_stats(text, adj_list);
 #endif
 
 #ifdef BENCH
@@ -852,52 +852,55 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #endif
     }
 
-    inline void compute_graph_stats(const text_t& text, adj_list_t& adj_list, int size) {
-//        std::cout << std::endl;
-        edges(text, adj_list, size);
-//        std::cout << std::endl;
-        components(text, adj_list);
-    }
-
-    inline void edges(const text_t& text, adj_list_t& adj_list, int size) {
-        int edges = 1;
-        variable_t last_i = text[adj_list[0]];
-        variable_t last_i1 = text[adj_list[0] + 1];
-        for (size_t i = 1; i < adj_list.size(); ++i) {
-            variable_t char_i = text[adj_list[i]];
-            variable_t char_i1 = text[adj_list[i] + 1];
-            if (last_i > last_i1) {
-                if (char_i > char_i1) {
-                    if (last_i != char_i || last_i1 != char_i1) {
-                        edges++;
-                    }
-                } else {
-                    if (last_i != char_i1 || last_i1 != char_i) {
-                        edges++;
-                    }
-                }
-            } else {
-                if (char_i > char_i1) {
-                    if (last_i != char_i1 || last_i1 != char_i) {
-                        edges++;
-                    }
-                } else {
-                    if (last_i != char_i || last_i1 != char_i1) {
-                        edges++;
-                    }
-                }
-            }
-            last_i = char_i;
-            last_i1 = char_i1;
-        }
-        std::cout << " density=" << ((double)(2*edges)) / (double)(size * (size - 1));
-    }
-
-    inline void components(const text_t& text, adj_list_t& adj_list) {
+    inline void compute_graph_stats(const text_t& text, adj_list_t& adj_list) {
         graph<variable_t> g{adj_list, text};
-//        std::cout << std::endl;
+        g.density();
         g.components();
+//        std::cout << std::endl;
+//        edges(text, adj_list, size);
+//        std::cout << std::endl;
+//        components(text, adj_list);
     }
+
+//    inline void edges(const text_t& text, adj_list_t& adj_list, int size) {
+//        int edges = 1;
+//        variable_t last_i = text[adj_list[0]];
+//        variable_t last_i1 = text[adj_list[0] + 1];
+//        for (size_t i = 1; i < adj_list.size(); ++i) {
+//            variable_t char_i = text[adj_list[i]];
+//            variable_t char_i1 = text[adj_list[i] + 1];
+//            if (last_i > last_i1) {
+//                if (char_i > char_i1) {
+//                    if (last_i != char_i || last_i1 != char_i1) {
+//                        edges++;
+//                    }
+//                } else {
+//                    if (last_i != char_i1 || last_i1 != char_i) {
+//                        edges++;
+//                    }
+//                }
+//            } else {
+//                if (char_i > char_i1) {
+//                    if (last_i != char_i1 || last_i1 != char_i) {
+//                        edges++;
+//                    }
+//                } else {
+//                    if (last_i != char_i || last_i1 != char_i1) {
+//                        edges++;
+//                    }
+//                }
+//            }
+//            last_i = char_i;
+//            last_i1 = char_i1;
+//        }
+//        std::cout << " density=" << ((double)(2*edges)) / (double)(size * (size - 1));
+//    }
+//
+//    inline void components(const text_t& text, adj_list_t& adj_list) {
+//        graph<variable_t> g{adj_list, text};
+////        std::cout << std::endl;
+//        g.components();
+//    }
 };
 
 }  // namespace parallel
