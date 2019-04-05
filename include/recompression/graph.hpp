@@ -5,6 +5,7 @@
 #include <stack>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "defs.hpp"
 
@@ -107,7 +108,8 @@ class graph {
                              std::unordered_map<T, std::int64_t>& disc,
                              std::unordered_map<T, std::int64_t>& low,
                              std::stack<edge>& st,
-                             std::unordered_map<T, std::int64_t>& parent) {
+                             std::unordered_map<T, std::int64_t>& parent,
+                             std::deque<size_t>& bicomp_sizes) {
         // A static variable is used for simplicity, we can avoid use
         // of static variable by passing a pointer.
         static size_t time = 0;
@@ -129,7 +131,7 @@ class graph {
                 parent[v] = u;
                 // store the edge in stack
                 st.push(edge{u, v});
-                bicomponents(v, disc, low, st, parent);
+                bicomponents(v, disc, low, st, parent, bicomp_sizes);
 
                 // Check if the subtree rooted with 'v' has a
                 // connection to one of the ancestors of 'u'
@@ -139,11 +141,17 @@ class graph {
                 // If u is an articulation point,
                 // pop all edges from stack till u -- v
                 if ((disc[u] == 1 && children > 1) || (disc[u] > 1 && low[v] >= disc[u])) {
+                    std::unordered_set<T> bicomp_nodes;
                     while (st.top().u != u || st.top().v != v) {
 //                        std::cout << st.top().u << "--" << st.top().v << " ";
+                        bicomp_nodes.emplace(st.top().u);
+                        bicomp_nodes.emplace(st.top().v);
                         st.pop();
                     }
 //                    std::cout << st.top().u << "--" << st.top().v;
+                    bicomp_nodes.emplace(st.top().u);
+                    bicomp_nodes.emplace(st.top().v);
+                    bicomp_sizes.emplace_back(bicomp_nodes.size());
                     st.pop();
 //                    std::cout << std::endl;
                     count++;
@@ -167,6 +175,7 @@ class graph {
         std::unordered_map<T, std::int64_t> low;
         std::unordered_map<T, std::int64_t> parent;
         std::stack<edge> stack;
+        std::deque<size_t> bicomp_sizes;
 
         for (size_t i = 0; i < nodes.size(); ++i) {
             disc[nodes[i]] = -1;
@@ -176,22 +185,31 @@ class graph {
 
         for (size_t i = 0; i < nodes.size(); ++i) {
             if (disc[nodes[i]] == -1) {
-                bicomponents(nodes[i], disc, low, stack, parent);
+                bicomponents(nodes[i], disc, low, stack, parent, bicomp_sizes);
             }
 
             int j = 0;
+            std::unordered_set<T> bicomp_nodes;
             while (!stack.empty()) {
                 j = 1;
+//                bicomp_sizes.emplace_back(2);
+                bicomp_nodes.emplace(stack.top().u);
+                bicomp_nodes.emplace(stack.top().v);
 //                std::cout << stack.top().u << "--" << stack.top().v << " ";
                 stack.pop();
             }
             if (j == 1) {
 //                std::cout << std::endl;
+                bicomp_sizes.emplace_back(bicomp_nodes.size());
                 count++;
             }
         }
 
-        std::cout << " bicomponents=" << count;
+        std::cout << " bicomponents=" << count << " component_sizes=";
+        for (size_t i = 0; i < bicomp_sizes.size() - 1; ++i) {
+            std::cout << bicomp_sizes[i] << ",";
+        }
+        std::cout << bicomp_sizes[bicomp_sizes.size() - 1];
 //            int* disc = new int[V];
 //            int* low = new int[V];
 //            int* parent = new int[V];
