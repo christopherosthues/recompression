@@ -19,7 +19,7 @@ class graph {
     struct edge {
         T v, u;
 
-        edge(T v, T u) {
+        edge(T u, T v) {
             this->v = v;
             this->u = u;
         }
@@ -103,47 +103,49 @@ class graph {
         std::cout << comp_sizes[comp_sizes.size() - 1];
     }
 
-    inline void components2(T u,
-                            std::unordered_map<T, int>& disc,
-                            std::unordered_map<T, int>& low,
-                            std::stack<T>& st,
-                            std::unordered_map<T, int>& parent) {
+    inline void bicomponents(T u,
+                             std::unordered_map<T, std::int64_t>& disc,
+                             std::unordered_map<T, std::int64_t>& low,
+                             std::stack<edge>& st,
+                             std::unordered_map<T, std::int64_t>& parent) {
         // A static variable is used for simplicity, we can avoid use
         // of static variable by passing a pointer.
-        static int time = 0;
+        static size_t time = 0;
 
         // Initialize discovery time and low value
         disc[u] = low[u] = ++time;
-        int children = 0;
+        size_t children = 0;
 
         // Go through all vertices adjacent to this
-        list<int>::iterator i;
-        for (i = adj[u].begin(); i != adj[u].end(); ++i) {
-            int v = *i; // v is current adjacent of 'u'
+//        list<int>::iterator i;
+        auto neighbors = edges[u];
+        for (size_t i = 0; i < neighbors.size(); ++i) {
+//            int v = *i; // v is current adjacent of 'u'
+            auto v = neighbors[i];
 
             // If v is not visited yet, then recur for it
             if (disc[v] == -1) {
                 children++;
                 parent[v] = u;
                 // store the edge in stack
-                st->push_back(Edge(u, v));
-                BCCUtil(v, disc, low, st, parent);
+                st.push(edge{u, v});
+                bicomponents(v, disc, low, st, parent);
 
                 // Check if the subtree rooted with 'v' has a
                 // connection to one of the ancestors of 'u'
                 // Case 1 -- per Strongly Connected Components Article
-                low[u] = min(low[u], low[v]);
+                low[u] = std::min(low[u], low[v]);
 
                 // If u is an articulation point,
                 // pop all edges from stack till u -- v
                 if ((disc[u] == 1 && children > 1) || (disc[u] > 1 && low[v] >= disc[u])) {
-                    while (st->back().u != u || st->back().v != v) {
-                        cout << st->back().u << "--" << st->back().v << " ";
-                        st->pop_back();
+                    while (st.top().u != u || st.top().v != v) {
+//                        std::cout << st.top().u << "--" << st.top().v << " ";
+                        st.pop();
                     }
-                    cout << st->back().u << "--" << st->back().v;
-                    st->pop_back();
-                    cout << endl;
+//                    std::cout << st.top().u << "--" << st.top().v;
+                    st.pop();
+//                    std::cout << std::endl;
                     count++;
                 }
             }
@@ -152,13 +154,73 @@ class graph {
                 // (i.e. it's a back edge, not cross edge).
                 // Case 2 -- per Strongly Connected Components Article
             else if (v != parent[u]) {
-                low[u] = min(low[u], disc[v]);
+                low[u] = std::min(low[u], disc[v]);
                 if (disc[v] < disc[u]) {
-                    st->push_back(Edge(u, v));
+                    st.push(edge{u, v});
                 }
             }
         }
     }
+
+    inline void bicomponents() {
+        std::unordered_map<T, std::int64_t> disc;
+        std::unordered_map<T, std::int64_t> low;
+        std::unordered_map<T, std::int64_t> parent;
+        std::stack<edge> stack;
+
+        for (size_t i = 0; i < nodes.size(); ++i) {
+            disc[nodes[i]] = -1;
+            low[nodes[i]] = -1;
+            parent[nodes[i]] = -1;
+        }
+
+        for (size_t i = 0; i < nodes.size(); ++i) {
+            if (disc[nodes[i]] == -1) {
+                bicomponents(nodes[i], disc, low, stack, parent);
+            }
+
+            int j = 0;
+            while (!stack.empty()) {
+                j = 1;
+//                std::cout << stack.top().u << "--" << stack.top().v << " ";
+                stack.pop();
+            }
+            if (j == 1) {
+//                std::cout << std::endl;
+                count++;
+            }
+        }
+
+        std::cout << " bicomponents=" << count;
+//            int* disc = new int[V];
+//            int* low = new int[V];
+//            int* parent = new int[V];
+//            list<Edge>* st = new list<Edge>[E];
+//
+//            // Initialize disc and low, and parent arrays
+//            for (int i = 0; i < V; i++) {
+//                disc[i] = NIL;
+//                low[i] = NIL;
+//                parent[i] = NIL;
+//            }
+//
+//            for (int i = 0; i < V; i++) {
+//                if (disc[i] == NIL)
+//                    BCCUtil(i, disc, low, st, parent);
+//
+//                int j = 0;
+//                // If stack is not empty, pop all edges from stack
+//                while (st->size() > 0) {
+//                    j = 1;
+//                    cout << st->back().u << "--" << st->back().v << " ";
+//                    st->pop_back();
+//                }
+//                if (j == 1) {
+//                    cout << endl;
+//                    count++;
+//                }
+//            }
+        }
 
     //// A recursive function that finds and prints strongly connected
 //// components using DFS traversal

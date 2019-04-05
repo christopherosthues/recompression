@@ -856,6 +856,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         graph<variable_t> g{adj_list, text};
         g.density();
         g.components();
+        g.bicomponents();
 //        std::cout << std::endl;
 //        edges(text, adj_list, size);
 //        std::cout << std::endl;
