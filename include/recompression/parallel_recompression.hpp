@@ -546,37 +546,55 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         for (size_t i = 1; i < adj_list.size(); ++i) {
             auto text_i = text[adj_list[i]];
             auto text_i1 = text[adj_list[i] + 1];
-            if (text_i > text_i1) {
-                if (val < text_i) {
-                    partition[val] = l_count > r_count;
-                    l_count = 0;
-                    r_count = 0;
-                    val = text_i;
-                }
-                if (partition.find(text_i1) == partition.end()) {
-                    partition[text_i1] = false;
-                }
-                if (partition[text_i1]) {
-                    r_count++;
-                } else {
-                    l_count++;
-                }
-            } else {
-                if (val < text_i1) {
-                    partition[val] = l_count > r_count;
-                    l_count = 0;
-                    r_count = 0;
-                    val = text_i1;
-                }
-                if (partition.find(text_i) == partition.end()) {
-                    partition[text_i] = false;
-                }
-                if (partition[text_i]) {
-                    r_count++;
-                } else {
-                    l_count++;
-                }
+            if (text_i1 > text_i) {
+                std::swap(text_i, text_i1);
             }
+
+            if (val < text_i) {
+                partition[val] = l_count > r_count;
+                l_count = 0;
+                r_count = 0;
+                val = text_i;
+            }
+            if (partition.find(text_i1) == partition.end()) {
+                partition[text_i1] = false;
+            }
+            if (partition[text_i1]) {
+                r_count++;
+            } else {
+                l_count++;
+            }
+//            if (text_i > text_i1) {
+//                if (val < text_i) {
+//                    partition[val] = l_count > r_count;
+//                    l_count = 0;
+//                    r_count = 0;
+//                    val = text_i;
+//                }
+//                if (partition.find(text_i1) == partition.end()) {
+//                    partition[text_i1] = false;
+//                }
+//                if (partition[text_i1]) {
+//                    r_count++;
+//                } else {
+//                    l_count++;
+//                }
+//            } else {
+//                if (val < text_i1) {
+//                    partition[val] = l_count > r_count;
+//                    l_count = 0;
+//                    r_count = 0;
+//                    val = text_i1;
+//                }
+//                if (partition.find(text_i) == partition.end()) {
+//                    partition[text_i] = false;
+//                }
+//                if (partition[text_i]) {
+//                    r_count++;
+//                } else {
+//                    l_count++;
+//                }
+//            }
         }
         partition[val] = l_count > r_count;
 
