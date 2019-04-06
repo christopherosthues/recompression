@@ -182,8 +182,8 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 #endif
 
         const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
-        ui_vector<variable_t> global_hist(max_letters);
-        global_hist[0] = 0;
+//        ui_vector<variable_t> global_hist(max_letters);
+//        global_hist[0] = 0;
         i_vector<ui_vector<variable_t>> hists;
 #pragma omp parallel num_threads(this->cores)
         {
@@ -206,38 +206,40 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
             }
 
 #pragma omp for schedule(static)
-            for (size_t i = 0; i < global_hist.size(); ++i) {
-                global_hist[i] = hists[0][i];
+            for (size_t i = 0; i < max_letters; ++i) {
+//                hists[0][i] = hists[0][i];
                 for (size_t j = 1; j < n_threads; ++j) {
-                    global_hist[i] |= hists[j][i];
+                    hists[0][i] |= hists[j][i];
                 }
             }
 
 #pragma omp single
             {
-                for (size_t i = 0; i < n_threads; ++i) {
+                for (size_t i = 1; i < n_threads; ++i) {
                     hists[i].resize(0);
                 }
-                hists.resize(0);
+                hists.resize(1);
                 mapping.resize(max_letters);
                 size_t j = 0;
-                if (global_hist[0] > 0) {
+                if (hists[0][0] > 0) {
                     mapping[j++] = minimum;
                 }
-                for (size_t i = 1; i < global_hist.size(); ++i) {
-                    if (global_hist[i] > 0) {
+                for (size_t i = 1; i < max_letters; ++i) {
+                    if (hists[0][i] > 0) {
                         mapping[j++] = i + minimum;
                     }
-                    global_hist[i] += global_hist[i - 1];
+                    hists[0][i] += hists[0][i - 1];
                 }
                 mapping.resize(j);
             }
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-                text[i] = global_hist[text[i] - minimum] - 1;
+                text[i] = hists[0][text[i] - minimum] - 1;
             }
         }
+        hists[0].resize(0);
+        hists.resize(0);
 #ifdef BENCH
         const auto endAlphaTime = recomp::timer::now();
         const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
