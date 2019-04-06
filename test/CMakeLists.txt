@@ -3,6 +3,7 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("parallel_lp_recompression")
     build_test("parallel_rnd_recompression")
     build_test("parallel_ls_recompression")
+    build_test("parallel_gr_recompression")
     build_test("parallel_order_great_recompression")
     build_test("parallel_order_less_recompression")
 

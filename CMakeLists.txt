@@ -47,7 +47,7 @@ elseif(${CMAKE_BUILD_TYPE} MATCHES BenchSingleExtract)
     add_definitions(-DBENCH_SINGLE_EXTRACT)
 endif ()
 
-add_definitions(-DGRAPH_STATS)
+#add_definitions(-DGRAPH_STATS)
 
 add_custom_target(external-downloads)
 

@@ -72,134 +72,83 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
 #ifdef BENCH
         const auto endTimePar = recomp::timer::now();
         const auto timeSpanPar = endTimePar - startTimePar;
-        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-        const auto startTimeLocalSearch = recomp::timer::now();
+        std::cout << " random_undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+        const auto startTimeGreedy = recomp::timer::now();
 #endif
 
-        // TODO: use greedy algorithm
-//        int l_count = 0;
-//        int r_count = 0;
-//        variable_t val = 0;
-//        if (text[adj_list[0]] > text[adj_list[0] + 1]) {
-//            val = text[adj_list[0]];
-//            partition[text[adj_list[0] + 1]] = false;
-//        } else {
-//            val = text[adj_list[0] + 1];
-//            partition[text[adj_list[0]]] = false;
-//        }
-//
-//        l_count++;
-//        for (size_t i = 1; i < adj_list.size(); ++i) {
-//            auto text_i = text[adj_list[i]];
-//            auto text_i1 = text[adj_list[i] + 1];
-//            if (text_i > text_i1) {
-//                if (val < text_i) {
-//                    partition[val] = l_count > r_count;
-//                    l_count = 0;
-//                    r_count = 0;
-//                    val = text_i;
-//                }
-//                if (partition.find(text_i1) == partition.end()) {
-//                    partition[text_i1] = false;
-//                }
-//                if (partition[text_i1]) {
-//                    r_count++;
-//                } else {
-//                    l_count++;
-//                }
-//            } else {
-//                if (val < text_i1) {
-//                    partition[val] = l_count > r_count;
-//                    l_count = 0;
-//                    r_count = 0;
-//                    val = text_i1;
-//                }
-//                if (partition.find(text_i) == partition.end()) {
-//                    partition[text_i] = false;
-//                }
-//                if (partition[text_i]) {
-//                    r_count++;
-//                } else {
-//                    l_count++;
-//                }
-//            }
-//        }
-//        partition[val] = l_count > r_count;
+        std::vector<size_t> bounds;
+#pragma omp parallel num_threads(this->cores)
+        {
+            auto n_threads = (size_t) omp_get_num_threads();
+            auto thread_id = (size_t) omp_get_thread_num();
 
+#pragma omp single
+            {
+                bounds.reserve(n_threads + 1);
+                bounds.resize(n_threads + 1, adj_list_size);
+            }
 
+#pragma omp for schedule(static)
+            for (size_t i = 0; i < adj_list_size; ++i) {
+                bounds[thread_id] = i;
+                i = adj_list_size;
+            }
 
+            size_t i = bounds[thread_id];
+            variable_t val;
+            if (i == 0) {
+                val = std::max(text[adj_list[i]], text[adj_list[i] + 1]);
+            } else if (i < bounds[thread_id + 1]) {
+                auto comp_val = std::max(text[adj_list[i - 1]], text[adj_list[i - 1] + 1]);
 
-//        i_vector<ui_vector<std::int64_t>> flip;
-//        std::vector<size_t> bounds;
-//#pragma omp parallel num_threads(this->cores)
-//        {
-//            auto n_threads = (size_t)omp_get_num_threads();
-//            auto thread_id = (size_t)omp_get_thread_num();
-//#pragma omp single
-//            {
-//                flip.resize(n_threads);
-//                for (size_t i = 0; i < n_threads; ++i) {
-//                    flip[i].resize(partition.size());
-//                }
-//                bounds.reserve(n_threads + 1);
-//                bounds.resize(n_threads + 1, adj_list.size() - 1);
-//            }
-//            flip[thread_id].fill(0);
-//
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < adj_list_size; ++i) {
-//                auto char_i = text[adj_list[i]];
-//                auto char_i1 = text[adj_list[i] + 1];
-//                if (partition[char_i] != partition[char_i1]) {
-//                    flip[thread_id][char_i]++;
-//                    flip[thread_id][char_i1]++;
-//                } else {
-//                    flip[thread_id][char_i]--;
-//                    flip[thread_id][char_i1]--;
-//                }
-//            }
-//
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < partition.size(); ++i) {
-//                for (size_t j = 1; j < n_threads; ++j) {
-//                    flip[0][i] += flip[j][i];
-//                }
-//                if (flip[0][i] < 0) {
-//                    if (partition[i] == 0) {
-//                        partition[i] = 1;
-//                    } else {
-//                        partition[i] = 0;
-//                    }
-//                }
-//            }
-//        }
-//        for (size_t i = 0; i < flip.size(); ++i) {
-//            flip[i].resize(0);
-//        }
-//        flip.resize(0);
-//#ifdef BENCH
-//        const auto endTimeLocalSearch = recomp::timer::now();
-//        const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
-//        std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
-//        const auto startTimeDiff = recomp::timer::now();
-//#endif
-//
-//        bool different = false;
-//#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
-//        for (size_t i = 0; i < partition.size() - 1; ++i) {
-//            if (partition[i] != partition[i + 1]) {
-//                different = true;
-//            }
-//        }
-//        if (!different) {
-//            partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
-//            partition[partition.size() - 1] = 1;
-//        }
+                auto text_i = text[adj_list[i]];
+                auto text_i1 = text[adj_list[i] + 1];
+                val = std::max(text_i, text_i1);
+                while (i < bounds[thread_id + 1] && comp_val == val) {
+                    i++;
+                    if (i < bounds[thread_id + 1]) {
+                        text_i = text[adj_list[i]];
+                        text_i1 = text[adj_list[i] + 1];
+                        val = std::max(text_i, text_i1);
+                    }
+                }
+            }
+
+            int l_count = 0;
+            int r_count = 0;
+            for (; i < bounds[thread_id + 1]; ++i) {
+                auto text_i = text[adj_list[i]];
+                auto text_i1 = text[adj_list[i] + 1];
+                if (text_i < text_i1) {
+                    std::swap(text_i, text_i1);
+                }
+                while (i < adj_list_size && val == text_i) {
+                    if (partition[text_i1]) {
+                        r_count++;
+                    } else {
+                        l_count++;
+                    }
+                    i++;
+                    if (i < adj_list_size) {
+                        text_i = text[adj_list[i]];
+                        text_i1 = text[adj_list[i] + 1];
+                        if (text_i < text_i1) {
+                            std::swap(text_i, text_i1);
+                        }
+                    }
+                }
+                if ((val < text_i || i == adj_list_size) && (l_count > 0 || r_count > 0)) {
+                    partition[val] = l_count > r_count;
+                    l_count = 0;
+                    r_count = 0;
+                    val = text_i;
+                }
+            }
+        }
 #ifdef BENCH
-//        const auto endTimeDiff = recomp::timer::now();
-//        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
-//        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
-//                  << " different=" << std::to_string(different);
+        const auto endTimeGreedy = recomp::timer::now();
+        const auto timeSpanGreedy = endTimeGreedy - startTimeGreedy;
+        std::cout << " greedy_undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanGreedy).count();
         const auto startTimeCount = recomp::timer::now();
 #endif
 
@@ -207,24 +156,9 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
-        std::vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {
-            auto n_threads = (size_t)omp_get_num_threads();
             auto thread_id = omp_get_thread_num();
-
-#pragma omp single
-            {
-                bounds.reserve(n_threads + 1);
-                bounds.resize(n_threads + 1, adj_list.size());
-//                std::fill(bounds.begin(), bounds.end(), adj_list.size());
-            }
-
-#pragma omp for schedule(static)
-            for (size_t i = 0; i < adj_list.size(); ++i) {
-                bounds[thread_id] = i;
-                i = adj_list.size();
-            }
 
             variable_t last_i = 0;  // avoid more random access than necessary
             variable_t last_i1 = 0;
