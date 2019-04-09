@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
 
                     std::string res = rlslp.derive_text();
                     rlslp.resize(0);
-                    rlslp.shrink_to_fit();
+                    // rlslp.shrink_to_fit();
 
                     std::string c_text;
                     recomp::util::read_text_file_fill(file_name, c_text, file_size);

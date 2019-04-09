@@ -6,6 +6,7 @@
 #include <parallel/algorithm>
 #include <algorithm>
 #include <chrono>
+#include <deque>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -603,6 +604,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 #ifdef BENCH
         const auto startTimeRules = recomp::timer::now();
 #endif
+        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
         if (adj_list.size() > 0) {
             variable_t left, right;
             bool pair_found;
@@ -629,6 +631,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
+                new_rules.emplace_back(left, right, len);
 //                rlslp.non_terminals.emplace_back(left, right, len);  // TODO: emplace back
             }
         }
@@ -669,8 +672,16 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
+                new_rules.emplace_back(left, right, len);
 //                rlslp.non_terminals.emplace_back(left, right, len);  // TODO: emplace back
             }
+        }
+
+        size_t size = rlslp.size();
+        rlslp.resize(size + new_rules.size());
+#pragma omp parallel for num_threads(this->cores) schedule(static)
+        for (size_t i = 0; i < new_rules.size(); ++i) {
+            rlslp[size + i] = new_rules[i];
         }
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();

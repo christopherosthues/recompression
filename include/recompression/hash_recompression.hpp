@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <climits>
+#include <deque>
 #include <iostream>
 #include <map>
 #include <string>
@@ -109,6 +110,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         size_t copy_i = 0;
         bool copy = false;
 
+        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
         for (size_t i = 1; i < text.size(); ++i, ++copy_i) {
             while (i < text.size() && text[i - 1] == text[i]) {
                 block_len++;
@@ -131,7 +133,8 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                     if (text[i - 1] >= rlslp.terminals) {
                         len *= rlslp[text[i - 1] - rlslp.terminals].len;
                     }
-                    rlslp.non_terminals.emplace_back(text[i - 1], block_len, len);
+                    new_rules.emplace_back(text[i - 1], block_len, len);
+                    // rlslp.non_terminals.emplace_back(text[i - 1], block_len, len);  // TODO
 
                     blocks[block] = next_nt++;
                 } else {
@@ -144,6 +147,11 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
             if (copy) {
                 text[copy_i] = text[i];
             }
+        }
+        size_t size = rlslp.size();
+        rlslp.resize(size + new_rules.size());
+        for (size_t i = 0; i < new_rules.size(); ++i) {
+            rlslp[size + i] = new_rules[i];
         }
         if (copy_i < new_text_size) {
             text[copy_i] = text[text.size() - 1];
@@ -372,6 +380,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
         size_t copy_i = 0;
         bool copy = false;
+        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
         for (size_t i = 1; i < text.size(); ++i, ++copy_i) {
             if (part_l == part[text[i - 1]] && part_l != part[text[i]]) {
                 copy = true;
@@ -393,7 +402,8 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                     } else {
                         len += 1;
                     }
-                    rlslp.non_terminals.emplace_back(text[i - 1], text[i], len);
+                    new_rules.emplace_back(text[i - 1], text[i], len);
+                    // rlslp.non_terminals.emplace_back(text[i - 1], text[i], len);  // TODO
 
                     pairs[pair] = next_nt++;
                 } else {
@@ -407,6 +417,11 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
             } else if (copy) {
                 text[copy_i] = text[i - 1];
             }
+        }
+        size_t size = rlslp.size();
+        rlslp.resize(size + new_rules.size());
+        for (size_t i = 0; i < new_rules.size(); ++i) {
+            rlslp[size + i] = new_rules[i];
         }
         if (copy_i < new_text_size) {
             text[copy_i] = text[text.size() - 1];

@@ -861,7 +861,7 @@ TEST(parallel_order_gr_pcomp, 2215) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    rlslp.resize(19);
+    exp_rlslp.resize(19);
     exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};

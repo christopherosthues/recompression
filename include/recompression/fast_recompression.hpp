@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <climits>
+#include <deque>
 #include <iostream>
 #include <map>
 #include <string>
@@ -209,6 +210,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
         const auto startTimeAss = recomp::timer::now();
 #endif
         block_count = 0;
+        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
         for (size_t i = 0; i < block_vec.size(); ++i) {
             if (block_vec[i]) {
                 for (auto& block : blocks[i]) {
@@ -218,10 +220,16 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                     if (mapping[i] >= rlslp.terminals) {
                         len *= rlslp[mapping[i] - rlslp.terminals].len;
                     }
-                    rlslp.non_terminals.emplace_back(mapping[i], block.first, len);
+                    new_rules.emplace_back(mapping[i], block.first, len);
+                    // rlslp.non_terminals.emplace_back(mapping[i], block.first, len);  // TODO
                     mapping.emplace_back(next_nt++);
                 }
             }
+        }
+        size_t size = rlslp.size();
+        rlslp.resize(size + new_rules.size());
+        for (size_t i = 0; i < new_rules.size(); ++i) {
+            rlslp[size + i] = new_rules[i];
         }
         if (block_count > 0) {
             rlslp.blocks += block_count;
@@ -480,6 +488,7 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                   << " elements=" << pair_count << " pairs=" << pair_c;
         const auto startTimeAss = recomp::timer::now();
 #endif
+        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
         size_t alpha_size = alphabet_size;
         for (size_t i = 0; i < alpha_size; ++i) {
             if (!part[i]) {
@@ -499,9 +508,15 @@ class recompression_fast : public recompression<variable_t, terminal_count_t> {
                     } else {
                         len += 1;
                     }
-                    rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], len);
+                    new_rules.emplace_back(mapping[i], mapping[pair.first], len);
+                    // rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], len);  // TODO
                 }
             }
+        }
+        size_t size = rlslp.size();
+        rlslp.resize(size + new_rules.size());
+        for (size_t i = 0; i < new_rules.size(); ++i) {
+            rlslp[size + i] = new_rules[i];
         }
 //        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
         bv.resize(rlslp.size(), false);

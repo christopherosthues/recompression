@@ -105,7 +105,7 @@ class PlainFixedRLSLPCoder {
             if (!empty) {
                 auto bits = istream.read_int<uint8_t>(6);
                 auto size = istream.read_int<size_t>(bits);
-                rlslp.reserve(size);
+                // rlslp.reserve(size);
                 rlslp.resize(size);
                 rlslp.terminals = istream.read_int<terminal_count_t>(bits);
                 rlslp.root = istream.read_int<variable_t>(bits);
