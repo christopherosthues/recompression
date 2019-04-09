@@ -50,10 +50,15 @@ TEST(parallel_ls_bcomp, 21214441332311413334133231141321) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
-    exp_rlslp.non_terminals.emplace_back(3, 2, 2);
-    exp_rlslp.non_terminals.emplace_back(3, 3, 3);
-    exp_rlslp.non_terminals.emplace_back(4, 3, 3);
+    exp_rlslp.resize(4);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
+//    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
+//    exp_rlslp.non_terminals.emplace_back(3, 2, 2);
+//    exp_rlslp.non_terminals.emplace_back(3, 3, 3);
+//    exp_rlslp.non_terminals.emplace_back(4, 3, 3);
     exp_rlslp.blocks = 4;
     bv_t exp_bv = {true, true, true, true};
 
@@ -76,7 +81,9 @@ TEST(parallel_ls_bcomp, 222222222222222222222) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
+    exp_rlslp.resize(1);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 21, 21};
+//    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
     exp_rlslp.blocks = 1;
     bv_t exp_bv = {true};
 
@@ -99,9 +106,13 @@ TEST(parallel_ls_bcomp, 22222222211111112222) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
-    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
-    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
+    exp_rlslp.resize(3);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 7, 7};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{2, 4, 4};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 9, 9};
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.blocks = 3;
     bv_t exp_bv = {true, true, true};
 
@@ -124,10 +135,15 @@ TEST(parallel_ls_bcomp, 2222222221111111222200) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
-    exp_rlslp.non_terminals.emplace_back(0, 2, 2);
-    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
-    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
-    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
+    exp_rlslp.resize(4);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{0, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 7, 7};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 4, 4};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{2, 9, 9};
+//    exp_rlslp.non_terminals.emplace_back(0, 2, 2);
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
+//    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.blocks = 4;
     bv_t exp_bv = {true, true, true, true};
 
@@ -628,7 +644,9 @@ TEST(parallel_ls_recomp, short_block2) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.non_terminals.emplace_back(112, 2, 2);
+    exp_rlslp.resize(1);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{112, 2, 2};
+//    exp_rlslp.non_terminals.emplace_back(112, 2, 2);
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
 
@@ -649,7 +667,9 @@ TEST(parallel_ls_recomp, short_block3) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.non_terminals.emplace_back(112, 3, 3);
+    exp_rlslp.resize(1);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{112, 3, 3};
+//    exp_rlslp.non_terminals.emplace_back(112, 3, 3);
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
 
@@ -681,7 +701,9 @@ TEST(parallel_ls_recomp, one_block) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
+    exp_rlslp.resize(1);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 21, 21};
+//    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
     exp_rlslp.blocks = 0;
     exp_rlslp.is_empty = false;
 
@@ -701,9 +723,13 @@ TEST(parallel_ls_recomp, two_blocks) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.non_terminals.emplace_back(5, 4, 16);
-    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
-    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
+    exp_rlslp.resize(3);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{5, 4, 16};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 7, 7};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 9, 9};
+//    exp_rlslp.non_terminals.emplace_back(5, 4, 16);
+//    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
+//    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
     exp_rlslp.blocks = 1;
     exp_rlslp.is_empty = false;
 
@@ -795,7 +821,9 @@ TEST(parallel_ls_recomp, pair) {
     recomp::rlslp<var_t, term_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.non_terminals.emplace_back(112, 111, 2);
+    exp_rlslp.resize(1);
+    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{112, 111, 2};
+//    exp_rlslp.non_terminals.emplace_back(112, 111, 2);
     exp_rlslp.blocks = 1;
     exp_rlslp.is_empty = false;
 

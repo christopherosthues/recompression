@@ -540,7 +540,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-                rlslp.reserve(rlslp_size);
+//                rlslp.reserve(rlslp_size);
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }

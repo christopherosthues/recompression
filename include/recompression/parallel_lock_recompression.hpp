@@ -308,7 +308,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-                    rlslp.reserve(rlslp_size);
+//                    rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
@@ -820,7 +820,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-                rlslp.reserve(rlslp_size);
+//                rlslp.reserve(rlslp_size);
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }

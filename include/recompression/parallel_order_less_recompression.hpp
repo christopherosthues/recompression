@@ -308,7 +308,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-                    rlslp.reserve(rlslp_size);
+//                    rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
@@ -616,7 +616,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
-                rlslp.non_terminals.emplace_back(left, right, len);
+//                rlslp.non_terminals.emplace_back(left, right, len);  // TODO: emplace back
             }
         }
 
@@ -656,7 +656,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
-                rlslp.non_terminals.emplace_back(left, right, len);
+//                rlslp.non_terminals.emplace_back(left, right, len);  // TODO: emplace back
             }
         }
         adj_list.resize(0);

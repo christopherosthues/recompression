@@ -12,14 +12,9 @@
 #include <utility>
 #include <vector>
 
-//#include <glog/logging.h>
 #include "util.hpp"
-
 #include "defs.hpp"
 
-//#ifndef THREAD_COUNT
-//#define THREAD_COUNT std::thread::hardware_concurrency()
-//#endif
 
 namespace recomp {
 
@@ -108,6 +103,137 @@ void lsd_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec) {
 }
 
 namespace parallel {
+
+template<typename text_t, typename variable_t, typename T = recomp::var_t, std::uint8_t D = 8>
+void partitioned_parallel_radix_sort(text_t& text, ui_vector<T>& vector, const size_t cores) {
+    const auto lsd_blocks = sizeof(variable_t) * CHAR_BIT / D;  // assumed that the number of bits is integer-divisible by D
+    int n_blocks = lsd_blocks;
+    const auto n_buckets = (1 << D);
+    bool insuff_key = true;
+
+    variable_t mask = n_buckets - 1;
+    std::array<std::vector<variable_t>, n_buckets> buckets;
+    std::vector<size_t> bucks(n_buckets);
+    const auto hist_size = n_buckets + 1;
+    std::array<size_t, hist_size> hist;
+    hist[0] = 0;
+    std::array<size_t*, n_buckets> bounds;
+#pragma omp parallel num_threads(cores)
+    {
+        auto thread_id = omp_get_thread_num();
+        auto n_threads = static_cast<size_t>(omp_get_num_threads());
+
+#pragma omp single
+        {
+//            DLOG(INFO) << "Init bounds";
+            for (size_t i = 0; i < bounds.size(); ++i) {
+                bounds[i] = new size_t[n_threads + 1];
+                bounds[i][0] = 0;
+            }
+        }
+
+#pragma omp barrier
+        while (insuff_key && n_blocks > 0) {
+            std::array<std::vector<variable_t>, n_buckets> t_buckets;
+//            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
+#pragma omp for schedule(static) nowait
+            for (size_t i = 0; i < vector.size(); ++i) {
+                t_buckets[digits<variable_t, D>(vector[i], n_blocks - 1, mask)].emplace_back(vector[i]);
+            }
+
+#ifdef DEBUG
+            //            for (size_t i = 0; i < t_buckets.size(); ++i) {
+//                if (!t_buckets[i].empty()) {
+//                    DLOG(INFO) << "Bucket " << i << " of thread " << thread_id << ": "
+//                               << util::vector_blocks_to_string(t_buckets[i]);
+//                }
+//            }
+#endif
+
+//            DLOG(INFO) << "Write lengths";
+            for (size_t i = 0; i < bounds.size(); ++i) {
+                bounds[i][thread_id + 1] = t_buckets[i].size();
+            }
+
+#pragma omp barrier
+#pragma omp single
+            {
+//                DLOG(INFO) << "Computing prefix sums";
+                size_t buck = 0;
+                for (size_t i = 0; i < bounds.size(); ++i) {
+                    for (size_t j = 1; j < n_threads + 1; ++j) {
+#ifdef DEBUG
+                        //                        std::cout << bounds[i][j] << " ";
+#endif
+                        bounds[i][j] += bounds[i][j - 1];
+                    }
+#ifdef DEBUG
+                    //                    std::cout << std::endl;
+#endif
+                    buckets[i].resize(buckets[i].size() + bounds[i][n_threads]);
+                    hist[i + 1] = hist[i] + bounds[i][n_threads];
+                    if (hist[i] != hist[i+1]) {
+//                        DLOG(INFO) << "Adding bucket " << i << ", hist[i]: " << (hist[i] + bounds[i][n_threads]);
+                        bucks[buck++] = i;
+                    }
+                }
+                bucks.resize(buck);
+            }
+
+//            DLOG(INFO) << "Computing global buckets";
+            for (size_t i = 0; i < buckets.size(); ++i) {
+                std::copy(t_buckets[i].begin(), t_buckets[i].end(), buckets[i].begin() + bounds[i][thread_id]);
+            }
+
+#pragma omp barrier
+#pragma omp single
+            {
+                insuff_key = false;
+                for (size_t i = 0; i < buckets.size(); ++i) {
+                    if (buckets[i].size() == vector.size()) {
+                        insuff_key = true;
+                        if (n_blocks > 1) {
+                            buckets[i].resize(0);
+                            buckets[i].shrink_to_fit();
+                            bucks.resize(n_buckets);
+                        }
+                    }
+                }
+
+                if (insuff_key) {
+                    n_blocks--;
+                }
+//                DLOG(INFO) << "Key not sufficient: " << std::to_string(insuff_key);
+            }
+        }
+    }
+//    DLOG(INFO) << "Delete bounds arrays";
+    for (size_t i = 0; i < bounds.size(); ++i) {
+        delete[] bounds[i];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @brief
