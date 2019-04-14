@@ -335,7 +335,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-//                    rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
@@ -785,7 +784,6 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-//                rlslp.reserve(rlslp_size);
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }
@@ -875,51 +873,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         g.density();
         g.components();
         g.bicomponents();
-//        std::cout << std::endl;
-//        edges(text, adj_list, size);
-//        std::cout << std::endl;
-//        components(text, adj_list);
     }
-
-//    inline void edges(const text_t& text, adj_list_t& adj_list, int size) {
-//        int edges = 1;
-//        variable_t last_i = text[adj_list[0]];
-//        variable_t last_i1 = text[adj_list[0] + 1];
-//        for (size_t i = 1; i < adj_list.size(); ++i) {
-//            variable_t char_i = text[adj_list[i]];
-//            variable_t char_i1 = text[adj_list[i] + 1];
-//            if (last_i > last_i1) {
-//                if (char_i > char_i1) {
-//                    if (last_i != char_i || last_i1 != char_i1) {
-//                        edges++;
-//                    }
-//                } else {
-//                    if (last_i != char_i1 || last_i1 != char_i) {
-//                        edges++;
-//                    }
-//                }
-//            } else {
-//                if (char_i > char_i1) {
-//                    if (last_i != char_i1 || last_i1 != char_i) {
-//                        edges++;
-//                    }
-//                } else {
-//                    if (last_i != char_i || last_i1 != char_i1) {
-//                        edges++;
-//                    }
-//                }
-//            }
-//            last_i = char_i;
-//            last_i1 = char_i1;
-//        }
-//        std::cout << " density=" << ((double)(2*edges)) / (double)(size * (size - 1));
-//    }
-//
-//    inline void components(const text_t& text, adj_list_t& adj_list) {
-//        graph<variable_t> g{adj_list, text};
-////        std::cout << std::endl;
-//        g.components();
-//    }
 };
 
 }  // namespace parallel

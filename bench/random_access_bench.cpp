@@ -39,9 +39,6 @@ int main(int argc, char *argv[]) {
     size_t steps;
     cmd.add_param_bytes("steps", steps, "The steps");
 
-    std::string z;
-    cmd.add_param_string("zeroes", z, "Read file with zero symbol (z) or without (w)");
-
     std::string coder = "";
     cmd.add_string('c', "coder", coder, "The coder to read the rlslp from file (plain | fixed | sorted)");
 
