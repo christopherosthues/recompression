@@ -222,7 +222,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                 }
             }
         }
-        block_overlaps.resize(0);
+        block_overlaps.resize(1);
         block_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeBlocks = recomp::timer::now();
@@ -361,7 +361,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
                     }
                 }
             }
-            positions.resize(0);
+            positions.resize(1);
             positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
@@ -668,7 +668,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
         }
-        adj_list.resize(0);
+        adj_list.resize(1);
         adj_list.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
@@ -748,7 +748,7 @@ class recompression_order_ls : public recompression<variable_t, terminal_count_t
         {
             auto discard = std::move(partition);
         }
-        pair_overlaps.resize(0);
+        pair_overlaps.resize(1);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();

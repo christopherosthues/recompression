@@ -221,7 +221,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 }
             }
         }
-        block_overlaps.resize(0);
+        block_overlaps.resize(1);
         block_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeBlocks = recomp::timer::now();

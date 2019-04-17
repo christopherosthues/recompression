@@ -258,7 +258,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         block_counts[block_counts.size() - 1] =
                 compact_bounds[block_counts.size() - 1] + block_overlaps[block_counts.size() - 1] -
                 block_counts[block_counts.size() - 1];
-        block_overlaps.resize(0);
+        block_overlaps.resize(1);
         block_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeBlocks = recomp::timer::now();
@@ -387,7 +387,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                     }
                 }
             }
-            positions.resize(0);
+            positions.resize(1);
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
             const auto timeSpanRules = endTimeRules - startTimeRules;
@@ -485,7 +485,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
 #ifdef BENCH
         const auto startTimeCount = recomp::timer::now();
 #endif
-        adj_list.resize(0);
+        adj_list.resize(1);
 
         int lr_count = 0;
         int rl_count = 0;
@@ -708,7 +708,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
         {
             auto discard = std::move(partition);
         }
-        pair_overlaps.resize(0);
+        pair_overlaps.resize(1);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();
@@ -848,7 +848,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 text[positions[i] + 1] = DELETED;
             }
         }
-        positions.resize(0);
+        positions.resize(1);
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;

@@ -134,9 +134,9 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
             }
         }
         for (size_t i = 0; i < flip.size(); ++i) {
-            flip[i].resize(0);
+            flip[i].resize(1);
         }
-        flip.resize(0);
+        flip.resize(1);
 #ifdef BENCH
         const auto endTimeLocalSearch = recomp::timer::now();
         const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;

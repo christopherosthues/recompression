@@ -182,64 +182,79 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 #endif
 
         const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
-//        ui_vector<variable_t> global_hist(max_letters);
-//        global_hist[0] = 0;
-        i_vector<ui_vector<variable_t>> hists;
+//        i_vector<ui_vector<variable_t>> hists;
+        ui_vector<variable_t> hist(max_letters);
 #pragma omp parallel num_threads(this->cores)
         {
-            auto n_threads = (size_t)omp_get_num_threads();
-            auto thread_id = (size_t)omp_get_thread_num();
-#pragma omp single
-            {
-                hists.resize(n_threads);
-                for (size_t i = 0; i < n_threads; ++i) {
-                    hists[i].resize(max_letters);
-                }
+//            auto n_threads = (size_t)omp_get_num_threads();
+//            auto thread_id = (size_t)omp_get_thread_num();
+//#pragma omp single
+//            {
+//                hists.resize(n_threads);
+//                for (size_t i = 0; i < n_threads; ++i) {
+//                    hists[i].resize(max_letters);
+//                }
+//            }
+
+#pragma omp for schedule(static)
+            for (size_t i = 0; i < hist.size(); ++i) {
+                hist[i] = 0;
             }
 
-            hists[thread_id].fill(0);
+//            hists[thread_id].fill(0);
 
-#pragma omp barrier
+//#pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-                hists[thread_id][text[i] - minimum] = 1;
+//                hists[thread_id][text[i] - minimum] = 1;
+                hist[text[i] - minimum] = 1;
             }
 
-#pragma omp for schedule(static)
-            for (size_t i = 0; i < max_letters; ++i) {
-//                hists[0][i] = hists[0][i];
-                for (size_t j = 1; j < n_threads; ++j) {
-                    hists[0][i] |= hists[j][i];
-                }
-            }
+//#pragma omp for schedule(static)
+//            for (size_t i = 0; i < max_letters; ++i) {
+//                for (size_t j = 1; j < n_threads; ++j) {
+//                    hists[0][i] |= hists[j][i];
+//                }
+//            }
 
 #pragma omp single
             {
-                for (size_t i = 1; i < n_threads; ++i) {
-                    hists[i].resize(0);
-                }
-                hists.resize(1);
+//                for (size_t i = 1; i < n_threads; ++i) {
+//                    hists[i].resize(1);
+//                }
+//                hists.resize(1);
                 mapping.resize(max_letters);
                 size_t j = 0;
-                if (hists[0][0] > 0) {
+                if (hist[0] > 0) {
                     mapping[j++] = minimum;
                 }
                 for (size_t i = 1; i < max_letters; ++i) {
-                    if (hists[0][i] > 0) {
+                    if (hist[i] > 0) {
                         mapping[j++] = i + minimum;
                     }
-                    hists[0][i] += hists[0][i - 1];
+                    hist[i] += hist[i - 1];
                 }
+//                if (hists[0][0] > 0) {
+//                    mapping[j++] = minimum;
+//                }
+//                for (size_t i = 1; i < max_letters; ++i) {
+//                    if (hists[0][i] > 0) {
+//                        mapping[j++] = i + minimum;
+//                    }
+//                    hists[0][i] += hists[0][i - 1];
+//                }
                 mapping.resize(j);
             }
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-                text[i] = hists[0][text[i] - minimum] - 1;
+//                text[i] = hists[0][text[i] - minimum] - 1;
+                text[i] = hist[text[i] - minimum] - 1;
             }
         }
-        hists[0].resize(0);
-        hists.resize(0);
+//        hists[0].resize(1);
+//        hists.resize(1);
+        hist.resize(1);
 #ifdef BENCH
         const auto endAlphaTime = recomp::timer::now();
         const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
@@ -464,7 +479,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
         {
             auto discard = std::move(partition);
         }
-        pair_overlaps.resize(0);
+        pair_overlaps.resize(1);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();
@@ -540,7 +555,6 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-//                rlslp.reserve(rlslp_size);
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }
@@ -605,7 +619,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
                 text[positions[i] + 1] = DELETED;
             }
         }
-        positions.resize(0);
+        positions.resize(1);
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
         const auto timeSpanRules = endTimeRules - startTimeRules;

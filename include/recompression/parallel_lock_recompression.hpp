@@ -222,7 +222,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                 }
             }
         }
-        block_overlaps.resize(0);
+        block_overlaps.resize(1);
         block_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeBlocks = recomp::timer::now();
@@ -361,7 +361,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                     }
                 }
             }
-            positions.resize(0);
+            positions.resize(1);
             positions.shrink_to_fit();
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
@@ -613,7 +613,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
         }
         part_l = rl_count > lr_count;
 
-        adj_list.resize(0);
+        adj_list.resize(1);
         adj_list.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
@@ -733,7 +733,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
         {
             auto discard = std::move(partition);
         }
-        pair_overlaps.resize(0);
+        pair_overlaps.resize(1);
         pair_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();
@@ -885,7 +885,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                 text[positions[i] + 1] = DELETED;
             }
         }
-        positions.resize(0);
+        positions.resize(1);
         positions.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
