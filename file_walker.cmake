@@ -26,7 +26,6 @@ set(SOURCES
         src/recompression/io/bitistream.cpp
         src/recompression.cpp
         src/recompression/graph.cpp
-        src/recompression/container/parallel_vector.cpp
 )
 set(HEADERS
         include/recompression/parallel_lp_recompression.hpp
@@ -56,5 +55,4 @@ set(HEADERS
         include/recompression/io/bitostream.hpp
         include/recompression.hpp
         include/recompression/graph.hpp
-        include/recompression/container/parallel_vector.hpp
 )
