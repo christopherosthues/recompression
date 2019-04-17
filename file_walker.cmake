@@ -8,6 +8,7 @@ set(SOURCES
         src/recompression/util.cpp
         src/recompression/parallel_order_less_recompression.cpp
         src/recompression/parallel_rnd_recompression.cpp
+        src/recompression/parallel_wrnd_recompression.cpp
         src/recompression/lce_query.cpp
         src/recompression/radix_sort.cpp
         src/recompression/parallel_order_great_recompression.cpp
@@ -25,6 +26,7 @@ set(SOURCES
         src/recompression/io/bitistream.cpp
         src/recompression.cpp
         src/recompression/graph.cpp
+        src/recompression/container/parallel_vector.cpp
 )
 set(HEADERS
         include/recompression/parallel_lp_recompression.hpp
@@ -37,6 +39,7 @@ set(HEADERS
         include/recompression/radix_sort.hpp
         include/recompression/parallel_order_less_recompression.hpp
         include/recompression/parallel_rnd_recompression.hpp
+        include/recompression/parallel_wrnd_recompression.hpp
         include/recompression/parallel_ls_recompression.hpp
         include/recompression/parallel_gr_recompression.hpp
         include/recompression/fast_recompression.hpp
@@ -53,4 +56,5 @@ set(HEADERS
         include/recompression/io/bitostream.hpp
         include/recompression.hpp
         include/recompression/graph.hpp
+        include/recompression/container/parallel_vector.hpp
 )

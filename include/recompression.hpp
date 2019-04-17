@@ -14,6 +14,7 @@
 #include "recompression/parallel_order_less_recompression.hpp"
 #include "recompression/parallel_recompression.hpp"
 #include "recompression/parallel_rnd_recompression.hpp"
+#include "recompression/parallel_wrnd_recompression.hpp"
 #include "recompression/lce_query.hpp"
 #include "recompression/radix_sort.hpp"
 #include "recompression/rlslp.hpp"
@@ -41,6 +42,8 @@ std::unique_ptr<recompression<variable_t, terminal_count_t>> create_recompressio
         return std::make_unique<parallel::parallel_lp_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_rnd") {
         return std::make_unique<parallel::parallel_rnd_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_wrnd") {
+        return std::make_unique<parallel::parallel_wrnd_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_lock") {
         return std::make_unique<parallel::parallel_lock_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_order_ls") {
