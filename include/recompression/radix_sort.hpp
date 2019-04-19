@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <array>
 #include <climits>
+#include <deque>
 #include <queue>
 #include <thread>
 #include <tuple>
@@ -112,8 +113,8 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
     bool insuff_key = true;
 
     variable_t mask = n_buckets - 1;
-    std::array<std::vector<T>, n_buckets> buckets;
-    std::vector<size_t> bucks(n_buckets);
+    std::array<std::deque<T>, n_buckets> buckets;
+    std::deque<size_t> bucks(n_buckets);
     const auto hist_size = n_buckets + 1;
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
@@ -134,7 +135,7 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
 
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
-            std::array<std::vector<T>, n_buckets> t_buckets;
+            std::array<std::deque<T>, n_buckets> t_buckets;
 //            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vector.size(); ++i) {
@@ -282,8 +283,8 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
     bool insuff_key = true;
 
     variable_t mask = n_buckets - 1;
-    std::array<std::vector<T>, n_buckets> buckets;
-    std::vector<size_t> bucks(n_buckets);
+    std::array<std::deque<T>, n_buckets> buckets;
+    std::deque<size_t> bucks(n_buckets);
     const auto hist_size = n_buckets + 1;
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
@@ -304,7 +305,7 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
 
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
-            std::array<std::vector<T>, n_buckets> t_buckets;
+            std::array<std::deque<T>, n_buckets> t_buckets;
 //            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vector.size(); ++i) {
@@ -477,8 +478,8 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
 
     variable_t mask = n_buckets - 1;
 
-    std::array<std::vector<variable_t>, n_buckets> buckets;
-    std::vector<size_t> bucks(n_buckets);
+    std::array<std::deque<variable_t>, n_buckets> buckets;
+    std::deque<size_t> bucks(n_buckets);
     const auto hist_size = n_buckets + 1;
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
@@ -499,7 +500,7 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
 
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
-            std::array<std::vector<variable_t>, n_buckets> t_buckets;
+            std::array<std::deque<variable_t>, n_buckets> t_buckets;
 //            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vec.size(); ++i) {
@@ -672,8 +673,8 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
 
     variable_t mask = n_buckets - 1;
 
-    std::array<std::vector<std::pair<variable_t, variable_t>>, n_buckets> buckets;
-    std::vector<size_t> bucks(n_buckets);
+    std::array<std::deque<std::pair<variable_t, variable_t>>, n_buckets> buckets;
+    std::deque<size_t> bucks(n_buckets);
     const auto hist_size = n_buckets + 1;
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
@@ -694,7 +695,7 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
 
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
-            std::array<std::vector<std::pair<variable_t, variable_t>>, n_buckets> t_buckets;
+            std::array<std::deque<std::pair<variable_t, variable_t>>, n_buckets> t_buckets;
 //            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vec.size(); ++i) {
@@ -859,8 +860,8 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 
     variable_t mask = n_buckets - 1;
 
-    std::array<std::vector<std::tuple<variable_t, variable_t, bool>>, n_buckets> buckets;
-    std::vector<size_t> bucks(n_buckets);
+    std::array<std::deque<std::tuple<variable_t, variable_t, bool>>, n_buckets> buckets;
+    std::deque<size_t> bucks(n_buckets);
     const auto hist_size = n_buckets + 1;
     std::array<size_t, hist_size> hist;
     hist[0] = 0;
@@ -881,7 +882,7 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
-            std::array<std::vector<std::tuple<variable_t, variable_t, bool>>, n_buckets> t_buckets;
+            std::array<std::deque<std::tuple<variable_t, variable_t, bool>>, n_buckets> t_buckets;
 //            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vec.size(); ++i) {

@@ -20,6 +20,7 @@
 #include "defs.hpp"
 #include "util.hpp"
 #include "rlslp.hpp"
+#include "radix_sort.hpp"
 
 #include "graph.hpp"
 
@@ -281,6 +282,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
                 }
             };
             ips4o::parallel::sort(positions.begin(), positions.end(), sort_cond, this->cores);
+//            partitioned_parallel_radix_sort_blocks<text_t, variable_t, position_t, 8>(text, positions, this->cores);
 #ifdef BENCH
             const auto endTimeSort = recomp::timer::now();
             const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -729,7 +731,7 @@ class parallel_recompression : public recompression<variable_t, terminal_count_t
             }
         };
         ips4o::parallel::sort(positions.begin(), positions.end(), sort_cond, this->cores);
-//        parallel::partitioned_radix_sort(sort_pairs);
+//        partitioned_parallel_radix_sort_pairs<text_t, variable_t, pair_position_t, 8>(text, positions, this->cores);
 #ifdef BENCH
         const auto endTimeSort = recomp::timer::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
