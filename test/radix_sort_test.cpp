@@ -18,6 +18,10 @@ typedef var_t variable_t;
 typedef std::tuple<variable_t, variable_t, bool> adj_t;
 typedef std::vector<adj_t> adj_list_t;
 
+typedef parallel::parallel_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+typedef size_t pair_t;
+typedef std::pair<variable_t, size_t> block_t;
+
 
 //TEST(digits, output_digits) {
 //    std::uint64_t val = (24 << 4) | (56 << 16);
@@ -889,4 +893,328 @@ TEST(parallel_bucket_sort, one_diff) {
     exp_vec_ips.emplace_back(1, 256, 4);
 
     ASSERT_EQ(exp_vec_ips, vec);
+}
+
+
+TEST(pprs, pairs_less_productions) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{1, 3, 5, 7});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{1, 3, 5, 7});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_repeated_pair) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_repeated_pair_same_occ) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_left_end) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 6, 8, 11, 13, 15, 17, 19});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 6, 8, 11, 13, 15, 17, 19});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_212181623541741623541321) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 7, 10, 13, 16, 19, 22});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 7, 10, 13, 16, 19, 22});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_131261051171161051139) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 6, 8, 10, 12});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 4, 6, 8, 10, 12});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_18161517161514) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 5});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0, 2, 5});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_21201619) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0, 2});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0, 2});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+TEST(pprs, pairs_2322) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
+    ui_vector<size_t> pairs = util::create_ui_vector(std::vector<size_t>{0});
+
+    parallel::partitioned_parallel_radix_sort_pairs<text_t, variable_t, size_t, 8>(text, pairs, 4);
+
+    ui_vector<size_t> exp_pairs = util::create_ui_vector(std::vector<size_t>{0});
+
+    auto sort_cond = [&](const size_t& i, const size_t& j) {
+        auto char_i = text[i];
+        auto char_i1 = text[i + 1];
+        auto char_j = text[j];
+        auto char_j1 = text[j + 1];
+        if (char_i == char_j) {
+            return char_i1 < char_j1;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_pairs.begin(), exp_pairs.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_pairs, pairs);
+}
+
+
+TEST(pprs, blocks_21214441332311413334133231141321) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
+    std::vector<std::pair<variable_t, size_t>> p;
+    p.emplace_back(3, 4);
+    p.emplace_back(2, 8);
+    p.emplace_back(2, 12);
+    p.emplace_back(3, 16);
+    p.emplace_back(2, 21);
+    p.emplace_back(2, 25);
+    ui_vector<block_t> blocks = util::create_ui_vector(p);
+
+    parallel::partitioned_parallel_radix_sort_blocks<text_t, variable_t, block_t, 8>(text, blocks, 4);
+
+    ui_vector<block_t> exp_blocks = util::create_ui_vector(p);
+
+    auto sort_cond = [&](const block_t& i, const block_t& j) {
+        auto char_i = text[i.second];
+        auto char_j = text[j.second];
+        if (char_i == char_j) {
+            return i.first < j.first;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_blocks.begin(), exp_blocks.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_blocks, blocks);
+}
+
+TEST(pprs, blocks_222222222222222222222) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
+    std::vector<std::pair<variable_t, size_t>> p;
+    p.emplace_back(21, 0);
+    ui_vector<block_t> blocks = util::create_ui_vector(p);
+
+    parallel::partitioned_parallel_radix_sort_blocks<text_t, variable_t, block_t, 8>(text, blocks, 4);
+
+    ui_vector<block_t> exp_blocks = util::create_ui_vector(p);
+
+    auto sort_cond = [&](const block_t& i, const block_t& j) {
+        auto char_i = text[i.second];
+        auto char_j = text[j.second];
+        if (char_i == char_j) {
+            return i.first < j.first;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_blocks.begin(), exp_blocks.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_blocks, blocks);
+}
+
+TEST(pprs, blocks_22222222211111112222) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2});
+    std::vector<std::pair<variable_t, size_t>> p;
+    p.emplace_back(9, 0);
+    p.emplace_back(7, 9);
+    p.emplace_back(4, 16);
+    ui_vector<block_t> blocks = util::create_ui_vector(p);
+
+    parallel::partitioned_parallel_radix_sort_blocks<text_t, variable_t, block_t, 8>(text, blocks, 4);
+
+    ui_vector<block_t> exp_blocks = util::create_ui_vector(p);
+
+    auto sort_cond = [&](const block_t& i, const block_t& j) {
+        auto char_i = text[i.second];
+        auto char_j = text[j.second];
+        if (char_i == char_j) {
+            return i.first < j.first;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_blocks.begin(), exp_blocks.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_blocks, blocks);
+}
+
+TEST(pprs, blocks_2222222221111111222200) {
+    text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0});
+    std::vector<std::pair<variable_t, size_t>> p;
+    p.emplace_back(9, 0);
+    p.emplace_back(7, 9);
+    p.emplace_back(4, 16);
+    p.emplace_back(2, 20);
+    ui_vector<block_t> blocks = util::create_ui_vector(p);
+
+    parallel::partitioned_parallel_radix_sort_blocks<text_t, variable_t, block_t, 8>(text, blocks, 4);
+
+    ui_vector<block_t> exp_blocks = util::create_ui_vector(p);
+
+    auto sort_cond = [&](const block_t& i, const block_t& j) {
+        auto char_i = text[i.second];
+        auto char_j = text[j.second];
+        if (char_i == char_j) {
+            return i.first < j.first;
+        } else {
+            return char_i < char_j;
+        }
+    };
+    ips4o::parallel::sort(exp_blocks.begin(), exp_blocks.end(), sort_cond, 4);
+
+    ASSERT_EQ(exp_blocks, blocks);
 }

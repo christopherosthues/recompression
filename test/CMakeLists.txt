@@ -11,7 +11,7 @@ if (RECOMPRESSION_ENABLE_TESTS)
     build_test("fast_recompression")
     build_test("recompression_hash")
 
-##    build_test("radix_sort")
+    build_test("radix_sort")
     build_test("derive_text")
     build_test("extract")
     build_test("lce_query")
