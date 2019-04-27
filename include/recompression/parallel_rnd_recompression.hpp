@@ -139,7 +139,8 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
             const auto startTimeMove = recomp::timer::now();
 #endif
 
-            text = std::move(new_text);
+            std::swap(text, new_text);
+//            text = std::move(new_text);
 #ifdef BENCH
             const auto endTimeMove = recomp::timer::now();
             const auto timeSpanMove = endTimeMove - startTimeMove;
