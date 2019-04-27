@@ -153,125 +153,125 @@ TEST(parallel_gr_bcomp, 2222222221111111222200) {
 }
 
 
-TEST(parallel_gr_mapping, left_end) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 4;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_gr_mapping, 212181623541741623541321) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 9;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3, 4, 5, 6, 7, 8});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_gr_mapping, 131261051171161051139) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 14;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{3, 5, 6, 7, 9, 10, 11, 12, 13});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_gr_mapping, 18161517161514) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 19;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{14, 15, 16, 17, 18});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{4, 2, 1, 3, 2, 1, 0});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_gr_mapping, 21201619) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 22;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{16, 19, 20, 21});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{3, 2, 0, 1});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_gr_mapping, 2322) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 24;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{22, 23});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0});
-
-    ASSERT_EQ(exp_mapping, mapping);
-    ASSERT_EQ(exp_text, text);
-
-}
-
-TEST(parallel_gr_mapping, less_productions) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 4;
-    parallel::parallel_gr_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 1, 0, 1, 0, 2});
-
-    ASSERT_EQ(exp_mapping, mapping);
-    ASSERT_EQ(exp_text, text);
-}
+//TEST(parallel_gr_mapping, left_end) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 4;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_gr_mapping, 212181623541741623541321) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 9;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3, 4, 5, 6, 7, 8});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_gr_mapping, 131261051171161051139) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 14;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{3, 5, 6, 7, 9, 10, 11, 12, 13});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_gr_mapping, 18161517161514) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 19;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{14, 15, 16, 17, 18});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{4, 2, 1, 3, 2, 1, 0});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_gr_mapping, 21201619) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 22;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{16, 19, 20, 21});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{3, 2, 0, 1});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_gr_mapping, 2322) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 24;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{22, 23});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0});
+//
+//    ASSERT_EQ(exp_mapping, mapping);
+//    ASSERT_EQ(exp_text, text);
+//
+//}
+//
+//TEST(parallel_gr_mapping, less_productions) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 4;
+//    parallel::parallel_gr_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 1, 0, 1, 0, 2});
+//
+//    ASSERT_EQ(exp_mapping, mapping);
+//    ASSERT_EQ(exp_text, text);
+//}
 
 
 TEST(parallel_gr_adj_list, left_end) {

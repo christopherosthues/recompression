@@ -41,7 +41,7 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) override {
+    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -100,18 +100,18 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
             size_t i = bounds[thread_id];
             variable_t val;
             if (i == 0) {
-                val = std::max(text[adj_list[i]], text[adj_list[i] + 1]);
+                val = std::max(text[adj_list[i]] - minimum, text[adj_list[i] + 1] - minimum);
             } else if (i < bounds[thread_id + 1]) {
-                auto comp_val = std::max(text[adj_list[i - 1]], text[adj_list[i - 1] + 1]);
+                auto comp_val = std::max(text[adj_list[i - 1]] - minimum, text[adj_list[i - 1] + 1] - minimum);
 
-                auto text_i = text[adj_list[i]];
-                auto text_i1 = text[adj_list[i] + 1];
+                auto text_i = text[adj_list[i]] - minimum;
+                auto text_i1 = text[adj_list[i] + 1] - minimum;
                 val = std::max(text_i, text_i1);
                 while (i < bounds[thread_id + 1] && comp_val == val) {
                     i++;
                     if (i < bounds[thread_id + 1]) {
-                        text_i = text[adj_list[i]];
-                        text_i1 = text[adj_list[i] + 1];
+                        text_i = text[adj_list[i]] - minimum;
+                        text_i1 = text[adj_list[i] + 1] - minimum;
                         val = std::max(text_i, text_i1);
                     }
                 }
@@ -120,8 +120,8 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
             int l_count = 0;
             int r_count = 0;
             for (; i < bounds[thread_id + 1]; ++i) {
-                auto text_i = text[adj_list[i]];
-                auto text_i1 = text[adj_list[i] + 1];
+                auto text_i = text[adj_list[i]] - minimum;
+                auto text_i1 = text[adj_list[i] + 1] - minimum;
                 if (text_i < text_i1) {
                     std::swap(text_i, text_i1);
                 }
@@ -133,8 +133,8 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
                     }
                     i++;
                     if (i < adj_list_size) {
-                        text_i = text[adj_list[i]];
-                        text_i1 = text[adj_list[i] + 1];
+                        text_i = text[adj_list[i]] - minimum;
+                        text_i1 = text[adj_list[i] + 1] - minimum;
                         if (text_i < text_i1) {
                             std::swap(text_i, text_i1);
                         }
@@ -167,8 +167,8 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
             variable_t last_i1 = 0;
             size_t i = bounds[thread_id];
             if (i == 0) {
-                last_i = text[adj_list[i]];
-                last_i1 = text[adj_list[i] + 1];
+                last_i = text[adj_list[i]] - minimum;
+                last_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[last_i] && partition[last_i1]) {
                     lr_count++;
                     prod_l++;
@@ -178,13 +178,13 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, 
                 }
                 i++;
             } else if (i < adj_list.size()) {
-                last_i = text[adj_list[i - 1]];
-                last_i1 = text[adj_list[i - 1] + 1];
+                last_i = text[adj_list[i - 1]] - minimum;
+                last_i1 = text[adj_list[i - 1] + 1] - minimum;
             }
 
             for (; i < bounds[thread_id + 1]; ++i) {
-                variable_t char_i = text[adj_list[i]];
-                variable_t char_i1 = text[adj_list[i] + 1];
+                variable_t char_i = text[adj_list[i]] - minimum;
+                variable_t char_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[char_i] && partition[char_i1]) {
                     lr_count++;
                     if (char_i != last_i || char_i1 != last_i1) {

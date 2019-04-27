@@ -153,323 +153,323 @@ TEST(parallel_rnd_bcomp, 2222222221111111222200) {
 }
 
 
-TEST(parallel_rnd_mapping, left_end) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 4;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
-//    exp_mapping.emplace_back(1);
-//    exp_mapping.emplace_back(2);
-//    exp_mapping.emplace_back(3);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_rnd_mapping, 212181623541741623541321) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 9;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3, 4, 5, 6, 7, 8});
-//    exp_mapping.emplace_back(1);
-//    exp_mapping.emplace_back(2);
-//    exp_mapping.emplace_back(3);
-//    exp_mapping.emplace_back(4);
-//    exp_mapping.emplace_back(5);
-//    exp_mapping.emplace_back(6);
-//    exp_mapping.emplace_back(7);
-//    exp_mapping.emplace_back(8);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_rnd_mapping, 131261051171161051139) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 14;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{3, 5, 6, 7, 9, 10, 11, 12, 13});
-//    exp_mapping.emplace_back(3);
-//    exp_mapping.emplace_back(5);
-//    exp_mapping.emplace_back(6);
-//    exp_mapping.emplace_back(7);
-//    exp_mapping.emplace_back(9);
-//    exp_mapping.emplace_back(10);
-//    exp_mapping.emplace_back(11);
-//    exp_mapping.emplace_back(12);
-//    exp_mapping.emplace_back(13);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_rnd_mapping, 18161517161514) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 19;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{14, 15, 16, 17, 18});
-//    exp_mapping.emplace_back(14);
-//    exp_mapping.emplace_back(15);
-//    exp_mapping.emplace_back(16);
-//    exp_mapping.emplace_back(17);
-//    exp_mapping.emplace_back(18);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{4, 2, 1, 3, 2, 1, 0});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_rnd_mapping, 21201619) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 22;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{16, 19, 20, 21});
-//    exp_mapping.emplace_back(16);
-//    exp_mapping.emplace_back(19);
-//    exp_mapping.emplace_back(20);
-//    exp_mapping.emplace_back(21);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{3, 2, 0, 1});
-
-    ASSERT_EQ(exp_text, text);
-    ASSERT_EQ(exp_mapping, mapping);
-}
-
-TEST(parallel_rnd_mapping, 2322) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 24;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{22, 23});
-//    exp_mapping.emplace_back(22);
-//    exp_mapping.emplace_back(23);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0});
-
-    ASSERT_EQ(exp_mapping, mapping);
-    ASSERT_EQ(exp_text, text);
-
-}
-
-TEST(parallel_rnd_mapping, less_productions) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 4;
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-
-    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
-//    exp_mapping.emplace_back(1);
-//    exp_mapping.emplace_back(2);
-//    exp_mapping.emplace_back(3);
-
-    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 1, 0, 1, 0, 2});
-
-    ASSERT_EQ(exp_mapping, mapping);
-    ASSERT_EQ(exp_text, text);
-}
-
-
-TEST(parallel_rnd_adj_list, left_end) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 4;
-    adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-    recomp.compute_adj_list(text, adj_list);
-
-    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{1, 3, 5, 7, 12, 14, 16, 18, 0, 2, 4, 6, 8, 11, 13, 15, 17, 10, 20, 19, 9});
-//    exp_adj_list.emplace_back(1);
-//    exp_adj_list.emplace_back(3);
-//    exp_adj_list.emplace_back(5);
-//    exp_adj_list.emplace_back(7);
-//    exp_adj_list.emplace_back(12);
-//    exp_adj_list.emplace_back(14);
-//    exp_adj_list.emplace_back(16);
-//    exp_adj_list.emplace_back(18);
-//    exp_adj_list.emplace_back(0);
-//    exp_adj_list.emplace_back(2);
-//    exp_adj_list.emplace_back(4);
-//    exp_adj_list.emplace_back(6);
-//    exp_adj_list.emplace_back(8);
-//    exp_adj_list.emplace_back(11);
-//    exp_adj_list.emplace_back(13);
-//    exp_adj_list.emplace_back(15);
-//    exp_adj_list.emplace_back(17);
-//    exp_adj_list.emplace_back(10);
-//    exp_adj_list.emplace_back(20);
-//    exp_adj_list.emplace_back(19);
-//    exp_adj_list.emplace_back(9);
-
-    ASSERT_EQ(exp_adj_list, adj_list);
-}
-
-TEST(parallel_rnd_adj_list, 212181623541741623541321) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 9;
-    adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-    recomp.compute_adj_list(text, adj_list);
-
-    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0, 2, 22, 1, 20, 21, 7, 16, 10, 13, 19, 8, 17, 9, 18, 5, 14, 6, 15, 11, 12, 4, 3});
-//    exp_adj_list.emplace_back(0);
-//    exp_adj_list.emplace_back(2);
-//    exp_adj_list.emplace_back(22);
-//    exp_adj_list.emplace_back(1);
-//    exp_adj_list.emplace_back(20);
-//    exp_adj_list.emplace_back(21);
-//    exp_adj_list.emplace_back(7);
-//    exp_adj_list.emplace_back(16);
-//    exp_adj_list.emplace_back(10);
-//    exp_adj_list.emplace_back(13);
-//    exp_adj_list.emplace_back(19);
-//    exp_adj_list.emplace_back(8);
-//    exp_adj_list.emplace_back(17);
-//    exp_adj_list.emplace_back(9);
-//    exp_adj_list.emplace_back(18);
-//    exp_adj_list.emplace_back(5);
-//    exp_adj_list.emplace_back(14);
-//    exp_adj_list.emplace_back(6);
-//    exp_adj_list.emplace_back(15);
-//    exp_adj_list.emplace_back(11);
-//    exp_adj_list.emplace_back(12);
-//    exp_adj_list.emplace_back(4);
-//    exp_adj_list.emplace_back(3);
-
-    ASSERT_EQ(exp_adj_list, adj_list);
-}
-
-TEST(parallel_rnd_adj_list, 131261051171161051139) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 14;
-    adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-    recomp.compute_adj_list(text, adj_list);
-
-    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{12, 3, 9, 2, 8, 11, 4, 10, 7, 5, 6, 1, 0});
-//    exp_adj_list.emplace_back(12);
-//    exp_adj_list.emplace_back(3);
-//    exp_adj_list.emplace_back(9);
-//    exp_adj_list.emplace_back(2);
-//    exp_adj_list.emplace_back(8);
-//    exp_adj_list.emplace_back(11);
-//    exp_adj_list.emplace_back(4);
-//    exp_adj_list.emplace_back(10);
-//    exp_adj_list.emplace_back(7);
-//    exp_adj_list.emplace_back(5);
-//    exp_adj_list.emplace_back(6);
-//    exp_adj_list.emplace_back(1);
-//    exp_adj_list.emplace_back(0);
-
-    ASSERT_EQ(exp_adj_list, adj_list);
-}
-
-TEST(parallel_rnd_adj_list, 18161517161514) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 19;
-    adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-    recomp.compute_adj_list(text, adj_list);
-
-    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{5, 1, 4, 2, 3, 0});
-//    exp_adj_list.emplace_back(5);
-//    exp_adj_list.emplace_back(1);
-//    exp_adj_list.emplace_back(4);
-//    exp_adj_list.emplace_back(2);
-//    exp_adj_list.emplace_back(3);
-//    exp_adj_list.emplace_back(0);
-
-    ASSERT_EQ(exp_adj_list, adj_list);
-}
-
-TEST(parallel_rnd_adj_list, 21201619) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 22;
-    adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-    recomp.compute_adj_list(text, adj_list);
-
-    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{2, 1, 0});
-//    exp_adj_list.emplace_back(2);
-//    exp_adj_list.emplace_back(1);
-//    exp_adj_list.emplace_back(0);
-
-    ASSERT_EQ(exp_adj_list, adj_list);
-}
-
-TEST(parallel_rnd_adj_list, 2322) {
-    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
-    rlslp<var_t, term_t> rlslp;
-    rlslp.terminals = 24;
-    adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
-    recomp.cores = 4;
-    ui_vector<var_t> mapping;
-    recomp.compute_mapping(text, rlslp, mapping);
-    recomp.compute_adj_list(text, adj_list);
-
-    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0});
-//    exp_adj_list.emplace_back(0);
-
-    ASSERT_EQ(exp_adj_list, adj_list);
-}
+//TEST(parallel_rnd_mapping, left_end) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 4;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
+////    exp_mapping.emplace_back(1);
+////    exp_mapping.emplace_back(2);
+////    exp_mapping.emplace_back(3);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_rnd_mapping, 212181623541741623541321) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 9;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3, 4, 5, 6, 7, 8});
+////    exp_mapping.emplace_back(1);
+////    exp_mapping.emplace_back(2);
+////    exp_mapping.emplace_back(3);
+////    exp_mapping.emplace_back(4);
+////    exp_mapping.emplace_back(5);
+////    exp_mapping.emplace_back(6);
+////    exp_mapping.emplace_back(7);
+////    exp_mapping.emplace_back(8);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 7, 0, 5, 1, 2, 4, 3, 0, 6, 3, 0, 5, 1, 2, 4, 3, 0, 2, 1, 0});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_rnd_mapping, 131261051171161051139) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 14;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{3, 5, 6, 7, 9, 10, 11, 12, 13});
+////    exp_mapping.emplace_back(3);
+////    exp_mapping.emplace_back(5);
+////    exp_mapping.emplace_back(6);
+////    exp_mapping.emplace_back(7);
+////    exp_mapping.emplace_back(9);
+////    exp_mapping.emplace_back(10);
+////    exp_mapping.emplace_back(11);
+////    exp_mapping.emplace_back(12);
+////    exp_mapping.emplace_back(13);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{8, 7, 2, 5, 1, 6, 3, 6, 2, 5, 1, 6, 0, 4});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_rnd_mapping, 18161517161514) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 19;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{14, 15, 16, 17, 18});
+////    exp_mapping.emplace_back(14);
+////    exp_mapping.emplace_back(15);
+////    exp_mapping.emplace_back(16);
+////    exp_mapping.emplace_back(17);
+////    exp_mapping.emplace_back(18);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{4, 2, 1, 3, 2, 1, 0});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_rnd_mapping, 21201619) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 22;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{16, 19, 20, 21});
+////    exp_mapping.emplace_back(16);
+////    exp_mapping.emplace_back(19);
+////    exp_mapping.emplace_back(20);
+////    exp_mapping.emplace_back(21);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{3, 2, 0, 1});
+//
+//    ASSERT_EQ(exp_text, text);
+//    ASSERT_EQ(exp_mapping, mapping);
+//}
+//
+//TEST(parallel_rnd_mapping, 2322) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 24;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{22, 23});
+////    exp_mapping.emplace_back(22);
+////    exp_mapping.emplace_back(23);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0});
+//
+//    ASSERT_EQ(exp_mapping, mapping);
+//    ASSERT_EQ(exp_text, text);
+//
+//}
+//
+//TEST(parallel_rnd_mapping, less_productions) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 4;
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//
+//    ui_vector<var_t> exp_mapping = util::create_ui_vector(std::vector<var_t>{1, 2, 3});
+////    exp_mapping.emplace_back(1);
+////    exp_mapping.emplace_back(2);
+////    exp_mapping.emplace_back(3);
+//
+//    text_t exp_text = util::create_ui_vector(std::vector<var_t>{1, 0, 1, 0, 1, 0, 1, 0, 2});
+//
+//    ASSERT_EQ(exp_mapping, mapping);
+//    ASSERT_EQ(exp_text, text);
+//}
+//
+//
+//TEST(parallel_rnd_adj_list, left_end) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 4;
+//    adj_list_t adj_list(text.size() - 1);
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//    recomp.compute_adj_list(text, adj_list);
+//
+//    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{1, 3, 5, 7, 12, 14, 16, 18, 0, 2, 4, 6, 8, 11, 13, 15, 17, 10, 20, 19, 9});
+////    exp_adj_list.emplace_back(1);
+////    exp_adj_list.emplace_back(3);
+////    exp_adj_list.emplace_back(5);
+////    exp_adj_list.emplace_back(7);
+////    exp_adj_list.emplace_back(12);
+////    exp_adj_list.emplace_back(14);
+////    exp_adj_list.emplace_back(16);
+////    exp_adj_list.emplace_back(18);
+////    exp_adj_list.emplace_back(0);
+////    exp_adj_list.emplace_back(2);
+////    exp_adj_list.emplace_back(4);
+////    exp_adj_list.emplace_back(6);
+////    exp_adj_list.emplace_back(8);
+////    exp_adj_list.emplace_back(11);
+////    exp_adj_list.emplace_back(13);
+////    exp_adj_list.emplace_back(15);
+////    exp_adj_list.emplace_back(17);
+////    exp_adj_list.emplace_back(10);
+////    exp_adj_list.emplace_back(20);
+////    exp_adj_list.emplace_back(19);
+////    exp_adj_list.emplace_back(9);
+//
+//    ASSERT_EQ(exp_adj_list, adj_list);
+//}
+//
+//TEST(parallel_rnd_adj_list, 212181623541741623541321) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 9;
+//    adj_list_t adj_list(text.size() - 1);
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//    recomp.compute_adj_list(text, adj_list);
+//
+//    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0, 2, 22, 1, 20, 21, 7, 16, 10, 13, 19, 8, 17, 9, 18, 5, 14, 6, 15, 11, 12, 4, 3});
+////    exp_adj_list.emplace_back(0);
+////    exp_adj_list.emplace_back(2);
+////    exp_adj_list.emplace_back(22);
+////    exp_adj_list.emplace_back(1);
+////    exp_adj_list.emplace_back(20);
+////    exp_adj_list.emplace_back(21);
+////    exp_adj_list.emplace_back(7);
+////    exp_adj_list.emplace_back(16);
+////    exp_adj_list.emplace_back(10);
+////    exp_adj_list.emplace_back(13);
+////    exp_adj_list.emplace_back(19);
+////    exp_adj_list.emplace_back(8);
+////    exp_adj_list.emplace_back(17);
+////    exp_adj_list.emplace_back(9);
+////    exp_adj_list.emplace_back(18);
+////    exp_adj_list.emplace_back(5);
+////    exp_adj_list.emplace_back(14);
+////    exp_adj_list.emplace_back(6);
+////    exp_adj_list.emplace_back(15);
+////    exp_adj_list.emplace_back(11);
+////    exp_adj_list.emplace_back(12);
+////    exp_adj_list.emplace_back(4);
+////    exp_adj_list.emplace_back(3);
+//
+//    ASSERT_EQ(exp_adj_list, adj_list);
+//}
+//
+//TEST(parallel_rnd_adj_list, 131261051171161051139) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 14;
+//    adj_list_t adj_list(text.size() - 1);
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//    recomp.compute_adj_list(text, adj_list);
+//
+//    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{12, 3, 9, 2, 8, 11, 4, 10, 7, 5, 6, 1, 0});
+////    exp_adj_list.emplace_back(12);
+////    exp_adj_list.emplace_back(3);
+////    exp_adj_list.emplace_back(9);
+////    exp_adj_list.emplace_back(2);
+////    exp_adj_list.emplace_back(8);
+////    exp_adj_list.emplace_back(11);
+////    exp_adj_list.emplace_back(4);
+////    exp_adj_list.emplace_back(10);
+////    exp_adj_list.emplace_back(7);
+////    exp_adj_list.emplace_back(5);
+////    exp_adj_list.emplace_back(6);
+////    exp_adj_list.emplace_back(1);
+////    exp_adj_list.emplace_back(0);
+//
+//    ASSERT_EQ(exp_adj_list, adj_list);
+//}
+//
+//TEST(parallel_rnd_adj_list, 18161517161514) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 19;
+//    adj_list_t adj_list(text.size() - 1);
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//    recomp.compute_adj_list(text, adj_list);
+//
+//    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{5, 1, 4, 2, 3, 0});
+////    exp_adj_list.emplace_back(5);
+////    exp_adj_list.emplace_back(1);
+////    exp_adj_list.emplace_back(4);
+////    exp_adj_list.emplace_back(2);
+////    exp_adj_list.emplace_back(3);
+////    exp_adj_list.emplace_back(0);
+//
+//    ASSERT_EQ(exp_adj_list, adj_list);
+//}
+//
+//TEST(parallel_rnd_adj_list, 21201619) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 22;
+//    adj_list_t adj_list(text.size() - 1);
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//    recomp.compute_adj_list(text, adj_list);
+//
+//    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{2, 1, 0});
+////    exp_adj_list.emplace_back(2);
+////    exp_adj_list.emplace_back(1);
+////    exp_adj_list.emplace_back(0);
+//
+//    ASSERT_EQ(exp_adj_list, adj_list);
+//}
+//
+//TEST(parallel_rnd_adj_list, 2322) {
+//    text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
+//    rlslp<var_t, term_t> rlslp;
+//    rlslp.terminals = 24;
+//    adj_list_t adj_list(text.size() - 1);
+//    parallel::parallel_rnd_recompression<var_t, term_t> recomp;
+//    recomp.cores = 4;
+//    ui_vector<var_t> mapping;
+//    recomp.compute_mapping(text, rlslp, mapping);
+//    recomp.compute_adj_list(text, adj_list);
+//
+//    adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0});
+////    exp_adj_list.emplace_back(0);
+//
+//    ASSERT_EQ(exp_adj_list, adj_list);
+//}
 
 TEST(parallel_rnd_adj_list, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});

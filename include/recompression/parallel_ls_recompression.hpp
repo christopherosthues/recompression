@@ -54,7 +54,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) override {
+    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -111,8 +111,8 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < adj_list_size; ++i) {
-                auto char_i = text[adj_list[i]];
-                auto char_i1 = text[adj_list[i] + 1];
+                auto char_i = text[adj_list[i]] - minimum;
+                auto char_i1 = text[adj_list[i] + 1] - minimum;
                 if (partition[char_i] != partition[char_i1]) {
                     flip[thread_id][char_i]++;
                     flip[thread_id][char_i1]++;
@@ -189,8 +189,8 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
             variable_t last_i1 = 0;
             size_t i = bounds[thread_id];
             if (i == 0) {
-                last_i = text[adj_list[i]];
-                last_i1 = text[adj_list[i] + 1];
+                last_i = text[adj_list[i]] - minimum;
+                last_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[last_i] && partition[last_i1]) {
                     lr_count++;
                     prod_l++;
@@ -200,13 +200,13 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
                 }
                 i++;
             } else if (i < adj_list.size()) {
-                last_i = text[adj_list[i - 1]];
-                last_i1 = text[adj_list[i - 1] + 1];
+                last_i = text[adj_list[i - 1]] - minimum;
+                last_i1 = text[adj_list[i - 1] + 1] - minimum;
             }
 
             for (; i < bounds[thread_id + 1]; ++i) {
-                variable_t char_i = text[adj_list[i]];
-                variable_t char_i1 = text[adj_list[i] + 1];
+                variable_t char_i = text[adj_list[i]] - minimum;
+                variable_t char_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[char_i] && partition[char_i1]) {
                     lr_count++;
                     if (char_i != last_i || char_i1 != last_i1) {
