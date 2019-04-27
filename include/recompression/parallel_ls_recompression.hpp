@@ -144,25 +144,25 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
         const auto endTimeLocalSearch = recomp::timer::now();
         const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
         std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
-        const auto startTimeDiff = recomp::timer::now();
+//        const auto startTimeDiff = recomp::timer::now();
 #endif
 
-        bool different = false;
-#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
-        for (size_t i = 0; i < partition.size() - 1; ++i) {
-            if (partition[i] != partition[i + 1]) {
-                different = true;
-            }
-        }
-        if (!different) {
+//        bool different = false;
+//#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
+//        for (size_t i = 0; i < partition.size() - 1; ++i) {
+//            if (partition[i] != partition[i + 1]) {
+//                different = true;
+//            }
+//        }
+//        if (!different) {
             partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
             partition[partition.size() - 1] = 1;
-        }
+//        }
 #ifdef BENCH
-        const auto endTimeDiff = recomp::timer::now();
-        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
-        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
-                  << " different=" << std::to_string(different);
+//        const auto endTimeDiff = recomp::timer::now();
+//        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
+//        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
+//                  << " different=" << std::to_string(different);
         const auto startTimeCount = recomp::timer::now();
 #endif
 
