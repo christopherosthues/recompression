@@ -155,8 +155,10 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t, 
 //            }
 //        }
 //        if (!different) {
-            partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
-            partition[partition.size() - 1] = 1;
+            if (partition[0] == partition[partition.size() - 1]) {
+                partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
+                partition[partition.size() - 1] = 1;
+            }
 //        }
 #ifdef BENCH
 //        const auto endTimeDiff = recomp::timer::now();
