@@ -6,6 +6,7 @@
 #include "recompression/recompression.hpp"
 #include "recompression/fast_recompression.hpp"
 #include "recompression/parallel_ls_recompression.hpp"
+#include "recompression/parallel_ls3_recompression.hpp"
 #include "recompression/parallel_gr_recompression.hpp"
 //#include "recompression/parallel_grz_recompression.hpp"
 #include "recompression/parallel_lock_recompression.hpp"
@@ -37,15 +38,19 @@ std::unique_ptr<recompression<variable_t, terminal_count_t>> create_recompressio
         return std::make_unique<parallel::parallel_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::parallel_ls_recompression<variable_t, terminal_count_t>>(dataset);
+    } else if (name == "parallel_ls3") {
+        return std::make_unique<parallel::parallel_ls3_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_gr") {
         return std::make_unique<parallel::parallel_gr_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_grz") {
+        return std::unique_ptr<recompression<variable_t, terminal_count_t>>(nullptr);
 //        return std::make_unique<parallel::parallel_grz_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_lp") {
         return std::make_unique<parallel::parallel_lp_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_rnd") {
         return std::make_unique<parallel::parallel_rnd_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_wrnd") {
+        return std::unique_ptr<recompression<variable_t, terminal_count_t>>(nullptr);
 //        return std::make_unique<parallel::parallel_wrnd_recompression<variable_t, terminal_count_t>>(dataset);
     } else if (name == "parallel_lock") {
         return std::make_unique<parallel::parallel_lock_recompression<variable_t, terminal_count_t>>(dataset);
