@@ -20,7 +20,7 @@ template<typename T>
 using i_vector = tlx::SimpleVector<T, tlx::SimpleVectorMode::Normal>;
 
 typedef std::uint32_t var_t;
-typedef std::uint32_t term_t;
+typedef size_t term_t;
 
 struct pair_hash {
     template<typename P1, typename P2>

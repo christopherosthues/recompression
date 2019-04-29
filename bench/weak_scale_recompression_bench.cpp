@@ -73,17 +73,17 @@ int main(int argc, char *argv[]) {
 
                     recomp::util::replace_all(dataset, "_", "\\_");
 
-                    std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp = recomp::create_recompression(algo, dataset);
+                    std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset);
                     if (!recomp) {
                         std::cerr << "No such algo " << algo << std::endl;
                         return -1;
                     }
 
-                    typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+                    typedef recomp::recompression<recomp::var_t>::text_t text_t;
                     text_t text;
                     recomp::util::read_file_fill(file_name, text, file_size);
 
-                    recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
+                    recomp::rlslp<recomp::var_t> rlslp;
 
                     const auto startTime = recomp::timer::now();
 

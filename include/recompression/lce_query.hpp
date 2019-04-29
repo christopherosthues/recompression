@@ -51,8 +51,8 @@ struct lceq {
     lceq() : visited(), parents() {}
 };
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-size_t lce_query_recursive(const rlslp<variable_t, terminal_count_t>& rlslp, size_t i, size_t j, variable_t nt_i,
+template<typename variable_t = var_t>
+size_t lce_query_recursive(const rlslp<variable_t>& rlslp, size_t i, size_t j, variable_t nt_i,
                            variable_t nt_j,
                            lceq<variable_t>& i_visited, lceq<variable_t>& j_visited, size_t traverse);
 
@@ -65,8 +65,8 @@ size_t lce_query_recursive(const rlslp<variable_t, terminal_count_t>& rlslp, siz
  * @param[in,out] pos The position inside the variable to be looked for
  * @param[in,out] nt The variable to be compared
  */
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-inline void subtree(const rlslp<variable_t, terminal_count_t>& rlslp, size_t& pos, variable_t& nt) {
+template<typename variable_t = var_t>
+inline void subtree(const rlslp<variable_t>& rlslp, size_t& pos, variable_t& nt) {
     if (nt >= rlslp.terminals) {
         auto nt_index = nt - rlslp.terminals;  // compute index of production
         auto left_child = rlslp[nt_index].first();
@@ -105,8 +105,8 @@ inline void subtree(const rlslp<variable_t, terminal_count_t>& rlslp, size_t& po
  * @param traverse The number of the next downward traverse
  * @return The length of the longest common prefix of the two given suffices
  */
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-inline bool find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
+template<typename variable_t = var_t>
+inline bool find_next(const rlslp<variable_t>& rlslp,
                       size_t& i,
                       size_t& j,
                       variable_t& nt_i,
@@ -197,8 +197,8 @@ inline bool find_next(const rlslp<variable_t, terminal_count_t>& rlslp,
  * @param traverse The number of the traverse
  * @return The length of the longest common prefix of the two given suffices
  */
-template<typename variable_t, typename terminal_count_t>
-size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
+template<typename variable_t>
+size_t lce_query(const rlslp <variable_t>& rlslp,
                  size_t i,
                  size_t j,
                  variable_t nt_i,
@@ -336,8 +336,8 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp,
  * @param traverse The number of the next downward traverse
  * @return The length of the longest common prefix of the two given suffices
  */
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-size_t find_next_recursive(const rlslp<variable_t, terminal_count_t>& rlslp,
+template<typename variable_t = var_t>
+size_t find_next_recursive(const rlslp<variable_t>& rlslp,
                            size_t i,
                            size_t j,
                            variable_t nt_i,
@@ -428,8 +428,8 @@ size_t find_next_recursive(const rlslp<variable_t, terminal_count_t>& rlslp,
  * @param traverse The number of the traverse
  * @return The length of the longest common prefix of the two given suffices
  */
-template<typename variable_t, typename terminal_count_t>
-size_t lce_query_recursive(const rlslp <variable_t, terminal_count_t>& rlslp,
+template<typename variable_t>
+size_t lce_query_recursive(const rlslp <variable_t>& rlslp,
                            size_t i,
                            size_t j,
                            variable_t nt_i,
@@ -535,8 +535,8 @@ size_t lce_query_recursive(const rlslp <variable_t, terminal_count_t>& rlslp,
  * @param j The start position of the second suffix
  * @return The length of the longest common prefix of the two given suffices
  */
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp, size_t i, size_t j) {
+template<typename variable_t = var_t>
+size_t lce_query(const rlslp <variable_t>& rlslp, size_t i, size_t j) {
     if (rlslp.empty()) {
 //        DLOG(INFO) << "Empty rlslp";
         return 0;
@@ -557,8 +557,8 @@ size_t lce_query(const rlslp <variable_t, terminal_count_t>& rlslp, size_t i, si
     j_visited.visited[rlslp.root] = vis_node{j, 1};
     j_visited.parents.push(rlslp.root);
 
-    return lce_query<variable_t, terminal_count_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
-//    return lce_query_recursive<variable_t, terminal_count_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
+    return lce_query<variable_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
+//    return lce_query_recursive<variable_t>(rlslp, i, j, rlslp.root, rlslp.root, i_visited, j_visited, 1);
 }
 
 

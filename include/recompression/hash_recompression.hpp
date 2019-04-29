@@ -19,12 +19,12 @@
 
 namespace recomp {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class hash_recompression : public recompression<variable_t, terminal_count_t> {
+template<typename variable_t = var_t>
+class hash_recompression : public recompression<variable_t> {
  public:
-    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
-    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
+    typedef typename recompression<variable_t>::text_t text_t;
+    typedef typename recompression<variable_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t>::bv_t bv_t;
     typedef std::array<std::unordered_map<std::pair<variable_t, variable_t>, size_t, pair_hash>, 2> adj_list_comp_t;
     typedef std::array<std::vector<std::tuple<variable_t, variable_t, size_t>>, 2> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
@@ -33,7 +33,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         this->name = "hash";
     }
 
-    inline hash_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+    inline hash_recompression(std::string& dataset) : recompression<variable_t>(dataset) {
         this->name = "hash";
     }
 
@@ -49,8 +49,8 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
      * @param text The text
      */
     inline virtual void recomp(text_t& text,
-                               rlslp<variable_t, terminal_count_t>& rlslp,
-                               const terminal_count_t& alphabet_size,
+                               rlslp<variable_t>& rlslp,
+                               const size_t& alphabet_size,
                                const size_t cores) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
@@ -85,7 +85,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
 #endif
     }
 
-    using recompression<variable_t, terminal_count_t>::recomp;
+    using recompression<variable_t>::recomp;
 
 
  private:
@@ -95,7 +95,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
      * @param text[in,out] The text
      * @param rlslp[in,out] The rlslp
      */
-    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -110,7 +110,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         size_t copy_i = 0;
         bool copy = false;
 
-        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
+        std::deque<non_terminal<variable_t>> new_rules;
         for (size_t i = 1; i < text.size(); ++i, ++copy_i) {
             while (i < text.size() && text[i - 1] == text[i]) {
                 block_len++;
@@ -134,7 +134,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                         len *= rlslp[text[i - 1] - rlslp.terminals].len;
                     }
                     new_rules.emplace_back(text[i - 1], block_len, len);
-                    // rlslp.non_terminals.emplace_back(text[i - 1], block_len, len);  // TODO
+                    // rlslp.non_terminals.emplace_back(text[i - 1], block_len, len);
 
                     blocks[block] = next_nt++;
                 } else {
@@ -355,7 +355,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
-    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -380,7 +380,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
         std::unordered_map<std::pair<variable_t, variable_t>, variable_t, pair_hash> pairs;
         size_t copy_i = 0;
         bool copy = false;
-        std::deque<non_terminal<variable_t, terminal_count_t>> new_rules;
+        std::deque<non_terminal<variable_t>> new_rules;
         for (size_t i = 1; i < text.size(); ++i, ++copy_i) {
             if (part_l == part[text[i - 1]] && part_l != part[text[i]]) {
                 copy = true;
@@ -403,7 +403,7 @@ class hash_recompression : public recompression<variable_t, terminal_count_t> {
                         len += 1;
                     }
                     new_rules.emplace_back(text[i - 1], text[i], len);
-                    // rlslp.non_terminals.emplace_back(text[i - 1], text[i], len);  // TODO
+                    // rlslp.non_terminals.emplace_back(text[i - 1], text[i], len);
 
                     pairs[pair] = next_nt++;
                 } else {

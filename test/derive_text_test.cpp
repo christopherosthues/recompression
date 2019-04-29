@@ -7,12 +7,12 @@
 
 using namespace recomp;
 
-typedef parallel::parallel_recompression<var_t, term_t>::text_t text_t;
+typedef parallel::parallel_recompression<var_t>::text_t text_t;
 
 TEST(derive_text, empty) {
     text_t text = util::create_ui_vector(std::vector<var_t>{});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -28,8 +28,8 @@ TEST(derive_text, recompression) {
         exp_string[i] = static_cast<char>(text[i]);
     }
 
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -45,8 +45,8 @@ TEST(derive_text, one_block) {
         exp_string[i] = static_cast<char>(text[i]);
     }
 
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -62,8 +62,8 @@ TEST(derive_text, two_blocks) {
         exp_string[i] = static_cast<char>(text[i]);
     }
 
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -79,8 +79,8 @@ TEST(derive_text, three_blocks) {
         exp_string[i] = static_cast<char>(text[i]);
     }
 
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 
@@ -96,8 +96,8 @@ TEST(derive_text, four_blocks) {
         exp_string[i] = static_cast<char>(text[i]);
     }
 
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size);
 

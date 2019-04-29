@@ -68,13 +68,13 @@ int main(int argc, char *argv[]) {
 
             recomp::util::replace_all(dataset, "_", "\\_");
 
-            std::unique_ptr<recomp::recompression<recomp::var_t, recomp::term_t>> recomp = recomp::create_recompression(algo, dataset);
+            std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset);
             if (!recomp) {
                 std::cerr << "No such algo " << algo << std::endl;
                 return -1;
             }
 
-            typedef recomp::recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+            typedef recomp::recompression<recomp::var_t>::text_t text_t;
             text_t text;
             if (z == "z") {
                 recomp::util::read_file(file_name, text, prefix);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
                 recomp::util::read_file_without_zeroes(file_name, text, prefix);
             }
 
-            recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
+            recomp::rlslp<recomp::var_t> rlslp;
 
             const auto startTime = recomp::timer::now();
 
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
             if (z == "w") {
                 coder_file += "_wz";
             }
-            recomp::rlslp<recomp::var_t, recomp::term_t> in_rlslp;
+            recomp::rlslp<recomp::var_t> in_rlslp;
             recomp::coder::encode(coder, coder_file, rlslp);
             in_rlslp = recomp::coder::decode(coder, coder_file);
 

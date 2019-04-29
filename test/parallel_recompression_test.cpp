@@ -8,17 +8,17 @@
 
 using namespace recomp;
 
-typedef parallel::parallel_recompression<var_t, term_t>::text_t text_t;
-typedef parallel::parallel_recompression<var_t, term_t>::adj_t adj_t;
-typedef parallel::parallel_recompression<var_t, term_t>::adj_list_t adj_list_t;
-typedef parallel::parallel_recompression<var_t, term_t>::partition_t partition_t;
-typedef parallel::parallel_recompression<var_t, term_t>::alphabet_t alphabet_t;
-typedef parallel::parallel_recompression<var_t, term_t>::bv_t bv_t;
+typedef parallel::parallel_recompression<var_t>::text_t text_t;
+typedef parallel::parallel_recompression<var_t>::adj_t adj_t;
+typedef parallel::parallel_recompression<var_t>::adj_list_t adj_list_t;
+typedef parallel::parallel_recompression<var_t>::partition_t partition_t;
+typedef parallel::parallel_recompression<var_t>::alphabet_t alphabet_t;
+typedef parallel::parallel_recompression<var_t>::bv_t bv_t;
 
 TEST(parallel_bcomp, no_block) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
@@ -26,7 +26,7 @@ TEST(parallel_bcomp, no_block) {
     recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
     bv_t exp_bv;
@@ -38,8 +38,8 @@ TEST(parallel_bcomp, no_block) {
 
 TEST(parallel_bcomp, 21214441332311413334133231141321) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
@@ -47,14 +47,14 @@ TEST(parallel_bcomp, 21214441332311413334133231141321) {
     recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
     exp_rlslp.resize(4);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
 //    exp_rlslp.non_terminals.emplace_back(3, 2, 2);
 //    exp_rlslp.non_terminals.emplace_back(3, 3, 3);
@@ -69,8 +69,8 @@ TEST(parallel_bcomp, 21214441332311413334133231141321) {
 
 TEST(parallel_bcomp, 222222222222222222222) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
@@ -78,11 +78,11 @@ TEST(parallel_bcomp, 222222222222222222222) {
     recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{3});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 21, 21};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 21, 21};
 //    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
     exp_rlslp.blocks = 1;
     bv_t exp_bv = {true};
@@ -94,8 +94,8 @@ TEST(parallel_bcomp, 222222222222222222222) {
 
 TEST(parallel_bcomp, 22222222211111112222) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
@@ -103,13 +103,13 @@ TEST(parallel_bcomp, 22222222211111112222) {
     recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{5, 3, 4});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
     exp_rlslp.resize(3);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 7, 7};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{2, 4, 4};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 9, 9};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 7, 7};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 4, 4};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 9, 9};
 //    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
 //    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
 //    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
@@ -123,8 +123,8 @@ TEST(parallel_bcomp, 22222222211111112222) {
 
 TEST(parallel_bcomp, 2222222221111111222200) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
@@ -132,14 +132,14 @@ TEST(parallel_bcomp, 2222222221111111222200) {
     recomp.bcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{6, 4, 5, 3});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
     exp_rlslp.resize(4);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{0, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 7, 7};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 4, 4};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{2, 9, 9};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{0, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 7, 7};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 4, 4};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{2, 9, 9};
 //    exp_rlslp.non_terminals.emplace_back(0, 2, 2);
 //    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
 //    exp_rlslp.non_terminals.emplace_back(2, 4, 4);
@@ -156,7 +156,7 @@ TEST(parallel_bcomp, 2222222221111111222200) {
 TEST(parallel_adj_list, left_end) {
     text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 //    (2, 1, 1) 0
@@ -210,7 +210,7 @@ TEST(parallel_adj_list, left_end) {
 TEST(parallel_adj_list, 212181623541741623541321) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -245,7 +245,7 @@ TEST(parallel_adj_list, 212181623541741623541321) {
 TEST(parallel_adj_list, 131261051171161051139) {
     text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -271,7 +271,7 @@ TEST(parallel_adj_list, 131261051171161051139) {
 TEST(parallel_adj_list, 18161517161514) {
     text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -289,7 +289,7 @@ TEST(parallel_adj_list, 18161517161514) {
 TEST(parallel_adj_list, 21201619) {
     text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -304,7 +304,7 @@ TEST(parallel_adj_list, 21201619) {
 TEST(parallel_adj_list, 2322) {
     text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -317,7 +317,7 @@ TEST(parallel_adj_list, 2322) {
 TEST(parallel_adj_list, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
     adj_list_t adj_list(text.size() - 1);
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_adj_list(text, adj_list);
 
@@ -340,7 +340,7 @@ TEST(parallel_partition, less_productions) {
     alphabet_t alphabet{1, 2, 3};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -359,7 +359,7 @@ TEST(parallel_partition, left_end) {
     alphabet_t alphabet{1, 2, 3};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -378,7 +378,7 @@ TEST(parallel_partition, repreated_pair) {
     alphabet_t alphabet{1, 2};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -396,7 +396,7 @@ TEST(parallel_partition, repreated_pair_same_occ) {
     alphabet_t alphabet{1, 2};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -414,7 +414,7 @@ TEST(parallel_partition, 212181623541741623541321) {
     alphabet_t alphabet{1, 2, 3, 4, 5, 6, 7, 8};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -438,7 +438,7 @@ TEST(parallel_partition, 131261051171161051139) {
     alphabet_t alphabet{3, 5, 6, 7, 9, 10, 11, 12, 13};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -463,7 +463,7 @@ TEST(parallel_partition, 18161517161514) {
     alphabet_t alphabet{14, 15, 16, 17, 18};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -484,7 +484,7 @@ TEST(parallel_partition, 21201619) {
     alphabet_t alphabet{16, 19, 20, 21};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -504,7 +504,7 @@ TEST(parallel_partition, 2322) {
     alphabet_t alphabet{22, 23};
     partition_t partition;
     bool part_l = false;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     recomp.compute_partition(text, partition, part_l);
 
@@ -520,20 +520,20 @@ TEST(parallel_partition, 2322) {
 
 TEST(parallel_pcomp, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 4;
     bv_t bv;
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{2, 4, 4, 4, 5});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 4;
     exp_rlslp.root = 0;
     exp_rlslp.resize(2);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 3, 2};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
 //    exp_rlslp.non_terminals.emplace_back(1, 3, 2);
     exp_rlslp.blocks = 0;
@@ -546,19 +546,19 @@ TEST(parallel_pcomp, less_productions) {
 
 TEST(parallel_pcomp, repeated_pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 3;
     bv_t bv;
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 1, 2};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
 //    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
     exp_rlslp.blocks = 0;
     bv_t exp_bv = {false};
@@ -570,19 +570,19 @@ TEST(parallel_pcomp, repeated_pair) {
 
 TEST(parallel_pcomp, repeated_pair_same_occ) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 3;
     bv_t bv;
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
     exp_rlslp.blocks = 0;
     bv_t exp_bv = {false};
@@ -594,20 +594,20 @@ TEST(parallel_pcomp, repeated_pair_same_occ) {
 
 TEST(parallel_pcomp, left_end) {
     text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 4;
     bv_t bv;
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{4, 4, 4, 4, 4, 3, 4, 4, 4, 4, 5, 1});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 4;
     exp_rlslp.root = 0;
     exp_rlslp.resize(2);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 3, 2};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
 //    exp_rlslp.non_terminals.emplace_back(1, 3, 2);
     exp_rlslp.blocks = 0;
@@ -620,15 +620,15 @@ TEST(parallel_pcomp, left_end) {
 
 TEST(parallel_pcomp, 212181623541741623541321) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.resize(4);
-    rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
+    rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
 //    rlslp.non_terminals.emplace_back(1, 2, 2);
 //    rlslp.non_terminals.emplace_back(3, 2, 2);
 //    rlslp.non_terminals.emplace_back(3, 3, 3);
@@ -638,18 +638,18 @@ TEST(parallel_pcomp, 212181623541741623541321) {
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{9, 9, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
     exp_rlslp.resize(8);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
 //    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
 //    exp_rlslp.non_terminals.emplace_back(2, 3, 2);
 //    exp_rlslp.non_terminals.emplace_back(4, 1, 2);
@@ -664,44 +664,44 @@ TEST(parallel_pcomp, 212181623541741623541321) {
 
 TEST(parallel_pcomp, 131261051171161051139) {
     text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.resize(9);
-    rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
+    rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
 //    rlslp.non_terminals.emplace_back(9, 2, 4);
     rlslp.blocks = 5;
     bv_t bv = {true, true, true, true, false, false, false, false, true};
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
     exp_rlslp.resize(14);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    exp_rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    exp_rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    exp_rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    exp_rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    exp_rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    exp_rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    exp_rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    exp_rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    exp_rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    exp_rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    exp_rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    exp_rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
     exp_rlslp.blocks = 5;
     bv_t exp_bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false};
 
@@ -712,51 +712,51 @@ TEST(parallel_pcomp, 131261051171161051139) {
 
 TEST(parallel_pcomp, 18161517161514) {
     text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.resize(14);
-    rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
+    rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
     rlslp.blocks = 5;
     bv_t bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false};
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
     exp_rlslp.resize(17);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    exp_rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    exp_rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    exp_rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    exp_rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    exp_rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    exp_rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
-    exp_rlslp.non_terminals[14] = non_terminal<var_t, term_t>{15, 14, 7};
-    exp_rlslp.non_terminals[15] = non_terminal<var_t, term_t>{15, 17, 9};
-    exp_rlslp.non_terminals[16] = non_terminal<var_t, term_t>{18, 16, 12};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    exp_rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    exp_rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    exp_rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    exp_rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    exp_rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    exp_rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
+    exp_rlslp.non_terminals[14] = non_terminal<var_t>{15, 14, 7};
+    exp_rlslp.non_terminals[15] = non_terminal<var_t>{15, 17, 9};
+    exp_rlslp.non_terminals[16] = non_terminal<var_t>{18, 16, 12};
     exp_rlslp.blocks = 5;
     bv_t exp_bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
                 false, false};
@@ -768,57 +768,57 @@ TEST(parallel_pcomp, 18161517161514) {
 
 TEST(parallel_pcomp, 21201619) {
     text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
     rlslp.resize(17);
-    rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
-    rlslp.non_terminals[14] = non_terminal<var_t, term_t>{15, 14, 7};
-    rlslp.non_terminals[15] = non_terminal<var_t, term_t>{15, 17, 9};
-    rlslp.non_terminals[16] = non_terminal<var_t, term_t>{18, 16, 12};
+    rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
+    rlslp.non_terminals[14] = non_terminal<var_t>{15, 14, 7};
+    rlslp.non_terminals[15] = non_terminal<var_t>{15, 17, 9};
+    rlslp.non_terminals[16] = non_terminal<var_t>{18, 16, 12};
     rlslp.blocks = 5;
     bv_t bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false, false,
             false};
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{23, 22});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
     exp_rlslp.resize(19);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    exp_rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    exp_rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    exp_rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    exp_rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    exp_rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    exp_rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
-    exp_rlslp.non_terminals[14] = non_terminal<var_t, term_t>{15, 14, 7};
-    exp_rlslp.non_terminals[15] = non_terminal<var_t, term_t>{15, 17, 9};
-    exp_rlslp.non_terminals[16] = non_terminal<var_t, term_t>{18, 16, 12};
-    exp_rlslp.non_terminals[17] = non_terminal<var_t, term_t>{16, 19, 11};
-    exp_rlslp.non_terminals[18] = non_terminal<var_t, term_t>{21, 20, 21};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    exp_rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    exp_rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    exp_rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    exp_rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    exp_rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    exp_rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
+    exp_rlslp.non_terminals[14] = non_terminal<var_t>{15, 14, 7};
+    exp_rlslp.non_terminals[15] = non_terminal<var_t>{15, 17, 9};
+    exp_rlslp.non_terminals[16] = non_terminal<var_t>{18, 16, 12};
+    exp_rlslp.non_terminals[17] = non_terminal<var_t>{16, 19, 11};
+    exp_rlslp.non_terminals[18] = non_terminal<var_t>{21, 20, 21};
     exp_rlslp.blocks = 5;
     bv_t exp_bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
                 false, false, false, false};
@@ -830,61 +830,61 @@ TEST(parallel_pcomp, 21201619) {
 
 TEST(parallel_pcomp, 2322) {
     text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     rlslp.terminals = 5;
 
     rlslp.resize(19);
-    rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
-    rlslp.non_terminals[14] = non_terminal<var_t, term_t>{15, 14, 7};
-    rlslp.non_terminals[15] = non_terminal<var_t, term_t>{15, 17, 9};
-    rlslp.non_terminals[16] = non_terminal<var_t, term_t>{18, 16, 12};
-    rlslp.non_terminals[17] = non_terminal<var_t, term_t>{16, 19, 11};
-    rlslp.non_terminals[18] = non_terminal<var_t, term_t>{21, 20, 21};
+    rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
+    rlslp.non_terminals[14] = non_terminal<var_t>{15, 14, 7};
+    rlslp.non_terminals[15] = non_terminal<var_t>{15, 17, 9};
+    rlslp.non_terminals[16] = non_terminal<var_t>{18, 16, 12};
+    rlslp.non_terminals[17] = non_terminal<var_t>{16, 19, 11};
+    rlslp.non_terminals[18] = non_terminal<var_t>{21, 20, 21};
     rlslp.blocks = 5;
     bv_t bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false, false,
             false, false, false};
     recomp.pcomp(text, rlslp, bv);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{24});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
     exp_rlslp.resize(20);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{4, 3, 3};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 3, 2};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 1, 2};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{8, 1, 4};
-    exp_rlslp.non_terminals[8] = non_terminal<var_t, term_t>{9, 2, 4};
-    exp_rlslp.non_terminals[9] = non_terminal<var_t, term_t>{3, 9, 3};
-    exp_rlslp.non_terminals[10] = non_terminal<var_t, term_t>{5, 11, 4};
-    exp_rlslp.non_terminals[11] = non_terminal<var_t, term_t>{6, 10, 4};
-    exp_rlslp.non_terminals[12] = non_terminal<var_t, term_t>{7, 11, 5};
-    exp_rlslp.non_terminals[13] = non_terminal<var_t, term_t>{13, 12, 8};
-    exp_rlslp.non_terminals[14] = non_terminal<var_t, term_t>{15, 14, 7};
-    exp_rlslp.non_terminals[15] = non_terminal<var_t, term_t>{15, 17, 9};
-    exp_rlslp.non_terminals[16] = non_terminal<var_t, term_t>{18, 16, 12};
-    exp_rlslp.non_terminals[17] = non_terminal<var_t, term_t>{16, 19, 11};
-    exp_rlslp.non_terminals[18] = non_terminal<var_t, term_t>{21, 20, 21};
-    exp_rlslp.non_terminals[19] = non_terminal<var_t, term_t>{23, 22, 32};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{4, 3, 3};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{2, 3, 2};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{4, 1, 2};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{8, 1, 4};
+    exp_rlslp.non_terminals[8] = non_terminal<var_t>{9, 2, 4};
+    exp_rlslp.non_terminals[9] = non_terminal<var_t>{3, 9, 3};
+    exp_rlslp.non_terminals[10] = non_terminal<var_t>{5, 11, 4};
+    exp_rlslp.non_terminals[11] = non_terminal<var_t>{6, 10, 4};
+    exp_rlslp.non_terminals[12] = non_terminal<var_t>{7, 11, 5};
+    exp_rlslp.non_terminals[13] = non_terminal<var_t>{13, 12, 8};
+    exp_rlslp.non_terminals[14] = non_terminal<var_t>{15, 14, 7};
+    exp_rlslp.non_terminals[15] = non_terminal<var_t>{15, 17, 9};
+    exp_rlslp.non_terminals[16] = non_terminal<var_t>{18, 16, 12};
+    exp_rlslp.non_terminals[17] = non_terminal<var_t>{16, 19, 11};
+    exp_rlslp.non_terminals[18] = non_terminal<var_t>{21, 20, 21};
+    exp_rlslp.non_terminals[19] = non_terminal<var_t>{23, 22, 32};
     exp_rlslp.blocks = 5;
     bv_t exp_bv = {true, true, true, true, false, false, false, false, true, false, false, false, false, false, false,
                 false, false, false, false, false};
@@ -897,15 +897,15 @@ TEST(parallel_pcomp, 2322) {
 
 TEST(parallel_recomp, empty) {
     text_t text = util::create_ui_vector(std::vector<var_t>{});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{});
 
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 0;
 
@@ -915,15 +915,15 @@ TEST(parallel_recomp, empty) {
 
 TEST(parallel_recomp, terminal) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{112});
 
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 112;
     exp_rlslp.is_empty = false;
@@ -934,19 +934,19 @@ TEST(parallel_recomp, terminal) {
 
 TEST(parallel_recomp, short_block2) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112, 112});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{113});
 
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{112, 2, 2};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 2, 2};
 //    exp_rlslp.non_terminals.emplace_back(112, 2, 2);
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
@@ -957,19 +957,19 @@ TEST(parallel_recomp, short_block2) {
 
 TEST(parallel_recomp, short_block3) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112, 112, 112});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{113});
 
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{112, 3, 3};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 3, 3};
 //    exp_rlslp.non_terminals.emplace_back(112, 3, 3);
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
@@ -980,38 +980,38 @@ TEST(parallel_recomp, short_block3) {
 
 TEST(parallel_recomp, recompression) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{24});
 
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 19;
     exp_rlslp.resize(20);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{2, 3, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{4, 1, 2};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{23, 1, 4};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{3, 5, 3};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{20, 7, 4};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{21, 6, 4};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{22, 7, 5};
-    exp_rlslp.non_terminals[8] = non_terminal<var_t, term_t>{24, 8, 8};
-    exp_rlslp.non_terminals[9] = non_terminal<var_t, term_t>{10, 9, 7};
-    exp_rlslp.non_terminals[10] = non_terminal<var_t, term_t>{10, 12, 9};
-    exp_rlslp.non_terminals[11] = non_terminal<var_t, term_t>{13, 11, 12};
-    exp_rlslp.non_terminals[12] = non_terminal<var_t, term_t>{11, 14, 11};
-    exp_rlslp.non_terminals[13] = non_terminal<var_t, term_t>{16, 15, 21};
-    exp_rlslp.non_terminals[14] = non_terminal<var_t, term_t>{18, 17, 32};
-    exp_rlslp.non_terminals[15] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[16] = non_terminal<var_t, term_t>{3, 2, 2};
-    exp_rlslp.non_terminals[17] = non_terminal<var_t, term_t>{3, 3, 3};
-    exp_rlslp.non_terminals[18] = non_terminal<var_t, term_t>{4, 3, 3};
-    exp_rlslp.non_terminals[19] = non_terminal<var_t, term_t>{5, 2, 4};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 3, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{4, 1, 2};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{23, 1, 4};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{3, 5, 3};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{20, 7, 4};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{21, 6, 4};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{22, 7, 5};
+    exp_rlslp.non_terminals[8] = non_terminal<var_t>{24, 8, 8};
+    exp_rlslp.non_terminals[9] = non_terminal<var_t>{10, 9, 7};
+    exp_rlslp.non_terminals[10] = non_terminal<var_t>{10, 12, 9};
+    exp_rlslp.non_terminals[11] = non_terminal<var_t>{13, 11, 12};
+    exp_rlslp.non_terminals[12] = non_terminal<var_t>{11, 14, 11};
+    exp_rlslp.non_terminals[13] = non_terminal<var_t>{16, 15, 21};
+    exp_rlslp.non_terminals[14] = non_terminal<var_t>{18, 17, 32};
+    exp_rlslp.non_terminals[15] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[16] = non_terminal<var_t>{3, 2, 2};
+    exp_rlslp.non_terminals[17] = non_terminal<var_t>{3, 3, 3};
+    exp_rlslp.non_terminals[18] = non_terminal<var_t>{4, 3, 3};
+    exp_rlslp.non_terminals[19] = non_terminal<var_t>{5, 2, 4};
     exp_rlslp.blocks = 15;
     exp_rlslp.is_empty = false;
 
@@ -1021,18 +1021,18 @@ TEST(parallel_recomp, recompression) {
 
 TEST(parallel_recomp, one_block) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{3});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 21, 21};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 21, 21};
 //    exp_rlslp.non_terminals.emplace_back(2, 21, 21);
     exp_rlslp.blocks = 0;
     exp_rlslp.is_empty = false;
@@ -1043,18 +1043,18 @@ TEST(parallel_recomp, one_block) {
 
 TEST(parallel_recomp, pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112, 111});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{113});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
     exp_rlslp.resize(1);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{112, 111, 2};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 111, 2};
 //    exp_rlslp.non_terminals.emplace_back(112, 111, 2);
     exp_rlslp.blocks = 1;
     exp_rlslp.is_empty = false;
@@ -1065,20 +1065,20 @@ TEST(parallel_recomp, pair) {
 
 TEST(parallel_recomp, two_blocks) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{5});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
     exp_rlslp.resize(3);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{5, 4, 16};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 7, 7};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 9, 9};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 4, 16};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 7, 7};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 9, 9};
 //    exp_rlslp.non_terminals.emplace_back(5, 4, 16);
 //    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
 //    exp_rlslp.non_terminals.emplace_back(2, 9, 9);
@@ -1091,22 +1091,22 @@ TEST(parallel_recomp, two_blocks) {
 
 TEST(parallel_recomp, three_blocks) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{7});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
     exp_rlslp.resize(5);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{5, 6, 11};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{7, 3, 20};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{1, 7, 7};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{2, 4, 4};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{2, 9, 9};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 6, 11};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{7, 3, 20};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{1, 7, 7};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{2, 4, 4};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{2, 9, 9};
 //    exp_rlslp.non_terminals.emplace_back(5, 6, 11);
 //    exp_rlslp.non_terminals.emplace_back(7, 3, 20);
 //    exp_rlslp.non_terminals.emplace_back(1, 7, 7);
@@ -1121,24 +1121,24 @@ TEST(parallel_recomp, three_blocks) {
 
 TEST(parallel_recomp, four_blocks) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{9});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 5;
     exp_rlslp.resize(7);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{8, 6, 6};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{9, 7, 16};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{4, 3, 22};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{0, 2, 2};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{1, 7, 7};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{2, 4, 4};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{2, 9, 9};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{8, 6, 6};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{9, 7, 16};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{4, 3, 22};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{0, 2, 2};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{1, 7, 7};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{2, 4, 4};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{2, 9, 9};
 //    exp_rlslp.non_terminals.emplace_back(8, 6, 6);
 //    exp_rlslp.non_terminals.emplace_back(9, 7, 16);
 //    exp_rlslp.non_terminals.emplace_back(4, 3, 22);
@@ -1155,19 +1155,19 @@ TEST(parallel_recomp, four_blocks) {
 
 TEST(parallel_recomp, repeated_pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{4});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
     exp_rlslp.resize(2);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{2, 1, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{3, 11, 22};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 11, 22};
 //    exp_rlslp.non_terminals.emplace_back(2, 1, 2);
 //    exp_rlslp.non_terminals.emplace_back(3, 11, 22);
     exp_rlslp.blocks = 1;
@@ -1179,20 +1179,20 @@ TEST(parallel_recomp, repeated_pair) {
 
 TEST(parallel_recomp, repeated_pair_same_occ) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{5});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
     exp_rlslp.resize(3);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{2, 5, 23};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{3, 11, 22};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 5, 23};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 11, 22};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);
 //    exp_rlslp.non_terminals.emplace_back(2, 5, 23);
 //    exp_rlslp.non_terminals.emplace_back(3, 11, 22);
@@ -1205,25 +1205,25 @@ TEST(parallel_recomp, repeated_pair_same_occ) {
 
 TEST(parallel_recomp, left_end) {
     text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 4;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{11});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 4;
     exp_rlslp.root = 9;
     exp_rlslp.resize(8);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 3, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{5, 1, 3};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{11, 3, 11};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{10, 6, 11};
-    exp_rlslp.non_terminals[5] = non_terminal<var_t, term_t>{7, 8, 22};
-    exp_rlslp.non_terminals[6] = non_terminal<var_t, term_t>{4, 4, 8};
-    exp_rlslp.non_terminals[7] = non_terminal<var_t, term_t>{4, 5, 10};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{5, 1, 3};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{11, 3, 11};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{10, 6, 11};
+    exp_rlslp.non_terminals[5] = non_terminal<var_t>{7, 8, 22};
+    exp_rlslp.non_terminals[6] = non_terminal<var_t>{4, 4, 8};
+    exp_rlslp.non_terminals[7] = non_terminal<var_t>{4, 5, 10};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);  // 4    4
 //    exp_rlslp.non_terminals.emplace_back(1, 3, 2);  // 5    5
 //    exp_rlslp.non_terminals.emplace_back(5, 1, 3);  // 8    6
@@ -1242,8 +1242,8 @@ TEST(parallel_recomp, left_end) {
 
 TEST(parallel_recomp, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
-    rlslp<var_t, term_t> rlslp;
-    parallel::parallel_recompression<var_t, term_t> recomp;
+    rlslp<var_t> rlslp;
+    parallel::parallel_recompression<var_t> recomp;
     recomp.cores = 4;
     term_t alphabet_size = 4;
     recomp.recomp(text, rlslp, alphabet_size, 4);
@@ -1254,15 +1254,15 @@ TEST(parallel_recomp, less_productions) {
     // 8
 
     text_t exp_text = util::create_ui_vector(std::vector<var_t>{8});
-    recomp::rlslp<var_t, term_t> exp_rlslp;
+    recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 4;
     exp_rlslp.root = 7;
     exp_rlslp.resize(5);
-    exp_rlslp.non_terminals[0] = non_terminal<var_t, term_t>{1, 2, 2};
-    exp_rlslp.non_terminals[1] = non_terminal<var_t, term_t>{1, 3, 2};
-    exp_rlslp.non_terminals[2] = non_terminal<var_t, term_t>{2, 8, 7};
-    exp_rlslp.non_terminals[3] = non_terminal<var_t, term_t>{6, 5, 9};
-    exp_rlslp.non_terminals[4] = non_terminal<var_t, term_t>{4, 3, 6};
+    exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
+    exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};
+    exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 8, 7};
+    exp_rlslp.non_terminals[3] = non_terminal<var_t>{6, 5, 9};
+    exp_rlslp.non_terminals[4] = non_terminal<var_t>{4, 3, 6};
 //    exp_rlslp.non_terminals.emplace_back(1, 2, 2);  // 4    4
 //    exp_rlslp.non_terminals.emplace_back(1, 3, 2);  // 5    5
 //    exp_rlslp.non_terminals.emplace_back(2, 8, 7);  // 7    6

@@ -25,13 +25,13 @@ namespace recomp {
 
 namespace parallel {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, terminal_count_t> {
+template<typename variable_t = var_t>
+class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> {
  public:
-    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
-    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
-    typedef typename parallel_recompression<variable_t, terminal_count_t>::adj_t adj_t;
-    typedef typename parallel_recompression<variable_t, terminal_count_t>::adj_list_t adj_list_t;
+    typedef typename recompression<variable_t>::text_t text_t;
+    typedef typename recompression<variable_t>::bv_t bv_t;
+    typedef typename parallel_recompression<variable_t>::adj_t adj_t;
+    typedef typename parallel_recompression<variable_t>::adj_list_t adj_list_t;
     typedef ui_vector<std::uint8_t> partition_t;
     typedef size_t pair_position_t;
 
@@ -39,7 +39,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
         this->name = "parallel_rnd";
     }
 
-    inline parallel_rnd_recompression(std::string& dataset) : parallel_lp_recompression<variable_t, terminal_count_t>(dataset) {
+    inline parallel_rnd_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
         this->name = "parallel_rnd";
     }
 
@@ -52,8 +52,8 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
      * @param cores The number of cores/threads to use
      */
     inline virtual void recomp(text_t& text,
-                               rlslp<variable_t, terminal_count_t>& rlslp,
-                               const terminal_count_t& alphabet_size,
+                               rlslp<variable_t>& rlslp,
+                               const size_t& alphabet_size,
                                const size_t cores) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
@@ -89,7 +89,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 #endif
     }
 
-    using recompression<variable_t, terminal_count_t>::recomp;
+    using recompression<variable_t>::recomp;
 
 
  protected:
@@ -165,7 +165,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
 //     * @param mapping
 //     */
 //    inline void compute_mapping(text_t& text,
-//                                rlslp<variable_t, terminal_count_t>& rlslp,
+//                                rlslp<variable_t>& rlslp,
 //                                ui_vector<variable_t>& mapping) {
 //#ifdef BENCH
 //        const auto startTime = recomp::timer::now();
@@ -393,7 +393,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -603,7 +603,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
                 } else {
                     len += 1;
                 }
-                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char1, last_char2, len);
+                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 j++;
                 last_var++;
                 text[positions[i]] = last_var;
@@ -628,7 +628,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t, 
                     } else {
                         len += 1;
                     }
-                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i1, char_i2, len);
+                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     j++;
                     last_var++;
                     text[positions[i]] = last_var;

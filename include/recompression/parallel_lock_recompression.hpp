@@ -28,12 +28,12 @@ namespace recomp {
 
 namespace parallel {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class parallel_lock_recompression : public recompression<variable_t, terminal_count_t> {
+template<typename variable_t = var_t>
+class parallel_lock_recompression : public recompression<variable_t> {
  public:
-    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
-    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
+    typedef typename recompression<variable_t>::text_t text_t;
+    typedef typename recompression<variable_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t>::bv_t bv_t;
     typedef std::tuple<variable_t, variable_t, bool> adj_t;
     typedef std::vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
@@ -48,7 +48,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
         this->name = "parallel_lock";
     }
 
-    inline parallel_lock_recompression(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
+    inline parallel_lock_recompression(std::string& dataset) : recompression<variable_t>(dataset) {
         this->name = "parallel_lock";
     }
 
@@ -60,8 +60,8 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
      * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
      */
     inline virtual void recomp(text_t& text,
-                               rlslp<variable_t, terminal_count_t>& rlslp,
-                               const terminal_count_t& alphabet_size,
+                               rlslp<variable_t>& rlslp,
+                               const size_t& alphabet_size,
                                const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
@@ -98,7 +98,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
 #endif
     }
 
-    using recompression<variable_t, terminal_count_t>::recomp;
+    using recompression<variable_t>::recomp;
 
 
  private:
@@ -110,7 +110,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -330,7 +330,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
-                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char, b_len, len);
+                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
                     j++;
                     last_var++;
                     text[positions[i].second] = last_var;
@@ -350,7 +350,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                         if (char_i >= rlslp.terminals) {
                             len *= rlslp[char_i - rlslp.terminals].len;
                         }
-                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i, b_len, len);
+                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
                         j++;
                         last_var++;
                         text[positions[i].second] = last_var;
@@ -635,7 +635,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -850,7 +850,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                 } else {
                     len += 1;
                 }
-                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char1, last_char2, len);
+                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 j++;
                 last_var++;
                 text[positions[i]] = last_var;
@@ -875,7 +875,7 @@ class parallel_lock_recompression : public recompression<variable_t, terminal_co
                     } else {
                         len += 1;
                     }
-                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i1, char_i2, len);
+                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     j++;
                     last_var++;
                     text[positions[i]] = last_var;

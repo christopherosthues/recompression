@@ -12,23 +12,23 @@ namespace recomp {
 
 namespace parallel {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class parallel_gr_recompression : public parallel_rnd_recompression<variable_t, terminal_count_t> {
+template<typename variable_t = var_t>
+class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> {
  public:
-    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
-    typedef typename parallel_rnd_recompression<variable_t, terminal_count_t>::adj_t adj_t;
-    typedef typename parallel_rnd_recompression<variable_t, terminal_count_t>::adj_list_t adj_list_t;
-    typedef typename parallel_rnd_recompression<variable_t, terminal_count_t>::partition_t partition_t;
+    typedef typename recompression<variable_t>::text_t text_t;
+    typedef typename parallel_rnd_recompression<variable_t>::adj_t adj_t;
+    typedef typename parallel_rnd_recompression<variable_t>::adj_list_t adj_list_t;
+    typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
 
     inline parallel_gr_recompression() {
         this->name = "parallel_gr";
     }
 
-    inline parallel_gr_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t, terminal_count_t>(dataset) {
+    inline parallel_gr_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
         this->name = "parallel_gr";
     }
 
-    using parallel_rnd_recompression<variable_t, terminal_count_t>::recomp;
+    using parallel_rnd_recompression<variable_t>::recomp;
 
 
  protected:

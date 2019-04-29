@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 
         recomp::util::replace_all(dataset, "_", "\\_");
 
-        recomp::rlslp<recomp::var_t, recomp::term_t> rlslp;
+        recomp::rlslp<recomp::var_t> rlslp;
         if (!coder.empty()) {
             std::string coder_file;
             if (!rlslp_path.empty()) {
@@ -94,21 +94,21 @@ int main(int argc, char *argv[]) {
             if (rlslp.is_empty) {
                 std::cout << "Unknown coder '" + coder + "'. Generating rlslp with parallel_lp_recompression."
                           << std::endl;
-                typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+                typedef recomp::parallel::parallel_lp_recompression<recomp::var_t>::text_t text_t;
                 text_t text;
                 recomp::util::read_file(file_name, text, prefix);
 
-                recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
+                recomp::parallel::parallel_lp_recompression<recomp::var_t> recompression;
                 recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
             }
             std::cout << "Loaded" << std::endl;
         }
         if (coder.empty()) {
-            typedef recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+            typedef recomp::parallel::parallel_lp_recompression<recomp::var_t>::text_t text_t;
             text_t text;
             recomp::util::read_file(file_name, text, prefix);
 
-            recomp::parallel::parallel_lp_recompression<recomp::var_t, recomp::term_t> recompression;
+            recomp::parallel::parallel_lp_recompression<recomp::var_t> recompression;
             recompression.recomp(text, rlslp, recomp::CHAR_ALPHABET, 4);
         }
 

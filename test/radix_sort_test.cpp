@@ -18,7 +18,7 @@ typedef var_t variable_t;
 typedef std::tuple<variable_t, variable_t, bool> adj_t;
 typedef std::vector<adj_t> adj_list_t;
 
-typedef parallel::parallel_recompression<recomp::var_t, recomp::term_t>::text_t text_t;
+typedef parallel::parallel_recompression<recomp::var_t>::text_t text_t;
 typedef size_t pair_t;
 typedef std::pair<variable_t, size_t> block_t;
 
