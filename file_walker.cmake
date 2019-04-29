@@ -14,6 +14,8 @@ set(SOURCES
         src/recompression/parallel_order_great_recompression.cpp
         src/recompression/parallel_ls_recompression.cpp
         src/recompression/parallel_ls3_recompression.cpp
+        src/recompression/parallel_ls5_recompression.cpp
+        src/recompression/parallel_ls_gain_recompression.cpp
         src/recompression/parallel_gr_recompression.cpp
 #        src/recompression/parallel_grz_recompression.cpp
         src/recompression/hash_recompression.cpp
@@ -43,6 +45,8 @@ set(HEADERS
 #        include/recompression/parallel_wrnd_recompression.hpp
         include/recompression/parallel_ls_recompression.hpp
         include/recompression/parallel_ls3_recompression.hpp
+        include/recompression/parallel_ls5_recompression.hpp
+        include/recompression/parallel_ls_gain_recompression.hpp
         include/recompression/parallel_gr_recompression.hpp
 #        include/recompression/parallel_grz_recompression.hpp
         include/recompression/fast_recompression.hpp
