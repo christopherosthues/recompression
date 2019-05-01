@@ -3,7 +3,7 @@
 #define private public
 #define protected public
 
-#include "recompression/parallel_ls3_recompression.hpp"
+#include "recompression/experimental/parallel_ls3_recompression.hpp"
 #include "recompression/util.hpp"
 
 using namespace recomp;

@@ -16,29 +16,29 @@
 
 #include <ips4o.hpp>
 
-#include "parallel_rnd_recompression.hpp"
-#include "defs.hpp"
-#include "util.hpp"
-#include "rlslp.hpp"
+#include "recompression/parallel_rnd_recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/rlslp.hpp"
 
 namespace recomp {
 
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_ls_gain_recompression : public parallel_rnd_recompression<variable_t> {
+class parallel_ls3_recompression : public parallel_rnd_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_t adj_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_list_t adj_list_t;
     typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
 
-    inline parallel_ls_gain_recompression() {
-        this->name = "parallel_ls_gain";
+    inline parallel_ls3_recompression() {
+        this->name = "parallel_ls3";
     }
 
-    inline parallel_ls_gain_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
-        this->name = "parallel_ls_gain";
+    inline parallel_ls3_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
+        this->name = "parallel_ls3";
     }
 
     using parallel_rnd_recompression<variable_t>::recomp;
@@ -108,7 +108,7 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
             }
         }
 
-        for (size_t k = 0; k < 5; ++k) {
+        for (size_t k = 0; k < 3; ++k) {
 #pragma omp parallel num_threads(this->cores)
             {
                 auto n_threads = (size_t) omp_get_num_threads();
@@ -129,24 +129,17 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
                     }
                 }
 
-                size_t idx = partition.size();
-                std::int64_t min = 0;
 #pragma omp for schedule(static)
                 for (size_t i = 0; i < partition.size(); ++i) {
                     for (size_t j = 1; j < n_threads; ++j) {
                         flip[0][i] += flip[j][i];
                     }
-                    if (flip[0][i] < min) {
-                        idx = i;
-                        min = flip[0][i];
-                    }
-                }
-
-                if (min < 0) {
-                    if (partition[idx] == 0) {
-                        partition[idx] = 1;
-                    } else {
-                        partition[idx] = 0;
+                    if (flip[0][i] < 0) {
+                        if (partition[i] == 0) {
+                            partition[i] = 1;
+                        } else {
+                            partition[i] = 0;
+                        }
                     }
                 }
             }

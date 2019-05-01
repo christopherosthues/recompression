@@ -2,7 +2,7 @@
 
 #define private public
 
-#include "recompression/parallel_order_less_recompression.hpp"
+#include "recompression/experimental/parallel_order_less_recompression.hpp"
 
 using namespace recomp;
 

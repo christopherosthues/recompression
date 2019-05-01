@@ -17,11 +17,11 @@
 
 #include <ips4o.hpp>
 
-#include "recompression.hpp"
-#include "defs.hpp"
-#include "util.hpp"
-#include "rlslp.hpp"
-#include "radix_sort.hpp"
+#include "recompression/recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/rlslp.hpp"
+#include "recompression/radix_sort.hpp"
 
 namespace recomp {
 

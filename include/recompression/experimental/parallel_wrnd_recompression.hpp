@@ -16,10 +16,10 @@
 
 #include <ips4o.hpp>
 
-#include "parallel_rnd_recompression.hpp"
-#include "defs.hpp"
-#include "util.hpp"
-#include "rlslp.hpp"
+#include "recompression/parallel_rnd_recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/rlslp.hpp"
 
 namespace recomp {
 
