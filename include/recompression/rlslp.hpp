@@ -2,6 +2,7 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -9,6 +10,8 @@
 #ifdef BENCH
 #include <iostream>
 #endif
+
+#include <tlx/simple_vector.hpp>
 
 #include "defs.hpp"
 
@@ -21,11 +24,10 @@ const term_t CHAR_ALPHABET = 256;
      *
      * A non-terminal consists of the length of the string that is derived by the non-terminal and its production rule
      */
-template<typename variable_t, typename terminal_count_t>
+template<typename variable_t>
 struct non_terminal {
  public:
     typedef variable_t value_t;
-    typedef terminal_count_t terminals_t;
 
     /**
      * The length of the (sub)string derived by this non-terminal.
@@ -73,11 +75,15 @@ struct non_terminal {
      * @param nt The non-terminal to compare with
      * @return @code{true} if the production rules are equal and the lengths of the derived (sub)strings
      */
-    bool operator==(const non_terminal<value_t, terminals_t>& nt) const {
+    bool operator==(const non_terminal<value_t>& nt) const {
         return this->production == nt.production && this->len == nt.len;
     }
 
-    non_terminal<value_t, terminals_t>& operator=(const non_terminal<value_t, terminals_t>& nt) {
+    bool operator!=(const non_terminal<value_t>& nt) const {
+        return !(this->operator==(nt));
+    }
+
+    non_terminal<value_t>& operator=(const non_terminal<value_t>& nt) {
         this->production[0] = nt.production[0];
         this->production[1] = nt.production[1];
         this->len = nt.len;
@@ -107,11 +113,11 @@ struct non_terminal {
  * A run-length Straight-line program is a context free grammar in Chomsky normal form that is extended by production
  * rules of the form X^d where X is a non-terminal and d is the number of repeats of the non-terminal.
  */
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
+template<typename variable_t = var_t>
 class rlslp {
  public:
     typedef variable_t value_t;
-    typedef terminal_count_t terminals_t;
+    typedef size_t terminals_t;
 
  private:
     size_t compute_length(const value_t nt) {
@@ -199,7 +205,8 @@ class rlslp {
     /**
      * All production rules of the rlslp.
      */
-    std::vector<non_terminal<value_t, terminals_t>> non_terminals;
+    ui_vector<non_terminal<value_t>> non_terminals;
+//    std::vector<non_terminal<value_t, terminals_t>> non_terminals;
 
     /**
      * The number of terminals. (determines the first non-terminal)
@@ -217,11 +224,11 @@ class rlslp {
     value_t blocks = 0;
 
 
-    non_terminal<value_t, terminals_t>& operator[](size_t i) {
+    non_terminal<value_t>& operator[](size_t i) {
         return this->non_terminals[i];
     }
 
-    const non_terminal<value_t, terminals_t>& operator[](size_t i) const {
+    const non_terminal<value_t>& operator[](size_t i) const {
         return this->non_terminals[i];
     }
 
@@ -233,22 +240,22 @@ class rlslp {
         return is_empty;
     }
 
-    bool operator==(const rlslp<value_t, terminals_t>& rlslp) const {
+    bool operator==(const rlslp<value_t>& rlslp) const {
         return terminals == rlslp.terminals && root == rlslp.root && non_terminals == rlslp.non_terminals &&
                is_empty == rlslp.is_empty && blocks == rlslp.blocks;
     }
 
-    void reserve(size_t size) {
-        non_terminals.reserve(size);
-    }
+//    void reserve(size_t size) {
+//        non_terminals.reserve(size);
+//    }
 
     void resize(size_t size) {
         non_terminals.resize(size);
     }
 
-    void shrink_to_fit() {
-        non_terminals.shrink_to_fit();
-    }
+//    void shrink_to_fit() {
+//        non_terminals.shrink_to_fit();
+//    }
 
     bool is_terminal(value_t nt) const {
         return nt < terminals;
@@ -373,8 +380,8 @@ namespace std {
  * @param nt The non-terminal
  * @return A string representation of the non-terminal
  */
-template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
-std::string to_string(const typename recomp::non_terminal<variable_t, terminal_count_t>& nt) {
+template<typename variable_t = recomp::var_t>
+std::string to_string(const typename recomp::non_terminal<variable_t>& nt) {
     std::stringstream sstream;
     sstream << "production: (";
     sstream << std::to_string(nt.production[0]) << "," << std::to_string(nt.production[1])
@@ -389,8 +396,8 @@ std::string to_string(const typename recomp::non_terminal<variable_t, terminal_c
  * @param rlslp The non-terminal
  * @return A string representation of the rlslp
  */
-template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
-std::string to_string(const typename recomp::rlslp<variable_t, terminal_count_t>& rlslp) {
+template<typename variable_t = recomp::var_t>
+std::string to_string(const typename recomp::rlslp<variable_t>& rlslp) {
     std::stringstream sstream;
     sstream << "root: " << rlslp.root << std::endl;
     sstream << "number of terminals: ";

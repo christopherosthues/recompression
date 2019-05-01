@@ -1,4 +1,5 @@
 set(tlx_INCLUDE_DIRS ${tlx_INSTALL_DIR} ${tlx_INSTALL_DIR}/include)
+set(Glog_LIBRARIES ${tlx_INSTALL_DIR}/lib/libtlx.a)
 set(tlx_EXTERNAL TRUE)
 
 message(STATUS "Removing remains of previously downloaded tlx versions")

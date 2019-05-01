@@ -6,6 +6,7 @@
 #include <parallel/algorithm>
 #include <algorithm>
 #include <chrono>
+#include <deque>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -16,22 +17,22 @@
 
 #include <ips4o.hpp>
 
-#include "recompression.hpp"
-#include "defs.hpp"
-#include "util.hpp"
-#include "rlslp.hpp"
-#include "radix_sort.hpp"
+#include "recompression/recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/rlslp.hpp"
+#include "recompression/radix_sort.hpp"
 
 namespace recomp {
 
 namespace parallel {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class recompression_order_gr : public recompression<variable_t, terminal_count_t> {
+template<typename variable_t = var_t>
+class recompression_order_gr : public recompression<variable_t> {
  public:
-    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
-    typedef typename recompression<variable_t, terminal_count_t>::alphabet_t alphabet_t;
-    typedef typename recompression<variable_t, terminal_count_t>::bv_t bv_t;
+    typedef typename recompression<variable_t>::text_t text_t;
+    typedef typename recompression<variable_t>::alphabet_t alphabet_t;
+    typedef typename recompression<variable_t>::bv_t bv_t;
     typedef std::tuple<bool, variable_t, variable_t> adj_t;
     typedef std::vector<adj_t> adj_list_t;
     typedef std::unordered_map<variable_t, bool> partition_t;
@@ -43,11 +44,11 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 
 
     inline recompression_order_gr() {
-        this->name = "parallel_gr";
+        this->name = "parallel_order_gr";
     }
 
-    inline recompression_order_gr(std::string& dataset) : recompression<variable_t, terminal_count_t>(dataset) {
-        this->name = "parallel_gr";
+    inline recompression_order_gr(std::string& dataset) : recompression<variable_t>(dataset) {
+        this->name = "parallel_order_gr";
     }
 
     /**
@@ -59,8 +60,8 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
      * @param cores The number of cores/threads to use
      */
     inline virtual void recomp(text_t& text,
-                               rlslp<variable_t, terminal_count_t>& rlslp,
-                               const terminal_count_t& alphabet_size,
+                               rlslp<variable_t>& rlslp,
+                               const size_t& alphabet_size,
                                const size_t cores) override {
 #ifdef BENCH_RECOMP
         const auto startTime = recomp::timer::now();
@@ -96,7 +97,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 #endif
     }
 
-    using recompression<variable_t, terminal_count_t>::recomp;
+    using recompression<variable_t>::recomp;
 
 
  private:
@@ -108,7 +109,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void bcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_bcomp dataset=" << this->dataset << " text=" << text.size()
@@ -220,7 +221,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 }
             }
         }
-        block_overlaps.resize(0);
+        block_overlaps.resize(1);
         block_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeBlocks = recomp::timer::now();
@@ -306,7 +307,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-                    rlslp.reserve(rlslp_size);
+//                    rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
@@ -328,7 +329,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
-                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(last_char, b_len, len);
+                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
                     j++;
                     last_var++;
                     text[positions[i].second] = last_var;
@@ -348,7 +349,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                         if (char_i >= rlslp.terminals) {
                             len *= rlslp[char_i - rlslp.terminals].len;
                         }
-                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t, terminal_count_t>(char_i, b_len, len);
+                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
                         j++;
                         last_var++;
                         text[positions[i].second] = last_var;
@@ -575,7 +576,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
      * @param text The text
      * @param rlslp The rlslp
      */
-    inline void pcomp(text_t& text, rlslp<variable_t, terminal_count_t>& rlslp, bv_t& bv) {
+    inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -603,6 +604,7 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
 #ifdef BENCH
         const auto startTimeRules = recomp::timer::now();
 #endif
+        std::deque<non_terminal<variable_t>> new_rules;
         if (adj_list.size() > 0) {
             variable_t left, right;
             bool pair_found;
@@ -629,7 +631,8 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
-                rlslp.non_terminals.emplace_back(left, right, len);
+                new_rules.emplace_back(left, right, len);
+//                rlslp.non_terminals.emplace_back(left, right, len);
             }
         }
 
@@ -669,8 +672,16 @@ class recompression_order_gr : public recompression<variable_t, terminal_count_t
                 } else {
                     len += 1;
                 }
-                rlslp.non_terminals.emplace_back(left, right, len);
+                new_rules.emplace_back(left, right, len);
+//                rlslp.non_terminals.emplace_back(left, right, len);
             }
+        }
+
+        size_t size = rlslp.size();
+        rlslp.resize(size + new_rules.size());
+#pragma omp parallel for num_threads(this->cores) schedule(static)
+        for (size_t i = 0; i < new_rules.size(); ++i) {
+            rlslp[size + i] = new_rules[i];
         }
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();

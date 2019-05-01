@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." OFF)
-option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." OFF)
+option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." ON)
+option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." ON)
 option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." ON)
 option(RECOMPRESSION_GENERATE_DOC "Set ON to generate doxygen API reference in build/doc directory" OFF)
 option(RECOMPRESSION_ENABLE_MALLOC_COUNT "Set ON to enable memory measurement." OFF)
@@ -46,6 +46,8 @@ elseif(${CMAKE_BUILD_TYPE} MATCHES BenchSingleExtract)
     message(STATUS "Adding single extract flags")
     add_definitions(-DBENCH_SINGLE_EXTRACT)
 endif ()
+
+#add_definitions(-DGRAPH_STATS)
 
 add_custom_target(external-downloads)
 

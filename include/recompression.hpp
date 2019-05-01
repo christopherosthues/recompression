@@ -5,18 +5,24 @@
 #include "recompression/defs.hpp"
 #include "recompression/recompression.hpp"
 #include "recompression/fast_recompression.hpp"
-#include "recompression/full_parallel_recompression.hpp"
-#include "recompression/parallel_lock_recompression.hpp"
+#include "recompression/parallel_ls_recompression.hpp"
+#include "recompression/parallel_gr_recompression.hpp"
+#include "recompression/experimental/parallel_lock_recompression.hpp"
 #include "recompression/hash_recompression.hpp"
 #include "recompression/parallel_lp_recompression.hpp"
-#include "recompression/parallel_order_great_recompression.hpp"
-#include "recompression/parallel_order_less_recompression.hpp"
 #include "recompression/parallel_recompression.hpp"
 #include "recompression/parallel_rnd_recompression.hpp"
 #include "recompression/lce_query.hpp"
 #include "recompression/radix_sort.hpp"
 #include "recompression/rlslp.hpp"
 #include "recompression/util.hpp"
+//#include "recompression/experimental/parallel_wrnd_recompression.hpp"
+//#include "recompression/experimental/parallel_grz_recompression.hpp"
+#include "recompression/experimental/parallel_order_great_recompression.hpp"
+#include "recompression/experimental/parallel_order_less_recompression.hpp"
+#include "recompression/experimental/parallel_ls3_recompression.hpp"
+#include "recompression/experimental/parallel_ls5_recompression.hpp"
+#include "recompression/experimental/parallel_ls_gain_recompression.hpp"
 #include "recompression/io/bitistream.hpp"
 #include "recompression/io/bitostream.hpp"
 #include "recompression/coders/coder.hpp"
@@ -29,34 +35,48 @@
 namespace recomp {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-std::unique_ptr<recompression<variable_t, terminal_count_t>> create_recompression(const std::string& name, std::string& dataset) {
+std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset) {
     if (name == "parallel") {
-        return std::make_unique<parallel::parallel_recompression<variable_t, terminal_count_t>>(dataset);
-    } else if (name == "full_parallel") {
-        return std::make_unique<parallel::full_parallel_recompression<variable_t, terminal_count_t>>(dataset);
-    } else if (name == "parallel_lp") {
-        return std::make_unique<parallel::parallel_lp_recompression<variable_t, terminal_count_t>>(dataset);
-    } else if (name == "parallel_rnd") {
-        return std::make_unique<parallel::parallel_rnd_recompression<variable_t, terminal_count_t>>(dataset);
-    } else if (name == "parallel_lock") {
-        return std::make_unique<parallel::parallel_lock_recompression<variable_t, terminal_count_t>>(dataset);
+        return std::make_unique<parallel::parallel_recompression<variable_t>>(dataset);
     } else if (name == "parallel_ls") {
-        return std::make_unique<parallel::recompression_order_ls<variable_t, terminal_count_t>>(dataset);
+        return std::make_unique<parallel::parallel_ls_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_ls3") {
+        return std::make_unique<parallel::parallel_ls3_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_ls5") {
+        return std::make_unique<parallel::parallel_ls5_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_ls_gain") {
+        return std::make_unique<parallel::parallel_ls_gain_recompression<variable_t>>(dataset);
     } else if (name == "parallel_gr") {
-        return std::make_unique<parallel::recompression_order_gr<variable_t, terminal_count_t>>(dataset);
+        return std::make_unique<parallel::parallel_gr_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_grz") {
+        return std::unique_ptr<recompression<variable_t>>(nullptr);
+//        return std::make_unique<parallel::parallel_grz_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_lp") {
+        return std::make_unique<parallel::parallel_lp_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_rnd") {
+        return std::make_unique<parallel::parallel_rnd_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_wrnd") {
+        return std::unique_ptr<recompression<variable_t>>(nullptr);
+//        return std::make_unique<parallel::parallel_wrnd_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_lock") {
+        return std::make_unique<parallel::parallel_lock_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_order_ls") {
+        return std::make_unique<parallel::recompression_order_ls<variable_t>>(dataset);
+    } else if (name == "parallel_order_gr") {
+        return std::make_unique<parallel::recompression_order_gr<variable_t>>(dataset);
     } else if (name == "fast") {
-        return std::make_unique<recompression_fast<variable_t, terminal_count_t>>(dataset);
+        return std::make_unique<recompression_fast<variable_t>>(dataset);
     } else if (name == "hash") {
-        return std::make_unique<hash_recompression<variable_t, terminal_count_t>>(dataset);
+        return std::make_unique<hash_recompression<variable_t>>(dataset);
     } else {
-        return std::unique_ptr<recompression<variable_t, terminal_count_t>>(nullptr);
+        return std::unique_ptr<recompression<variable_t>>(nullptr);
     }
 }
 
 namespace coder {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-void encode(const std::string& coder, const std::string& file_name, rlslp<variable_t, terminal_count_t>& rlslp) {
+void encode(const std::string& coder, const std::string& file_name, rlslp<variable_t>& rlslp) {
     if (coder == "plain") {
         PlainRLSLPCoder::Encoder enc{file_name};
         enc.encode(rlslp);
@@ -74,8 +94,8 @@ void encode(const std::string& coder, const std::string& file_name, rlslp<variab
     }
 }
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-rlslp<variable_t, terminal_count_t> decode(const std::string& coder, const std::string& file_name) {
+template<typename variable_t = var_t>
+rlslp<variable_t> decode(const std::string& coder, const std::string& file_name) {
     if (coder == "plain") {
         PlainRLSLPCoder::Decoder dec{file_name};
         return dec.decode();
@@ -89,7 +109,7 @@ rlslp<variable_t, terminal_count_t> decode(const std::string& coder, const std::
         SortedRLSLPDRCoder::Decoder dec{file_name};
         return dec.decode();
     } else {
-        return rlslp<variable_t, terminal_count_t>{};
+        return rlslp<variable_t>{};
     }
 }
 

@@ -35,8 +35,8 @@ class SortedRLSLPCoder {
      public:
         inline Encoder(const std::string& file_name) : ostream(file_name + k_extension) {}
 
-        template<typename variable_t = var_t, typename terminal_count_t = term_t>
-        inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
+        template<typename variable_t = var_t>
+        inline void encode(rlslp<variable_t>& rlslp) {
 #ifdef BENCH
             const auto startTime = recomp::timer::now();
 #endif
@@ -49,7 +49,7 @@ class SortedRLSLPCoder {
 
                 ostream.write_int<uint8_t>(bits, 6);
                 ostream.write_int<size_t>(rlslp.size(), bits);
-                ostream.write_int<terminal_count_t>(rlslp.terminals, bits);
+                ostream.write_int<size_t>(rlslp.terminals, bits);
                 ostream.write_int<variable_t>(rlslp.root, bits);
                 ostream.write_int<variable_t>(rlslp.blocks, bits);
 
@@ -109,27 +109,27 @@ class SortedRLSLPCoder {
      public:
         inline Decoder(const std::string& file_name) : istream(file_name + k_extension) {}
 
-        template<typename variable_t = var_t, typename terminal_count_t = term_t>
-        inline rlslp<variable_t, terminal_count_t> decode() {
+        template<typename variable_t = var_t>
+        inline rlslp<variable_t> decode() {
 #ifdef BENCH
             const auto startTime = recomp::timer::now();
 #endif
-            rlslp<variable_t, terminal_count_t> rlslp;
+            rlslp<variable_t> rlslp;
             bool empty = istream.read_bit();
 
             if (!empty) {
                 auto bits = istream.read_int<uint8_t>(6);
                 auto size = istream.read_int<size_t>(bits);
-                rlslp.reserve(size);
+                // rlslp.reserve(size);
                 rlslp.resize(size);
-                rlslp.terminals = istream.read_int<terminal_count_t>(bits);
+                rlslp.terminals = istream.read_int<size_t>(bits);
                 rlslp.root = istream.read_int<variable_t>(bits);
                 rlslp.blocks = istream.read_int<variable_t>(bits);
 
                 variable_t delta = 0;
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
                     delta = istream.read_unary<variable_t>() + delta;
-                    rlslp[i] = non_terminal<variable_t, terminal_count_t>{delta, 0};
+                    rlslp[i] = non_terminal<variable_t>{delta, 0};
                 }
 
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
@@ -141,7 +141,7 @@ class SortedRLSLPCoder {
                 for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                     variable_t first = istream.read_int<variable_t>(block_bits);
                     variable_t second = istream.read_int<variable_t>(len_bits);
-                    rlslp[i] = non_terminal<variable_t, terminal_count_t>(first, second);
+                    rlslp[i] = non_terminal<variable_t>(first, second);
                 }
 
                 rlslp.compute_lengths();

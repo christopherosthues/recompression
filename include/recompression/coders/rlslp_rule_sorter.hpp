@@ -17,10 +17,10 @@ namespace recomp {
  * @tparam terminal_count_t
  * @param rlslp
  */
-template<typename variable_t = recomp::var_t, typename terminal_count_t = recomp::term_t>
-inline void sort_rlslp_rules(rlslp<variable_t, terminal_count_t>& rlslp, size_t cores = std::thread::hardware_concurrency()) {
-    std::vector<variable_t> first(rlslp.size() + rlslp.terminals);
-    std::vector<variable_t> next(rlslp.size() + rlslp.terminals);
+template<typename variable_t = recomp::var_t>
+inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::thread::hardware_concurrency()) {
+    ui_vector<variable_t> first(rlslp.size() + rlslp.terminals);
+    ui_vector<variable_t> next(rlslp.size() + rlslp.terminals);
 
 #pragma omp parallel for num_threads(cores) schedule(static)
     for (size_t i = 0; i < first.size(); ++i) {
@@ -200,7 +200,7 @@ inline void sort_rlslp_rules(rlslp<variable_t, terminal_count_t>& rlslp, size_t 
     }
 //    std::cout << "renamed all" << std::endl;
 
-    std::vector<recomp::non_terminal<variable_t, terminal_count_t>> renamed_rules = std::move(rlslp.non_terminals);
+    ui_vector<recomp::non_terminal<variable_t>> renamed_rules = std::move(rlslp.non_terminals);
     rlslp.non_terminals.resize(renamed_rules.size());
     for (size_t i = 0; i < renamed_rules.size(); ++i) {
         auto rule = renamed_rules[i];

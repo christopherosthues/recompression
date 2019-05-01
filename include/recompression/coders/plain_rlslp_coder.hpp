@@ -24,13 +24,13 @@ class PlainRLSLPCoder {
      public:
         inline Encoder(const std::string& file_name) : ostream(file_name + k_extension) {}
 
-        template<typename variable_t = var_t, typename terminal_count_t = term_t>
-        inline void encode(rlslp<variable_t, terminal_count_t>& rlslp) {
+        template<typename variable_t = var_t>
+        inline void encode(rlslp<variable_t>& rlslp) {
             ostream.write_bit(rlslp.is_empty);
 
             if (!rlslp.is_empty) {
                 ostream.write_int<size_t>(rlslp.size());
-                ostream.write_int<terminal_count_t>(rlslp.terminals);
+                ostream.write_int<size_t>(rlslp.terminals);
                 ostream.write_int<variable_t>(rlslp.root);
                 ostream.write_int<variable_t>(rlslp.blocks);
 
@@ -51,23 +51,23 @@ class PlainRLSLPCoder {
      public:
         inline Decoder(const std::string& file_name) : istream(file_name + k_extension) {}
 
-        template<typename variable_t = var_t, typename terminal_count_t = term_t>
-        inline rlslp<variable_t, terminal_count_t> decode() {
-            rlslp<variable_t, terminal_count_t> rlslp;
+        template<typename variable_t = var_t>
+        inline rlslp<variable_t> decode() {
+            rlslp<variable_t> rlslp;
             bool empty = istream.read_bit();
 
             if (!empty) {
                 auto size = istream.read_int<size_t>();
-                rlslp.reserve(size);
+                // rlslp.reserve(size);
                 rlslp.resize(size);
-                rlslp.terminals = istream.read_int<terminal_count_t>();
+                rlslp.terminals = istream.read_int<size_t>();
                 rlslp.root = istream.read_int<variable_t>();
                 rlslp.blocks = istream.read_int<variable_t>();
 
                 for (size_t i = 0; i < size; ++i) {
                     variable_t first = istream.read_int<variable_t>();
                     variable_t second = istream.read_int<variable_t>();
-                    rlslp[i] = non_terminal<variable_t, terminal_count_t>(first, second);
+                    rlslp[i] = non_terminal<variable_t>(first, second);
                 }
 
                 rlslp.compute_lengths();

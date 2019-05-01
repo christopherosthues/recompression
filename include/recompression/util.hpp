@@ -82,16 +82,11 @@ template<typename text_t>
 void read_file_fill(const std::string& file_name, ui_vector<text_t>& text, const size_t prefix_size) {
     std::cout << "Reading file: " << file_name << std::endl;
     std::ifstream ifs(file_name.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-    uint64_t file_size = ifs.tellg();
     if (!ifs) {
         std::cerr << "Failed to read file " << file_name << std::endl;
         exit(1);
     }
     ifs.seekg(0, std::ios::beg);
-
-//    if (prefix_size > 0) {
-//        file_size = std::min(file_size, prefix_size);
-//    }
 
     text.resize(prefix_size);
 
@@ -100,14 +95,6 @@ void read_file_fill(const std::string& file_name, ui_vector<text_t>& text, const
     while (ifs.get(c) && index < prefix_size) {
         text[index++] = static_cast<text_t>((unsigned char)c);
     }
-/*    while (index < prefix_size) {
-        size_t file_idx = 0;
-        while (ifs.get(c) && file_idx < file_size && index < prefix_size) {
-            text[index++] = static_cast<text_t>((unsigned char)c);
-            file_idx++;
-        }
-        ifs.seekg(0, std::ios::beg);
-    }*/
     ifs.close();
     
     size_t idx = 0;
@@ -189,7 +176,6 @@ void read_file_without_zeroes(const std::string& file_name, ui_vector<text_t>& t
     }
     ifs.close();
     text.resize(idx);
-//    text.shrink_to_fit();
 
     std::cout << "Read " << text.size() << " bytes" << std::endl;
     std::cout << "Finished reading file" << std::endl;
@@ -244,17 +230,6 @@ void read_text_file_fill(const std::string& file_name, std::string& text, size_t
     }
 
     text.resize(prefix_size, '\0');
-    /*char c;
-    size_t index = 0;
-    while (index < prefix_size) {
-        size_t file_idx = 0;
-        while (ifs.get(c) && file_idx < file_size && index < prefix_size) {
-            text[index++] = c;
-            file_idx++;
-        }
-        ifs.seekg(0, std::ios::beg);
-    }
-    ifs.close();*/
     ifs.read((char*)text.data(), file_size);
     ifs.close();
     
@@ -401,9 +376,6 @@ std::string partition_to_string(const partition_t& partition) {
     for (const auto& par : part) {
         sstream << "(" << par.first << ": " << par.second << ") " << std::endl;
     }
-    /*for (const auto& par : partition) {
-        sstream << "(" << par.first << ": " << par.second << ") ";
-    }*/
     return sstream.str();
 }
 
@@ -495,6 +467,15 @@ int str_to_int(std::string s) {
         return -1;
     }
     return n;
+}
+
+template<typename T>
+inline ui_vector<T> create_ui_vector(std::vector<T> vec) {
+    ui_vector<T> ui_vec(vec.size());
+    for (size_t i = 0; i < vec.size(); ++i) {
+        ui_vec[i] = vec[i];
+    }
+    return ui_vec;
 }
 
 inline constexpr uint8_t bits_for(size_t value) {

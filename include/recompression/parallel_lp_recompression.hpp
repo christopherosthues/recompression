@@ -21,26 +21,103 @@ namespace recomp {
 
 namespace parallel {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
-class parallel_lp_recompression : public parallel_recompression<variable_t, terminal_count_t> {
+template<typename variable_t = var_t>
+class parallel_lp_recompression : public parallel_recompression<variable_t> {
  public:
-    typedef typename recompression<variable_t, terminal_count_t>::text_t text_t;
-    typedef typename parallel_recompression<variable_t, terminal_count_t>::adj_t adj_t;
-    typedef typename parallel_recompression<variable_t, terminal_count_t>::adj_list_t adj_list_t;
-    typedef typename parallel_recompression<variable_t, terminal_count_t>::partition_t partition_t;
+    typedef typename recompression<variable_t>::text_t text_t;
+    typedef typename parallel_recompression<variable_t>::adj_t adj_t;
+    typedef typename parallel_recompression<variable_t>::adj_list_t adj_list_t;
+    typedef typename parallel_recompression<variable_t>::partition_t partition_t;
 
     inline parallel_lp_recompression() {
         this->name = "parallel_lp";
     }
 
-    inline parallel_lp_recompression(std::string& dataset) : parallel_recompression<variable_t, terminal_count_t>(dataset) {
+    inline parallel_lp_recompression(std::string& dataset) : parallel_recompression<variable_t>(dataset) {
         this->name = "parallel_lp";
     }
 
-    using parallel_recompression<variable_t, terminal_count_t>::recomp;
+    using parallel_recompression<variable_t>::recomp;
 
 
  protected:
+    /**
+     * @brief Computes and sorts the adjacency list of the text in ascending order.
+     *
+     * The adjacency list is stored as a list of text positions.
+     *
+     * @param text The text
+     * @param adj_list[out] The adjacency list (represented as text positions)
+     */
+    inline virtual void compute_adj_list(const text_t& text, adj_list_t& adj_list) override {
+#ifdef BENCH
+        const auto startTime = recomp::timer::now();
+#endif
+
+#pragma omp parallel for schedule(static) num_threads(this->cores)
+        for (size_t i = 0; i < adj_list.size(); ++i) {
+            adj_list[i] = i;
+        }
+
+#ifdef BENCH
+        const auto endTime = recomp::timer::now();
+        const auto timeSpan = endTime - startTime;
+        std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
+        const auto startTimeMult = recomp::timer::now();
+#endif
+//        partitioned_radix_sort(adj_list);
+        auto sort_adj = [&](size_t i, size_t j) {
+            auto char_i = text[i];
+            auto char_i1 = text[i + 1];
+            auto char_j = text[j];
+            auto char_j1 = text[j + 1];
+            if (char_i > char_i1) {
+                if (char_j > char_j1) {
+                    bool less = char_i < char_j;
+                    if (char_i == char_j) {
+                        less = char_i1 < char_j1;
+                    }
+                    return less;
+                } else {
+                    // char_j1 > char_j -> (char_i, char_i1, 0) (char_j1, char_j, 1)
+                    bool less = char_i < char_j1;
+                    if (char_i == char_j1) {
+                        if (char_i1 == char_j) {
+                            return true;
+                        }
+                        less = char_i1 < char_j;
+                    }
+                    return less;
+                }
+            } else {
+                if (char_j > char_j1) {
+                    // char_i1 > char_i -> (char_i1, char_i, 1) (char_j, char_j1, 0)
+                    bool less = char_i1 < char_j;
+                    if (char_i1 == char_j) {
+                        if (char_i == char_j1) {
+                            return false;
+                        }
+                        less = char_i < char_j1;
+                    }
+                    return less;
+                } else {
+                    bool less = char_i1 < char_j1;
+                    if (char_i1 == char_j1) {
+                        less = char_i < char_j;
+                    }
+                    return less;
+                }
+            }
+        };
+        ips4o::parallel::sort(adj_list.begin(), adj_list.end(), sort_adj, this->cores);
+#ifdef BENCH
+        const auto endTimeMult = recomp::timer::now();
+        const auto timeSpanMult = endTimeMult - startTimeMult;
+        std::cout << " sort_adj_list="
+                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMult).count());
+#endif
+    }
+
     /**
      * @brief Computes a directed cut from the given partition defining an undirected cut.
      *

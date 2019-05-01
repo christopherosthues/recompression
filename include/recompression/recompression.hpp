@@ -10,7 +10,7 @@
 
 namespace recomp {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
+template<typename variable_t = var_t>
 class recompression {
  public:
     typedef ui_vector<variable_t> text_t;
@@ -27,12 +27,12 @@ class recompression {
     inline recompression(std::string& dataset) : dataset(dataset) {}
 
     virtual void recomp(text_t& text,
-                        rlslp<variable_t, terminal_count_t>& rlslp,
-                        const terminal_count_t& alphabet_size,
+                        rlslp<variable_t>& rlslp,
+                        const size_t& alphabet_size,
                         const size_t cores) {};
 
     virtual void recomp(text_t& text,
-                        rlslp <variable_t, terminal_count_t>& rlslp,
+                        rlslp <variable_t>& rlslp,
                         const size_t cores) {
         this->recomp(text, rlslp, recomp::CHAR_ALPHABET, cores);
     }
@@ -44,7 +44,7 @@ class recompression {
      * @param rlslp The rlslp to rename
      * @param bv The bitvector indicating the block rules
      */
-    void rename_rlslp(rlslp<variable_t, terminal_count_t>& rlslp, const bv_t& bv) {
+    void rename_rlslp(rlslp<variable_t>& rlslp, const bv_t& bv) {
 #ifdef BENCH
         const auto startTimeRlslp = recomp::timer::now();
 #endif
@@ -56,7 +56,7 @@ class recompression {
             }
 
             std::vector<variable_t> renamed(rlslp.size());
-            std::vector<recomp::non_terminal<variable_t, terminal_count_t>> renamed_rules(rlslp.size() - rlslp.blocks);
+            std::vector<recomp::non_terminal<variable_t>> renamed_rules(rlslp.size() - rlslp.blocks);
             variable_t block_i = 0;  // rlslp.blocks;
             variable_t pair_i = 0;
             for (size_t i = 0; i < rlslp.size(); ++i) {
