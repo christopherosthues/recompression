@@ -27,7 +27,7 @@ Dependencies are:
 For the parallel algorithms, you need to enable OpenMP (``-fopenmp``). To support the in-place super scalar samplesort algorithm please read the [IPS⁴o](https://github.com/SaschaWitt/ips4o.git) 's documentation.
 
 ## Installation
-To download the library use to following command.
+To download and build the library use to following commands.
 
 ```bash
 git clone https://github.com/ChristopherOsthues/recompression.git
@@ -45,7 +45,30 @@ cmake .. -DCMAKE_BUILD_TYPE=Bench
 make
 ```
 
-To build the documentation, tests and/or benchmark executables you can enable them by setting the corresponding option to ``ON`` in the [CMakeList.txt](CMakeLists.txt) file.
+To build the documentation, tests and/or benchmark executables you can enable them by setting the corresponding option to ``ON`` in the [CMakeList.txt](CMakeLists.txt) file. For all benchmarks the directory path to the input files must be specified. The benchmark scripts are able to read in more than one files and execute one or more algorithms by enquoting them with "".
+
+```bash
+./bench/bench_strong_scale_recompression <directory path to input files>/ "<file1> <file2> <file3>"
+     "parallel parallel_lp parallel_ls" <cores> <repeats>
+```
+The directory path must finish with a simple dash ``/``. Use ``./`` for the current directory.
+
+To print the help simply execute the benchmarks without specifying any argument.
+
+```bash
+./bench/bench_strong_scale_recompression
+```
+The benchmark scripts are:
+
+* **lce_query_bench.cpp**: The benchmarks for random lce queries.
+* **long_lce_query_bench.cpp**: The benchmarks with precomputed positions that generate lce queries with long results.
+* **random_access_bench.cpp**: The benchmarks for random generated random access queries.
+* **recompression_all_bench.cpp**: Benchmarks for fixed number of cores, the sequential variants are also available here.
+* **recompression_mem_bench.cpp**: Benchmarks for RAM usage, the sequential variants are also available here (The option RECOMPRESSION_ENABLE_MALLOC_COUNT in [CMakeLists.txt](CMakeLists.txt) has to be enabled).
+* **store_rlslp_bench.cpp**: Benchmarks for compression. Writes the generated RLSLP to file using the specified coder.
+* **strong_scale_recompression_bench.cpp**: Strong scaling benchmarks
+* **weak_scale_recompression_bench.cpp**: Weak scaling benchmarks
+
 
 ## Getting started
 
@@ -60,8 +83,8 @@ int main() {
     std::vector<var_t> text = {0, 0, 3, 0, 4, 2, 5, 12};
     size_t cores = 4;
     size_t alphabet_size = 13;
-    parallel::parallel_recompression<var_t, term_t> recompression{"dataset"};
-    rlslp<var_t, term_t> slp;
+    parallel::parallel_recompression<var_t> recompression{"dataset"};
+    rlslp<var_t> slp;
     recompression.recomp(text, slp, alphabet_size, cores);
 }
 ```
@@ -73,8 +96,9 @@ There are some different versions available. This version are:
 * **parallel**: A parallel version. The undirected cut is not parallelized due to reasons of data dependencies.
 * **parallel_lp**: A parallel recompression version which counts the number of possibly new production introduced by the combinations of the partition sets choosing the combination that generates less productions if the values of the directed cut are equal. The undirected cut is not parallelized due to reasons of data dependencies.
 * **parallel_rnd**: A full parallel version using a random generated partitioning of the symbols for *pcomp*
-* **parallel_lock**: A version that executes the undirected cut in parallel solving the data dependencies with locks.
-* **full_parallel**: A fully parallelized version using a parallel local search to find local optimas for the partition.
+* **parallel_ls**: A full parallel version using a parallel local search for the partition.
+* **parallel_gr**: A full parallel version using a parallel variant of the greedy MaxCut algorithm for the partition.
+
 
 
 The library also provides coders to encode and output the rlslp to files. The code below shows an example.
@@ -88,15 +112,15 @@ int main() {
     std::vector<var_t> text = {0, 0, 3, 0, 4, 2, 5, 12};
     size_t cores = 4;
     size_t alphabet_size = 13;
-    parallel::parallel_recompression<var_t, term_t> recompression{"dataset"};
-    rlslp<var_t, term_t> slp;
+    parallel::parallel_recompression<var_t> recompression{"dataset"};
+    rlslp<var_t> slp;
     recompression.recomp(text, slp, alphabet_size, cores);
     
     // Stores the rlslp to testfile.<enc>
     encode("sorted", "testfile", slp);
     
     // Loads the rlslp from testfile.<enc>
-    rlslp<var_t, term_t> in_slp = decode("sorted", "testfile");
+    rlslp<var_t> in_slp = decode("sorted", "testfile");
 }
 ```
 
