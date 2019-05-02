@@ -81,7 +81,7 @@ class recompression_order_ls : public recompression<variable_t> {
             }
         }
 
-        rlslp.resize(rlslp.size(), this->cores);
+        rlslp.resize(rlslp.size());
 
         if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(text[0]);
@@ -309,7 +309,7 @@ class recompression_order_ls : public recompression<variable_t> {
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
 //                    rlslp.reserve(rlslp_size);
-                    rlslp.resize(rlslp_size, this->cores);
+                    rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
                 }
@@ -663,7 +663,7 @@ class recompression_order_ls : public recompression<variable_t> {
             }
         }
         size_t size = rlslp.size();
-        rlslp.resize(size + new_rules.size(), this->cores);
+        rlslp.resize(size + new_rules.size());
 #pragma omp parallel for num_threads(this->cores) schedule(static)
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
