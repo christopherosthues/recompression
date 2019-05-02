@@ -59,7 +59,7 @@ class PlainRLSLPCoder {
             if (!empty) {
                 auto size = istream.read_int<size_t>();
                 // rlslp.reserve(size);
-                rlslp.resize(size);
+                rlslp.resize(size, 1);
                 rlslp.terminals = istream.read_int<size_t>();
                 rlslp.root = istream.read_int<variable_t>();
                 rlslp.blocks = istream.read_int<variable_t>();

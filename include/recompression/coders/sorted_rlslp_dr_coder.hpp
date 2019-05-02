@@ -170,7 +170,7 @@ class SortedRLSLPDRCoder {
                 auto bits = istream.read_int<uint8_t>(6);
                 auto size = istream.read_int<size_t>(bits);
                 // rlslp.reserve(size);
-                rlslp.resize(size);
+                rlslp.resize(size, 1);
                 rlslp.terminals = istream.read_int<size_t>(bits);
                 rlslp.root = istream.read_int<variable_t>(bits);
                 rlslp.blocks = istream.read_int<variable_t>(bits);
