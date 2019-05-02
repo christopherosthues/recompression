@@ -209,7 +209,7 @@ class parallel_recompression : public recompression<variable_t> {
                 i = text.size();
             }
 
-#pragma omp barrier
+//#pragma omp barrier
             size_t i = compact_bounds[thread_id];
             if (i > 0 && i < compact_bounds[thread_id + 1]) {
                 while (i < text.size() - 1 && text[i] == text[i + 1]) {
@@ -283,7 +283,6 @@ class parallel_recompression : public recompression<variable_t> {
                 }
             };
             ips4o::parallel::sort(positions.begin(), positions.end(), sort_cond, this->cores);
-//            partitioned_parallel_radix_sort_blocks<text_t, variable_t, position_t, 8>(text, positions, this->cores);
 #ifdef BENCH
             const auto endTimeSort = recomp::timer::now();
             const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -321,7 +320,6 @@ class parallel_recompression : public recompression<variable_t> {
                     i++;
                 }
 
-#pragma omp barrier
                 for (; i < assign_bounds[thread_id + 1]; ++i) {
                     if (positions[i].first != positions[i - 1].first ||
                         text[positions[i].second] != text[positions[i - 1].second]) {
@@ -439,7 +437,6 @@ class parallel_recompression : public recompression<variable_t> {
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         const auto startTimeMult = recomp::timer::now();
 #endif
-//        partitioned_radix_sort(adj_list);
         auto sort_adj = [&](size_t i, size_t j) {
             auto char_i = text[i];
             auto char_i1 = text[i + 1];
@@ -566,37 +563,6 @@ class parallel_recompression : public recompression<variable_t> {
             } else {
                 l_count++;
             }
-//            if (text_i > text_i1) {
-//                if (val < text_i) {
-//                    partition[val] = l_count > r_count;
-//                    l_count = 0;
-//                    r_count = 0;
-//                    val = text_i;
-//                }
-//                if (partition.find(text_i1) == partition.end()) {
-//                    partition[text_i1] = false;
-//                }
-//                if (partition[text_i1]) {
-//                    r_count++;
-//                } else {
-//                    l_count++;
-//                }
-//            } else {
-//                if (val < text_i1) {
-//                    partition[val] = l_count > r_count;
-//                    l_count = 0;
-//                    r_count = 0;
-//                    val = text_i1;
-//                }
-//                if (partition.find(text_i) == partition.end()) {
-//                    partition[text_i] = false;
-//                }
-//                if (partition[text_i]) {
-//                    r_count++;
-//                } else {
-//                    l_count++;
-//                }
-//            }
         }
         partition[val] = l_count > r_count;
 
@@ -672,9 +638,7 @@ class parallel_recompression : public recompression<variable_t> {
                 i = text.size();
             }
 
-            size_t i = compact_bounds[thread_id];
-#pragma omp barrier
-            for (; i < compact_bounds[thread_id + 1]; ++i) {
+            for (size_t i = compact_bounds[thread_id]; i < compact_bounds[thread_id + 1]; ++i) {
                 if (part_l == partition[text[i]] && part_l != partition[text[i + 1]]) {
                     t_positions.emplace_back(i);
                     pair_count++;
@@ -732,7 +696,6 @@ class parallel_recompression : public recompression<variable_t> {
             }
         };
         ips4o::parallel::sort(positions.begin(), positions.end(), sort_cond, this->cores);
-//        partitioned_parallel_radix_sort_pairs<text_t, variable_t, pair_position_t, 8>(text, positions, this->cores);
 #ifdef BENCH
         const auto endTimeSort = recomp::timer::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -770,7 +733,6 @@ class parallel_recompression : public recompression<variable_t> {
                 i++;
             }
 
-#pragma omp barrier
             for (; i < assign_bounds[thread_id + 1]; ++i) {
                 if (text[positions[i]] != text[positions[i - 1]] ||
                     text[positions[i] + 1] != text[positions[i - 1] + 1]) {

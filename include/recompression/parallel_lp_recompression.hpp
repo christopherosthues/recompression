@@ -65,7 +65,6 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         const auto startTimeMult = recomp::timer::now();
 #endif
-//        partitioned_radix_sort(adj_list);
         auto sort_adj = [&](size_t i, size_t j) {
             auto char_i = text[i];
             auto char_i1 = text[i + 1];
