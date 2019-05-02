@@ -296,7 +296,6 @@ class parallel_recompression : public recompression<variable_t> {
 
             std::vector<size_t> assign_bounds;
             std::vector<size_t> distinct_blocks;
-            ui_vector<std::pair<variable_t, variable_t>> new_blocks;
 #pragma omp parallel num_threads(this->cores)
             {
                 auto thread_id = omp_get_thread_num();
@@ -342,7 +341,6 @@ class parallel_recompression : public recompression<variable_t> {
                     rlslp.resize(rlslp_size, this->cores);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
-                    new_blocks.resize(distinct_blocks[distinct_blocks.size() - 1]);
                 }
 
                 i = assign_bounds[thread_id];
@@ -353,17 +351,15 @@ class parallel_recompression : public recompression<variable_t> {
                 }
 
 #pragma omp barrier
-//                size_t j = 0;
-                size_t j = distinct_blocks[thread_id];
+                size_t j = 0;
                 if (thread_id == 0) {
                     last_char = text[positions[i].second];
                     auto b_len = positions[i].first;
-//                    auto len = b_len;
-//                    if (last_char >= rlslp.terminals) {
-//                        len *= rlslp[last_char - rlslp.terminals].len;
-//                    }
-//                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
-                    new_blocks[j] = std::make_pair(last_char, b_len);
+                    auto len = b_len;
+                    if (last_char >= rlslp.terminals) {
+                        len *= rlslp[last_char - rlslp.terminals].len;
+                    }
+                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
                     j++;
                     last_var++;
                     text[positions[i].second] = last_var;
@@ -379,12 +375,11 @@ class parallel_recompression : public recompression<variable_t> {
                     if (char_i == last_char && b_len == positions[i - 1].first) {
                         text[positions[i].second] = last_var;
                     } else {
-//                        auto len = b_len;
-//                        if (char_i >= rlslp.terminals) {
-//                            len *= rlslp[char_i - rlslp.terminals].len;
-//                        }
-//                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
-                        new_blocks[j] = std::make_pair(char_i, b_len);
+                        auto len = b_len;
+                        if (char_i >= rlslp.terminals) {
+                            len *= rlslp[char_i - rlslp.terminals].len;
+                        }
+                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
                         j++;
                         last_var++;
                         text[positions[i].second] = last_var;
@@ -394,20 +389,7 @@ class parallel_recompression : public recompression<variable_t> {
                         text[positions[i].second + k] = DELETED;
                     }
                 }
-
-#pragma omp barrier
-#pragma omp for schedule(static)
-                for (size_t k = 0; k < new_blocks.size(); ++k) {
-                    auto char_i = new_blocks[k].first;
-                    auto b_len = new_blocks[k].second;
-                    auto len = b_len;
-                    if (char_i >= rlslp.terminals) {
-                        len *= rlslp[char_i - rlslp.terminals].len;
-                    }
-                    rlslp[nt_count + k] = non_terminal<variable_t>(char_i, b_len, len);
-                }
             }
-            new_blocks.resize(1);
             positions.resize(1);
 #ifdef BENCH
             const auto endTimeRules = recomp::timer::now();
@@ -763,7 +745,6 @@ class parallel_recompression : public recompression<variable_t> {
 
         std::vector<size_t> assign_bounds;
         std::vector<size_t> distinct_pairs;
-        ui_vector<std::pair<variable_t, variable_t>> new_blocks;
 #pragma omp parallel num_threads(this->cores)
         {
             auto thread_id = omp_get_thread_num();
@@ -808,7 +789,6 @@ class parallel_recompression : public recompression<variable_t> {
                 auto rlslp_size = nt_count + pc;
                 rlslp.resize(rlslp_size, this->cores);
                 bv.resize(rlslp_size, false);
-                new_blocks.resize(distinct_pairs[distinct_pairs.size() - 1]);
             }
 
             i = assign_bounds[thread_id];
@@ -821,24 +801,22 @@ class parallel_recompression : public recompression<variable_t> {
             }
 
 #pragma omp barrier
-//            size_t j = 0;
-            size_t j = distinct_pairs[thread_id];
+            size_t j = 0;
             if (thread_id == 0) {
                 last_char1 = text[positions[i]];
                 last_char2 = text[positions[i] + 1];
-//                size_t len = 0;
-//                if (last_char1 >= rlslp.terminals) {
-//                    len = rlslp[last_char1 - rlslp.terminals].len;
-//                } else {
-//                    len = 1;
-//                }
-//                if (last_char2 >= rlslp.terminals) {
-//                    len += rlslp[last_char2 - rlslp.terminals].len;
-//                } else {
-//                    len += 1;
-//                }
-//                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
-                new_blocks[j] = std::make_pair(last_char1, last_char2);
+                size_t len = 0;
+                if (last_char1 >= rlslp.terminals) {
+                    len = rlslp[last_char1 - rlslp.terminals].len;
+                } else {
+                    len = 1;
+                }
+                if (last_char2 >= rlslp.terminals) {
+                    len += rlslp[last_char2 - rlslp.terminals].len;
+                } else {
+                    len += 1;
+                }
+                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 j++;
                 last_var++;
                 text[positions[i]] = last_var;
@@ -852,19 +830,18 @@ class parallel_recompression : public recompression<variable_t> {
                 if (char_i1 == last_char1 && char_i2 == last_char2) {
                     text[positions[i]] = last_var;
                 } else {
-//                    size_t len = 0;
-//                    if (char_i1 >= rlslp.terminals) {
-//                        len = rlslp[char_i1 - rlslp.terminals].len;
-//                    } else {
-//                        len = 1;
-//                    }
-//                    if (char_i2 >= rlslp.terminals) {
-//                        len += rlslp[char_i2 - rlslp.terminals].len;
-//                    } else {
-//                        len += 1;
-//                    }
-//                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
-                    new_blocks[j] = std::make_pair(char_i1, char_i2);
+                    size_t len = 0;
+                    if (char_i1 >= rlslp.terminals) {
+                        len = rlslp[char_i1 - rlslp.terminals].len;
+                    } else {
+                        len = 1;
+                    }
+                    if (char_i2 >= rlslp.terminals) {
+                        len += rlslp[char_i2 - rlslp.terminals].len;
+                    } else {
+                        len += 1;
+                    }
+                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     j++;
                     last_var++;
                     text[positions[i]] = last_var;
@@ -873,27 +850,7 @@ class parallel_recompression : public recompression<variable_t> {
                 }
                 text[positions[i] + 1] = DELETED;
             }
-
-#pragma omp barrier
-#pragma omp for schedule(static)
-            for (size_t k = 0; k < new_blocks.size(); ++k) {
-                auto char_i1 = new_blocks[k].first;
-                auto char_i2 = new_blocks[k].second;
-                auto len = 0;
-                if (char_i1 >= rlslp.terminals) {
-                    len = rlslp[char_i1 - rlslp.terminals].len;
-                } else {
-                    len = 1;
-                }
-                if (char_i2 >= rlslp.terminals) {
-                    len += rlslp[char_i2 - rlslp.terminals].len;
-                } else {
-                    len += 1;
-                }
-                rlslp[nt_count + k] = non_terminal<variable_t>(char_i1, char_i2, len);
-            }
         }
-        new_blocks.resize(1);
         positions.resize(1);
 #ifdef BENCH
         const auto endTimeRules = recomp::timer::now();
