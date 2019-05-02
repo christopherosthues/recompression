@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
                               << std::endl;
 
                     std::string res = rlslp.derive_text();
-                    rlslp.resize(0);
+                    rlslp.resize(1, cores);
                     // rlslp.shrink_to_fit();
 
                     std::string c_text;

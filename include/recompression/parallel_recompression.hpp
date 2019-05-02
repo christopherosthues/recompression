@@ -339,7 +339,7 @@ class parallel_recompression : public recompression<variable_t> {
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-                    rlslp.resize(rlslp_size);
+                    rlslp.resize(rlslp_size, this->cores);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
                     new_blocks.resize(distinct_blocks[distinct_blocks.size() - 1]);
@@ -806,7 +806,7 @@ class parallel_recompression : public recompression<variable_t> {
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-                rlslp.resize(rlslp_size);
+                rlslp.resize(rlslp_size, this->cores);
                 bv.resize(rlslp_size, false);
                 new_blocks.resize(distinct_pairs[distinct_pairs.size() - 1]);
             }

@@ -72,7 +72,7 @@ class recompression_fast : public recompression<variable_t> {
             }
         }
 
-        rlslp.resize(rlslp.size());
+        rlslp.resize(rlslp.size(), 1);
 
         if (text.size() > 0) {
             rlslp.root = static_cast<variable_t>(mapping[text[0]]);
@@ -227,7 +227,7 @@ class recompression_fast : public recompression<variable_t> {
             }
         }
         size_t size = rlslp.size();
-        rlslp.resize(size + new_rules.size());
+        rlslp.resize(size + new_rules.size(), 1);
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
         }
@@ -514,7 +514,7 @@ class recompression_fast : public recompression<variable_t> {
             }
         }
         size_t size = rlslp.size();
-        rlslp.resize(size + new_rules.size());
+        rlslp.resize(size + new_rules.size(), 1);
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
         }
