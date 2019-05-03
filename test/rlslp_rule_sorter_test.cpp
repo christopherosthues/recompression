@@ -43,7 +43,7 @@ TEST(sort_rlslp_rules, pair) {
     term_t alphabet_size = 113;
     rlslp.terminals = alphabet_size;
     rlslp.root = 113;
-    rlslp.resize(1, 4);
+    rlslp.resize(1);
     rlslp.non_terminals[0] = non_terminal<var_t>{112, 111, 2};
     rlslp.is_empty = false;
     rlslp.blocks = 1;
@@ -51,7 +51,7 @@ TEST(sort_rlslp_rules, pair) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.resize(1, 4);
+    exp_rlslp.resize(1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 111, 2};
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 1;
@@ -66,7 +66,7 @@ TEST(sort_rlslp_rules, short_block2) {
     term_t alphabet_size = 113;
     rlslp.terminals = alphabet_size;
     rlslp.root = 113;
-    rlslp.resize(1, 4);
+    rlslp.resize(1);
     rlslp.non_terminals[0] = non_terminal<var_t>{112, 2, 2};
     rlslp.is_empty = false;
     rlslp.blocks = 0;
@@ -74,7 +74,7 @@ TEST(sort_rlslp_rules, short_block2) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.resize(1, 4);
+    exp_rlslp.resize(1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 2, 2};
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
@@ -89,7 +89,7 @@ TEST(sort_rlslp_rules, short_block3) {
     term_t alphabet_size = 113;
     rlslp.terminals = alphabet_size;
     rlslp.root = 113;
-    rlslp.resize(1, 4);
+    rlslp.resize(1);
     rlslp.non_terminals[0] = non_terminal<var_t>{112, 3, 3};
     rlslp.is_empty = false;
     rlslp.blocks = 0;
@@ -97,7 +97,7 @@ TEST(sort_rlslp_rules, short_block3) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.resize(1, 4);
+    exp_rlslp.resize(1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 3, 3};
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
@@ -112,7 +112,7 @@ TEST(sort_rlslp_rules, recompression) {
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     rlslp.root = 19;
-    rlslp.resize(20, 4);
+    rlslp.resize(20);
     rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{2, 3, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{4, 1, 2};
@@ -139,7 +139,7 @@ TEST(sort_rlslp_rules, recompression) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 9;
-    exp_rlslp.resize(20, 4);
+    exp_rlslp.resize(20);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 3, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 5, 3};
@@ -173,7 +173,7 @@ TEST(sort_rlslp_rules, one_block) {
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     rlslp.root = 3;
-    rlslp.resize(1, 4);
+    rlslp.resize(1);
     rlslp.non_terminals[0] = non_terminal<var_t>{2, 21, 21};
     rlslp.blocks = 0;
     rlslp.is_empty = false;
@@ -181,7 +181,7 @@ TEST(sort_rlslp_rules, one_block) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.resize(1, 4);
+    exp_rlslp.resize(1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 21, 21};
     exp_rlslp.blocks = 0;
     exp_rlslp.is_empty = false;
@@ -196,7 +196,7 @@ TEST(sort_rlslp_rules, two_blocks) {
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     rlslp.root = 3;
-    rlslp.resize(3, 4);
+    rlslp.resize(3);
     rlslp.non_terminals[0] = non_terminal<var_t>{5, 4, 16};
     rlslp.non_terminals[1] = non_terminal<var_t>{1, 7, 7};
     rlslp.non_terminals[2] = non_terminal<var_t>{2, 9, 9};
@@ -206,7 +206,7 @@ TEST(sort_rlslp_rules, two_blocks) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.resize(3, 4);
+    exp_rlslp.resize(3);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 4, 16};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 7, 7};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 9, 9};
@@ -223,7 +223,7 @@ TEST(sort_rlslp_rules, three_blocks) {
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     rlslp.root = 4;
-    rlslp.resize(5, 4);
+    rlslp.resize(5);
     rlslp.non_terminals[0] = non_terminal<var_t>{5, 6, 11};
     rlslp.non_terminals[1] = non_terminal<var_t>{7, 3, 20};
     rlslp.non_terminals[2] = non_terminal<var_t>{1, 7, 7};
@@ -235,7 +235,7 @@ TEST(sort_rlslp_rules, three_blocks) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
-    exp_rlslp.resize(5, 4);
+    exp_rlslp.resize(5);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 6, 11};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{7, 3, 20};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{1, 7, 7};
@@ -254,7 +254,7 @@ TEST(sort_rlslp_rules, four_blocks) {
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     rlslp.root = 5;
-    rlslp.resize(7, 4);
+    rlslp.resize(7);
     rlslp.non_terminals[0] = non_terminal<var_t>{8, 6, 6};
     rlslp.non_terminals[1] = non_terminal<var_t>{9, 7, 16};
     rlslp.non_terminals[2] = non_terminal<var_t>{4, 3, 22};
@@ -268,7 +268,7 @@ TEST(sort_rlslp_rules, four_blocks) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.resize(7, 4);
+    exp_rlslp.resize(7);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 4, 22}; // 5    3
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{8, 6, 6};  // 3    4
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{9, 7, 16}; // 4    5
@@ -289,7 +289,7 @@ TEST(sort_rlslp_rules, repeated_pair) {
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     rlslp.root = 4;
-    rlslp.resize(2, 4);
+    rlslp.resize(2);
     rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 11, 22};
     rlslp.blocks = 1;
@@ -298,7 +298,7 @@ TEST(sort_rlslp_rules, repeated_pair) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
-    exp_rlslp.resize(2, 4);
+    exp_rlslp.resize(2);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 11, 22};
     exp_rlslp.blocks = 1;
@@ -314,7 +314,7 @@ TEST(sort_rlslp_rules, repeated_pair_same_occ) {
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     rlslp.root = 4;
-    rlslp.resize(3, 4);
+    rlslp.resize(3);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{2, 5, 23};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 11, 22};
@@ -324,7 +324,7 @@ TEST(sort_rlslp_rules, repeated_pair_same_occ) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
-    exp_rlslp.resize(3, 4);
+    exp_rlslp.resize(3);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 5, 23};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 11, 22};
@@ -341,7 +341,7 @@ TEST(sort_rlslp_rules, left_end) {
     term_t alphabet_size = 4;
     rlslp.terminals = alphabet_size;
     rlslp.root = 9;
-    rlslp.resize(8, 4);
+    rlslp.resize(8);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};  // 4    4
     rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};  // 5    5
     rlslp.non_terminals[2] = non_terminal<var_t>{5, 1, 3};  // 8    6
@@ -356,7 +356,7 @@ TEST(sort_rlslp_rules, left_end) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 7;
-    exp_rlslp.resize(8, 4);
+    exp_rlslp.resize(8);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};   // 4   4
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};   // 5   5
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{5, 1, 3};   // 6   6
@@ -378,7 +378,7 @@ TEST(sort_rlslp_rules, less_productions) {
     term_t alphabet_size = 4;
     rlslp.terminals = alphabet_size;
     rlslp.root = 7;
-    rlslp.resize(5, 4);
+    rlslp.resize(5);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};  // 4    4
     rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};  // 5    5
     rlslp.non_terminals[2] = non_terminal<var_t>{2, 8, 7};  // 7    6
@@ -395,7 +395,7 @@ TEST(sort_rlslp_rules, less_productions) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 7;
-    exp_rlslp.resize(5, 4);
+    exp_rlslp.resize(5);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};  // 4    4
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 3, 2};  // 5    5
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 8, 7};  // 6    6

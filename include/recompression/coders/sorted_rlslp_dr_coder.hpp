@@ -100,7 +100,7 @@ class SortedRLSLPDRCoder {
 //                        ostream.write_unary(diff);
                         delta_dr = rlslp[i].first();
                     }
-                    std::cout << "Different block first: " << different.size() << std::endl;
+                    std::cout << "Different block fist: " << different.size() << std::endl;
                     if (number > 0) {
                         ostream.write_bit(true);
                         ostream.write_bitvector_compressed(neg);
@@ -170,7 +170,7 @@ class SortedRLSLPDRCoder {
                 auto bits = istream.read_int<uint8_t>(6);
                 auto size = istream.read_int<size_t>(bits);
                 // rlslp.reserve(size);
-                rlslp.resize(size, 1);
+                rlslp.resize(size);
                 rlslp.terminals = istream.read_int<size_t>(bits);
                 rlslp.root = istream.read_int<variable_t>(bits);
                 rlslp.blocks = istream.read_int<variable_t>(bits);
