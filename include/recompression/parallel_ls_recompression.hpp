@@ -615,9 +615,15 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
             assign_bounds[thread_id] = positions.size();
             distinct_pairs[thread_id + 1] = 0;
 
+            variable_t last_char1 = 0;
+            variable_t last_char2 = 0;
 #pragma omp for schedule(static)
             for (size_t i = 0; i < positions.size(); ++i) {
                 assign_bounds[thread_id] = i;
+                if (i > 0) {
+                    last_char1 = mapping[text[positions[i - 1]]];
+                    last_char2 = mapping[text[positions[i - 1] + 1]];
+                }
                 i = positions.size();
             }
 
@@ -649,14 +655,14 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 
             i = assign_bounds[thread_id];
             auto last_var = next_nt + distinct_pairs[thread_id] - 1;
-            variable_t last_char1 = 0;
-            variable_t last_char2 = 0;
-            if (i > 0 && i < assign_bounds[thread_id + 1]) {
-                last_char1 = mapping[text[positions[i - 1]]];
-                last_char2 = mapping[text[positions[i - 1] + 1]];
-            }
+//            variable_t last_char1 = 0;
+//            variable_t last_char2 = 0;
+//            if (i > 0 && i < assign_bounds[thread_id + 1]) {
+//                last_char1 = mapping[text[positions[i - 1]]];
+//                last_char2 = mapping[text[positions[i - 1] + 1]];
+//            }
 
-#pragma omp barrier
+//#pragma omp barrier
             size_t j = 0;
             if (thread_id == 0) {
                 last_char1 = mapping[text[positions[i]]];
