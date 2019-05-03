@@ -224,7 +224,7 @@ TEST(fast_bcomp, 21214441332311413334133231141321) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(4);
+    exp_rlslp.resize(4, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -246,7 +246,7 @@ TEST(fast_bcomp, 991261051171161051139) {
     rlslp<var_t> rlslp;
     rlslp.terminals = 5;
     rlslp.root = 0;
-    rlslp.resize(8);
+    rlslp.resize(8, 1);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -277,7 +277,7 @@ TEST(fast_bcomp, 991261051171161051139) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(9);
+    exp_rlslp.resize(9, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -325,7 +325,7 @@ TEST(fast_bcomp, 222222222222222222222) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(1);
+    exp_rlslp.resize(1, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 21, 21};
     exp_rlslp.blocks = 1;
     bv_t exp_bv = {true};
@@ -365,7 +365,7 @@ TEST(fast_bcomp, 22222222211111112222) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(3);
+    exp_rlslp.resize(3, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 7, 7};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 4, 4};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 9, 9};
@@ -407,7 +407,7 @@ TEST(fast_bcomp, 2222222221111111222200) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(4);
+    exp_rlslp.resize(4, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{0, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 7, 7};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 4, 4};
@@ -772,7 +772,7 @@ TEST(fast_pcomp, repeated_pair) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(1);
+    exp_rlslp.resize(1, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     exp_rlslp.blocks = 0;
     bv_t exp_bv = {false};
@@ -810,7 +810,7 @@ TEST(fast_pcomp, repeated_pair_same_occ) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 3;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(1);
+    exp_rlslp.resize(1, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.blocks = 0;
     bv_t exp_bv = {false};
@@ -829,7 +829,7 @@ TEST(fast_pcomp, 212181623541741623541321) {
     rlslp<var_t> rlslp;
     recompression_fast<var_t> recomp;
     rlslp.terminals = 5;
-    rlslp.resize(4);
+    rlslp.resize(4, 1);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -854,7 +854,7 @@ TEST(fast_pcomp, 212181623541741623541321) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(8);
+    exp_rlslp.resize(8, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -880,7 +880,7 @@ TEST(fast_pcomp, 131261051171161051139) {
     rlslp<var_t> rlslp;
     recompression_fast<var_t> recomp;
     rlslp.terminals = 5;
-    rlslp.resize(9);
+    rlslp.resize(9, 1);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -911,7 +911,7 @@ TEST(fast_pcomp, 131261051171161051139) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(14);
+    exp_rlslp.resize(14, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -943,7 +943,7 @@ TEST(fast_pcomp, 18161517161514) {
     rlslp<var_t> rlslp;
     recompression_fast<var_t> recomp;
     rlslp.terminals = 5;
-    rlslp.resize(14);
+    rlslp.resize(14, 1);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -978,7 +978,7 @@ TEST(fast_pcomp, 18161517161514) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(17);
+    exp_rlslp.resize(17, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -1014,7 +1014,7 @@ TEST(fast_pcomp, 21201619) {
     rlslp<var_t> rlslp;
     recompression_fast<var_t> recomp;
     rlslp.terminals = 5;
-    rlslp.resize(17);
+    rlslp.resize(17, 1);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -1053,7 +1053,7 @@ TEST(fast_pcomp, 21201619) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(19);
+    exp_rlslp.resize(19, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -1091,7 +1091,7 @@ TEST(fast_pcomp, 2322) {
     rlslp<var_t> rlslp;
     recompression_fast<var_t> recomp;
     rlslp.terminals = 5;
-    rlslp.resize(19);
+    rlslp.resize(19, 1);
     rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -1132,7 +1132,7 @@ TEST(fast_pcomp, 2322) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 0;
-    exp_rlslp.resize(20);
+    exp_rlslp.resize(20, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 2, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 3, 3};
@@ -1212,7 +1212,7 @@ TEST(fast_recomp, short_block2) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.resize(1);
+    exp_rlslp.resize(1, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 2, 2};
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
@@ -1233,7 +1233,7 @@ TEST(fast_recomp, short_block3) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 113;
-    exp_rlslp.resize(1);
+    exp_rlslp.resize(1, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{112, 3, 3};
     exp_rlslp.is_empty = false;
     exp_rlslp.blocks = 0;
@@ -1254,7 +1254,7 @@ TEST(fast_recomp, recompression) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = 5;
     exp_rlslp.root = 19;
-    exp_rlslp.resize(20);
+    exp_rlslp.resize(20, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 3, 2};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{4, 1, 2};
@@ -1293,7 +1293,7 @@ TEST(fast_recomp, one_block) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.resize(1);
+    exp_rlslp.resize(1, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 21, 21};
     exp_rlslp.blocks = 0;
     exp_rlslp.is_empty = false;
@@ -1313,7 +1313,7 @@ TEST(fast_recomp, two_blocks) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 3;
-    exp_rlslp.resize(3);
+    exp_rlslp.resize(3, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 4, 16};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{1, 7, 7};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{2, 9, 9};
@@ -1335,7 +1335,7 @@ TEST(fast_recomp, three_blocks) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
-    exp_rlslp.resize(5);
+    exp_rlslp.resize(5, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{5, 6, 11};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{7, 3, 20};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{1, 7, 7};
@@ -1359,7 +1359,7 @@ TEST(fast_recomp, four_blocks) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 5;
-    exp_rlslp.resize(7);
+    exp_rlslp.resize(7, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{8, 6, 6};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{9, 7, 16};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{4, 3, 22};
@@ -1385,7 +1385,7 @@ TEST(fast_recomp, repeated_pair) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
-    exp_rlslp.resize(2);
+    exp_rlslp.resize(2, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{2, 1, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{3, 11, 22};
     exp_rlslp.blocks = 1;
@@ -1406,7 +1406,7 @@ TEST(fast_recomp, repeated_pair_same_occ) {
     recomp::rlslp<var_t> exp_rlslp;
     exp_rlslp.terminals = alphabet_size;
     exp_rlslp.root = 4;
-    exp_rlslp.resize(3);
+    exp_rlslp.resize(3, 1);
     exp_rlslp.non_terminals[0] = non_terminal<var_t>{1, 2, 2};
     exp_rlslp.non_terminals[1] = non_terminal<var_t>{2, 5, 23};
     exp_rlslp.non_terminals[2] = non_terminal<var_t>{3, 11, 22};

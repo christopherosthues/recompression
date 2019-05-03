@@ -101,8 +101,8 @@ class parallel_recompression : public recompression<variable_t> {
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
     inline void compact(text_t& text,
-                        const std::vector<size_t>& compact_bounds,
-                        const std::vector<size_t>& copy_bounds,
+                        const ui_vector<size_t>& compact_bounds,
+                        const ui_vector<size_t>& copy_bounds,
                         size_t count) {
 #ifdef BENCH
         const auto startTimeCompact = recomp::timer::now();
@@ -140,7 +140,6 @@ class parallel_recompression : public recompression<variable_t> {
 #endif
 
             std::swap(text, new_text);
-//            text = std::move(new_text);
 #ifdef BENCH
             const auto endTimeMove = recomp::timer::now();
             const auto timeSpanMove = endTimeMove - startTimeMove;
@@ -175,9 +174,9 @@ class parallel_recompression : public recompression<variable_t> {
         ui_vector<position_t> positions;
 
         ui_vector<size_t> bounds;
-        std::vector<size_t> block_counts;
-        std::vector<size_t> compact_bounds;
-        std::vector<size_t> block_overlaps;
+        ui_vector<size_t> block_counts;
+        ui_vector<size_t> compact_bounds;
+        ui_vector<size_t> block_overlaps;
 #pragma omp parallel num_threads(this->cores) reduction(+:block_count)
         {
             auto thread_id = omp_get_thread_num();
@@ -188,13 +187,23 @@ class parallel_recompression : public recompression<variable_t> {
             {
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
-                compact_bounds.reserve(n_threads + 1);
-                compact_bounds.resize(n_threads + 1, text.size());
-                block_counts.reserve(n_threads + 1);
-                block_counts.resize(n_threads + 1, 0);
-                block_overlaps.reserve(n_threads + 1);
-                block_overlaps.resize(n_threads + 1, 0);
+//                compact_bounds.reserve(n_threads + 1);
+//                compact_bounds.resize(n_threads + 1, text.size());
+//                block_counts.reserve(n_threads + 1);
+//                block_counts.resize(n_threads + 1, 0);
+//                block_overlaps.reserve(n_threads + 1);
+//                block_overlaps.resize(n_threads + 1, 0);
+                compact_bounds.resize(n_threads + 1);
+                compact_bounds[n_threads] = text.size();
+                block_counts.resize(n_threads + 1);
+                block_counts[n_threads] = 0;
+                block_overlaps.resize(n_threads + 1);
+                block_overlaps[n_threads] = 0;
+
             }
+            compact_bounds[thread_id] = text.size();
+            block_counts[thread_id] = 0;
+            block_overlaps[thread_id] = 0;
             std::deque<position_t> t_positions;
             bool add = false;
 
@@ -261,7 +270,6 @@ class parallel_recompression : public recompression<variable_t> {
                 compact_bounds[block_counts.size() - 1] + block_overlaps[block_counts.size() - 1] -
                 block_counts[block_counts.size() - 1];
         block_overlaps.resize(1);
-        block_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimeBlocks = recomp::timer::now();
         const auto timeSpanBlocks = endTimeBlocks - startTimeBlocks;
@@ -293,8 +301,8 @@ class parallel_recompression : public recompression<variable_t> {
             auto nt_count = rlslp.non_terminals.size();
             auto next_nt = rlslp.terminals + nt_count;
 
-            std::vector<size_t> assign_bounds;
-            std::vector<size_t> distinct_blocks;
+            ui_vector<size_t> assign_bounds;
+            ui_vector<size_t> distinct_blocks;
 #pragma omp parallel num_threads(this->cores)
             {
                 auto thread_id = omp_get_thread_num();
@@ -302,11 +310,17 @@ class parallel_recompression : public recompression<variable_t> {
 
 #pragma omp single
                 {
-                    assign_bounds.reserve(n_threads + 1);
-                    assign_bounds.resize(n_threads + 1, positions.size());
-                    distinct_blocks.reserve(n_threads + 1);
-                    distinct_blocks.resize(n_threads + 1, 0);
+//                    assign_bounds.reserve(n_threads + 1);
+//                    assign_bounds.resize(n_threads + 1, positions.size());
+//                    distinct_blocks.reserve(n_threads + 1);
+//                    distinct_blocks.resize(n_threads + 1, 0);
+                    assign_bounds.resize(n_threads + 1);
+                    assign_bounds[n_threads] = positions.size();
+                    distinct_blocks.resize(n_threads + 1);
+                    distinct_blocks[0] = 0;
                 }
+                assign_bounds[thread_id] = positions.size();
+                distinct_blocks[thread_id + 1] = 0;
 
 #pragma omp for schedule(static)
                 for (size_t i = 0; i < positions.size(); ++i) {
@@ -336,7 +350,7 @@ class parallel_recompression : public recompression<variable_t> {
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-                    rlslp.resize(rlslp_size);
+                    rlslp.resize(rlslp_size, this->cores);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
                 }
@@ -350,7 +364,7 @@ class parallel_recompression : public recompression<variable_t> {
 
 #pragma omp barrier
                 size_t j = 0;
-                if (thread_id == 0) {
+                if (i == 0) {
                     last_char = text[positions[i].second];
                     auto b_len = positions[i].first;
                     auto len = b_len;
@@ -610,26 +624,36 @@ class parallel_recompression : public recompression<variable_t> {
         ui_vector<pair_position_t> positions;
 
         ui_vector<size_t> bounds;
-        std::vector<size_t> pair_counts;
-        std::vector<size_t> compact_bounds;
-        std::vector<size_t> pair_overlaps;
+        ui_vector<size_t> pair_counts;
+        ui_vector<size_t> compact_bounds;
+        ui_vector<size_t> pair_overlaps;
 #pragma omp parallel num_threads(this->cores) reduction(+:pair_count)
         {
             auto thread_id = omp_get_thread_num();
             auto n_threads = static_cast<size_t>(omp_get_num_threads());
+            size_t end_text = text.size() - 1;
 
 #pragma omp single
             {
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
-                size_t end_text = text.size() - 1;
-                compact_bounds.reserve(n_threads + 1);
-                compact_bounds.resize(n_threads + 1, end_text);
-                pair_counts.reserve(n_threads + 1);
-                pair_counts.resize(n_threads + 1, 0);
-                pair_overlaps.reserve(n_threads + 1);
-                pair_overlaps.resize(n_threads + 1, 0);
+//                size_t end_text = text.size() - 1;
+//                compact_bounds.reserve(n_threads + 1);
+//                compact_bounds.resize(n_threads + 1, end_text);
+//                pair_counts.reserve(n_threads + 1);
+//                pair_counts.resize(n_threads + 1, 0);
+//                pair_overlaps.reserve(n_threads + 1);
+//                pair_overlaps.resize(n_threads + 1, 0);
+                compact_bounds.resize(n_threads + 1);
+                compact_bounds[n_threads] = end_text;
+                pair_counts.resize(n_threads + 1);
+                pair_counts[n_threads] = 0;
+                pair_overlaps.resize(n_threads + 1);
+                pair_overlaps[n_threads] = 0;
             }
+            compact_bounds[thread_id] = end_text;
+            pair_counts[thread_id] = 0;
+            pair_overlaps[thread_id] = 0;
             std::deque<pair_position_t> t_positions;
 
 #pragma omp for schedule(static)
@@ -676,7 +700,6 @@ class parallel_recompression : public recompression<variable_t> {
             auto discard = std::move(partition);
         }
         pair_overlaps.resize(1);
-        pair_overlaps.shrink_to_fit();
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();
         const auto timeSpanPairs = endTimePairs - startTimePairs;
@@ -706,8 +729,8 @@ class parallel_recompression : public recompression<variable_t> {
         auto nt_count = rlslp.non_terminals.size();
         auto next_nt = rlslp.terminals + nt_count;
 
-        std::vector<size_t> assign_bounds;
-        std::vector<size_t> distinct_pairs;
+        ui_vector<size_t> assign_bounds;
+        ui_vector<size_t> distinct_pairs;
 #pragma omp parallel num_threads(this->cores)
         {
             auto thread_id = omp_get_thread_num();
@@ -715,11 +738,17 @@ class parallel_recompression : public recompression<variable_t> {
 
 #pragma omp single
             {
-                assign_bounds.reserve(n_threads + 1);
-                assign_bounds.resize(n_threads + 1, positions.size());
-                distinct_pairs.reserve(n_threads + 1);
-                distinct_pairs.resize(n_threads + 1, 0);
+//                assign_bounds.reserve(n_threads + 1);
+//                assign_bounds.resize(n_threads + 1, positions.size());
+//                distinct_pairs.reserve(n_threads + 1);
+//                distinct_pairs.resize(n_threads + 1, 0);
+                assign_bounds.resize(n_threads + 1);
+                assign_bounds[n_threads] = positions.size();
+                distinct_pairs.resize(n_threads + 1);
+                distinct_pairs[0] = 0;
             }
+            assign_bounds[thread_id] = positions.size();
+            distinct_pairs[thread_id + 1] = 0;
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < positions.size(); ++i) {
@@ -749,7 +778,7 @@ class parallel_recompression : public recompression<variable_t> {
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-                rlslp.resize(rlslp_size);
+                rlslp.resize(rlslp_size, this->cores);
                 bv.resize(rlslp_size, false);
             }
 
@@ -764,7 +793,7 @@ class parallel_recompression : public recompression<variable_t> {
 
 #pragma omp barrier
             size_t j = 0;
-            if (thread_id == 0) {
+            if (i == 0) {
                 last_char1 = text[positions[i]];
                 last_char2 = text[positions[i] + 1];
                 size_t len = 0;

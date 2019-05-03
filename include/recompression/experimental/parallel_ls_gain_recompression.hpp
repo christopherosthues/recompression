@@ -93,7 +93,7 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
 #endif
 
         i_vector<ui_vector<std::int64_t>> flip;
-        std::vector<size_t> bounds;
+        ui_vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores)
         {
             auto n_threads = (size_t) omp_get_num_threads();
@@ -103,8 +103,10 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
                 for (size_t i = 0; i < n_threads; ++i) {
                     flip[i].resize(partition.size());
                 }
-                bounds.reserve(n_threads + 1);
-                bounds.resize(n_threads + 1, adj_list.size() - 1);
+//                bounds.reserve(n_threads + 1);
+//                bounds.resize(n_threads + 1, adj_list.size() - 1);
+                bounds.resize(n_threads + 1);
+                bounds[n_threads] = adj_list.size() - 1;
             }
         }
 
@@ -187,14 +189,16 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
+        bounds[bounds.size() - 1] = adj_list.size();
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {
             auto thread_id = omp_get_thread_num();
 
-#pragma omp single
-            {
-                std::fill(bounds.begin(), bounds.end(), adj_list.size());
-            }
+//#pragma omp single
+//            {
+//                std::fill(bounds.begin(), bounds.end(), adj_list.size());
+//            }
+            bounds[thread_id] = adj_list.size();
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < adj_list.size(); ++i) {

@@ -149,7 +149,7 @@ class hash_recompression : public recompression<variable_t> {
             }
         }
         size_t size = rlslp.size();
-        rlslp.resize(size + new_rules.size());
+        rlslp.resize(size + new_rules.size(), 1);
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
         }
@@ -419,7 +419,7 @@ class hash_recompression : public recompression<variable_t> {
             }
         }
         size_t size = rlslp.size();
-        rlslp.resize(size + new_rules.size());
+        rlslp.resize(size + new_rules.size(), 1);
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
         }

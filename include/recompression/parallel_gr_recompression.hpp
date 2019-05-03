@@ -76,7 +76,7 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> 
         const auto startTimeGreedy = recomp::timer::now();
 #endif
 
-        std::vector<size_t> bounds;
+        ui_vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores)
         {
             auto n_threads = (size_t) omp_get_num_threads();
@@ -84,9 +84,11 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> 
 
 #pragma omp single
             {
-                bounds.reserve(n_threads + 1);
-                bounds.resize(n_threads + 1, adj_list_size);
+//                bounds.reserve(n_threads + 1);
+                bounds.resize(n_threads + 1);
+                bounds[n_threads] = adj_list_size;
             }
+            bounds[thread_id] = adj_list_size;
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < adj_list_size; ++i) {
