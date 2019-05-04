@@ -118,6 +118,7 @@ class rlslp {
  public:
     typedef variable_t value_t;
     typedef size_t terminals_t;
+    typedef ui_vector<non_terminal<value_t>> production_t;
 
  private:
     size_t compute_length(const value_t nt) {
@@ -205,7 +206,7 @@ class rlslp {
     /**
      * All production rules of the rlslp.
      */
-    ui_vector<non_terminal<value_t>> non_terminals;
+    production_t non_terminals;
 //    std::vector<non_terminal<value_t, terminals_t>> non_terminals;
 
     /**
