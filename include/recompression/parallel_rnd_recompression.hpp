@@ -32,7 +32,7 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
     typedef typename recompression<variable_t>::bv_t bv_t;
     typedef typename parallel_recompression<variable_t>::adj_t adj_t;
     typedef typename parallel_recompression<variable_t>::adj_list_t adj_list_t;
-    typedef ui_vector<std::uint8_t> partition_t;
+    typedef ui_vector<bool> partition_t;
     typedef size_t pair_position_t;
 
     inline parallel_rnd_recompression() {
