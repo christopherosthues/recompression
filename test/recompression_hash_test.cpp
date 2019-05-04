@@ -245,14 +245,10 @@ TEST(adj_list_hash, 2322) {
 
 TEST(partition_hash, repreated_pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -265,14 +261,10 @@ TEST(partition_hash, repreated_pair) {
 
 TEST(partition_hash, repreated_pair_same_occ) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -285,14 +277,10 @@ TEST(partition_hash, repreated_pair_same_occ) {
 
 TEST(partition_hash, 212181623541741623541321) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[1] = false;
@@ -311,14 +299,10 @@ TEST(partition_hash, 212181623541741623541321) {
 
 TEST(partition_hash, 131261051171161051139) {
     text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[3] = false;
@@ -338,14 +322,10 @@ TEST(partition_hash, 131261051171161051139) {
 
 TEST(partition_hash, 18161517161514) {
     text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[14] = false;
@@ -361,14 +341,10 @@ TEST(partition_hash, 18161517161514) {
 
 TEST(partition_hash, 21201619) {
     text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[16] = false;
@@ -383,14 +359,10 @@ TEST(partition_hash, 21201619) {
 
 TEST(partition_hash, 2322) {
     text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
-    adj_list_t adj_list;
     partition_t partition;
     bool part_l = false;
     hash_recompression<var_t> recomp;
-    recomp.compute_adj_list(text, adj_list, partition);
-    ips4o::sort(adj_list[0].begin(), adj_list[0].end());
-    ips4o::sort(adj_list[1].begin(), adj_list[1].end());
-    recomp.compute_partition(text, adj_list, partition, part_l);
+    recomp.compute_partition(text, partition, part_l);
 
     partition_t exp_partition;
     exp_partition[22] = false;

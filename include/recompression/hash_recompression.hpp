@@ -260,9 +260,10 @@ class hash_recompression : public recompression<variable_t> {
      * @return The partition of the letters in the current alphabet represented by a bitvector
      */
     inline void compute_partition(const text_t& text,
-                                  const adj_list_t& adj,
                                   partition_t& partition,
                                   bool& part_l) {
+        adj_list_t adj;
+        compute_adj_list(text, adj, partition);
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -362,16 +363,11 @@ class hash_recompression : public recompression<variable_t> {
                   << " level=" << this->level;
 #endif
         partition_t part;
-        adj_list_t adj;
-        compute_adj_list(text, adj, part);
+        bool part_l = false;
+        compute_partition(text, part, part_l);
+
 #ifdef BENCH
         std::cout << " alphabet=" << part.size();
-#endif
-
-        bool part_l = false;
-        compute_partition(text, adj, part, part_l);
-
-#ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
 #endif
         variable_t next_nt = rlslp.terminals + rlslp.non_terminals.size();
