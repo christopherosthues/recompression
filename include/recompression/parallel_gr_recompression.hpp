@@ -84,8 +84,6 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> 
 
 #pragma omp single
             {
-//                bounds.reserve(n_threads + 1);
-//                bounds.resize(n_threads + 1, adj_list_size);
                 bounds.resize(n_threads + 1);
                 bounds[n_threads] = adj_list_size;
             }

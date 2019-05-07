@@ -140,7 +140,6 @@ class parallel_recompression : public recompression<variable_t> {
 #endif
 
             std::swap(text, new_text);
-//            text = std::move(new_text);
 #ifdef BENCH
             const auto endTimeMove = recomp::timer::now();
             const auto timeSpanMove = endTimeMove - startTimeMove;
@@ -188,12 +187,6 @@ class parallel_recompression : public recompression<variable_t> {
             {
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
-//                compact_bounds.reserve(n_threads + 1);
-//                compact_bounds.resize(n_threads + 1, text.size());
-//                block_counts.reserve(n_threads + 1);
-//                block_counts.resize(n_threads + 1, 0);
-//                block_overlaps.reserve(n_threads + 1);
-//                block_overlaps.resize(n_threads + 1, 0);
                 compact_bounds.resize(n_threads + 1);
                 compact_bounds[n_threads] = text.size();
                 block_counts.resize(n_threads + 1);
@@ -218,7 +211,6 @@ class parallel_recompression : public recompression<variable_t> {
                 i = text.size();
             }
 
-//#pragma omp barrier
             size_t i = compact_bounds[thread_id];
             if (i > 0 && i < compact_bounds[thread_id + 1]) {
                 while (i < text.size() - 1 && text[i] == text[i + 1]) {
@@ -311,10 +303,6 @@ class parallel_recompression : public recompression<variable_t> {
 
 #pragma omp single
                 {
-//                    assign_bounds.reserve(n_threads + 1);
-//                    assign_bounds.resize(n_threads + 1, positions.size());
-//                    distinct_blocks.reserve(n_threads + 1);
-//                    distinct_blocks.resize(n_threads + 1, 0);
                     assign_bounds.resize(n_threads + 1);
                     assign_bounds[n_threads] = positions.size();
                     distinct_blocks.resize(n_threads + 1);
@@ -352,7 +340,6 @@ class parallel_recompression : public recompression<variable_t> {
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
                     productions.resize(rlslp_size);
-//                    rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
                 }
@@ -378,7 +365,6 @@ class parallel_recompression : public recompression<variable_t> {
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
-//                    rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
                     productions[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
                     j++;
                     last_var++;
@@ -399,7 +385,6 @@ class parallel_recompression : public recompression<variable_t> {
                         if (char_i >= rlslp.terminals) {
                             len *= rlslp[char_i - rlslp.terminals].len;
                         }
-//                        rlslp[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
                         productions[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
                         j++;
                         last_var++;
@@ -648,13 +633,6 @@ class parallel_recompression : public recompression<variable_t> {
             {
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
-//                size_t end_text = text.size() - 1;
-//                compact_bounds.reserve(n_threads + 1);
-//                compact_bounds.resize(n_threads + 1, end_text);
-//                pair_counts.reserve(n_threads + 1);
-//                pair_counts.resize(n_threads + 1, 0);
-//                pair_overlaps.reserve(n_threads + 1);
-//                pair_overlaps.resize(n_threads + 1, 0);
                 compact_bounds.resize(n_threads + 1);
                 compact_bounds[n_threads] = end_text;
                 pair_counts.resize(n_threads + 1);
@@ -750,10 +728,6 @@ class parallel_recompression : public recompression<variable_t> {
 
 #pragma omp single
             {
-//                assign_bounds.reserve(n_threads + 1);
-//                assign_bounds.resize(n_threads + 1, positions.size());
-//                distinct_pairs.reserve(n_threads + 1);
-//                distinct_pairs.resize(n_threads + 1, 0);
                 assign_bounds.resize(n_threads + 1);
                 assign_bounds[n_threads] = positions.size();
                 distinct_pairs.resize(n_threads + 1);
@@ -790,7 +764,6 @@ class parallel_recompression : public recompression<variable_t> {
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-//                rlslp.resize(rlslp_size);
                 productions.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }
@@ -824,7 +797,6 @@ class parallel_recompression : public recompression<variable_t> {
                 } else {
                     len += 1;
                 }
-//                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 j++;
                 last_var++;
@@ -850,7 +822,6 @@ class parallel_recompression : public recompression<variable_t> {
                     } else {
                         len += 1;
                     }
-//                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     j++;
                     last_var++;

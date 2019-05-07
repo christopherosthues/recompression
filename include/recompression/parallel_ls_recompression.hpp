@@ -140,7 +140,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 #endif
 
             std::swap(text, new_text);
-//            text = std::move(new_text);
 #ifdef BENCH
             const auto endTimeMove = recomp::timer::now();
             const auto timeSpanMove = endTimeMove - startTimeMove;
@@ -183,47 +182,22 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 #endif
 
         const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
-//        i_vector<ui_vector<variable_t>> hists;
         ui_vector<variable_t> hist(max_letters);
 #pragma omp parallel num_threads(this->cores)
         {
-//            auto n_threads = (size_t)omp_get_num_threads();
-//            auto thread_id = (size_t)omp_get_thread_num();
-//#pragma omp single
-//            {
-//                hists.resize(n_threads);
-//                for (size_t i = 0; i < n_threads; ++i) {
-//                    hists[i].resize(max_letters);
-//                }
-//            }
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < hist.size(); ++i) {
                 hist[i] = 0;
             }
 
-//            hists[thread_id].fill(0);
-
-//#pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-//                hists[thread_id][text[i] - minimum] = 1;
                 hist[text[i] - minimum] = 1;
             }
 
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < max_letters; ++i) {
-//                for (size_t j = 1; j < n_threads; ++j) {
-//                    hists[0][i] |= hists[j][i];
-//                }
-//            }
-
 #pragma omp single
             {
-//                for (size_t i = 1; i < n_threads; ++i) {
-//                    hists[i].resize(1);
-//                }
-//                hists.resize(1);
                 mapping.resize(max_letters);
                 size_t j = 0;
                 if (hist[0] > 0) {
@@ -235,26 +209,14 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
                     }
                     hist[i] += hist[i - 1];
                 }
-//                if (hists[0][0] > 0) {
-//                    mapping[j++] = minimum;
-//                }
-//                for (size_t i = 1; i < max_letters; ++i) {
-//                    if (hists[0][i] > 0) {
-//                        mapping[j++] = i + minimum;
-//                    }
-//                    hists[0][i] += hists[0][i - 1];
-//                }
                 mapping.resize(j);
             }
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-//                text[i] = hists[0][text[i] - minimum] - 1;
                 text[i] = hist[text[i] - minimum] - 1;
             }
         }
-//        hists[0].resize(1);
-//        hists.resize(1);
         hist.resize(1);
 #ifdef BENCH
         const auto endAlphaTime = recomp::timer::now();
@@ -291,9 +253,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 #ifdef BENCH
         const auto startTimePar = recomp::timer::now();
 #endif
-//        std::random_device rd;
-//        std::mt19937 gen(rd());
-//        std::uniform_int_distribution<uint8_t> distribution(0, 1);
         partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
         partition[partition.size() - 1] = 1;
 #pragma omp parallel num_threads(this->cores)
@@ -325,8 +284,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
                 for (size_t i = 0; i < n_threads; ++i) {
                     flip[i].resize(partition.size());
                 }
-//                bounds.reserve(n_threads + 1);
-//                bounds.resize(n_threads + 1, adj_list.size() - 1);
                 bounds.resize(n_threads + 1);
                 bounds[n_threads] = adj_list.size() - 1;
             }
@@ -399,10 +356,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
         {
             auto thread_id = omp_get_thread_num();
 
-//#pragma omp single
-//            {
-//                std::fill(bounds.begin(), bounds.end(), adj_list.size());
-//            }
             bounds[thread_id] = adj_list.size();
 
 #pragma omp for schedule(static)
@@ -504,13 +457,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
             {
                 bounds.resize(n_threads + 1);
                 bounds[0] = 0;
-//                size_t end_text = text.size() - 1;
-//                compact_bounds.reserve(n_threads + 1);
-//                compact_bounds.resize(n_threads + 1, end_text);
-//                pair_counts.reserve(n_threads + 1);
-//                pair_counts.resize(n_threads + 1, 0);
-//                pair_overlaps.reserve(n_threads + 1);
-//                pair_overlaps.resize(n_threads + 1, 0);
                 compact_bounds.resize(n_threads + 1);
                 compact_bounds[n_threads] = end_text;
                 pair_counts.resize(n_threads + 1);
@@ -604,10 +550,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 
 #pragma omp single
             {
-//                assign_bounds.reserve(n_threads + 1);
-//                assign_bounds.resize(n_threads + 1, positions.size());
-//                distinct_pairs.reserve(n_threads + 1);
-//                distinct_pairs.resize(n_threads + 1, 0);
                 assign_bounds.resize(n_threads + 1);
                 assign_bounds[n_threads] = positions.size();
                 distinct_pairs.resize(n_threads + 1);
@@ -644,7 +586,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-//                rlslp.resize(rlslp_size);
                 productions.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }
@@ -678,7 +619,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
                 } else {
                     len += 1;
                 }
-//                rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
                 j++;
                 last_var++;
@@ -704,7 +644,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
                     } else {
                         len += 1;
                     }
-//                    rlslp[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
                     j++;
                     last_var++;

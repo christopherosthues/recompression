@@ -221,7 +221,6 @@ class recompression_fast : public recompression<variable_t> {
                         len *= rlslp[mapping[i] - rlslp.terminals].len;
                     }
                     new_rules.emplace_back(mapping[i], block.first, len);
-                    // rlslp.non_terminals.emplace_back(mapping[i], block.first, len);
                     mapping.emplace_back(next_nt++);
                 }
             }
@@ -509,7 +508,6 @@ class recompression_fast : public recompression<variable_t> {
                         len += 1;
                     }
                     new_rules.emplace_back(mapping[i], mapping[pair.first], len);
-                    // rlslp.non_terminals.emplace_back(mapping[i], mapping[pair.first], len);
                 }
             }
         }
@@ -518,7 +516,6 @@ class recompression_fast : public recompression<variable_t> {
         for (size_t i = 0; i < new_rules.size(); ++i) {
             rlslp[size + i] = new_rules[i];
         }
-//        rlslp.blocks.resize(rlslp.blocks.size() + pair_count, false);
         bv.resize(rlslp.size(), false);
         text.resize(new_text_size);
 #ifdef BENCH
@@ -554,7 +551,7 @@ class recompression_fast : public recompression<variable_t> {
             used[text[i]] = true;
         }
         // Build rank structure over the bitvector
-        ranks[0] = 0;  // (used[0]? 1 : 0);
+        ranks[0] = 0;
         for (size_t i = 1; i < ranks.size(); ++i) {
             if (used[i-1]) {
                 ranks[i] = ranks[i-1] + 1;

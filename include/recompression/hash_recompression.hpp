@@ -134,7 +134,6 @@ class hash_recompression : public recompression<variable_t> {
                         len *= rlslp[text[i - 1] - rlslp.terminals].len;
                     }
                     new_rules.emplace_back(text[i - 1], block_len, len);
-                    // rlslp.non_terminals.emplace_back(text[i - 1], block_len, len);
 
                     blocks[block] = next_nt++;
                 } else {
@@ -399,7 +398,6 @@ class hash_recompression : public recompression<variable_t> {
                         len += 1;
                     }
                     new_rules.emplace_back(text[i - 1], text[i], len);
-                    // rlslp.non_terminals.emplace_back(text[i - 1], text[i], len);
 
                     pairs[pair] = next_nt++;
                 } else {

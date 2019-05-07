@@ -207,7 +207,6 @@ class rlslp {
      * All production rules of the rlslp.
      */
     production_t non_terminals;
-//    std::vector<non_terminal<value_t, terminals_t>> non_terminals;
 
     /**
      * The number of terminals. (determines the first non-terminal)
@@ -246,17 +245,9 @@ class rlslp {
                is_empty == rlslp.is_empty && blocks == rlslp.blocks;
     }
 
-//    void reserve(size_t size) {
-//        non_terminals.reserve(size);
-//    }
-
     void resize(size_t size) {
         non_terminals.resize(size);
     }
-
-//    void shrink_to_fit() {
-//        non_terminals.shrink_to_fit();
-//    }
 
     bool is_terminal(value_t nt) const {
         return nt < terminals;
