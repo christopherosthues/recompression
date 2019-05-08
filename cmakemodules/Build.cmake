@@ -5,6 +5,7 @@ macro(build_library)
 
     add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
     target_link_libraries(${PROJECT_NAME} "-lm")
+#    add_dependency(${PROJECT_NAME} "MPI" REQUIRED)
     add_dependency(${PROJECT_NAME} "tlx" REQUIRED)
     add_dependency(${PROJECT_NAME} "SDSL" REQUIRED)
     add_dependency(${PROJECT_NAME} "IPS4o" REQUIRED)
