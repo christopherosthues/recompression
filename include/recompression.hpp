@@ -24,6 +24,7 @@
 #include "recompression/experimental/parallel_ls3_recompression.hpp"
 #include "recompression/experimental/parallel_ls5_recompression.hpp"
 #include "recompression/experimental/parallel_ls_gain_recompression.hpp"
+#include "recompression/experimental/parallel_kahip_recompression.hpp"
 #include "recompression/io/bitistream.hpp"
 #include "recompression/io/bitostream.hpp"
 #include "recompression/coders/coder.hpp"
@@ -39,6 +40,8 @@ template<typename variable_t = var_t, typename terminal_count_t = term_t>
 std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset) {
     if (name == "parallel") {
         return std::make_unique<parallel::parallel_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_kahip") {
+        return std::make_unique<parallel::parallel_kahip_recompression<variable_t>>(dataset);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::parallel_ls_recompression<variable_t>>(dataset);
     } else if (name == "parallel_ls3") {

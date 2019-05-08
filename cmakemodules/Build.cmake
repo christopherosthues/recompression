@@ -10,6 +10,7 @@ macro(build_library)
     add_dependency(${PROJECT_NAME} "IPS4o" REQUIRED)
     add_dependency(${PROJECT_NAME} "Prezzalce" REQUIRED)
     add_dependency(${PROJECT_NAME} "OpenMP" REQUIRED)
+    add_dependency(${PROJECT_NAME} "Kahip" REQUIRED)
     add_definitions(-D_GLIBCXX_PARALLEL)
 
     target_link_libraries(${PROJECT_NAME} -latomic)
