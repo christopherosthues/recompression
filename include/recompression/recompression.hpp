@@ -57,7 +57,7 @@ class recompression {
 
             std::vector<variable_t> renamed(rlslp.size());
             std::vector<recomp::non_terminal<variable_t>> renamed_rules(rlslp.size() - rlslp.blocks);
-            variable_t block_i = 0;  // rlslp.blocks;
+            variable_t block_i = 0;
             variable_t pair_i = 0;
             for (size_t i = 0; i < rlslp.size(); ++i) {
                 if (bv[i]) {

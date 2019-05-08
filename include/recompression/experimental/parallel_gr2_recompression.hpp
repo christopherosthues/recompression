@@ -3,29 +3,29 @@
 
 #include <omp.h>
 
-#include "parallel_rnd_recompression.hpp"
-#include "defs.hpp"
-#include "util.hpp"
-#include "rlslp.hpp"
+#include "recompression/parallel_rnd_recompression.hpp"
+#include "recompression/defs.hpp"
+#include "recompression/util.hpp"
+#include "recompression/rlslp.hpp"
 
 namespace recomp {
 
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> {
+class parallel_gr2_recompression : public parallel_rnd_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_t adj_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_list_t adj_list_t;
     typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
 
-    inline parallel_gr_recompression() {
-        this->name = "parallel_gr";
+    inline parallel_gr2_recompression() {
+        this->name = "parallel_gr2";
     }
 
-    inline parallel_gr_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
-        this->name = "parallel_gr";
+    inline parallel_gr2_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
+        this->name = "parallel_gr2";
     }
 
     using parallel_rnd_recompression<variable_t>::recomp;
@@ -77,72 +77,76 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> 
 #endif
 
         ui_vector<size_t> bounds;
+        for (size_t iters = 0; iters < 2; ++iters) {
 #pragma omp parallel num_threads(this->cores)
-        {
-            auto n_threads = (size_t) omp_get_num_threads();
-            auto thread_id = (size_t) omp_get_thread_num();
+            {
+                auto n_threads = (size_t) omp_get_num_threads();
+                auto thread_id = (size_t) omp_get_thread_num();
 
 #pragma omp single
-            {
-                bounds.resize(n_threads + 1);
-                bounds[n_threads] = adj_list_size;
-            }
-            bounds[thread_id] = adj_list_size;
+                {
+//                bounds.reserve(n_threads + 1);
+//                bounds.resize(n_threads + 1, adj_list_size);
+                    bounds.resize(n_threads + 1);
+                    bounds[n_threads] = adj_list_size;
+                }
+                bounds[thread_id] = adj_list_size;
 
 #pragma omp for schedule(static)
-            for (size_t i = 0; i < adj_list_size; ++i) {
-                bounds[thread_id] = i;
-                i = adj_list_size;
-            }
-
-            size_t i = bounds[thread_id];
-            variable_t val;
-            if (i == 0) {
-                val = std::max(text[adj_list[i]] - minimum, text[adj_list[i] + 1] - minimum);
-            } else if (i < bounds[thread_id + 1]) {
-                auto comp_val = std::max(text[adj_list[i - 1]] - minimum, text[adj_list[i - 1] + 1] - minimum);
-
-                auto text_i = text[adj_list[i]] - minimum;
-                auto text_i1 = text[adj_list[i] + 1] - minimum;
-                val = std::max(text_i, text_i1);
-                while (i < bounds[thread_id + 1] && comp_val == val) {
-                    i++;
-                    if (i < bounds[thread_id + 1]) {
-                        text_i = text[adj_list[i]] - minimum;
-                        text_i1 = text[adj_list[i] + 1] - minimum;
-                        val = std::max(text_i, text_i1);
-                    }
+                for (size_t i = 0; i < adj_list_size; ++i) {
+                    bounds[thread_id] = i;
+                    i = adj_list_size;
                 }
-            }
 
-            int l_count = 0;
-            int r_count = 0;
-            for (; i < bounds[thread_id + 1]; ++i) {
-                auto text_i = text[adj_list[i]] - minimum;
-                auto text_i1 = text[adj_list[i] + 1] - minimum;
-                if (text_i < text_i1) {
-                    std::swap(text_i, text_i1);
-                }
-                while (i < adj_list_size && val == text_i) {
-                    if (partition[text_i1]) {
-                        r_count++;
-                    } else {
-                        l_count++;
-                    }
-                    i++;
-                    if (i < adj_list_size) {
-                        text_i = text[adj_list[i]] - minimum;
-                        text_i1 = text[adj_list[i] + 1] - minimum;
-                        if (text_i < text_i1) {
-                            std::swap(text_i, text_i1);
+                size_t i = bounds[thread_id];
+                variable_t val;
+                if (i == 0) {
+                    val = std::max(text[adj_list[i]] - minimum, text[adj_list[i] + 1] - minimum);
+                } else if (i < bounds[thread_id + 1]) {
+                    auto comp_val = std::max(text[adj_list[i - 1]] - minimum, text[adj_list[i - 1] + 1] - minimum);
+
+                    auto text_i = text[adj_list[i]] - minimum;
+                    auto text_i1 = text[adj_list[i] + 1] - minimum;
+                    val = std::max(text_i, text_i1);
+                    while (i < bounds[thread_id + 1] && comp_val == val) {
+                        i++;
+                        if (i < bounds[thread_id + 1]) {
+                            text_i = text[adj_list[i]] - minimum;
+                            text_i1 = text[adj_list[i] + 1] - minimum;
+                            val = std::max(text_i, text_i1);
                         }
                     }
                 }
-                if ((val < text_i || i == adj_list_size) && (l_count > 0 || r_count > 0)) {
-                    partition[val] = l_count > r_count;
-                    l_count = 0;
-                    r_count = 0;
-                    val = text_i;
+
+                int l_count = 0;
+                int r_count = 0;
+                for (; i < bounds[thread_id + 1]; ++i) {
+                    auto text_i = text[adj_list[i]] - minimum;
+                    auto text_i1 = text[adj_list[i] + 1] - minimum;
+                    if (text_i < text_i1) {
+                        std::swap(text_i, text_i1);
+                    }
+                    while (i < adj_list_size && val == text_i) {
+                        if (partition[text_i1]) {
+                            r_count++;
+                        } else {
+                            l_count++;
+                        }
+                        i++;
+                        if (i < adj_list_size) {
+                            text_i = text[adj_list[i]] - minimum;
+                            text_i1 = text[adj_list[i] + 1] - minimum;
+                            if (text_i < text_i1) {
+                                std::swap(text_i, text_i1);
+                            }
+                        }
+                    }
+                    if ((val < text_i || i == adj_list_size) && (l_count > 0 || r_count > 0)) {
+                        partition[val] = l_count > r_count;
+                        l_count = 0;
+                        r_count = 0;
+                        val = text_i;
+                    }
                 }
             }
         }

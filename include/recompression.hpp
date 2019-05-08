@@ -8,6 +8,7 @@
 #include "recompression/parallel_ls_recompression.hpp"
 #include "recompression/parallel_gr_recompression.hpp"
 #include "recompression/experimental/parallel_lock_recompression.hpp"
+#include "recompression/experimental/parallel_gr2_recompression.hpp"
 #include "recompression/hash_recompression.hpp"
 #include "recompression/parallel_lp_recompression.hpp"
 #include "recompression/parallel_recompression.hpp"
@@ -48,6 +49,8 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
         return std::make_unique<parallel::parallel_ls_gain_recompression<variable_t>>(dataset);
     } else if (name == "parallel_gr") {
         return std::make_unique<parallel::parallel_gr_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_gr2") {
+        return std::make_unique<parallel::parallel_gr2_recompression<variable_t>>(dataset);
     } else if (name == "parallel_grz") {
         return std::unique_ptr<recompression<variable_t>>(nullptr);
 //        return std::make_unique<parallel::parallel_grz_recompression<variable_t>>(dataset);

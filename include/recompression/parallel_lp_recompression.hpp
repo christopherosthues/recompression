@@ -65,7 +65,6 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
         std::cout << " adj_list=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
         const auto startTimeMult = recomp::timer::now();
 #endif
-//        partitioned_radix_sort(adj_list);
         auto sort_adj = [&](size_t i, size_t j) {
             auto char_i = text[i];
             auto char_i1 = text[i + 1];
@@ -140,7 +139,7 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
-        std::vector<size_t> bounds;
+        ui_vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {
             auto thread_id = omp_get_thread_num();
@@ -148,9 +147,10 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
 
 #pragma omp single
             {
-                bounds.reserve(n_threads + 1);
-                bounds.resize(n_threads + 1, adj_list.size());
+                bounds.resize(n_threads + 1);
+                bounds[n_threads] = adj_list.size();
             }
+            bounds[thread_id] = adj_list.size();
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < adj_list.size(); ++i) {
