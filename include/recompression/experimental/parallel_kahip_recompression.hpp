@@ -16,6 +16,7 @@
 
 #include <ips4o.hpp>
 #include <kaHIP_interface.h>
+//#include <parhip_interface.h>
 
 #include "recompression/parallel_rnd_recompression.hpp"
 #include "recompression/defs.hpp"
@@ -35,6 +36,8 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
     typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
     typedef typename parallel_rnd_recompression<variable_t>::bv_t bv_t;
     typedef size_t pair_position_t;
+//    typedef unsigned long long idxtype;
+    typedef int idxtype;
 
     inline parallel_kahip_recompression() {
         this->name = "parallel_kahip";
@@ -244,7 +247,7 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         const auto startTime = recomp::timer::now();
 #endif
         const int n = partition.size();
-        int* xadj = new int[n + 1];
+        idxtype* xadj = new idxtype[n + 1];
         xadj[0] = 0;
         std::vector<std::unordered_map<variable_t, variable_t>> adjncys(n);
         int m = 0;
@@ -264,8 +267,8 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             }
         }
         const int m_len = m;
-        int* adjncy = new int[2 * m_len];
-        int* adjcwgt = new int[2 * m_len];
+        idxtype* adjncy = new idxtype[2 * m_len];
+        idxtype* adjcwgt = new idxtype[2 * m_len];
 
         size_t k = 0;
         for (size_t i = 0; i < adjncys.size(); ++i) {
@@ -286,10 +289,21 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 #endif
         int n_part = this->cores;
         int edge_cut = 0;
-        int* part = new int[n];
-        double imbalance = 0.7;
+        idxtype* part = new idxtype[n];
+        double imbalance = 0.03;
         kaffpa(&n, nullptr, xadj, adjcwgt, adjncy, &n_part, &imbalance, true, 0, 0, &edge_cut, part);
+//        int rank, size;
+//        MPI_Comm communicator = MPI_COMM_WORLD;
+//        MPI_Comm_rank( communicator, &rank);
+//        MPI_Comm_size( communicator, &size);
+//        MPI_Finalize();
+//
+//        ParHIPPartitionKWay(&n, xadj, adjncy, nullptr, adjcwgt, &n_part, &imbalance, true, 0, 0, &edge_cut, part, &communicator);
 
+//        void kaffpa(int* n, int* vwgt, int* xadj,
+//                    int* adjcwgt, int* adjncy, int* nparts,
+//                    double* imbalance,  bool suppress_output, int seed, int mode,
+//                    int* edgecut, int* part);
 //        ParHIPPartitionKWay(idxtype *vtxdist, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, idxtype *adjwgt,
 //                            int *nparts, double* imbalance, bool suppress_output, int seed, int mode, int *edgecut, idxtype *part,
 //                MPI_Comm *comm);
