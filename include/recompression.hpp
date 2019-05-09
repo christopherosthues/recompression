@@ -14,6 +14,8 @@
 #include "recompression/parallel_recompression.hpp"
 #include "recompression/parallel_rnd_recompression.hpp"
 #include "recompression/parallel_rnd10_recompression.hpp"
+#include "recompression/parallel_rnd50_recompression.hpp"
+#include "recompression/parallel_rnd100_recompression.hpp"
 #include "recompression/lce_query.hpp"
 #include "recompression/radix_sort.hpp"
 #include "recompression/rlslp.hpp"
@@ -61,6 +63,10 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
         return std::make_unique<parallel::parallel_rnd_recompression<variable_t>>(dataset);
     } else if (name == "parallel_rnd10") {
         return std::make_unique<parallel::parallel_rnd10_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_rnd50") {
+        return std::make_unique<parallel::parallel_rnd50_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_rnd100") {
+        return std::make_unique<parallel::parallel_rnd100_recompression<variable_t>>(dataset);
     } else if (name == "parallel_wrnd") {
         return std::unique_ptr<recompression<variable_t>>(nullptr);
 //        return std::make_unique<parallel::parallel_wrnd_recompression<variable_t>>(dataset);
