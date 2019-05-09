@@ -26,7 +26,7 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> {
+class parallel_rnd50_recompression : public parallel_lp_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename recompression<variable_t>::bv_t bv_t;
@@ -35,12 +35,12 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
     typedef ui_vector<bool> partition_t;
     typedef size_t pair_position_t;
 
-    inline parallel_rnd_recompression() {
-        this->name = "parallel_rnd";
+    inline parallel_rnd50_recompression() {
+        this->name = "parallel_rnd50";
     }
 
-    inline parallel_rnd_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
-        this->name = "parallel_rnd";
+    inline parallel_rnd50_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
+        this->name = "parallel_rnd50";
     }
 
     /**
@@ -119,16 +119,36 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
         const auto startTimePar = recomp::timer::now();
 #endif
 
-        partition[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
-        partition[partition.size() - 1] = true;
+//        partition_t tmp_part(partition.size());
+
+        int cut = 0;
+        int tmp_cut = 0;
+        for (size_t k = 0; k < 50; ++k) {
+            partition_t tmp_part(partition.size());
+            tmp_part[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+            tmp_part[tmp_part.size() - 1] = true;
 #pragma omp parallel num_threads(this->cores)
-        {
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<uint8_t> distribution(0, 1);
+            {
+                std::random_device rd;
+                std::mt19937 gen(rd());
+                std::uniform_int_distribution<uint8_t> distribution(0, 1);
 #pragma omp for schedule(static)
-            for (size_t i = 1; i < partition.size() - 1; ++i) {
-                partition[i] = distribution(gen);
+                for (size_t i = 1; i < tmp_part.size() - 1; ++i) {
+                    tmp_part[i] = distribution(gen);
+                }
+
+#pragma omp for schedule(static) reduction(+:tmp_cut)
+                for (size_t i = 0; i < adj_list.size(); ++i) {
+                    variable_t char_i = text[adj_list[i]] - minimum;
+                    variable_t char_i1 = text[adj_list[i] + 1] - minimum;
+                    if (tmp_part[char_i] != tmp_part[char_i1]) {
+                        tmp_cut++;
+                    }
+                }
+            }
+            if (tmp_cut > cut) {
+                partition.swap(tmp_part);
+                cut = tmp_cut;
             }
         }
 
