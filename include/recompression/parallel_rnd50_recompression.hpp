@@ -137,6 +137,7 @@ class parallel_rnd50_recompression : public parallel_lp_recompression<variable_t
                     tmp_part[i] = distribution(gen);
                 }
 
+                tmp_cut = 0;
 #pragma omp for schedule(static) reduction(+:tmp_cut)
                 for (size_t i = 0; i < adj_list.size(); ++i) {
                     variable_t char_i = text[adj_list[i]] - minimum;
