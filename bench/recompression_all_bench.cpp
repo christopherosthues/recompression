@@ -1,3 +1,5 @@
+#include <mpi.h>
+
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -11,6 +13,7 @@
 
 
 int main(int argc, char *argv[]) {
+    MPI_Init(&argc, &argv);    /* starts MPI */
     tlx::CmdlineParser cmd;
     cmd.set_description("Benchmark for runtime experiments");
     cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");

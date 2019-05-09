@@ -2,6 +2,7 @@
 #pragma once
 
 #include <omp.h>
+#include <mpi.h>
 
 #include <parallel/algorithm>
 #include <algorithm>
@@ -15,8 +16,8 @@
 #include <vector>
 
 #include <ips4o.hpp>
-#include <kaHIP_interface.h>
-//#include <parhip_interface.h>
+//#include <kaHIP_interface.h>
+#include <parhip_interface.h>
 
 #include "recompression/parallel_rnd_recompression.hpp"
 #include "recompression/defs.hpp"
@@ -36,8 +37,8 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
     typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
     typedef typename parallel_rnd_recompression<variable_t>::bv_t bv_t;
     typedef size_t pair_position_t;
-//    typedef unsigned long long idxtype;
-    typedef int idxtype;
+    typedef unsigned long long idxtype;
+//    typedef int idxtype;
 
     inline parallel_kahip_recompression() {
         this->name = "parallel_kahip";
@@ -291,14 +292,15 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         int edge_cut = 0;
         idxtype* part = new idxtype[n];
         double imbalance = 0.03;
-        kaffpa(&n, nullptr, xadj, adjcwgt, adjncy, &n_part, &imbalance, true, 0, 0, &edge_cut, part);
-//        int rank, size;
-//        MPI_Comm communicator = MPI_COMM_WORLD;
-//        MPI_Comm_rank( communicator, &rank);
-//        MPI_Comm_size( communicator, &size);
-//        MPI_Finalize();
-//
-//        ParHIPPartitionKWay(&n, xadj, adjncy, nullptr, adjcwgt, &n_part, &imbalance, true, 0, 0, &edge_cut, part, &communicator);
+//        kaffpa(&n, nullptr, xadj, adjcwgt, adjncy, &n_part, &imbalance, true, 0, 0, &edge_cut, part);
+        int rank, size;
+        MPI_Comm communicator = MPI_COMM_WORLD;
+        MPI_Comm_rank( communicator, &rank);
+        MPI_Comm_size( communicator, &size);
+        MPI_Finalize();
+        idxtype nd = n;
+
+        ParHIPPartitionKWay(&nd, xadj, adjncy, nullptr, adjcwgt, &n_part, &imbalance, true, 0, 0, &edge_cut, part, &communicator);
 
 //        void kaffpa(int* n, int* vwgt, int* xadj,
 //                    int* adjcwgt, int* adjncy, int* nparts,
