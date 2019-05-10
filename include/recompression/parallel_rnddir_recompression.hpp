@@ -27,6 +27,9 @@ namespace parallel {
 
 template<typename variable_t = var_t>
 class parallel_rnddir_recompression : public parallel_lp_recompression<variable_t> {
+ private:
+    int k;
+    
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename recompression<variable_t>::bv_t bv_t;
@@ -118,8 +121,6 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
 
  protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
-
-    int k;
 
     /**
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
