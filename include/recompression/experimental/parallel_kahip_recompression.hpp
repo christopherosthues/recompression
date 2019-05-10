@@ -249,11 +249,11 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
-        const int n = partition.size();
+        const size_t n = partition.size();
         auto* xadj = new idxtype[n + 1];
         xadj[0] = 0;
         std::vector<std::unordered_map<variable_t, variable_t>> adjncys(n);
-        int m = 0;
+        size_t m = 0;
         for (size_t i = 0; i < text.size() - 1; ++i) {
 //            std::cout << text[i] << std::endl;
             auto c = text[i];
@@ -271,7 +271,7 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             }
         }
         
-        const int m_len = m;
+        const size_t m_len = m;
         auto* adjncy = new idxtype[2 * m_len];
         auto* adjcwgt = new idxtype[2 * m_len];
         // std::cout << std::endl << (2*m_len) << std::endl;
@@ -311,15 +311,15 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 
         std::ofstream out_file;
         const auto exec = "/home/chris/git/KaHIP/deploy/parhip /home/chris/git/recompression/build_test/" + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=50 --save_partition";
-        std::cout << exec << std::endl;
+//        std::cout << exec << std::endl;
         out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
         out_file << n << " " << m << " 1\n";
-        int mc = 0;
+//        size_t mc = 0;
         for (size_t i = 0; i < n; ++i) {
             for (size_t j = xadj[i]; j < xadj[i + 1]; ++j) {
                 out_file << (adjncy[j] + 1) << " " << adjcwgt[j] << " ";
                 // std::cout << adjncy[j] << " " << adjcwgt[j] << std::endl;
-                mc++;
+//                mc++;
             }
             // std::cout << std::endl;
             if (i < n) {

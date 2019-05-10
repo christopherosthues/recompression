@@ -477,24 +477,45 @@ void check_graph(std::string file_name) {
     std::unordered_map<int, std::unordered_map<int, int>> adj;
     std::getline(in_file, part_str);
 
-    int v = 1;
+    std::vector<std::string> split;
+    util::split(part_str, " ", split);
+    int nodes = str_to_int(split[0]);
+    int edges = str_to_int(split[1]);
+
+    int m = 0;
+    int v = 0;
     while (std::getline(in_file, part_str)) {
-        std::vector<std::string> split;
+        split.clear();
         util::split(part_str, " ", split);
-        for (size_t i = 0; i < split.size(); i += 2) {
+//        if (split.size() % 2 == 1) {
+//            std::cout << split[split.size() - 2] << ", " << split[split.size() - 1] << std::endl;
+//        }
+        for (size_t i = 0; i < split.size() - 1; i += 2) {
             auto u = str_to_int(split[i]);
             auto wgt = str_to_int(split[i + 1]);
-            adj[v][u+1] = wgt;
+            adj[v][u-1] = wgt;
+            m++;
         }
         v++;
     }
+    std::cout << "edges: " << m << " " << edges << std::endl;
+    std::cout << "nodes: " << adj.size() << " " << nodes << std::endl;
 
+    bool correct = true;
     for (const auto& ad : adj) {
         for (const auto& a : ad.second) {
             if (adj[a.first][ad.first] != a.second) {
+                std::cout << ad.first << " " << a.first << " " << a.second << std::endl;
+                std::cout << a.first << " " << ad.first << " " << adj[a.first][ad.first] << std::endl;
                 std::cout << "Graph not correct" << std::endl;
+                correct = false;
             }
         }
+    }
+    if (correct) {
+        std::cout << "Graph is correct" << std::endl;
+    } else {
+        std::cout << "Graph is NOT correct" << std::endl;
     }
     in_file.close();
 }
