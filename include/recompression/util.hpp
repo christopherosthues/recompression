@@ -469,6 +469,36 @@ int str_to_int(std::string s) {
     return n;
 }
 
+void check_graph(std::string file_name) {
+    std::ifstream in_file(file_name, std::ifstream::in | std::ios::binary | std::ifstream::ate);
+    std::string part_str;
+    in_file.seekg(0, std::ios::beg);
+
+    std::unordered_map<int, std::unordered_map<int, int>> adj;
+    std::getline(in_file, part_str);
+
+    int v = 1;
+    while (std::getline(in_file, part_str)) {
+        std::vector<std::string> split;
+        util::split(part_str, " ", split);
+        for (size_t i = 0; i < split.size(); i += 2) {
+            auto u = str_to_int(split[i]);
+            auto wgt = str_to_int(split[i + 1]);
+            adj[v][u+1] = wgt;
+        }
+        v++;
+    }
+
+    for (const auto& ad : adj) {
+        for (const auto& a : ad.second) {
+            if (adj[a.first][ad.first] != a.second) {
+                std::cout << "Graph not correct" << std::endl;
+            }
+        }
+    }
+    in_file.close();
+}
+
 template<typename T>
 inline ui_vector<T> create_ui_vector(std::vector<T> vec) {
     ui_vector<T> ui_vec(vec.size());

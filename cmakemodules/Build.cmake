@@ -6,27 +6,27 @@ macro(build_library)
     add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
     target_link_libraries(${PROJECT_NAME} "-lm")
 #    add_dependency(${PROJECT_NAME} "MPI" REQUIRED)
-    find_package(MPI REQUIRED)
+#    find_package(MPI REQUIRED)
 #    add_definitions(-DOMPI_SKIP_MPICXX)
     add_dependency(${PROJECT_NAME} "tlx" REQUIRED)
     add_dependency(${PROJECT_NAME} "SDSL" REQUIRED)
     add_dependency(${PROJECT_NAME} "IPS4o" REQUIRED)
     add_dependency(${PROJECT_NAME} "Prezzalce" REQUIRED)
     add_dependency(${PROJECT_NAME} "OpenMP" REQUIRED)
-    add_dependency(${PROJECT_NAME} "Kahip" REQUIRED)
+#    add_dependency(${PROJECT_NAME} "Kahip" REQUIRED)
     add_definitions(-D_GLIBCXX_PARALLEL)
 
-    include_directories(${MPI_INCLUDE_PATH})
-
-    target_link_libraries(${PROJECT_NAME} ${MPI_LIBRARIES})
-
-    if(MPI_COMPILE_FLAGS)
-        set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
-    endif()
-
-    if(MPI_LINK_FLAGS)
-        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
-    endif()
+#    include_directories(${MPI_INCLUDE_PATH})
+#
+#    target_link_libraries(${PROJECT_NAME} ${MPI_LIBRARIES})
+#
+#    if(MPI_COMPILE_FLAGS)
+#        set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+#    endif()
+#
+#    if(MPI_LINK_FLAGS)
+#        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
+#    endif()
 
     target_link_libraries(${PROJECT_NAME} -latomic)
 
@@ -41,20 +41,20 @@ macro(build_bench name)
     if(RECOMPRESSION_ENABLE_MALLOC_COUNT)
         message(STATUS "Adding malloc_count")
         target_link_libraries(bench_${name} ${PROJECT_NAME} dl)
-        find_package(MPI REQUIRED)
-#        add_definitions(-DOMPI_SKIP_MPICXX)
-
-        include_directories(${MPI_INCLUDE_PATH})
-
-        target_link_libraries(bench_${name} ${MPI_LIBRARIES})
-
-        if(MPI_COMPILE_FLAGS)
-            set_target_properties(bench_${name} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
-        endif()
-
-        if(MPI_LINK_FLAGS)
-            set_target_properties(bench_${name} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
-        endif()
+#        find_package(MPI REQUIRED)
+##        add_definitions(-DOMPI_SKIP_MPICXX)
+#
+#        include_directories(${MPI_INCLUDE_PATH})
+#
+#        target_link_libraries(bench_${name} ${MPI_LIBRARIES})
+#
+#        if(MPI_COMPILE_FLAGS)
+#            set_target_properties(bench_${name} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+#        endif()
+#
+#        if(MPI_LINK_FLAGS)
+#            set_target_properties(bench_${name} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
+#        endif()
 
         add_dependency(bench_${name} "OpenMP" REQUIRED)
 #        add_dependency(bench_${name} "MPI" REQUIRED)
@@ -62,19 +62,19 @@ macro(build_bench name)
         target_sources(bench_${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/malloc_count)
         target_compile_definitions(bench_${name} PUBLIC MALLOC_COUNT)
     else()
-        find_package(MPI REQUIRED)
-#        add_definitions(-DOMPI_SKIP_MPICXX)
-        include_directories(${MPI_INCLUDE_PATH})
-
-        target_link_libraries(bench_${name} ${MPI_LIBRARIES})
-
-        if(MPI_COMPILE_FLAGS)
-            set_target_properties(bench_${name} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
-        endif()
-
-        if(MPI_LINK_FLAGS)
-            set_target_properties(bench_${name} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
-        endif()
+#        find_package(MPI REQUIRED)
+##        add_definitions(-DOMPI_SKIP_MPICXX)
+#        include_directories(${MPI_INCLUDE_PATH})
+#
+#        target_link_libraries(bench_${name} ${MPI_LIBRARIES})
+#
+#        if(MPI_COMPILE_FLAGS)
+#            set_target_properties(bench_${name} PROPERTIES COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+#        endif()
+#
+#        if(MPI_LINK_FLAGS)
+#            set_target_properties(bench_${name} PROPERTIES LINK_FLAGS "${MPI_LINK_FLAGS}")
+#        endif()
         target_link_libraries(bench_${name} ${PROJECT_NAME})
         add_dependency(bench_${name} "OpenMP" REQUIRED)
     endif(RECOMPRESSION_ENABLE_MALLOC_COUNT)
