@@ -28,7 +28,7 @@ namespace parallel {
 template<typename variable_t = var_t>
 class parallel_rnddir_recompression : public parallel_lp_recompression<variable_t> {
  private:
-    int k;
+    int iters = 1;
     
  public:
     typedef typename recompression<variable_t>::text_t text_t;
@@ -40,12 +40,12 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
 
     inline parallel_rnddir_recompression() {
         this->name = "parallel_rnddir";
-        this->k = 1;
+        this->iters = 1;
     }
 
-    inline parallel_rnddir_recompression(int k) : k(k) {
+    inline parallel_rnddir_recompression(int k) : iters(k) {
         if (k < 1) {
-            this->k = 1;
+            this->iters = 1;
         }
         if (k > 1) {
             this->name = "parallel_rnddir" + std::to_string(k);
@@ -56,12 +56,12 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
 
     inline parallel_rnddir_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
         this->name = "parallel_rnddir";
-        this->k = 1;
+        this->iters = 1;
     }
 
-    inline parallel_rnddir_recompression(std::string& dataset, int k) : k(k), parallel_lp_recompression<variable_t>(dataset) {
+    inline parallel_rnddir_recompression(std::string& dataset, int k) : iters(k), parallel_lp_recompression<variable_t>(dataset) {
         if (k < 1) {
-            this->k = 1;
+            this->iters = 1;
         }
         if (k > 1) {
             this->name = "parallel_rnddir" + std::to_string(k);
@@ -147,7 +147,7 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
-        if (k == 1) {
+        if (this->iters == 1) {
 #ifdef BENCH
             const auto startTimePar = recomp::timer::now();
 #endif
@@ -160,7 +160,7 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
                 std::uniform_int_distribution<uint8_t> distribution(0, 1);
 #pragma omp for schedule(static)
                 for (size_t i = 1; i < partition.size() - 1; ++i) {
-                    partition[i] = distribution(gen);
+                    partition[i] = (distribution(gen) == 1);
                 }
             }
 
@@ -242,11 +242,12 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
         } else {
 
 
-            for (size_t j = 0; j < this->k; ++j) {
+            for (size_t j = 0; j < this->iters; ++j) {
 #ifdef BENCH
                 const auto startTimePar = recomp::timer::now();
 #endif
                 partition_t tmp_part(partition.size());
+                //                    tmp_cut = 0;
                 tmp_part[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
                 tmp_part[tmp_part.size() - 1] = true;
 #pragma omp parallel num_threads(this->cores)
@@ -256,10 +257,10 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
                     std::uniform_int_distribution<uint8_t> distribution(0, 1);
 #pragma omp for schedule(static)
                     for (size_t i = 1; i < tmp_part.size() - 1; ++i) {
-                        tmp_part[i] = distribution(gen);
+                        tmp_part[i] = (distribution(gen) == 1);
                     }
 
-//                    tmp_cut = 0;
+
 //#pragma omp for schedule(static) reduction(+:tmp_cut)
 //                    for (size_t i = 0; i < adj_list.size(); ++i) {
 //                        variable_t char_i = text[adj_list[i]] - minimum;

@@ -57,8 +57,8 @@ class parallel_gr2_recompression : public parallel_rnd_recompression<variable_t>
 #ifdef BENCH
         const auto startTimePar = recomp::timer::now();
 #endif
-        partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
-        partition[partition.size() - 1] = 1;
+        partition[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+        partition[partition.size() - 1] = true;
 #pragma omp parallel num_threads(this->cores)
         {
             std::random_device rd;
@@ -66,7 +66,7 @@ class parallel_gr2_recompression : public parallel_rnd_recompression<variable_t>
             std::uniform_int_distribution<uint8_t> distribution(0, 1);
 #pragma omp for schedule(static)
             for (size_t i = 1; i < partition.size() - 1; ++i) {
-                partition[i] = distribution(gen);
+                partition[i] = (distribution(gen) == 1);
             }
         }
 #ifdef BENCH

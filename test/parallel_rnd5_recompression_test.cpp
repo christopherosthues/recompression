@@ -21,7 +21,7 @@ TEST(parallel_rnd5_bcomp, no_block) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     bv_t bv;
@@ -42,7 +42,7 @@ TEST(parallel_rnd5_bcomp, 21214441332311413334133231141321) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 5;
     rlslp.terminals = alphabet_size;
     bv_t bv;
@@ -73,7 +73,7 @@ TEST(parallel_rnd5_bcomp, 222222222222222222222) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     bv_t bv;
@@ -98,7 +98,7 @@ TEST(parallel_rnd5_bcomp, 22222222211111112222) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     bv_t bv;
@@ -127,7 +127,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     rlslp.terminals = alphabet_size;
     bv_t bv;
@@ -160,7 +160,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 4;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -180,7 +180,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 9;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -205,7 +205,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 14;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -231,7 +231,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 19;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -253,7 +253,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 22;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -274,7 +274,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 24;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -294,7 +294,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp<var_t> rlslp;
 //    rlslp.terminals = 4;
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //
@@ -316,7 +316,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp.terminals = 4;
 //    adj_list_t adj_list(text.size() - 1);
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //    recomp.compute_adj_list(text, adj_list);
@@ -353,7 +353,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp.terminals = 9;
 //    adj_list_t adj_list(text.size() - 1);
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //    recomp.compute_adj_list(text, adj_list);
@@ -392,7 +392,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp.terminals = 14;
 //    adj_list_t adj_list(text.size() - 1);
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //    recomp.compute_adj_list(text, adj_list);
@@ -421,7 +421,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp.terminals = 19;
 //    adj_list_t adj_list(text.size() - 1);
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //    recomp.compute_adj_list(text, adj_list);
@@ -443,7 +443,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp.terminals = 22;
 //    adj_list_t adj_list(text.size() - 1);
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //    recomp.compute_adj_list(text, adj_list);
@@ -462,7 +462,7 @@ TEST(parallel_rnd5_bcomp, 2222222221111111222200) {
 //    rlslp.terminals = 24;
 //    adj_list_t adj_list(text.size() - 1);
 //    parallel::parallel_rnd_recompression<var_t> recomp{k};
-//    recomp.cores = 4;
+//    recomp.cores = 12;
 //    ui_vector<var_t> mapping;
 //    recomp.compute_mapping(text, rlslp, mapping);
 //    recomp.compute_adj_list(text, adj_list);
@@ -477,7 +477,7 @@ TEST(parallel_rnd5_adj_list, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
     adj_list_t adj_list(text.size() - 1);
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     recomp.compute_adj_list(text, adj_list);
 
     adj_list_t exp_adj_list = util::create_ui_vector(std::vector<adj_t>{0, 2, 4, 6, 1, 3, 5, 7});
@@ -498,7 +498,7 @@ TEST(parallel_rnd5_recomp, empty) {
     text_t text = util::create_ui_vector(std::vector<var_t>{});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 0;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -516,7 +516,7 @@ TEST(parallel_rnd5_recomp, terminal) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -535,7 +535,7 @@ TEST(parallel_rnd5_recomp, short_block2) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112, 112});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -558,7 +558,7 @@ TEST(parallel_rnd5_recomp, short_block3) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112, 112, 112});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -581,7 +581,7 @@ TEST(parallel_rnd5_recomp, recompression) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 4, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 3, 3, 4, 1, 3, 3, 2, 3, 1, 1, 4, 1, 3, 2, 1});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 5;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -593,7 +593,7 @@ TEST(parallel_rnd5_recomp, one_block) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -615,7 +615,7 @@ TEST(parallel_rnd5_recomp, two_blocks) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -641,7 +641,7 @@ TEST(parallel_rnd5_recomp, three_blocks) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -653,7 +653,7 @@ TEST(parallel_rnd5_recomp, four_blocks) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -665,7 +665,7 @@ TEST(parallel_rnd5_recomp, repeated_pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -677,7 +677,7 @@ TEST(parallel_rnd5_recomp, repeated_pair_same_occ) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 3;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -689,7 +689,7 @@ TEST(parallel_rnd5_recomp, left_end) {
     text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 4;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -701,7 +701,7 @@ TEST(parallel_rnd5_recomp, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 4;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
@@ -713,7 +713,7 @@ TEST(parallel_rnd5_recomp, pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{112, 111});
     rlslp<var_t> rlslp;
     parallel::parallel_rnd_recompression<var_t> recomp{k};
-    recomp.cores = 4;
+    recomp.cores = 12;
     term_t alphabet_size = 113;
     recomp.recomp(text, rlslp, alphabet_size, 4);
 
