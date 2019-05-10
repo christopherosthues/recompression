@@ -37,10 +37,34 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
 
     inline parallel_rnd_recompression() {
         this->name = "parallel_rnd";
+        this->k = 1;
+    }
+
+    inline parallel_rnd_recompression(int k) : k(k) {
+        if (k < 1) {
+            this->k = 1;
+        }
+        if (k > 1) {
+            this->name = "parallel_rnd" + std::to_string(k);
+        } else {
+            this->name = "parallel_rnd";
+        }
     }
 
     inline parallel_rnd_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
         this->name = "parallel_rnd";
+        this->k = 1;
+    }
+
+    inline parallel_rnd_recompression(std::string& dataset, int k) : k(k), parallel_lp_recompression<variable_t>(dataset) {
+        if (k < 1) {
+            this->k = 1;
+        }
+        if (k > 1) {
+            this->name = "parallel_rnd" + std::to_string(k);
+        } else {
+            this->name = "parallel_rnd";
+        }
     }
 
     /**
@@ -82,8 +106,8 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
-                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
+        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset
+                  << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
                   << " cores=" << this->cores << " size=" << text_size << std::endl;
 #endif
@@ -94,6 +118,8 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
 
  protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
+
+    int k;
 
     /**
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
@@ -115,33 +141,81 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
         std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
 #endif
         this->compute_adj_list(text, adj_list);
-#ifdef BENCH
-        const auto startTimePar = recomp::timer::now();
-#endif
 
-        partition[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
-        partition[partition.size() - 1] = true;
-#pragma omp parallel num_threads(this->cores)
-        {
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<uint8_t> distribution(0, 1);
-#pragma omp for schedule(static)
-            for (size_t i = 1; i < partition.size() - 1; ++i) {
-                partition[i] = distribution(gen);
-            }
-        }
-
-#ifdef BENCH
-        const auto endTimePar = recomp::timer::now();
-        const auto timeSpanPar = endTimePar - startTimePar;
-        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-        const auto startTimeCount = recomp::timer::now();
-#endif
         int lr_count = 0;
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
+        if (k == 1) {
+#ifdef BENCH
+            const auto startTimePar = recomp::timer::now();
+#endif
+            partition[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+            partition[partition.size() - 1] = true;
+#pragma omp parallel num_threads(this->cores)
+            {
+                std::random_device rd;
+                std::mt19937 gen(rd());
+                std::uniform_int_distribution<uint8_t> distribution(0, 1);
+#pragma omp for schedule(static)
+                for (size_t i = 1; i < partition.size() - 1; ++i) {
+                    partition[i] = distribution(gen);
+                }
+            }
+
+#ifdef BENCH
+            const auto endTimePar = recomp::timer::now();
+            const auto timeSpanPar = endTimePar - startTimePar;
+            std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+#endif
+        } else {
+
+            int tmp_cut = 0;
+            int cut = 0;
+            for (size_t j = 0; j < this->k; ++j) {
+#ifdef BENCH
+                const auto startTimePar = recomp::timer::now();
+#endif
+                partition_t tmp_part(partition.size());
+                tmp_part[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+                tmp_part[tmp_part.size() - 1] = true;
+#pragma omp parallel num_threads(this->cores)
+                {
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_int_distribution<uint8_t> distribution(0, 1);
+#pragma omp for schedule(static)
+                    for (size_t i = 1; i < tmp_part.size() - 1; ++i) {
+                        tmp_part[i] = distribution(gen);
+                    }
+
+                    tmp_cut = 0;
+#pragma omp for schedule(static) reduction(+:tmp_cut)
+                    for (size_t i = 0; i < adj_list.size(); ++i) {
+                        variable_t char_i = text[adj_list[i]] - minimum;
+                        variable_t char_i1 = text[adj_list[i] + 1] - minimum;
+                        if (tmp_part[char_i] != tmp_part[char_i1]) {
+                            tmp_cut++;
+                        }
+                    }
+                }
+                if (cut < tmp_cut) {
+                    cut = tmp_cut;
+                    partition.swap(tmp_part);
+                }
+#ifdef BENCH
+                const auto endTimePar = recomp::timer::now();
+                const auto timeSpanPar = endTimePar - startTimePar;
+                std::cout << " undir_cut" << j << "="
+                          << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+#endif
+            }
+        }
+#ifdef BENCH
+            const auto startTimeCount = recomp::timer::now();
+#endif
+//            int prod_l = 0;
+//            int prod_r = 0;
         ui_vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {

@@ -26,7 +26,7 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_rnd10_recompression : public parallel_lp_recompression<variable_t> {
+class parallel_rnddir_recompression : public parallel_lp_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename recompression<variable_t>::bv_t bv_t;
@@ -35,12 +35,36 @@ class parallel_rnd10_recompression : public parallel_lp_recompression<variable_t
     typedef ui_vector<bool> partition_t;
     typedef size_t pair_position_t;
 
-    inline parallel_rnd10_recompression() {
-        this->name = "parallel_rnd10";
+    inline parallel_rnddir_recompression() {
+        this->name = "parallel_rnddir";
+        this->k = 1;
     }
 
-    inline parallel_rnd10_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
-        this->name = "parallel_rnd10";
+    inline parallel_rnddir_recompression(int k) : k(k) {
+        if (k < 1) {
+            this->k = 1;
+        }
+        if (k > 1) {
+            this->name = "parallel_rnddir" + std::to_string(k);
+        } else {
+            this->name = "parallel_rnddir";
+        }
+    }
+
+    inline parallel_rnddir_recompression(std::string& dataset) : parallel_lp_recompression<variable_t>(dataset) {
+        this->name = "parallel_rnddir";
+        this->k = 1;
+    }
+
+    inline parallel_rnddir_recompression(std::string& dataset, int k) : k(k), parallel_lp_recompression<variable_t>(dataset) {
+        if (k < 1) {
+            this->k = 1;
+        }
+        if (k > 1) {
+            this->name = "parallel_rnddir" + std::to_string(k);
+        } else {
+            this->name = "parallel_rnddir";
+        }
     }
 
     /**
@@ -82,8 +106,8 @@ class parallel_rnd10_recompression : public parallel_lp_recompression<variable_t
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
-        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset << " time="
-                  << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
+        std::cout << "RESULT algo=" << this->name << "_recompression dataset=" << this->dataset
+                  << " time=" << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count())
                   << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level=" << this->level
                   << " cores=" << this->cores << " size=" << text_size << std::endl;
 #endif
@@ -94,6 +118,8 @@ class parallel_rnd10_recompression : public parallel_lp_recompression<variable_t
 
  protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
+
+    int k;
 
     /**
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
@@ -115,119 +141,258 @@ class parallel_rnd10_recompression : public parallel_lp_recompression<variable_t
         std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
 #endif
         this->compute_adj_list(text, adj_list);
+
+        int lr_count = 0;
+        int rl_count = 0;
+        int prod_l = 0;
+        int prod_r = 0;
+        if (k == 1) {
 #ifdef BENCH
-        const auto startTimePar = recomp::timer::now();
+            const auto startTimePar = recomp::timer::now();
 #endif
-
-//        partition_t tmp_part(partition.size());
-
-        int cut = 0;
-        int tmp_cut = 0;
-        for (size_t k = 0; k < 10; ++k) {
-            partition_t tmp_part(partition.size());
-            tmp_part[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
-            tmp_part[tmp_part.size() - 1] = true;
+            partition[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+            partition[partition.size() - 1] = true;
 #pragma omp parallel num_threads(this->cores)
             {
                 std::random_device rd;
                 std::mt19937 gen(rd());
                 std::uniform_int_distribution<uint8_t> distribution(0, 1);
 #pragma omp for schedule(static)
-                for (size_t i = 1; i < tmp_part.size() - 1; ++i) {
-                    tmp_part[i] = distribution(gen);
-                }
-
-                tmp_cut = 0;
-#pragma omp for schedule(static) reduction(+:tmp_cut)
-                for (size_t i = 0; i < adj_list.size(); ++i) {
-                    variable_t char_i = text[adj_list[i]] - minimum;
-                    variable_t char_i1 = text[adj_list[i] + 1] - minimum;
-                    if (tmp_part[char_i] != tmp_part[char_i1]) {
-                        tmp_cut++;
-                    }
+                for (size_t i = 1; i < partition.size() - 1; ++i) {
+                    partition[i] = distribution(gen);
                 }
             }
-            if (tmp_cut > cut) {
-                partition.swap(tmp_part);
-                cut = tmp_cut;
-            }
-        }
 
 #ifdef BENCH
-        const auto endTimePar = recomp::timer::now();
-        const auto timeSpanPar = endTimePar - startTimePar;
-        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-        const auto startTimeCount = recomp::timer::now();
+            const auto endTimePar = recomp::timer::now();
+            const auto timeSpanPar = endTimePar - startTimePar;
+            std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+            const auto startTimeCount = recomp::timer::now();
 #endif
-        int lr_count = 0;
-        int rl_count = 0;
-        int prod_l = 0;
-        int prod_r = 0;
-        ui_vector<size_t> bounds;
+//            int prod_l = 0;
+//            int prod_r = 0;
+            ui_vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
-        {
-            auto thread_id = omp_get_thread_num();
-            auto n_threads = static_cast<size_t>(omp_get_num_threads());
+            {
+                auto thread_id = omp_get_thread_num();
+                auto n_threads = static_cast<size_t>(omp_get_num_threads());
 
 #pragma omp single
-            {
-                bounds.resize(n_threads + 1);
-                bounds[n_threads] = adj_list.size();
-            }
-            bounds[thread_id] = adj_list.size();
+                {
+                    bounds.resize(n_threads + 1);
+                    bounds[n_threads] = adj_list.size();
+                }
+                bounds[thread_id] = adj_list.size();
 
 #pragma omp for schedule(static)
-            for (size_t i = 0; i < adj_list.size(); ++i) {
-                bounds[thread_id] = i;
-                i = adj_list.size();
-            }
-
-            variable_t last_i = 0;  // avoid more random access than necessary
-            variable_t last_i1 = 0;
-            size_t i = bounds[thread_id];
-            if (i == 0) {
-                last_i = text[adj_list[i]] - minimum;
-                last_i1 = text[adj_list[i] + 1] - minimum;
-                if (!partition[last_i] && partition[last_i1]) {
-                    lr_count++;
-                    prod_l++;
-                } else if (partition[last_i] && !partition[last_i1]) {
-                    rl_count++;
-                    prod_r++;
+                for (size_t i = 0; i < adj_list.size(); ++i) {
+                    bounds[thread_id] = i;
+                    i = adj_list.size();
                 }
-                i++;
-            } else if (i < adj_list.size()) {
-                last_i = text[adj_list[i - 1]] - minimum;
-                last_i1 = text[adj_list[i - 1] + 1] - minimum;
-            }
 
-            for (; i < bounds[thread_id + 1]; ++i) {
-                variable_t char_i = text[adj_list[i]] - minimum;
-                variable_t char_i1 = text[adj_list[i] + 1] - minimum;
-                if (!partition[char_i] && partition[char_i1]) {
-                    lr_count++;
-                    if (char_i != last_i || char_i1 != last_i1) {
+                variable_t last_i = 0;  // avoid more random access than necessary
+                variable_t last_i1 = 0;
+                size_t i = bounds[thread_id];
+                if (i == 0) {
+                    last_i = text[adj_list[i]] - minimum;
+                    last_i1 = text[adj_list[i] + 1] - minimum;
+                    if (!partition[last_i] && partition[last_i1]) {
+                        lr_count++;
                         prod_l++;
-                    }
-                } else if (partition[char_i] && !partition[char_i1]) {
-                    rl_count++;
-                    if (char_i != last_i || char_i1 != last_i1) {
+                    } else if (partition[last_i] && !partition[last_i1]) {
+                        rl_count++;
                         prod_r++;
                     }
+                    i++;
+                } else if (i < adj_list.size()) {
+                    last_i = text[adj_list[i - 1]] - minimum;
+                    last_i1 = text[adj_list[i - 1] + 1] - minimum;
                 }
-                last_i = char_i;
-                last_i1 = char_i1;
+
+                for (; i < bounds[thread_id + 1]; ++i) {
+                    variable_t char_i = text[adj_list[i]] - minimum;
+                    variable_t char_i1 = text[adj_list[i] + 1] - minimum;
+                    if (!partition[char_i] && partition[char_i1]) {
+                        lr_count++;
+                        if (char_i != last_i || char_i1 != last_i1) {
+                            prod_l++;
+                        }
+                    } else if (partition[char_i] && !partition[char_i1]) {
+                        rl_count++;
+                        if (char_i != last_i || char_i1 != last_i1) {
+                            prod_r++;
+                        }
+                    }
+                    last_i = char_i;
+                    last_i1 = char_i1;
+                }
+            }
+            part_l = rl_count > lr_count;
+            if (rl_count == lr_count) {
+                part_l = prod_r < prod_l;
+            }
+#ifdef BENCH
+            const auto endTimeCount = recomp::timer::now();
+                const auto timeSpanCount = endTimeCount - startTimeCount;
+                std::cout << " dir_cut="
+                          << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
+
+        } else {
+
+
+            for (size_t j = 0; j < this->k; ++j) {
+#ifdef BENCH
+                const auto startTimePar = recomp::timer::now();
+#endif
+                partition_t tmp_part(partition.size());
+                tmp_part[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+                tmp_part[tmp_part.size() - 1] = true;
+#pragma omp parallel num_threads(this->cores)
+                {
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+                    std::uniform_int_distribution<uint8_t> distribution(0, 1);
+#pragma omp for schedule(static)
+                    for (size_t i = 1; i < tmp_part.size() - 1; ++i) {
+                        tmp_part[i] = distribution(gen);
+                    }
+
+//                    tmp_cut = 0;
+//#pragma omp for schedule(static) reduction(+:tmp_cut)
+//                    for (size_t i = 0; i < adj_list.size(); ++i) {
+//                        variable_t char_i = text[adj_list[i]] - minimum;
+//                        variable_t char_i1 = text[adj_list[i] + 1] - minimum;
+//                        if (tmp_part[char_i] != tmp_part[char_i1]) {
+//                            tmp_cut++;
+//                        }
+//                    }
+                }
+
+#ifdef BENCH
+                const auto endTimePar = recomp::timer::now();
+                const auto timeSpanPar = endTimePar - startTimePar;
+                std::cout << " undir_cut" << j << "="
+                          << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
+                const auto startTimeCount = recomp::timer::now();
+#endif
+                int tmp_lr_count = 0;
+                int tmp_rl_count = 0;
+                int tmp_prod_l = 0;
+                int tmp_prod_r = 0;
+                bool tmp_part_l = false;
+                ui_vector<size_t> bounds;
+#pragma omp parallel num_threads(this->cores) reduction(+:tmp_lr_count) reduction(+:tmp_rl_count) reduction(+:tmp_prod_r) reduction(+:tmp_prod_l)
+                {
+                    auto thread_id = omp_get_thread_num();
+                    auto n_threads = static_cast<size_t>(omp_get_num_threads());
+
+#pragma omp single
+                    {
+                        bounds.resize(n_threads + 1);
+                        bounds[n_threads] = adj_list.size();
+                    }
+                    bounds[thread_id] = adj_list.size();
+
+#pragma omp for schedule(static)
+                    for (size_t i = 0; i < adj_list.size(); ++i) {
+                        bounds[thread_id] = i;
+                        i = adj_list.size();
+                    }
+
+                    variable_t last_i = 0;  // avoid more random access than necessary
+                    variable_t last_i1 = 0;
+                    size_t i = bounds[thread_id];
+                    if (i == 0) {
+                        last_i = text[adj_list[i]] - minimum;
+                        last_i1 = text[adj_list[i] + 1] - minimum;
+                        if (!tmp_part[last_i] && tmp_part[last_i1]) {
+                            tmp_lr_count++;
+                            tmp_prod_l++;
+                        } else if (tmp_part[last_i] && !tmp_part[last_i1]) {
+                            tmp_rl_count++;
+                            tmp_prod_r++;
+                        }
+                        i++;
+                    } else if (i < adj_list.size()) {
+                        last_i = text[adj_list[i - 1]] - minimum;
+                        last_i1 = text[adj_list[i - 1] + 1] - minimum;
+                    }
+
+                    for (; i < bounds[thread_id + 1]; ++i) {
+                        variable_t char_i = text[adj_list[i]] - minimum;
+                        variable_t char_i1 = text[adj_list[i] + 1] - minimum;
+                        if (!tmp_part[char_i] && tmp_part[char_i1]) {
+                            tmp_lr_count++;
+                            if (char_i != last_i || char_i1 != last_i1) {
+                                tmp_prod_l++;
+                            }
+                        } else if (tmp_part[char_i] && !tmp_part[char_i1]) {
+                            tmp_rl_count++;
+                            if (char_i != last_i || char_i1 != last_i1) {
+                                tmp_prod_r++;
+                            }
+                        }
+                        last_i = char_i;
+                        last_i1 = char_i1;
+                    }
+                }
+                tmp_part_l = tmp_rl_count > tmp_lr_count;
+                if (tmp_rl_count == tmp_lr_count) {
+                    tmp_part_l = tmp_prod_r < tmp_prod_l;
+                }
+
+                auto max = std::max(lr_count, rl_count);
+                auto tmp_max = std::max(tmp_lr_count, tmp_rl_count);
+                if (max < tmp_max) {
+                    partition.swap(tmp_part);
+                    part_l = tmp_part_l;
+                    lr_count = tmp_lr_count;
+                    rl_count = tmp_rl_count;
+                    prod_l = tmp_prod_l;
+                    prod_r = tmp_prod_r;
+                } else if (max == tmp_max) {
+                    auto min_prod = 0;
+                    if (lr_count > rl_count) {
+                        min_prod = prod_l;
+                    } else if (lr_count == rl_count) {
+                        min_prod = std::min(prod_l, prod_r);
+                    } else {
+                        min_prod = prod_r;
+                    }
+
+                    auto tmp_min_prod = 0;
+                    if (tmp_lr_count > tmp_rl_count) {
+                        tmp_min_prod = tmp_prod_l;
+                    } else if (tmp_lr_count == tmp_rl_count) {
+                        tmp_min_prod = std::min(tmp_prod_l, tmp_prod_r);
+                    } else {
+                        tmp_min_prod = tmp_prod_r;
+                    }
+
+                    if (min_prod > tmp_min_prod) {
+                        partition.swap(tmp_part);
+                        part_l = tmp_part_l;
+                        lr_count = tmp_lr_count;
+                        rl_count = tmp_rl_count;
+                        prod_l = tmp_prod_l;
+                        prod_r = tmp_prod_r;
+                    }
+                }
+#ifdef BENCH
+                const auto endTimeCount = recomp::timer::now();
+                const auto timeSpanCount = endTimeCount - startTimeCount;
+                std::cout << " lr" << j << "=" << tmp_lr_count << " rl" << j << "=" << tmp_rl_count << " dir_cut" << j << "="
+                          << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+#endif
             }
         }
-        part_l = rl_count > lr_count;
-        if (rl_count == lr_count) {
-            part_l = prod_r < prod_l;
-        }
 #ifdef BENCH
-        const auto endTimeCount = recomp::timer::now();
-        const auto timeSpanCount = endTimeCount - startTimeCount;
-        std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
-                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+        //        const auto endTimeCount = recomp::timer::now();
+//        const auto timeSpanCount = endTimeCount - startTimeCount;
+//        std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
+//                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
+        std::cout << " lr=" << lr_count << " rl=" << rl_count;
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
         std::cout << " partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpan).count();
