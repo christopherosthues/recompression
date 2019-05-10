@@ -10,7 +10,8 @@ set(SOURCES
         src/recompression/experimental/parallel_gr2_recompression.cpp
         src/recompression/experimental/parallel_kahip_recompression.cpp
         src/recompression/parallel_rnd_recompression.cpp
-#        src/recompression/experimental/parallel_wrnd_recompression.cpp
+        src/recompression/parallel_rnddir_recompression.cpp
+        #        src/recompression/experimental/parallel_wrnd_recompression.cpp
         src/recompression/lce_query.cpp
         src/recompression/radix_sort.cpp
         src/recompression/experimental/parallel_order_great_recompression.cpp
@@ -46,7 +47,8 @@ set(HEADERS
         include/recompression/experimental/parallel_gr2_recompression.hpp
         include/recompression/experimental/parallel_kahip_recompression.hpp
         include/recompression/parallel_rnd_recompression.hpp
-#        include/recompression/experimental/parallel_wrnd_recompression.hpp
+        include/recompression/parallel_rnddir_recompression.hpp
+        #        include/recompression/experimental/parallel_wrnd_recompression.hpp
         include/recompression/parallel_ls_recompression.hpp
         include/recompression/experimental/parallel_ls3_recompression.hpp
         include/recompression/experimental/parallel_ls5_recompression.hpp
