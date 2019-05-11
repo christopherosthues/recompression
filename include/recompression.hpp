@@ -60,6 +60,10 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
     if (name == "parallel") {
         return std::make_unique<parallel::parallel_recompression<variable_t>>(dataset);
     } else if (name == "parallel_kahip") {
+        if (parhip.empty() || dir.empty()) {
+            std::cerr << "Error. parhip and/or dir not specified" << std::endl;
+            exit(-1);
+        }
         return std::make_unique<parallel::parallel_kahip_recompression<variable_t>>(dataset, parhip, dir);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::parallel_ls_recompression<variable_t>>(dataset);

@@ -40,10 +40,10 @@ int main(int argc, char *argv[]) {
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
 
     std::string parhip;
-    cmd.add_param_string("parhip", parhip, "The executable for parhip");
+    cmd.add_string("parhip", parhip, "The executable for parhip");
 
     std::string dir;
-    cmd.add_param_string("dir", dir, "The directory to store the partition of parhip to");
+    cmd.add_string("dir", dir, "The directory to store the partition of parhip to");
 
     if (!cmd.process(argc, argv)) {
         return -1;
