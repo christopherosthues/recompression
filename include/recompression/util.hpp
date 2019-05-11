@@ -484,17 +484,37 @@ void check_graph(std::string file_name) {
 
     int m = 0;
     int v = 0;
+    bool weights;
+    if (split.size() == 2) {
+        weights = false;
+    } else {
+        if (!split[2].empty()) {
+            weights = (util::str_to_int(split[2]) == 1);
+        } else {
+            weights = false;
+        }
+    }
+    std::cout << "weights: " << weights << std::endl;
+
     while (std::getline(in_file, part_str)) {
         split.clear();
         util::split(part_str, " ", split);
 //        if (split.size() % 2 == 1) {
 //            std::cout << split[split.size() - 2] << ", " << split[split.size() - 1] << std::endl;
 //        }
-        for (size_t i = 0; i < split.size() - 1; i += 2) {
-            auto u = str_to_int(split[i]);
-            auto wgt = str_to_int(split[i + 1]);
-            adj[v][u-1] = wgt;
-            m++;
+        if (weights) {
+            for (size_t i = 0; i < split.size() - 1; i += 2) {
+                auto u = str_to_int(split[i]);
+                auto wgt = str_to_int(split[i + 1]);
+                adj[v][u - 1] = wgt;
+                m++;
+            }
+        } else {
+            for (size_t i = 0; i < split.size() - 1; ++i) {
+                auto u = str_to_int(split[i]);
+                adj[v][u - 1] = 1;
+                m++;
+            }
         }
         v++;
     }

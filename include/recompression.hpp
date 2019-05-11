@@ -38,9 +38,9 @@
 namespace recomp {
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset) {
+std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset, std::string parhip, std::string dir) {
 
-    int k = 1;
+    size_t k = 1;
     if (name.find("parallel_rnd") == 0) {
         bool dir = false;
         if (name != "parallel_rnd") {
@@ -60,7 +60,7 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
     if (name == "parallel") {
         return std::make_unique<parallel::parallel_recompression<variable_t>>(dataset);
     } else if (name == "parallel_kahip") {
-        return std::make_unique<parallel::parallel_kahip_recompression<variable_t>>(dataset);
+        return std::make_unique<parallel::parallel_kahip_recompression<variable_t>>(dataset, parhip, dir);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::parallel_ls_recompression<variable_t>>(dataset);
     } else if (name == "parallel_ls3") {

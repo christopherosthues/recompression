@@ -42,12 +42,21 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 //    typedef unsigned long long idxtype;
     typedef size_t idxtype;
 
+    std::string parhip;
+    std::string dir;
+
     inline parallel_kahip_recompression() {
         this->name = "parallel_kahip";
     }
 
     inline parallel_kahip_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
         this->name = "parallel_kahip";
+    }
+
+    inline parallel_kahip_recompression(std::string& dataset, std::string parhip, std::string dir) : parallel_rnd_recompression<variable_t>(dataset) {
+        this->name = "parallel_kahip";
+        this->parhip = parhip;
+        this->dir = dir;
     }
 
     /**
@@ -231,7 +240,7 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         std::cout << " mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAlpha).count();
         const auto endTimeMapping = recomp::timer::now();
         const auto timeSpanMapping = endTimeMapping - startTime;
-        std::cout << " compute_mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMapping).count() << std::endl;
+        std::cout << " compute_mapping=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanMapping).count();
 #endif
     }
 
@@ -248,45 +257,78 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
+        const auto startTimeGraph = recomp::timer::now();
 #endif
+
         const size_t n = partition.size();
         auto* xadj = new idxtype[n + 1];
         xadj[0] = 0;
-        std::vector<std::unordered_map<variable_t, variable_t>> adjncys(n);
+
         size_t m = 0;
+        std::vector<std::unordered_map<variable_t, variable_t>> adjncys(n);
         for (size_t i = 0; i < text.size() - 1; ++i) {
 //            std::cout << text[i] << std::endl;
             auto c = text[i];
             auto c1 = text[i + 1];
+            if (c < c1) {
+                std::swap(c ,c1);
+            }
             if (adjncys[c].find(c1) == adjncys[c].end()) {
                 adjncys[c].insert(std::make_pair(c1, 1));
                 m++;
             } else {
                 adjncys[c][c1]++;
             }
-            if (adjncys[c1].find(c) == adjncys[c1].end()) {
-                adjncys[c1].insert(std::make_pair(c, 1));
-            } else {
-                adjncys[c1][c]++;
-            }
+//            if (adjncys[c1].find(c) == adjncys[c1].end()) {
+//                adjncys[c1].insert(std::make_pair(c, 1));
+//            } else {
+//                adjncys[c1][c]++;
+//            }
         }
-        
-        const size_t m_len = m;
-        auto* adjncy = new idxtype[2 * m_len];
-        auto* adjcwgt = new idxtype[2 * m_len];
-        // std::cout << std::endl << (2*m_len) << std::endl;
 
-        size_t k = 0;
-        for (size_t i = 0; i < adjncys.size(); ++i) {
-            // std::cout << "i: " << i << std::endl;
-            for (const auto& adj : adjncys[i]) {
-                // std::cout << "adj: " << adj.first << " ";
-                adjncy[k] = adj.first;
-                adjcwgt[k] = adj.second;
-                k++;
+        std::string data = this->dataset;
+        util::replace_all(data, "\\", "");
+        std::ofstream out_file;
+        const auto exec = parhip + " " + dir + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=50 --save_partition";
+//        std::cout << exec << std::endl;
+        out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
+//        out_file << n << " " << m << " 1\n";
+        out_file << n << " " << m << " \n";
+
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = 0; j < n; ++j) {
+                if (i != j) {
+                    bool in_complement;
+                    if (i < j) {
+                        in_complement = adjncys[j].find(i) == adjncys[j].end();
+                    } else {
+                        in_complement = adjncys[i].find(j) == adjncys[i].end();
+                    }
+                    if (in_complement) {
+                        out_file << std::to_string(j + 1) << " ";
+                    }
+                }
             }
-            xadj[i + 1] = k;
+            out_file << "\n";
         }
+        out_file.close();
+        
+//        const size_t m_len = m;
+//        auto* adjncy = new idxtype[2 * m_len];
+//        auto* adjcwgt = new idxtype[2 * m_len];
+//        // std::cout << std::endl << (2*m_len) << std::endl;
+//
+//        size_t k = 0;
+//        for (size_t i = 0; i < adjncys.size(); ++i) {
+//            // std::cout << "i: " << i << std::endl;
+//            for (const auto& adj : adjncys[i]) {
+//                // std::cout << "adj: " << adj.first << " ";
+//                adjncy[k] = adj.first;
+//                adjcwgt[k] = adj.second;
+//                k++;
+//            }
+//            xadj[i + 1] = k;
+//        }
         /*std::cout << std::endl;
         
         std::cout << "xadj: ";
@@ -303,36 +345,37 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         }
         std::cout << std::endl;*/
         
-        adjncys.resize(1);
-        adjncys.shrink_to_fit();
+//        adjncys.resize(1);
+//        adjncys.shrink_to_fit();
+//        adjncys[0].clear();
 
-        std::string data = this->dataset;
-        util::replace_all(data, "\\", "");
+////        std::string data = this->dataset;
+////        util::replace_all(data, "\\", "");
+////
+////        std::ofstream out_file;
+////        const auto exec = "/home/chris/git/KaHIP/deploy/parhip /home/chris/git/recompression/build_test/" + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=50 --save_partition";
+//////        std::cout << exec << std::endl;
+////        out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
+////        out_file << n << " " << m << " 1\n";
+////        size_t mc = 0;
+//        for (size_t i = 0; i < n; ++i) {
+//            for (size_t j = xadj[i]; j < xadj[i + 1]; ++j) {
+//                out_file << (adjncy[j] + 1) << " " << adjcwgt[j] << " ";
+//                // std::cout << adjncy[j] << " " << adjcwgt[j] << std::endl;
+////                mc++;
+//            }
+//            // std::cout << std::endl;
+//            if (i < n) {
+//                out_file << "\n";
+//            }
+//        }
+//        // std::cout << "mc: " << mc << ", m: " << m << ", 2m: " << (2*m) << std::endl;
+//        out_file.close();
 
-        std::ofstream out_file;
-        const auto exec = "/home/chris/git/KaHIP/deploy/parhip /home/chris/git/recompression/build_test/" + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=50 --save_partition";
-//        std::cout << exec << std::endl;
-        out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
-        out_file << n << " " << m << " 1\n";
-//        size_t mc = 0;
-        for (size_t i = 0; i < n; ++i) {
-            for (size_t j = xadj[i]; j < xadj[i + 1]; ++j) {
-                out_file << (adjncy[j] + 1) << " " << adjcwgt[j] << " ";
-                // std::cout << adjncy[j] << " " << adjcwgt[j] << std::endl;
-//                mc++;
-            }
-            // std::cout << std::endl;
-            if (i < n) {
-                out_file << "\n";
-            }
-        }
-        // std::cout << "mc: " << mc << ", m: " << m << ", 2m: " << (2*m) << std::endl;
-        out_file.close();
-
-        util::check_graph("/home/chris/git/recompression/build_test/" + data + ".graph");
+//        util::check_graph("/home/chris/git/recompression/build_test/" + data + ".graph");
 #ifdef BENCH
         const auto endTimeGraph = recomp::timer::now();
-        const auto timeSpanGraph = endTimeGraph - startTime;
+        const auto timeSpanGraph = endTimeGraph - startTimeGraph;
         std::cout << " build_graph=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanGraph).count() << std::endl;
         const auto startTimeKahip = recomp::timer::now();
 #endif
@@ -392,12 +435,12 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 #ifdef BENCH
         const auto endTimeKahip = recomp::timer::now();
         const auto timeSpanKahip = endTimeKahip - startTimeKahip;
-        std::cout << " kahip=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanKahip).count() << std::endl;
+        std::cout << " kahip=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanKahip).count();
 //                  << " edgecut=" << edge_cut;
         const auto startTimeCopyPart = recomp::timer::now();
 #endif
         i_vector<std::deque<variable_t>> nodes(this->cores);
-        for (int i = 0; i < partition.size(); ++i) {
+        for (size_t i = 0; i < partition.size(); ++i) {
             nodes[part[i]].emplace_back(i);
         }
 
@@ -415,21 +458,34 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             size_t p_size = nodes[thread_id].size();
             auto t_nodes = nodes[thread_id];
             for (size_t i = 0; i < p_size; ++i) {
-                for (size_t j = xadj[t_nodes[i]]; j < xadj[t_nodes[i] + 1]; ++j) {
-                    auto adj = adjncy[j];
-                    if (adj < t_nodes[i] && part[adj] == thread_id) {
-                        if (!partition[adj]) {
-                            l_count++;
-                        } else {
-                            r_count++;
-                        }
+                for (const auto& adj_node : adjncys[t_nodes[i]]) {
+                    if (!partition[adj_node.first]) {
+                        l_count += adj_node.second;
+                    } else {
+                        r_count += adj_node.second;
                     }
                 }
-                partition[i] = l_count > r_count;
+                partition[t_nodes[i]] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
+//                for (size_t j = xadj[t_nodes[i]]; j < xadj[t_nodes[i] + 1]; ++j) {
+//                    auto adj = adjncy[j];
+//                    if (adj < t_nodes[i] && part[adj] == thread_id) {
+//                        if (!partition[adj]) {
+//                            l_count++;
+//                        } else {
+//                            r_count++;
+//                        }
+//                    }
+//                }
+//                partition[i] = l_count > r_count;
+//                l_count = 0;
+//                r_count = 0;
             }
         }
+        adjncys.resize(1);
+        adjncys.shrink_to_fit();
+        adjncys[0].clear();
         bool diff = false;
 
 //        partition[0] = (part[0] == 1);
@@ -445,17 +501,15 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             partition[partition.size() - 1] = true;
         }
         delete[] xadj;
-        delete[] adjncy;
-        delete[] adjcwgt;
+//        delete[] adjncy;
+//        delete[] adjcwgt;
         delete[] part;
 #ifdef BENCH
         const auto endTimeCopyPart = recomp::timer::now();
         const auto timeSpanCopyPart = endTimeCopyPart - startTimeCopyPart;
-        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopyPart).count() << std::endl;
+        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCopyPart).count();
         const auto startTimeAdjInit = recomp::timer::now();
 #endif
-
-//        std::cout << std::endl;
 
         const size_t adj_list_size = text.size() - 1;
         adj_list_t adj_list(adj_list_size);
@@ -485,65 +539,8 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 //        const auto endTimePar = recomp::timer::now();
 //        const auto timeSpanPar = endTimePar - startTimePar;
 //        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-//        const auto startTimeLocalSearch = recomp::timer::now();
 //#endif
-//
-//        i_vector<ui_vector<std::int64_t>> flip;
         ui_vector<size_t> bounds;
-//#pragma omp parallel num_threads(this->cores)
-//        {
-//            auto n_threads = (size_t)omp_get_num_threads();
-//            auto thread_id = (size_t)omp_get_thread_num();
-//#pragma omp single
-//            {
-//                flip.resize(n_threads);
-//                for (size_t i = 0; i < n_threads; ++i) {
-//                    flip[i].resize(partition.size());
-//                }
-//                bounds.resize(n_threads + 1);
-//                bounds[n_threads] = adj_list.size() - 1;
-//            }
-//            bounds[thread_id] = adj_list.size() - 1;
-//            flip[thread_id].fill(0);
-//
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < adj_list_size; ++i) {
-//                auto char_i = text[adj_list[i]];
-//                auto char_i1 = text[adj_list[i] + 1];
-//                if (partition[char_i] != partition[char_i1]) {
-//                    flip[thread_id][char_i]++;
-//                    flip[thread_id][char_i1]++;
-//                } else {
-//                    flip[thread_id][char_i]--;
-//                    flip[thread_id][char_i1]--;
-//                }
-//            }
-//
-//#pragma omp for schedule(static)
-//            for (size_t i = 0; i < partition.size(); ++i) {
-//                for (size_t j = 1; j < n_threads; ++j) {
-//                    flip[0][i] += flip[j][i];
-//                }
-//                if (flip[0][i] < 0) {
-//                    if (partition[i] == 0) {
-//                        partition[i] = 1;
-//                    } else {
-//                        partition[i] = 0;
-//                    }
-//                }
-//            }
-//        }
-//        for (size_t i = 0; i < flip.size(); ++i) {
-//            flip[i].resize(1);
-//        }
-//        flip.resize(1);
-//#ifdef BENCH
-//        const auto endTimeLocalSearch = recomp::timer::now();
-//        const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
-//        std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
-//        const auto startTimeDiff = recomp::timer::now();
-//#endif
-//
 //        bool different = false;
 //#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
 //        for (size_t i = 0; i < partition.size() - 1; ++i) {

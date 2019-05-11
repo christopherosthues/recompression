@@ -39,6 +39,12 @@ int main(int argc, char *argv[]) {
     size_t prefix = 0;
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
 
+    std::string parhip;
+    cmd.add_param_string("parhip", parhip, "The executable for parhip");
+
+    std::string dir;
+    cmd.add_param_string("dir", dir, "The directory to store the partition of parhip to");
+
     if (!cmd.process(argc, argv)) {
         return -1;
     }
@@ -73,7 +79,7 @@ int main(int argc, char *argv[]) {
                 malloc_count_reset_peak();
 #endif
 
-                std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset);
+                std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset, parhip, dir);
                 if (!recomp) {
                     std::cerr << "No such algo " << algo << std::endl;
                     return -1;
