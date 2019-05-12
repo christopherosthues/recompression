@@ -415,7 +415,7 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             exit(-1);
         }
 
-        std::ifstream in_file("/home/chris/git/recompression/build_test/tmppartition.txtp", std::ifstream::in | std::ios::binary | std::ifstream::ate);
+        std::ifstream in_file(dir + "tmppartition.txtp", std::ifstream::in | std::ios::binary | std::ifstream::ate);
         std::string part_str;
 //        uint64_t file_size = in_file.tellg();
         in_file.seekg(0, std::ios::beg);
