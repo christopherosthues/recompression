@@ -319,7 +319,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
+    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -517,7 +517,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition(text, partition, part_l);
+        this->compute_partition(text, partition, part_l);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
