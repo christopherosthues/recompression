@@ -47,6 +47,9 @@ int main(int argc, char *argv[]) {
     std::string dir;
     cmd.add_string("dir", dir, "The directory to store the partition of parhip to");
 
+    bool mult = false;
+    cmd.add_flag('m', "mult", mult, "True if the begin shall be multiplied by the steps, false to add it");
+
     if (!cmd.process(argc, argv)) {
         return -1;
     }
@@ -117,15 +120,24 @@ int main(int argc, char *argv[]) {
                     }
                 }
             }
-            if (step == 1) {
-                if (begin != 1) {
-                    step = begin;
-                } else {
-                    step = 2;
-                }
+            if (mult) {
+                step *= steps;
             } else {
-                step += steps;
+                if (step == 1) {
+                    step = 2;
+                } else {
+                    step += steps;
+                }
             }
+//            if (step == 1) {
+//                if (begin != 1) {
+//                    step = begin;
+//                } else {
+//                    step = 2;
+//                }
+//            } else {
+//                step += steps;
+//            }
         }
     }
 }
