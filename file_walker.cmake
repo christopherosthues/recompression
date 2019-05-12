@@ -19,7 +19,7 @@ set(SOURCES
         src/recompression/experimental/parallel_ls5_recompression.cpp
         src/recompression/experimental/parallel_ls_gain_recompression.cpp
         src/recompression/parallel_gr_recompression.cpp
-#        src/recompression/experimental/parallel_grz_recompression.cpp
+        src/recompression/experimental/parallel_gr_alternate_recompression.cpp
         src/recompression/hash_recompression.cpp
         src/recompression/defs.cpp
         src/recompression/coders/rlslp_rule_sorter.cpp
@@ -52,7 +52,7 @@ set(HEADERS
         include/recompression/experimental/parallel_ls5_recompression.hpp
         include/recompression/experimental/parallel_ls_gain_recompression.hpp
         include/recompression/parallel_gr_recompression.hpp
-#        include/recompression/experimental/parallel_grz_recompression.hpp
+        include/recompression/experimental/parallel_gr_alternate_recompression.hpp
         include/recompression/fast_recompression.hpp
         include/recompression/hash_recompression.hpp
         include/recompression/util.hpp
