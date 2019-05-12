@@ -478,6 +478,17 @@ inline ui_vector<T> create_ui_vector(std::vector<T> vec) {
     return ui_vec;
 }
 
+inline std::string variants_options(std::vector<std::string>& variants) {
+    std::stringstream stringstream;
+    for (size_t i = 0; i < variants.size(); ++i) {
+        stringstream << variants[i];
+        if (i < variants.size() - 1) {
+            stringstream << " | ";
+        }
+    }
+    return stringstream.str();
+}
+
 inline constexpr uint8_t bits_for(size_t value) {
     return value == 0 ? (uint8_t)1 : 64 - __builtin_clzll(value);
 }

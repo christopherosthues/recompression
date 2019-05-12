@@ -36,6 +36,31 @@
 
 namespace recomp {
 
+void sequential_variants(std::vector<std::string>& variants) {
+    variants.emplace_back("fast_seq");
+    variants.emplace_back("hash");
+}
+
+void parallel_variants(std::vector<std::string>& variants) {
+    variants.emplace_back("parallel");
+    variants.emplace_back("parallel_lp");
+    variants.emplace_back("parallel_rnd");
+    variants.emplace_back("parallel_ls");
+    variants.emplace_back("parallel_gr");
+    variants.emplace_back("parallel_rnddir");
+    variants.emplace_back("parallel_lock");
+}
+
+void experimental_variants(std::vector<std::string>& variants) {
+    variants.emplace_back("parallel_ls3");
+    variants.emplace_back("parallel_ls5");
+    variants.emplace_back("parallel_ls_gain");
+    variants.emplace_back("parallel_gr2");
+    variants.emplace_back("parallel_order_gr");
+    variants.emplace_back("parallel_order_ls");
+    variants.emplace_back("parallel_kahip");
+}
+
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset) {
 
@@ -86,7 +111,7 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
         return std::make_unique<parallel::recompression_order_ls<variable_t>>(dataset);
     } else if (name == "parallel_order_gr") {
         return std::make_unique<parallel::recompression_order_gr<variable_t>>(dataset);
-    } else if (name == "fast") {
+    } else if (name == "fast_seq") {
         return std::make_unique<recompression_fast<variable_t>>(dataset);
     } else if (name == "hash") {
         return std::make_unique<hash_recompression<variable_t>>(dataset);
