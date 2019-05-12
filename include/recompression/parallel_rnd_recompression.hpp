@@ -28,7 +28,7 @@ namespace parallel {
 template<typename variable_t = var_t>
 class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> {
  private:
-    int iters = 1;
+    size_t iters = 1;
     
  public:
     typedef typename recompression<variable_t>::text_t text_t;
@@ -43,9 +43,11 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
         this->iters = 1;
     }
 
-    inline parallel_rnd_recompression(int k) : iters(k) {
+    inline parallel_rnd_recompression(size_t k) {
         if (k < 1) {
             this->iters = 1;
+        } else {
+            this->iters = k;
         }
         if (k > 1) {
             this->name = "parallel_rnd" + std::to_string(k);
@@ -59,9 +61,11 @@ class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> 
         this->iters = 1;
     }
 
-    inline parallel_rnd_recompression(std::string& dataset, int k) : iters(k), parallel_lp_recompression<variable_t>(dataset) {
+    inline parallel_rnd_recompression(std::string& dataset, size_t k) : parallel_lp_recompression<variable_t>(dataset) {
         if (k < 1) {
             this->iters = 1;
+        } else {
+            this->iters = k;
         }
         if (k > 1) {
             this->name = "parallel_rnd" + std::to_string(k);

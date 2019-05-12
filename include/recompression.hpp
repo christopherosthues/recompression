@@ -39,7 +39,7 @@ namespace recomp {
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset) {
 
-    int k = 1;
+    size_t k = 1;
     if (name.find("parallel_rnd") == 0) {
         bool dir = false;
         if (name != "parallel_rnd") {
