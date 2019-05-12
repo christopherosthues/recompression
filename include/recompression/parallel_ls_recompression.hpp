@@ -203,7 +203,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < hist.size(); ++i) {
                 hist_bounds[thread_id] = i;
-//                hist[i] = 0;
                 i = hist.size();
             }
 
@@ -217,14 +216,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
                 hist[text[i] - minimum] = 1;
             }
 
-//#pragma omp single
-//            {
-//                std::cout << std::endl << "hist: ";
-//                for (size_t i = 0; i < hist.size(); ++i) {
-//                    std::cout << hist[i] << " ";
-//                }
-//            }
-
             for (size_t i = hist_bounds[thread_id]; i < hist_bounds[thread_id + 1]; ++i) {
                 if (hist[i] == 1) {
                     bounds[thread_id + 1]++;
@@ -234,34 +225,10 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 #pragma omp barrier
 #pragma omp single
             {
-//                std::cout << std::endl << "hist: ";
-//                for (size_t i = 0; i < hist.size(); ++i) {
-//                    std::cout << hist[i] << " ";
-//                }
-//                std::cout << std::endl << "bounds: ";
-//                for (size_t i = 0; i < bounds.size(); ++i) {
-//                    std::cout << bounds[i] << " ";
-//                }
                 for (size_t i = 1; i < bounds.size(); ++i) {
                     bounds[i] += bounds[i - 1];
                 }
                 mapping.resize(bounds[n_threads]);
-
-//                std::cout << std::endl;
-//                std::cout << "hist size: " << hist.size() << std::endl << "bounds: ";
-//                for (size_t i = 0; i < bounds.size(); ++i) {
-//                    std::cout << bounds[i] << " ";
-//                }
-//                std::cout << std::endl << "hist_bounds: ";
-//                for (size_t i = 0; i < bounds.size(); ++i) {
-//                    std::cout << hist_bounds[i] << " ";
-//                }
-//                std::cout << std::endl;
-////
-//                for (size_t j = 0; j < hist.size(); ++j) {
-//                    std::cout << hist[j] << " ";
-//                }
-//                std::cout << std::endl;
             }
 
             size_t j = bounds[thread_id];
@@ -272,25 +239,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
                 }
             }
 
-//#pragma omp single
-//            {
-//                for (size_t i = 0; i < hist.size(); ++i) {
-//                    std::cout << hist[i] << " ";
-//                }
-//                std::cout << std::endl;
-////                mapping.resize(max_letters);
-////                size_t j = 0;
-////                if (hist[0] > 0) {
-////                    mapping[j++] = minimum;
-////                }
-////                for (size_t i = 1; i < max_letters; ++i) {
-////                    if (hist[i] > 0) {
-////                        mapping[j++] = i + minimum;
-////                    }
-////                    hist[i] += hist[i - 1];
-////                }
-////                mapping.resize(j);
-//            }
 #pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
