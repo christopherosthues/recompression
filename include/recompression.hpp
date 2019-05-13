@@ -25,6 +25,7 @@
 #include "recompression/experimental/parallel_ls3_recompression.hpp"
 #include "recompression/experimental/parallel_ls5_recompression.hpp"
 #include "recompression/experimental/parallel_ls_gain_recompression.hpp"
+#include "recompression/experimental/parallel_kahip_recompression.hpp"
 #include "recompression/io/bitistream.hpp"
 #include "recompression/io/bitostream.hpp"
 #include "recompression/coders/coder.hpp"
@@ -63,7 +64,7 @@ void experimental_variants(std::vector<std::string>& variants) {
 }
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
-std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset) {
+std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset, std::string parhip, std::string dir) {
 
     size_t k = 1;
     if (name.find("parallel_rnd") == 0) {
@@ -74,7 +75,12 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
                 number = name.substr(15);
                 dir = true;
             }
-            k = util::str_to_int(number);
+            if (!number.empty()) {
+                k = util::str_to_int(number);
+            } else {
+                k = 1;
+            }
+            std::cout << "Using " << k << " iterations for " << name << std::endl;
         }
         if (dir) {
             return std::make_unique<parallel::parallel_rnddir_recompression<variable_t>>(dataset, k);
@@ -84,6 +90,12 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
     }
     if (name == "parallel") {
         return std::make_unique<parallel::parallel_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_kahip") {
+        if (parhip.empty() || dir.empty()) {
+            std::cerr << "Error. parhip and/or dir not specified" << std::endl;
+            exit(-1);
+        }
+        return std::make_unique<parallel::parallel_kahip_recompression<variable_t>>(dataset, parhip, dir);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::parallel_ls_recompression<variable_t>>(dataset);
     } else if (name == "parallel_ls3") {

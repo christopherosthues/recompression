@@ -46,6 +46,15 @@ int main(int argc, char *argv[]) {
     size_t prefix = 0;
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
 
+    std::string parhip;
+    cmd.add_string("parhip", parhip, "The executable for parhip");
+
+    std::string dir;
+    cmd.add_string("dir", dir, "The directory to store the partition of parhip to");
+
+    bool mult = false;
+    cmd.add_flag('m', "mult", mult, "True if the begin shall be multiplied by the steps, false to add it");
+
     if (!cmd.process(argc, argv)) {
         return -1;
     }
@@ -57,7 +66,7 @@ int main(int argc, char *argv[]) {
     recomp::util::split(algorithms, " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
-        for (size_t step = 1; step <= cores;) {
+        for (size_t step = begin; step <= cores;) {
             for (size_t repeat = 0; repeat < repeats; ++repeat) {
                 for (size_t i = 0; i < algos.size(); ++i) {
                     std::cout << "Iteration: " << repeat << std::endl;
@@ -79,7 +88,7 @@ int main(int argc, char *argv[]) {
                     recomp::util::replace_all(dataset, "_", "\\_");
 
                     std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(
-                            algo, dataset);
+                            algo, dataset, parhip, dir);
                     if (!recomp) {
                         std::cerr << "No such algo " << algo << std::endl;
                         return -1;
@@ -104,7 +113,7 @@ int main(int argc, char *argv[]) {
                               << std::endl;
 
                     std::string res = rlslp.derive_text();
-                    rlslp.resize(0);
+                    rlslp.resize(1);
                     // rlslp.shrink_to_fit();
 
                     std::string c_text;
@@ -116,15 +125,24 @@ int main(int argc, char *argv[]) {
                     }
                 }
             }
-            if (step == 1) {
-                if (begin != 1) {
-                    step = begin;
-                } else {
-                    step = 2;
-                }
+            if (mult) {
+                step *= steps;
             } else {
-                step += steps;
+                if (step == 1) {
+                    step = 2;
+                } else {
+                    step += steps;
+                }
             }
+//            if (step == 1) {
+//                if (begin != 1) {
+//                    step = begin;
+//                } else {
+//                    step = 2;
+//                }
+//            } else {
+//                step += steps;
+//            }
         }
     }
 }
