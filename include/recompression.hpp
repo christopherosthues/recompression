@@ -75,7 +75,12 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
                 number = name.substr(15);
                 dir = true;
             }
-            k = util::str_to_int(number);
+            if (!number.empty()) {
+                k = util::str_to_int(number);
+            } else {
+                k = 1;
+            }
+            std::cout << "Using " << k << " iterations for " << name << std::endl;
         }
         if (dir) {
             return std::make_unique<parallel::parallel_rnddir_recompression<variable_t>>(dataset, k);

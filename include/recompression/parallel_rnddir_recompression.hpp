@@ -28,7 +28,7 @@ namespace parallel {
 template<typename variable_t = var_t>
 class parallel_rnddir_recompression : public parallel_lp_recompression<variable_t> {
  private:
-    size_t iters = 1;
+    size_t iters;
     
  public:
     typedef typename recompression<variable_t>::text_t text_t;

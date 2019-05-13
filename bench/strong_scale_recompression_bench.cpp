@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     recomp::util::split(algorithms, " ", algos);
 
     for (size_t j = 0; j < files.size(); ++j) {
-        for (size_t step = 1; step <= cores;) {
+        for (size_t step = begin; step <= cores;) {
             for (size_t repeat = 0; repeat < repeats; ++repeat) {
                 for (size_t i = 0; i < algos.size(); ++i) {
                     std::cout << "Iteration: " << repeat << std::endl;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
                               << std::endl;
 
                     std::string res = rlslp.derive_text();
-                    rlslp.resize(0);
+                    rlslp.resize(1);
                     // rlslp.shrink_to_fit();
 
                     std::string c_text;
