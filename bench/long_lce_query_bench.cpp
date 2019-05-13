@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
     std::string filenames;
     cmd.add_param_string("filenames", filenames,
-                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+                         "The files. Multiple files are separated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,

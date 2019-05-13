@@ -11,6 +11,10 @@
 
 
 int main(int argc, char *argv[]) {
+    std::vector<std::string> variants;
+    recomp::parallel_variants(variants);
+    recomp::experimental_variants(variants);
+
     tlx::CmdlineParser cmd;
     cmd.set_description("Benchmark for time strong scaling experiments");
     cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
@@ -20,11 +24,12 @@ int main(int argc, char *argv[]) {
 
     std::string filenames;
     cmd.add_param_string("filenames", filenames,
-                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+                         "The files. Multiple files are separated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,
-                         "The algorithms to benchmark [\"parallel | parallel_ls | parallel_lock | parallel_lp | parallel_order_ls | parallel_order_gr | parallel_rnd\"]");
+                         "The algorithms to benchmark. Multiple algorithms are also separated by \"\" like the file names. The algorithms are: [\"" +
+                         recomp::util::variants_options(variants) + "\"]");
 
     size_t cores;
     cmd.add_param_bytes("cores", cores, "The maximal number of cores");

@@ -19,7 +19,7 @@
 #include "recompression/rlslp.hpp"
 #include "recompression/util.hpp"
 //#include "recompression/experimental/parallel_wrnd_recompression.hpp"
-//#include "recompression/experimental/parallel_grz_recompression.hpp"
+#include "recompression/experimental/parallel_gr_alternate_recompression.hpp"
 #include "recompression/experimental/parallel_order_great_recompression.hpp"
 #include "recompression/experimental/parallel_order_less_recompression.hpp"
 #include "recompression/experimental/parallel_ls3_recompression.hpp"
@@ -36,6 +36,32 @@
 #include "recompression/coders/rlslp_rule_sorter.hpp"
 
 namespace recomp {
+
+void sequential_variants(std::vector<std::string>& variants) {
+    variants.emplace_back("fast_seq");
+    variants.emplace_back("hash");
+}
+
+void parallel_variants(std::vector<std::string>& variants) {
+    variants.emplace_back("parallel");
+    variants.emplace_back("parallel_lp");
+    variants.emplace_back("parallel_rnd");
+    variants.emplace_back("parallel_ls");
+    variants.emplace_back("parallel_gr");
+    variants.emplace_back("parallel_rnddir");
+    variants.emplace_back("parallel_lock");
+}
+
+void experimental_variants(std::vector<std::string>& variants) {
+    variants.emplace_back("parallel_ls3");
+    variants.emplace_back("parallel_ls5");
+    variants.emplace_back("parallel_ls_gain");
+    variants.emplace_back("parallel_gr2");
+    variants.emplace_back("parallel_gr_alternate");
+    variants.emplace_back("parallel_order_gr");
+    variants.emplace_back("parallel_order_ls");
+    variants.emplace_back("parallel_kahip");
+}
 
 template<typename variable_t = var_t, typename terminal_count_t = term_t>
 std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset, std::string parhip, std::string dir) {
@@ -77,13 +103,11 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
         return std::make_unique<parallel::parallel_gr_recompression<variable_t>>(dataset);
     } else if (name == "parallel_gr2") {
         return std::make_unique<parallel::parallel_gr2_recompression<variable_t>>(dataset);
-    } else if (name == "parallel_grz") {
-        return std::unique_ptr<recompression<variable_t>>(nullptr);
-//        return std::make_unique<parallel::parallel_grz_recompression<variable_t>>(dataset);
+    } else if (name == "parallel_gr_alternate") {
+//        return std::unique_ptr<recompression<variable_t>>(nullptr);
+        return std::make_unique<parallel::parallel_gr_alternate_recompression<variable_t>>(dataset);
     } else if (name == "parallel_lp") {
         return std::make_unique<parallel::parallel_lp_recompression<variable_t>>(dataset);
-//    } else if (name == "parallel_rnd") {
-//        return std::make_unique<parallel::parallel_rnd_recompression<variable_t>>(dataset, k);
     } else if (name == "parallel_wrnd") {
         return std::unique_ptr<recompression<variable_t>>(nullptr);
 //        return std::make_unique<parallel::parallel_wrnd_recompression<variable_t>>(dataset);
@@ -93,7 +117,7 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
         return std::make_unique<parallel::recompression_order_ls<variable_t>>(dataset);
     } else if (name == "parallel_order_gr") {
         return std::make_unique<parallel::recompression_order_gr<variable_t>>(dataset);
-    } else if (name == "fast") {
+    } else if (name == "fast_seq") {
         return std::make_unique<recompression_fast<variable_t>>(dataset);
     } else if (name == "hash") {
         return std::make_unique<hash_recompression<variable_t>>(dataset);

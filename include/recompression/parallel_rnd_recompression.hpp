@@ -29,7 +29,7 @@ template<typename variable_t = var_t>
 class parallel_rnd_recompression : public parallel_lp_recompression<variable_t> {
  private:
     size_t iters;
-    
+
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename recompression<variable_t>::bv_t bv_t;

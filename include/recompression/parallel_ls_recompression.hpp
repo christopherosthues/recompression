@@ -183,41 +183,71 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 
         const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
         ui_vector<variable_t> hist(max_letters);
+        ui_vector<size_t> bounds;
+        ui_vector<size_t> hist_bounds;
 #pragma omp parallel num_threads(this->cores)
         {
+            auto n_threads = (size_t)omp_get_num_threads();
+            auto thread_id = omp_get_thread_num();
+
+#pragma omp single
+            {
+                hist_bounds.resize(n_threads + 1);
+                hist_bounds[n_threads] = hist.size();
+                bounds.resize(n_threads + 1);
+                bounds[n_threads] = 0;
+            }
+            bounds[thread_id] = 0;
+            hist_bounds[thread_id] = hist.size();
 
 #pragma omp for schedule(static)
             for (size_t i = 0; i < hist.size(); ++i) {
+                hist_bounds[thread_id] = i;
+                i = hist.size();
+            }
+
+            for (size_t i = hist_bounds[thread_id]; i < hist_bounds[thread_id + 1]; ++i) {
                 hist[i] = 0;
             }
 
+#pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
                 hist[text[i] - minimum] = 1;
             }
 
-#pragma omp single
-            {
-                mapping.resize(max_letters);
-                size_t j = 0;
-                if (hist[0] > 0) {
-                    mapping[j++] = minimum;
+            for (size_t i = hist_bounds[thread_id]; i < hist_bounds[thread_id + 1]; ++i) {
+                if (hist[i] == 1) {
+                    bounds[thread_id + 1]++;
                 }
-                for (size_t i = 1; i < max_letters; ++i) {
-                    if (hist[i] > 0) {
-                        mapping[j++] = i + minimum;
-                    }
-                    hist[i] += hist[i - 1];
-                }
-                mapping.resize(j);
             }
 
+#pragma omp barrier
+#pragma omp single
+            {
+                for (size_t i = 1; i < bounds.size(); ++i) {
+                    bounds[i] += bounds[i - 1];
+                }
+                mapping.resize(bounds[n_threads]);
+            }
+
+            size_t j = bounds[thread_id];
+            for (size_t i = hist_bounds[thread_id]; i < hist_bounds[thread_id + 1]; ++i) {
+                if (hist[i] == 1) {
+                    hist[i] = j;
+                    mapping[j++] = i + minimum;
+                }
+            }
+
+#pragma omp barrier
 #pragma omp for schedule(static)
             for (size_t i = 0; i < text.size(); ++i) {
-                text[i] = hist[text[i] - minimum] - 1;
+                text[i] = hist[text[i] - minimum];
             }
         }
         hist.resize(1);
+        bounds.resize(1);
+        hist_bounds.resize(1);
 #ifdef BENCH
         const auto endAlphaTime = recomp::timer::now();
         const auto timeSpanAlpha = endAlphaTime - startTimeAlpha;
@@ -237,7 +267,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
+    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -435,7 +465,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
 
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition(text, partition, part_l);
+        this->compute_partition(text, partition, part_l);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
