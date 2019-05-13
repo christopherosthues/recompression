@@ -323,7 +323,7 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 //        std::cout << exec << std::endl;
         out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
 //        out_file << n << " " << m << " 1\n";
-        out_file << n << " " << m << " \n";
+        out_file << n << " " << ((n * n - m - n) / 2) << " \n";
 
         for (size_t i = 0; i < n; ++i) {
             for (size_t j = 0; j < n; ++j) {
