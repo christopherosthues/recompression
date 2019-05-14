@@ -1,5 +1,3 @@
-#include <mpi.h>
-
 #include <algorithm>
 #include <chrono>
 #include <iostream>

@@ -2,7 +2,6 @@
 #pragma once
 
 #include <omp.h>
-//#include <mpi.h>
 
 #include <parallel/algorithm>
 #include <algorithm>
