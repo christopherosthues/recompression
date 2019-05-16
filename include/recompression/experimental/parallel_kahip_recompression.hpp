@@ -318,7 +318,7 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         std::string data = this->dataset;
         util::replace_all(data, "\\", "");
         std::ofstream out_file;
-        const auto exec = "mpirun -n " + this->cores + " " + parhip + " " + dir + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=3 --save_partition";
+        const auto exec = "mpirun -n " + std::to_string(this->cores) + " " + parhip + " " + dir + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=3 --save_partition";
 //        std::cout << exec << std::endl;
         out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
 //        out_file << n << " " << m << " 1\n";
