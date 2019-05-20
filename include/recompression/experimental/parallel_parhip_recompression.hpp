@@ -17,8 +17,6 @@
 #include <vector>
 
 #include <ips4o.hpp>
-//#include <kaHIP_interface.h>
-//#include <parhip_interface.h>
 
 #include "recompression/parallel_rnd_recompression.hpp"
 #include "recompression/defs.hpp"
@@ -30,7 +28,7 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_kahip_recompression : public parallel_rnd_recompression<variable_t> {
+class parallel_parhip_recompression : public parallel_rnd_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_t adj_t;
@@ -38,22 +36,21 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
     typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
     typedef typename parallel_rnd_recompression<variable_t>::bv_t bv_t;
     typedef size_t pair_position_t;
-//    typedef unsigned long long idxtype;
     typedef size_t idxtype;
 
     std::string parhip;
     std::string dir;
 
-    inline parallel_kahip_recompression() {
-        this->name = "parallel_kahip";
+    inline parallel_parhip_recompression() {
+        this->name = "parallel_parhip";
     }
 
-    inline parallel_kahip_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
-        this->name = "parallel_kahip";
+    inline parallel_parhip_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
+        this->name = "parallel_parhip";
     }
 
-    inline parallel_kahip_recompression(std::string& dataset, std::string parhip, std::string dir) : parallel_rnd_recompression<variable_t>(dataset) {
-        this->name = "parallel_kahip";
+    inline parallel_parhip_recompression(std::string& dataset, std::string parhip, std::string dir) : parallel_rnd_recompression<variable_t>(dataset) {
+        this->name = "parallel_parhip";
         this->parhip = parhip;
         this->dir = dir;
     }
@@ -296,7 +293,6 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         size_t m = 0;
         std::vector<std::unordered_map<variable_t, variable_t>> adjncys(n);
         for (size_t i = 0; i < text.size() - 1; ++i) {
-//            std::cout << text[i] << std::endl;
             auto c = text[i];
             auto c1 = text[i + 1];
             if (c < c1) {
@@ -308,20 +304,13 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             } else {
                 adjncys[c][c1]++;
             }
-//            if (adjncys[c1].find(c) == adjncys[c1].end()) {
-//                adjncys[c1].insert(std::make_pair(c, 1));
-//            } else {
-//                adjncys[c1][c]++;
-//            }
         }
 
         std::string data = this->dataset;
         util::replace_all(data, "\\", "");
         std::ofstream out_file;
         const auto exec = "mpirun -n " + std::to_string(this->cores) + " " + parhip + " " + dir + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=3 --save_partition";
-//        std::cout << exec << std::endl;
         out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
-//        out_file << n << " " << m << " 1\n";
         out_file << n << " " << ((n * n - (2 * m) - n) / 2) << " \n";
 
         for (size_t i = 0; i < n; ++i) {
@@ -342,66 +331,6 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         }
         out_file.close();
         
-//        const size_t m_len = m;
-//        auto* adjncy = new idxtype[2 * m_len];
-//        auto* adjcwgt = new idxtype[2 * m_len];
-//        // std::cout << std::endl << (2*m_len) << std::endl;
-//
-//        size_t k = 0;
-//        for (size_t i = 0; i < adjncys.size(); ++i) {
-//            // std::cout << "i: " << i << std::endl;
-//            for (const auto& adj : adjncys[i]) {
-//                // std::cout << "adj: " << adj.first << " ";
-//                adjncy[k] = adj.first;
-//                adjcwgt[k] = adj.second;
-//                k++;
-//            }
-//            xadj[i + 1] = k;
-//        }
-        /*std::cout << std::endl;
-        
-        std::cout << "xadj: ";
-        for (size_t i = 0; i < n + 1; ++i) {
-            std::cout << xadj[i] << " ";
-        }
-        std::cout << std::endl << "adjncy: ";
-        for (size_t i = 0; i < 2 * m_len; ++i) {
-            std::cout << adjncy[i] << " ";
-        }
-        std::cout << std::endl << "adjcwgt: ";
-        for (size_t i = 0; i < 2 * m_len; ++i) {
-            std::cout << adjcwgt[i] << " ";
-        }
-        std::cout << std::endl;*/
-        
-//        adjncys.resize(1);
-//        adjncys.shrink_to_fit();
-//        adjncys[0].clear();
-
-////        std::string data = this->dataset;
-////        util::replace_all(data, "\\", "");
-////
-////        std::ofstream out_file;
-////        const auto exec = "/home/chris/git/KaHIP/deploy/parhip /home/chris/git/recompression/build_test/" + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=50 --save_partition";
-//////        std::cout << exec << std::endl;
-////        out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
-////        out_file << n << " " << m << " 1\n";
-////        size_t mc = 0;
-//        for (size_t i = 0; i < n; ++i) {
-//            for (size_t j = xadj[i]; j < xadj[i + 1]; ++j) {
-//                out_file << (adjncy[j] + 1) << " " << adjcwgt[j] << " ";
-//                // std::cout << adjncy[j] << " " << adjcwgt[j] << std::endl;
-////                mc++;
-//            }
-//            // std::cout << std::endl;
-//            if (i < n) {
-//                out_file << "\n";
-//            }
-//        }
-//        // std::cout << "mc: " << mc << ", m: " << m << ", 2m: " << (2*m) << std::endl;
-//        out_file.close();
-
-//        util::check_graph("/home/chris/git/recompression/build_test/" + data + ".graph");
 #ifdef BENCH
         const auto endTimeGraph = recomp::timer::now();
         const auto timeSpanGraph = endTimeGraph - startTimeGraph;
@@ -416,56 +345,18 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 
         std::ifstream in_file(dir + "tmppartition.txtp", std::ifstream::in | std::ios::binary | std::ifstream::ate);
         std::string part_str;
-//        uint64_t file_size = in_file.tellg();
         in_file.seekg(0, std::ios::beg);
-//        part_str.resize(file_size, '\n');
-//        in_file.read((char*)part_str.data(), file_size);
-//        in_file.close();
 
-
-//        int n_part = this->cores;
-//        int edge_cut = 0;
         auto* part = new idxtype[n];
         for (size_t i = 0; i < n; ++i) {
             std::getline(in_file, part_str);
-//            std::cout << part_str << std::endl;
             part[i] = util::str_to_int(part_str);
         }
 
-//        std::cout << "part: ";
-//        for (size_t i = 0; i < n; ++i) {
-//            std::cout << part[i] << " ";
-//        }
-//        std::cout << std::endl;
-
-
-//        double imbalance = 0.03;
-////        kaffpa(&n, nullptr, xadj, adjcwgt, adjncy, &n_part, &imbalance, true, 0, 0, &edge_cut, part);
-//        int rank, size;
-//        MPI_Comm communicator = MPI_COMM_WORLD;
-//        MPI_Comm_rank( communicator, &rank);
-//        MPI_Comm_size( communicator, &size);
-//        MPI_Finalize();
-//        idxtype nd = n;
-//
-//        ParHIPPartitionKWay(&nd, xadj, adjncy, nullptr, adjcwgt, &n_part, &imbalance, true, 0, 0, &edge_cut, part, &communicator);
-
-//        void kaffpa(int* n, int* vwgt, int* xadj,
-//                    int* adjcwgt, int* adjncy, int* nparts,
-//                    double* imbalance,  bool suppress_output, int seed, int mode,
-//                    int* edgecut, int* part);
-//        ParHIPPartitionKWay(idxtype *vtxdist, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, idxtype *adjwgt,
-//                            int *nparts, double* imbalance, bool suppress_output, int seed, int mode, int *edgecut, idxtype *part,
-//                MPI_Comm *comm);
-
-//        delete[] xadj;
-//        delete[] adjncy;
-//        delete[] adjcwgt;
 #ifdef BENCH
         const auto endTimeKahip = recomp::timer::now();
         const auto timeSpanKahip = endTimeKahip - startTimeKahip;
-        std::cout << " kahip=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanKahip).count();
-//                  << " edgecut=" << edge_cut;
+        std::cout << " parhip=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanKahip).count();
         const auto startTimeCopyPart = recomp::timer::now();
 #endif
         i_vector<std::deque<variable_t>> nodes(this->cores);
@@ -497,19 +388,6 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
                 partition[t_nodes[i]] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
-//                for (size_t j = xadj[t_nodes[i]]; j < xadj[t_nodes[i] + 1]; ++j) {
-//                    auto adj = adjncy[j];
-//                    if (adj < t_nodes[i] && part[adj] == thread_id) {
-//                        if (!partition[adj]) {
-//                            l_count++;
-//                        } else {
-//                            r_count++;
-//                        }
-//                    }
-//                }
-//                partition[i] = l_count > r_count;
-//                l_count = 0;
-//                r_count = 0;
             }
         }
         adjncys.resize(1);
@@ -517,11 +395,8 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         adjncys[0].clear();
         bool diff = false;
 
-//        partition[0] = (part[0] == 1);
 #pragma omp parallel for num_threads(this->cores) schedule(static) reduction(|:diff)
         for (size_t i = 1; i < partition.size(); ++i) {
-//            std::cout << part[i] << ", ";
-//            partition[i] = (part[i] == 1);
             diff |= partition[i] != partition[i - 1];
         }
 
@@ -530,8 +405,6 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
             partition[partition.size() - 1] = true;
         }
         delete[] xadj;
-//        delete[] adjncy;
-//        delete[] adjcwgt;
         delete[] part;
 #ifdef BENCH
         const auto endTimeCopyPart = recomp::timer::now();
@@ -549,43 +422,8 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
 #endif
         this->compute_adj_list(text, adj_list);
 
-//#ifdef BENCH
-//        const auto startTimePar = recomp::timer::now();
-//#endif
-//        partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
-//        partition[partition.size() - 1] = 1;
-//#pragma omp parallel num_threads(this->cores)
-//        {
-//            std::random_device rd;
-//            std::mt19937 gen(rd());
-//            std::uniform_int_distribution<uint8_t> distribution(0, 1);
-//#pragma omp for schedule(static)
-//            for (size_t i = 1; i < partition.size() - 1; ++i) {
-//                partition[i] = distribution(gen);
-//            }
-//        }
-//#ifdef BENCH
-//        const auto endTimePar = recomp::timer::now();
-//        const auto timeSpanPar = endTimePar - startTimePar;
-//        std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
-//#endif
         ui_vector<size_t> bounds;
-//        bool different = false;
-//#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
-//        for (size_t i = 0; i < partition.size() - 1; ++i) {
-//            if (partition[i] != partition[i + 1]) {
-//                different = true;
-//            }
-//        }
-//        if (!different) {
-//            partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
-//            partition[partition.size() - 1] = 1;
-//        }
 #ifdef BENCH
-//        const auto endTimeDiff = recomp::timer::now();
-//        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
-//        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
-//                  << " different=" << std::to_string(different);
         const auto startTimeCount = recomp::timer::now();
 #endif
 
@@ -593,7 +431,6 @@ class parallel_kahip_recompression : public parallel_rnd_recompression<variable_
         int rl_count = 0;
         int prod_l = 0;
         int prod_r = 0;
-//        bounds[bounds.size() - 1] = adj_list.size();
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {
             auto thread_id = omp_get_thread_num();

@@ -18,14 +18,13 @@
 #include "recompression/radix_sort.hpp"
 #include "recompression/rlslp.hpp"
 #include "recompression/util.hpp"
-//#include "recompression/experimental/parallel_wrnd_recompression.hpp"
 #include "recompression/experimental/parallel_gr_alternate_recompression.hpp"
 #include "recompression/experimental/parallel_order_great_recompression.hpp"
 #include "recompression/experimental/parallel_order_less_recompression.hpp"
 #include "recompression/experimental/parallel_ls3_recompression.hpp"
 #include "recompression/experimental/parallel_ls5_recompression.hpp"
 #include "recompression/experimental/parallel_ls_gain_recompression.hpp"
-#include "recompression/experimental/parallel_kahip_recompression.hpp"
+#include "recompression/experimental/parallel_parhip_recompression.hpp"
 #include "recompression/io/bitistream.hpp"
 #include "recompression/io/bitostream.hpp"
 #include "recompression/coders/coder.hpp"
@@ -60,10 +59,10 @@ void experimental_variants(std::vector<std::string>& variants) {
     variants.emplace_back("parallel_gr_alternate");
     variants.emplace_back("parallel_order_gr");
     variants.emplace_back("parallel_order_ls");
-    variants.emplace_back("parallel_kahip");
+    variants.emplace_back("parallel_parhip");
 }
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
+template<typename variable_t = var_t>
 std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset, std::string parhip, std::string dir) {
 
     size_t k = 1;
@@ -90,12 +89,12 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
     }
     if (name == "parallel") {
         return std::make_unique<parallel::parallel_recompression<variable_t>>(dataset);
-    } else if (name == "parallel_kahip") {
+    } else if (name == "parallel_parhip") {
         if (parhip.empty() || dir.empty()) {
             std::cerr << "Error. parhip and/or dir not specified" << std::endl;
             exit(-1);
         }
-        return std::make_unique<parallel::parallel_kahip_recompression<variable_t>>(dataset, parhip, dir);
+        return std::make_unique<parallel::parallel_parhip_recompression<variable_t>>(dataset, parhip, dir);
     } else if (name == "parallel_ls") {
         return std::make_unique<parallel::parallel_ls_recompression<variable_t>>(dataset);
     } else if (name == "parallel_ls3") {
@@ -109,13 +108,9 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
     } else if (name == "parallel_gr2") {
         return std::make_unique<parallel::parallel_gr2_recompression<variable_t>>(dataset);
     } else if (name == "parallel_gr_alternate") {
-//        return std::unique_ptr<recompression<variable_t>>(nullptr);
         return std::make_unique<parallel::parallel_gr_alternate_recompression<variable_t>>(dataset);
     } else if (name == "parallel_lp") {
         return std::make_unique<parallel::parallel_lp_recompression<variable_t>>(dataset);
-    } else if (name == "parallel_wrnd") {
-        return std::unique_ptr<recompression<variable_t>>(nullptr);
-//        return std::make_unique<parallel::parallel_wrnd_recompression<variable_t>>(dataset);
     } else if (name == "parallel_lock") {
         return std::make_unique<parallel::parallel_lock_recompression<variable_t>>(dataset);
     } else if (name == "parallel_order_ls") {
@@ -133,7 +128,7 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
 
 namespace coder {
 
-template<typename variable_t = var_t, typename terminal_count_t = term_t>
+template<typename variable_t = var_t>
 void encode(const std::string& coder, const std::string& file_name, rlslp<variable_t>& rlslp) {
     if (coder == "plain") {
         PlainRLSLPCoder::Encoder enc{file_name};
@@ -147,8 +142,6 @@ void encode(const std::string& coder, const std::string& file_name, rlslp<variab
     } else if (coder == "sorted_dr") {
         SortedRLSLPDRCoder::Encoder enc{file_name};
         enc.encode(rlslp);
-//    } else {
-//        std::cout << "Unknown coder '" << coder << "'.\n";
     }
 }
 
