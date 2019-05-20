@@ -91,7 +91,7 @@ int main() {
 
 There are some different versions available. This version are:
 
-* **fast**: A fast sequential version of the recompression.
+* **fast_seq**: A fast sequential version of the recompression.
 * **hash**: A sequential version using hash tables to store the blocks/pairs to replace them with a single text scan.
 * **parallel**: A parallel version. The undirected cut is not parallelized due to reasons of data dependencies.
 * **parallel_lp**: A parallel recompression version which counts the number of possibly new production introduced by the combinations of the partition sets choosing the combination that generates less productions if the values of the directed cut are equal. The undirected cut is not parallelized due to reasons of data dependencies.
