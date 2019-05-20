@@ -23,7 +23,6 @@ class BitOStream {
      */
     inline void write_buffer() {
         if (dirty) {
-//            std::cout << "Write buffer: " << ((unsigned int)buffer) << std::endl;
             stream.put(static_cast<char>(buffer));
             reset();
         }
@@ -32,20 +31,12 @@ class BitOStream {
  public:
     inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) : file_name(file_name) {
         stream = std::ofstream(file_name, mode);
+        if (!stream) {
+            std::cerr << "Failed to read file " << file_name << std::endl;
+            exit(1);
+        }
         reset();
     }
-
-//    inline BitOStream(std::ofstream& ostream) {
-////        stream = ostream.stream;
-////        dirty = ostream.dirty;
-////        buffer = ostream.buffer;
-////        cursor = ostream.cursor;
-//        reset();
-//    }
-//
-//    inline BitOStream(std::ofstream&& stream) : stream(std::move(stream)) {
-//        reset();
-//    }
 
     ~BitOStream() {
         if (stream.is_open()) {
@@ -101,7 +92,6 @@ class BitOStream {
     inline void write_bit(bool bit) {
         if (bit) {
             buffer |= (1 << cursor);
-//            std::cout << "buffer: " << (int)buffer << std::endl;
         }
 
         dirty = true;
@@ -143,29 +133,22 @@ class BitOStream {
      */
     template<typename value_t>
     inline void write_int(value_t value, size_t bits = sizeof(value_t) * CHAR_BIT) {
-//        std::cout << "Bits: " << bits << std::endl;
         for (int i = bits - 1; i >= 0; --i) {
-//            std::cout << "writing bit: " << i << std::endl;
-//            std::cout << "Writing bit: " << i << ", val: " << ((value & (value_t(value_t(1) << i))) != value_t(0)) << std::endl;
             write_bit((value & (value_t(value_t(1) << i))) != value_t(0));
         }
     }
 
     inline void write_bitvector_compressed(std::vector<bool>& bv) {
-//        std::cout << "writing bv size: " << bv.size() << std::endl;
         write_int<size_t>(bv.size());
         if (!bv.empty()) {
-//            std::cout << "not empty" << std::endl;
             bool val = bv[0];
             std::uint32_t len = 0;
             for (size_t i = 0; i < bv.size();) {
-//                std::cout << "val: " << ((int) val) << std::endl;
                 while (i < bv.size() && bv[i] == val) {
                     len++;
                     i++;
                 }
                 std::uint32_t value = 0;
-//                std::cout << "len: " << len << std::endl;
                 if (len > 31) {
                     value |= (std::uint32_t(1) << 31);
                     if (val) {
@@ -175,13 +158,10 @@ class BitOStream {
                     if (check_len) {
                         i -= len;
                         if (len & (std::uint32_t(1) << 31)) {
-//                            std::cout << "Shift by 2" << std::endl;
                             len = len >> 2;
                         } else {
-//                            std::cout << "Shift by 1" << std::endl;
                             len = len >> 1;
                         }
-//                        std::cout << "write len: " << len << std::endl;
                         i += len;
                         value |= len;
                         // TODO(Chris): we already know the total length, split it here and write all but the last out,
@@ -190,11 +170,9 @@ class BitOStream {
                         value |= len;
                     }
                 } else {
-//                    std::cout << "i: " << i << std::endl;
                     i -= len;
                     for (size_t j = 0; j < 31 && i < bv.size(); ++j, ++i) {
                         if (bv[i]) {
-//                            std::cout << "Putting: " << std::uint32_t(1) << " to " << (30 - j) << std::endl;
                             value |= (std::uint32_t(1) << (30 - j));
                         }
                     }
@@ -228,7 +206,6 @@ class BitOStream {
     template<typename value_t>
     inline void operator<<(value_t value) {
         write_int(value);
-        // write_int(value, bits_for(value));
     }
 
  private:
