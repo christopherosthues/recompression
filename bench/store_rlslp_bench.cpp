@@ -10,6 +10,11 @@
 #include "recompression.hpp"
 
 int main(int argc, char *argv[]) {
+    std::vector<std::string> variants;
+    recomp::sequential_variants(variants);
+    recomp::parallel_variants(variants);
+    recomp::experimental_variants(variants);
+
     tlx::CmdlineParser cmd;
     cmd.set_description("Generates the rlslp from the recompression and stores it using the given coder.");
     cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
@@ -19,11 +24,12 @@ int main(int argc, char *argv[]) {
 
     std::string filenames;
     cmd.add_param_string("filenames", filenames,
-                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+                         "The files. Multiple files are separated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,
-                         "The algorithms to benchmark [\"parallel | parallel_ls | parallel_lock | parallel_lp | parallel_order_ls | parallel_order_gr | fast | hash | parallel_rnd\"]");
+                         "The algorithms to benchmark. Multiple algorithms are also separated by \"\" like the file names. The algorithms are: [\"" +
+                         recomp::util::variants_options(variants) + "\"]");
 
     std::string coder;
     cmd.add_param_string("coder", coder, "The coder to store the rlslp to file (plain | fixed | sorted)");
@@ -39,6 +45,12 @@ int main(int argc, char *argv[]) {
 
     size_t prefix = 0;
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
+
+    std::string parhip;
+    cmd.add_string("parhip", parhip, "The executable for parhip");
+
+    std::string dir;
+    cmd.add_string("dir", dir, "The directory to store the partition of parhip to");
 
     if (!cmd.process(argc, argv)) {
         return -1;
@@ -68,7 +80,7 @@ int main(int argc, char *argv[]) {
 
             recomp::util::replace_all(dataset, "_", "\\_");
 
-            std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset);
+            std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset, parhip, dir);
             if (!recomp) {
                 std::cerr << "No such algo " << algo << std::endl;
                 return -1;

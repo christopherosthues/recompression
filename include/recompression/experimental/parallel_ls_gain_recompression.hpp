@@ -16,7 +16,7 @@
 
 #include <ips4o.hpp>
 
-#include "recompression/parallel_rnd_recompression.hpp"
+#include "recompression/parallel_ls_recompression.hpp"
 #include "recompression/defs.hpp"
 #include "recompression/util.hpp"
 #include "recompression/rlslp.hpp"
@@ -26,22 +26,22 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_ls_gain_recompression : public parallel_rnd_recompression<variable_t> {
+class parallel_ls_gain_recompression : public parallel_ls_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
-    typedef typename parallel_rnd_recompression<variable_t>::adj_t adj_t;
-    typedef typename parallel_rnd_recompression<variable_t>::adj_list_t adj_list_t;
-    typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
+    typedef typename parallel_ls_recompression<variable_t>::adj_t adj_t;
+    typedef typename parallel_ls_recompression<variable_t>::adj_list_t adj_list_t;
+    typedef typename parallel_ls_recompression<variable_t>::partition_t partition_t;
 
     inline parallel_ls_gain_recompression() {
         this->name = "parallel_ls_gain";
     }
 
-    inline parallel_ls_gain_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
+    inline parallel_ls_gain_recompression(std::string& dataset) : parallel_ls_recompression<variable_t>(dataset) {
         this->name = "parallel_ls_gain";
     }
 
-    using parallel_rnd_recompression<variable_t>::recomp;
+    using parallel_ls_recompression<variable_t>::recomp;
 
 
  protected:
@@ -54,7 +54,7 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) override {
+    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -70,11 +70,8 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
 #ifdef BENCH
         const auto startTimePar = recomp::timer::now();
 #endif
-//        std::random_device rd;
-//        std::mt19937 gen(rd());
-//        std::uniform_int_distribution<uint8_t> distribution(0, 1);
-        partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
-        partition[partition.size() - 1] = 1;
+        partition[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
+        partition[partition.size() - 1] = true;
 #pragma omp parallel num_threads(this->cores)
         {
             std::random_device rd;
@@ -82,7 +79,7 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
             std::uniform_int_distribution<uint8_t> distribution(0, 1);
 #pragma omp for schedule(static)
             for (size_t i = 1; i < partition.size() - 1; ++i) {
-                partition[i] = distribution(gen);
+                partition[i] = (distribution(gen) == 1);
             }
         }
 #ifdef BENCH
@@ -118,8 +115,8 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
 
 #pragma omp for schedule(static)
                 for (size_t i = 0; i < adj_list_size; ++i) {
-                    auto char_i = text[adj_list[i]] - minimum;
-                    auto char_i1 = text[adj_list[i] + 1] - minimum;
+                    auto char_i = text[adj_list[i]];
+                    auto char_i1 = text[adj_list[i] + 1];
                     if (partition[char_i] != partition[char_i1]) {
                         flip[thread_id][char_i]++;
                         flip[thread_id][char_i1]++;
@@ -159,27 +156,25 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
         const auto endTimeLocalSearch = recomp::timer::now();
         const auto timeSpanLocalSearch = endTimeLocalSearch - startTimeLocalSearch;
         std::cout << " local_search=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanLocalSearch).count();
-//        const auto startTimeDiff = recomp::timer::now();
+        const auto startTimeDiff = recomp::timer::now();
 #endif
 
-//        bool different = false;
-//#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
-//        for (size_t i = 0; i < partition.size() - 1; ++i) {
-//            if (partition[i] != partition[i + 1]) {
-//                different = true;
-//            }
-//        }
-//        if (!different) {
-        if (partition[0] == partition[partition.size() - 1]) {
+        bool different = false;
+#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(|:different)
+        for (size_t i = 0; i < partition.size() - 1; ++i) {
+            if (partition[i] != partition[i + 1]) {
+                different = true;
+            }
+        }
+        if (!different) {
             partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
             partition[partition.size() - 1] = 1;
         }
-//        }
 #ifdef BENCH
-        //        const auto endTimeDiff = recomp::timer::now();
-//        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
-//        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
-//                  << " different=" << std::to_string(different);
+        const auto endTimeDiff = recomp::timer::now();
+        const auto timeSpanDiff = endTimeDiff - startTimeDiff;
+        std::cout << " diff_check=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanDiff).count()
+                  << " different=" << std::to_string(different);
         const auto startTimeCount = recomp::timer::now();
 #endif
 
@@ -206,8 +201,8 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
             variable_t last_i1 = 0;
             size_t i = bounds[thread_id];
             if (i == 0) {
-                last_i = text[adj_list[i]] - minimum;
-                last_i1 = text[adj_list[i] + 1] - minimum;
+                last_i = text[adj_list[i]];
+                last_i1 = text[adj_list[i] + 1];
                 if (!partition[last_i] && partition[last_i1]) {
                     lr_count++;
                     prod_l++;
@@ -217,13 +212,13 @@ class parallel_ls_gain_recompression : public parallel_rnd_recompression<variabl
                 }
                 i++;
             } else if (i < adj_list.size()) {
-                last_i = text[adj_list[i - 1]] - minimum;
-                last_i1 = text[adj_list[i - 1] + 1] - minimum;
+                last_i = text[adj_list[i - 1]];
+                last_i1 = text[adj_list[i - 1] + 1];
             }
 
             for (; i < bounds[thread_id + 1]; ++i) {
-                variable_t char_i = text[adj_list[i]] - minimum;
-                variable_t char_i1 = text[adj_list[i] + 1] - minimum;
+                variable_t char_i = text[adj_list[i]];
+                variable_t char_i1 = text[adj_list[i] + 1];
                 if (!partition[char_i] && partition[char_i1]) {
                     lr_count++;
                     if (char_i != last_i || char_i1 != last_i1) {

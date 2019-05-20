@@ -30,7 +30,7 @@ For the parallel algorithms, you need to enable OpenMP (``-fopenmp``). To suppor
 To download and build the library use to following commands.
 
 ```bash
-git clone https://github.com/ChristopherOsthues/recompression.git
+git clone https://github.com/christopherosthues/recompression.git
 cd recompression
 mkdir build
 cd build
@@ -95,9 +95,10 @@ There are some different versions available. This version are:
 * **hash**: A sequential version using hash tables to store the blocks/pairs to replace them with a single text scan.
 * **parallel**: A parallel version. The undirected cut is not parallelized due to reasons of data dependencies.
 * **parallel_lp**: A parallel recompression version which counts the number of possibly new production introduced by the combinations of the partition sets choosing the combination that generates less productions if the values of the directed cut are equal. The undirected cut is not parallelized due to reasons of data dependencies.
-* **parallel_rnd**: A full parallel version using a random generated partitioning of the symbols for *pcomp*
+* **parallel_rnd*k***: A full parallel version using a random generated partitioning of the symbols for *pcomp*. The computation of the *undirected maximum cut* will be repeated *k* times and the best cut will be used.
 * **parallel_ls**: A full parallel version using a parallel local search for the partition.
 * **parallel_gr**: A full parallel version using a parallel variant of the greedy MaxCut algorithm for the partition.
+* **parallel_rnddir*k***: A full parallel version using a random generated partitioning of the symbols for *pcomp*. The computation of the *directed maximum cut* will be repeated *k* times and the best cut will be used for *pcomp*. E.g. parallel_rnddir10 will repeat the *directed cut* 10 times.
 
 
 

@@ -15,6 +15,11 @@
 
 
 int main(int argc, char *argv[]) {
+    std::vector<std::string> variants;
+    recomp::sequential_variants(variants);
+    recomp::parallel_variants(variants);
+    recomp::experimental_variants(variants);
+
     tlx::CmdlineParser cmd;
     cmd.set_description("Benchmark for memory experiments");
     cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
@@ -24,11 +29,12 @@ int main(int argc, char *argv[]) {
 
     std::string filenames;
     cmd.add_param_string("filenames", filenames,
-                         "The files. Multiple files are seperated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
+                         "The files. Multiple files are separated with spaces and are enclosed by \"\". Example: \"file1 file2 file3\"");
 
     std::string algorithms;
     cmd.add_param_string("algorithms", algorithms,
-                         "The algorithms to benchmark [\"parallel | parallel_ls | parallel_lp | parallel_lock | parallel_order_ls | parallel_order_gr | fast | hash | parallel_rnd\"]");
+                         "The algorithms to benchmark. Multiple algorithms are also separated by \"\" like the file names. The algorithms are: [\"" +
+                         recomp::util::variants_options(variants) + "\"]");
 
     size_t cores;
     cmd.add_param_bytes("cores", cores, "The maximal number of cores");
@@ -38,6 +44,12 @@ int main(int argc, char *argv[]) {
 
     size_t prefix = 0;
     cmd.add_bytes('p', "prefix", prefix, "The prefix of the files in bytes to read in");
+
+    std::string parhip;
+    cmd.add_string("parhip", parhip, "The executable for parhip");
+
+    std::string dir;
+    cmd.add_string("dir", dir, "The directory to store the partition of parhip to");
 
     if (!cmd.process(argc, argv)) {
         return -1;
@@ -73,7 +85,7 @@ int main(int argc, char *argv[]) {
                 malloc_count_reset_peak();
 #endif
 
-                std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset);
+                std::unique_ptr<recomp::recompression<recomp::var_t>> recomp = recomp::create_recompression(algo, dataset, parhip, dir);
                 if (!recomp) {
                     std::cerr << "No such algo " << algo << std::endl;
                     return -1;
@@ -91,10 +103,10 @@ int main(int argc, char *argv[]) {
                 const auto endTime = recomp::timer::now();
                 const auto timeSpan = endTime - startTime;
 #ifdef MALLOC_COUNT
-//                malloc_count_reset_peak();
-                std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset
-                          << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level="
-                          << recomp->level << " cores=" << cores << " memory=" << malloc_count_peak() << std::endl;
+                //                malloc_count_reset_peak();
+                                std::cout << "RESULT algo=" << recomp->name << "_recompression dataset=" << dataset
+                                          << " production=" << rlslp.size() << " terminals=" << rlslp.terminals << " level="
+                                          << recomp->level << " cores=" << cores << " memory=" << malloc_count_peak() << std::endl;
 #endif // MALLOC_COUNT
                 std::cout << "Time for " << algo << " recompression: "
                           << std::chrono::duration_cast<std::chrono::seconds>(timeSpan).count() << "[s]" << std::endl;

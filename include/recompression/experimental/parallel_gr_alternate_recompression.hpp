@@ -13,19 +13,19 @@ namespace recomp {
 namespace parallel {
 
 template<typename variable_t = var_t>
-class parallel_grz_recompression : public parallel_rnd_recompression<variable_t> {
+class parallel_gr_alternate_recompression : public parallel_rnd_recompression<variable_t> {
  public:
     typedef typename recompression<variable_t>::text_t text_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_t adj_t;
     typedef typename parallel_rnd_recompression<variable_t>::adj_list_t adj_list_t;
     typedef typename parallel_rnd_recompression<variable_t>::partition_t partition_t;
 
-    inline parallel_grz_recompression() {
-        this->name = "parallel_grz";
+    inline parallel_gr_alternate_recompression() {
+        this->name = "parallel_gr_alternate";
     }
 
-    inline parallel_grz_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
-        this->name = "parallel_grz";
+    inline parallel_gr_alternate_recompression(std::string& dataset) : parallel_rnd_recompression<variable_t>(dataset) {
+        this->name = "parallel_gr_alternate";
     }
 
     using parallel_rnd_recompression<variable_t>::recomp;
@@ -41,7 +41,7 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l) override {
+    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -57,20 +57,31 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
 #ifdef BENCH
         const auto startTimePar = recomp::timer::now();
 #endif
-//        std::random_device rd;
-//        std::mt19937 gen(rd());
-//        std::uniform_int_distribution<uint8_t> distribution(0, 1);
         partition[0] = 0;  // ensure, that minimum one symbol is in the left partition and one in the right
         partition[partition.size() - 1] = 1;
+
+        if (text.size() > 10000000) {
 #pragma omp parallel num_threads(this->cores)
-        {
-//            std::random_device rd;
-//            std::mt19937 gen(rd());
-//            std::uniform_int_distribution<uint8_t> distribution(0, 1);
+            {
 #pragma omp for schedule(static)
-            for (size_t i = 1; i < partition.size() - 1; ++i) {
-//                partition[i] = distribution(gen);
-                partition[i] = 0;
+                for (size_t i = 1; i < partition.size() - 1; ++i) {
+                    if (i % 2 == 0) {
+                        partition[i] = 0;
+                    } else {
+                        partition[i] = 1;
+                    }
+                }
+            }
+        } else {
+#pragma omp parallel num_threads(this->cores)
+            {
+                std::random_device rd;
+                std::mt19937 gen(rd());
+                std::uniform_int_distribution<uint8_t> distribution(0, 1);
+#pragma omp for schedule(static)
+                for (size_t i = 1; i < partition.size() - 1; ++i) {
+                    partition[i] = (distribution(gen) == 1);
+                }
             }
         }
 #ifdef BENCH
@@ -101,18 +112,18 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
             size_t i = bounds[thread_id];
             variable_t val;
             if (i == 0) {
-                val = std::max(text[adj_list[i]], text[adj_list[i] + 1]);
+                val = std::max(text[adj_list[i]] - minimum, text[adj_list[i] + 1] - minimum);
             } else if (i < bounds[thread_id + 1]) {
-                auto comp_val = std::max(text[adj_list[i - 1]], text[adj_list[i - 1] + 1]);
+                auto comp_val = std::max(text[adj_list[i - 1]] - minimum, text[adj_list[i - 1] + 1] - minimum);
 
-                auto text_i = text[adj_list[i]];
-                auto text_i1 = text[adj_list[i] + 1];
+                auto text_i = text[adj_list[i]] - minimum;
+                auto text_i1 = text[adj_list[i] + 1] - minimum;
                 val = std::max(text_i, text_i1);
                 while (i < bounds[thread_id + 1] && comp_val == val) {
                     i++;
                     if (i < bounds[thread_id + 1]) {
-                        text_i = text[adj_list[i]];
-                        text_i1 = text[adj_list[i] + 1];
+                        text_i = text[adj_list[i]] - minimum;
+                        text_i1 = text[adj_list[i] + 1] - minimum;
                         val = std::max(text_i, text_i1);
                     }
                 }
@@ -121,8 +132,8 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
             int l_count = 0;
             int r_count = 0;
             for (; i < bounds[thread_id + 1]; ++i) {
-                auto text_i = text[adj_list[i]];
-                auto text_i1 = text[adj_list[i] + 1];
+                auto text_i = text[adj_list[i]] - minimum;
+                auto text_i1 = text[adj_list[i] + 1] - minimum;
                 if (text_i < text_i1) {
                     std::swap(text_i, text_i1);
                 }
@@ -134,8 +145,8 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
                     }
                     i++;
                     if (i < adj_list_size) {
-                        text_i = text[adj_list[i]];
-                        text_i1 = text[adj_list[i] + 1];
+                        text_i = text[adj_list[i]] - minimum;
+                        text_i1 = text[adj_list[i] + 1] - minimum;
                         if (text_i < text_i1) {
                             std::swap(text_i, text_i1);
                         }
@@ -168,8 +179,8 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
             variable_t last_i1 = 0;
             size_t i = bounds[thread_id];
             if (i == 0) {
-                last_i = text[adj_list[i]];
-                last_i1 = text[adj_list[i] + 1];
+                last_i = text[adj_list[i]] - minimum;
+                last_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[last_i] && partition[last_i1]) {
                     lr_count++;
                     prod_l++;
@@ -179,13 +190,13 @@ class parallel_grz_recompression : public parallel_rnd_recompression<variable_t>
                 }
                 i++;
             } else if (i < adj_list.size()) {
-                last_i = text[adj_list[i - 1]];
-                last_i1 = text[adj_list[i - 1] + 1];
+                last_i = text[adj_list[i - 1]] - minimum;
+                last_i1 = text[adj_list[i - 1] + 1] - minimum;
             }
 
             for (; i < bounds[thread_id + 1]; ++i) {
-                variable_t char_i = text[adj_list[i]];
-                variable_t char_i1 = text[adj_list[i] + 1];
+                variable_t char_i = text[adj_list[i]] - minimum;
+                variable_t char_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[char_i] && partition[char_i1]) {
                     lr_count++;
                     if (char_i != last_i || char_i1 != last_i1) {

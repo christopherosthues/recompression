@@ -8,8 +8,9 @@ set(SOURCES
         src/recompression/util.cpp
         src/recompression/experimental/parallel_order_less_recompression.cpp
         src/recompression/experimental/parallel_gr2_recompression.cpp
+        src/recompression/experimental/parallel_parhip_recompression.cpp
         src/recompression/parallel_rnd_recompression.cpp
-#        src/recompression/experimental/parallel_wrnd_recompression.cpp
+        src/recompression/parallel_rnddir_recompression.cpp
         src/recompression/lce_query.cpp
         src/recompression/radix_sort.cpp
         src/recompression/experimental/parallel_order_great_recompression.cpp
@@ -18,7 +19,7 @@ set(SOURCES
         src/recompression/experimental/parallel_ls5_recompression.cpp
         src/recompression/experimental/parallel_ls_gain_recompression.cpp
         src/recompression/parallel_gr_recompression.cpp
-#        src/recompression/experimental/parallel_grz_recompression.cpp
+        src/recompression/experimental/parallel_gr_alternate_recompression.cpp
         src/recompression/hash_recompression.cpp
         src/recompression/defs.cpp
         src/recompression/coders/rlslp_rule_sorter.cpp
@@ -43,14 +44,15 @@ set(HEADERS
         include/recompression/radix_sort.hpp
         include/recompression/experimental/parallel_order_less_recompression.hpp
         include/recompression/experimental/parallel_gr2_recompression.hpp
+        include/recompression/experimental/parallel_parhip_recompression.hpp
         include/recompression/parallel_rnd_recompression.hpp
-#        include/recompression/experimental/parallel_wrnd_recompression.hpp
+        include/recompression/parallel_rnddir_recompression.hpp
         include/recompression/parallel_ls_recompression.hpp
         include/recompression/experimental/parallel_ls3_recompression.hpp
         include/recompression/experimental/parallel_ls5_recompression.hpp
         include/recompression/experimental/parallel_ls_gain_recompression.hpp
         include/recompression/parallel_gr_recompression.hpp
-#        include/recompression/experimental/parallel_grz_recompression.hpp
+        include/recompression/experimental/parallel_gr_alternate_recompression.hpp
         include/recompression/fast_recompression.hpp
         include/recompression/hash_recompression.hpp
         include/recompression/util.hpp

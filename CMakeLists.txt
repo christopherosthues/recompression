@@ -19,6 +19,7 @@ endif ()
 message(STATUS "Building in '${CMAKE_BUILD_TYPE}' mode")
 
 set(CMAKE_CXX_STANDARD 14)
+#set(CMAKE_CXX_COMPILER mpicxx)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fpermissive")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -g -std=c++14 -fpermissive -W -Wall -Wextra -Wpedantic -Wno-deprecated")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -DDEBUG")
