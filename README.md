@@ -75,7 +75,8 @@ The benchmark scripts are:
 This library is a header only library. The recompression.hpp header in the include directory provides all functionality of the library.
 
 ```cpp
-#inlude <recompression.hpp>
+#include <memory>
+#include <recompression.hpp>
 
 using namespace recomp;
 
@@ -84,6 +85,15 @@ int main() {
     size_t cores = 4;
     size_t alphabet_size = 13;
     parallel::parallel_recompression<var_t> recompression{"dataset"};
+    
+    // or use this code to create an instance of one of the recompression classes:
+    std::string data = "dataset";
+    std::string recomp_class = "parallel_rnd10";
+    std::string parhip = "";  // Only needed for the recompression version using parhip
+    std::string dir = "";  // Only needed for parhip
+    std::unique_ptr<recompression<var_t>> recompression = create_recompression(recomp_class, data,
+                                                                               parhip, dir);
+    
     rlslp<var_t> slp;
     recompression.recomp(text, slp, alphabet_size, cores);
 }
@@ -101,11 +111,10 @@ There are some different versions available. This version are:
 * **parallel_rnddir*k***: A full parallel version using a random generated partitioning of the symbols for *pcomp*. The computation of the *directed maximum cut* will be repeated *k* times and the best cut will be used for *pcomp*. E.g. parallel_rnddir10 will repeat the *directed cut* 10 times.
 
 
-
 The library also provides coders to encode and output the rlslp to files. The code below shows an example.
 
 ```cpp
-#inlude <recompression.hpp>
+#include <recompression.hpp>
 
 using namespace recomp;
 
