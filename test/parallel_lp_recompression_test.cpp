@@ -315,16 +315,22 @@ TEST(parallel_lp_adj_list, less_productions) {
 TEST(parallel_lp_partition, less_productions) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 3});
     alphabet_t alphabet{1, 2, 3};
-    partition_t partition;
+    partition_t partition(3);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 1);
 
-    partition_t exp_partition;
-    exp_partition[1] = false;
+    partition_t exp_partition(3);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[1] = false;
+//    exp_partition[2] = true;
+//    exp_partition[3] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
     exp_partition[2] = true;
-    exp_partition[3] = true;
     bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
@@ -334,16 +340,22 @@ TEST(parallel_lp_partition, less_productions) {
 TEST(parallel_lp_partition, left_end) {
     text_t text = util::create_ui_vector(std::vector<var_t>{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1});
     alphabet_t alphabet{1, 2, 3};
-    partition_t partition;
+    partition_t partition(3);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 1);
 
-    partition_t exp_partition;
-    exp_partition[1] = false;
+    partition_t exp_partition(3);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[1] = false;
+//    exp_partition[2] = true;
+//    exp_partition[3] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
     exp_partition[2] = true;
-    exp_partition[3] = true;
     bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
@@ -353,15 +365,20 @@ TEST(parallel_lp_partition, left_end) {
 TEST(parallel_lp_partition, repreated_pair) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1});
     alphabet_t alphabet{1, 2};
-    partition_t partition;
+    partition_t partition(2);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 1);
 
-    partition_t exp_partition;
-    exp_partition[1] = false;
-    exp_partition[2] = true;
+    partition_t exp_partition(2);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[1] = false;
+//    exp_partition[2] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
     bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
@@ -371,15 +388,20 @@ TEST(parallel_lp_partition, repreated_pair) {
 TEST(parallel_lp_partition, repreated_pair_same_occ) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2});
     alphabet_t alphabet{1, 2};
-    partition_t partition;
+    partition_t partition(2);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 1);
 
-    partition_t exp_partition;
-    exp_partition[1] = false;
-    exp_partition[2] = true;
+    partition_t exp_partition(2);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[1] = false;
+//    exp_partition[2] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
     bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
@@ -389,21 +411,32 @@ TEST(parallel_lp_partition, repreated_pair_same_occ) {
 TEST(parallel_lp_partition, 212181623541741623541321) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 8, 1, 6, 2, 3, 5, 4, 1, 7, 4, 1, 6, 2, 3, 5, 4, 1, 3, 2, 1});
     alphabet_t alphabet{1, 2, 3, 4, 5, 6, 7, 8};
-    partition_t partition;
+    partition_t partition(8);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 1);
 
-    partition_t exp_partition;
-    exp_partition[1] = false;
-    exp_partition[2] = true;
-    exp_partition[3] = false;
-    exp_partition[4] = true;
+    partition_t exp_partition(8);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[1] = false;
+//    exp_partition[2] = true;
+//    exp_partition[3] = false;
+//    exp_partition[4] = true;
+//    exp_partition[5] = false;
+//    exp_partition[6] = false;
+//    exp_partition[7] = false;
+//    exp_partition[8] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
+    exp_partition[2] = false;
+    exp_partition[3] = true;
+    exp_partition[4] = false;
     exp_partition[5] = false;
     exp_partition[6] = false;
-    exp_partition[7] = false;
-    exp_partition[8] = true;
+    exp_partition[7] = true;
     bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
@@ -413,22 +446,34 @@ TEST(parallel_lp_partition, 212181623541741623541321) {
 TEST(parallel_lp_partition, 131261051171161051139) {
     text_t text = util::create_ui_vector(std::vector<var_t>{13, 12, 6, 10, 5, 11, 7, 11, 6, 10, 5, 11, 3, 9});
     alphabet_t alphabet{3, 5, 6, 7, 9, 10, 11, 12, 13};
-    partition_t partition;
+    partition_t partition(11);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 3);
 
-    partition_t exp_partition;
+    partition_t exp_partition(11);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[3] = false;
+//    exp_partition[5] = false;
+//    exp_partition[6] = false;
+//    exp_partition[7] = false;
+//    exp_partition[9] = true;
+//    exp_partition[10] = true;
+//    exp_partition[11] = true;
+//    exp_partition[12] = true;
+//    exp_partition[13] = false;
+    exp_partition[0] = false;
+    exp_partition[2] = false;
     exp_partition[3] = false;
-    exp_partition[5] = false;
-    exp_partition[6] = false;
-    exp_partition[7] = false;
+    exp_partition[4] = false;
+    exp_partition[6] = true;
+    exp_partition[7] = true;
+    exp_partition[8] = true;
     exp_partition[9] = true;
-    exp_partition[10] = true;
-    exp_partition[11] = true;
-    exp_partition[12] = true;
-    exp_partition[13] = false;
+    exp_partition[10] = false;
     bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
@@ -438,18 +483,26 @@ TEST(parallel_lp_partition, 131261051171161051139) {
 TEST(parallel_lp_partition, 18161517161514) {
     text_t text = util::create_ui_vector(std::vector<var_t>{18, 16, 15, 17, 16, 15, 14});
     alphabet_t alphabet{14, 15, 16, 17, 18};
-    partition_t partition;
+    partition_t partition(5);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 14);
 
-    partition_t exp_partition;
-    exp_partition[14] = false;
-    exp_partition[15] = true;
-    exp_partition[16] = false;
-    exp_partition[17] = false;
-    exp_partition[18] = true;
+    partition_t exp_partition(5);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[14] = false;
+//    exp_partition[15] = true;
+//    exp_partition[16] = false;
+//    exp_partition[17] = false;
+//    exp_partition[18] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
+    exp_partition[2] = false;
+    exp_partition[3] = false;
+    exp_partition[4] = true;
     bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);
@@ -459,17 +512,24 @@ TEST(parallel_lp_partition, 18161517161514) {
 TEST(parallel_lp_partition, 21201619) {
     text_t text = util::create_ui_vector(std::vector<var_t>{21, 20, 16, 19});
     alphabet_t alphabet{16, 19, 20, 21};
-    partition_t partition;
+    partition_t partition(6);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 16);
 
-    partition_t exp_partition;
-    exp_partition[16] = false;
-    exp_partition[19] = true;
-    exp_partition[20] = true;
-    exp_partition[21] = false;
+    partition_t exp_partition(6);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[16] = false;
+//    exp_partition[19] = true;
+//    exp_partition[20] = true;
+//    exp_partition[21] = false;
+    exp_partition[0] = false;
+    exp_partition[3] = true;
+    exp_partition[4] = true;
+    exp_partition[5] = false;
     bool exp_part_l = false;
 
     ASSERT_EQ(exp_partition, partition);
@@ -479,15 +539,20 @@ TEST(parallel_lp_partition, 21201619) {
 TEST(parallel_lp_partition, 2322) {
     text_t text = util::create_ui_vector(std::vector<var_t>{23, 22});
     alphabet_t alphabet{22, 23};
-    partition_t partition;
+    partition_t partition(2);
     bool part_l = false;
     parallel::parallel_lp_recompression<var_t> recomp;
     recomp.cores = 4;
-    recomp.compute_partition(text, partition, part_l);
+    recomp.compute_partition(text, partition, part_l, 22);
 
-    partition_t exp_partition;
-    exp_partition[22] = false;
-    exp_partition[23] = true;
+    partition_t exp_partition(2);
+    for (size_t i = 0; i < exp_partition.size(); ++i) {
+        exp_partition[i] = false;
+    }
+//    exp_partition[22] = false;
+//    exp_partition[23] = true;
+    exp_partition[0] = false;
+    exp_partition[1] = true;
     bool exp_part_l = true;
 
     ASSERT_EQ(exp_partition, partition);

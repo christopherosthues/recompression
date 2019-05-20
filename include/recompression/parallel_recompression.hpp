@@ -35,7 +35,8 @@ class parallel_recompression : public recompression<variable_t> {
     typedef typename recompression<variable_t>::bv_t bv_t;
     typedef size_t adj_t;
     typedef ui_vector<adj_t> adj_list_t;
-    typedef std::unordered_map<variable_t, bool> partition_t;
+//    typedef std::unordered_map<variable_t, bool> partition_t;
+    typedef ui_vector<bool> partition_t;
 
     typedef std::pair<variable_t, size_t> position_t;
     typedef size_t pair_position_t;
@@ -365,7 +366,8 @@ class parallel_recompression : public recompression<variable_t> {
                     if (last_char >= rlslp.terminals) {
                         len *= rlslp[last_char - rlslp.terminals].len;
                     }
-                    productions[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len, len);
+                    productions[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(last_char, b_len,
+                                                                                                      len);
                     j++;
                     last_var++;
                     text[positions[i].second] = last_var;
@@ -385,7 +387,8 @@ class parallel_recompression : public recompression<variable_t> {
                         if (char_i >= rlslp.terminals) {
                             len *= rlslp[char_i - rlslp.terminals].len;
                         }
-                        productions[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len, len);
+                        productions[nt_count + distinct_blocks[thread_id] + j] = non_terminal<variable_t>(char_i, b_len,
+                                                                                                          len);
                         j++;
                         last_var++;
                         text[positions[i].second] = last_var;
@@ -409,8 +412,8 @@ class parallel_recompression : public recompression<variable_t> {
 
             compact(text, compact_bounds, block_counts, block_count);
 #ifdef BENCH
-        } else {
-            std::cout << " sort=0 rules=0 elements=0 blocks=0 init_new_text=0 copy=0 move=0 compact_text=0";
+            } else {
+                std::cout << " sort=0 rules=0 elements=0 blocks=0 init_new_text=0 copy=0 move=0 compact_text=0";
 #endif
         }
 
@@ -491,7 +494,11 @@ class parallel_recompression : public recompression<variable_t> {
 #endif
     }
 
-    virtual void directed_cut(const text_t& text, partition_t& partition, adj_list_t& adj_list, bool& part_l) {
+    virtual void directed_cut(const text_t& text,
+                              partition_t& partition,
+                              adj_list_t& adj_list,
+                              bool& part_l,
+                              variable_t minimum) {
 #ifdef BENCH
         const auto startTimeCount = recomp::timer::now();
 #endif
@@ -501,9 +508,9 @@ class parallel_recompression : public recompression<variable_t> {
         int rl_count = 0;
 #pragma omp parallel for num_threads(this->cores) schedule(static) reduction(+:lr_count) reduction(+:rl_count)
         for (size_t i = 0; i < text.size() - 1; ++i) {
-            if (!partition[text[i]] && partition[text[i + 1]]) {
+            if (!partition[text[i] - minimum] && partition[text[i + 1] - minimum]) {
                 lr_count++;
-            } else if (partition[text[i]] && !partition[text[i + 1]]) {
+            } else if (partition[text[i] - minimum] && !partition[text[i + 1] - minimum]) {
                 rl_count++;
             }
         }
@@ -525,7 +532,7 @@ class parallel_recompression : public recompression<variable_t> {
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
      */
-    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
+    inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -536,19 +543,31 @@ class parallel_recompression : public recompression<variable_t> {
         std::cout << " init_adj_vec=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanAdjInit).count();
 #endif
         compute_adj_list(text, adj_list);
-
 #ifdef BENCH
+        const auto startTimeInitPar = recomp::timer::now();
+#endif
+#pragma omp parallel for schedule(static) num_threads(this->cores)
+        for (size_t i = 0; i < partition.size(); ++i) {
+            partition[i] = false;
+        }
+#ifdef BENCH
+        const auto endTimeInitPar = recomp::timer::now();
+        const auto timeSpanInitPar = endTimeInitPar - startTimeInitPar;
+        std::cout << " init_partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanInitPar).count();
         const auto startTimePar = recomp::timer::now();
 #endif
+//        std::cout << "partition: " << partition.size() << std::endl;
+//        std::cout << "val: " << text[adj_list[0] + 1] - minimum << std::endl;
+//        std::cout << "val: " << text[adj_list[0]] - minimum << std::endl;
         int l_count = 0;
         int r_count = 0;
         variable_t val = 0;
         if (text[adj_list[0]] > text[adj_list[0] + 1]) {
             val = text[adj_list[0]];
-            partition[text[adj_list[0] + 1]] = false;
+            partition[text[adj_list[0] + 1] - minimum] = false;
         } else {
             val = text[adj_list[0] + 1];
-            partition[text[adj_list[0]]] = false;
+            partition[text[adj_list[0]] - minimum] = false;
         }
 
         l_count++;
@@ -560,21 +579,24 @@ class parallel_recompression : public recompression<variable_t> {
             }
 
             if (val < text_i) {
-                partition[val] = l_count > r_count;
+//                std::cout << "val: " << val - minimum << std::endl;
+                partition[val - minimum] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
                 val = text_i;
             }
-            if (partition.find(text_i1) == partition.end()) {
-                partition[text_i1] = false;
-            }
-            if (partition[text_i1]) {
+//            if (partition.find(text_i1) == partition.end()) {
+//                partition[text_i1] = false;
+//            }
+//            std::cout << "val: " << text_i1 - minimum << std::endl;
+            if (partition[text_i1 - minimum]) {
                 r_count++;
             } else {
                 l_count++;
             }
         }
-        partition[val] = l_count > r_count;
+//        std::cout << "val: " << val - minimum << std::endl;
+        partition[val - minimum] = l_count > r_count;
 
 #ifdef GRAPH_STATS
         compute_graph_stats(text, adj_list);
@@ -585,7 +607,7 @@ class parallel_recompression : public recompression<variable_t> {
         const auto timeSpanPar = endTimePar - startTimePar;
         std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
 #endif
-        directed_cut(text, partition, adj_list, part_l);
+        directed_cut(text, partition, adj_list, part_l, minimum);
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();
@@ -602,16 +624,34 @@ class parallel_recompression : public recompression<variable_t> {
      * @param rlslp The rlslp
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
+//#ifdef BENCH
+//        const auto startTime = recomp::timer::now();
+//        std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
+//                  << " level=" << this->level << " cores=" << this->cores;
+//#endif
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
                   << " level=" << this->level << " cores=" << this->cores;
 #endif
-        partition_t partition;
+        variable_t minimum = std::numeric_limits<variable_t>::max();
+#pragma omp parallel for schedule(static) num_threads(this->cores) reduction(min:minimum)
+        for (size_t i = 0; i < text.size(); ++i) {
+            minimum = std::min(minimum, text[i]);
+        }
+#ifdef BENCH
+        const auto endTimeInAl = recomp::timer::now();
+        const auto timeSpanInAl = endTimeInAl - startTime;
+        std::cout << " minimum=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanInAl).count();
+#endif
+
+        const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
+        partition_t partition(max_letters);
+//        partition_t partition;
 
         size_t pair_count = 0;
         bool part_l = false;
-        compute_partition(text, partition, part_l);
+        compute_partition(text, partition, part_l, minimum);
 
 #ifdef BENCH
         const auto startTimePairs = recomp::timer::now();
@@ -652,7 +692,7 @@ class parallel_recompression : public recompression<variable_t> {
             }
 
             for (size_t i = compact_bounds[thread_id]; i < compact_bounds[thread_id + 1]; ++i) {
-                if (part_l == partition[text[i]] && part_l != partition[text[i + 1]]) {
+                if (part_l == partition[text[i] - minimum] && part_l != partition[text[i + 1] - minimum]) {
                     t_positions.emplace_back(i);
                     pair_count++;
                 }
@@ -679,15 +719,17 @@ class parallel_recompression : public recompression<variable_t> {
             size_t cb = compact_bounds[thread_id];
             if (cb > 0) {
                 if (cb < text.size()) {
-                    pair_overlaps[thread_id] = (partition[text[cb - 1]] == part_l && partition[text[cb]] != part_l) ? 1
-                                                                                                                    : 0;
+                    pair_overlaps[thread_id] = (partition[text[cb - 1] - minimum] == part_l &&
+                                                partition[text[cb] - minimum] != part_l) ? 1
+                                                                                         : 0;
                 }
                 pair_counts[thread_id] = cb + pair_overlaps[thread_id] - bounds[thread_id];
             }
         }
-        {
-            auto discard = std::move(partition);
-        }
+//        {
+//            auto discard = std::move(partition);
+//        }
+        partition.resize(1);
         pair_overlaps.resize(1);
 #ifdef BENCH
         const auto endTimePairs = recomp::timer::now();
@@ -797,7 +839,8 @@ class parallel_recompression : public recompression<variable_t> {
                 } else {
                     len += 1;
                 }
-                productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
+                productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2,
+                                                                                                 len);
                 j++;
                 last_var++;
                 text[positions[i]] = last_var;
@@ -822,7 +865,8 @@ class parallel_recompression : public recompression<variable_t> {
                     } else {
                         len += 1;
                     }
-                    productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
+                    productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2,
+                                                                                                     len);
                     j++;
                     last_var++;
                     text[positions[i]] = last_var;

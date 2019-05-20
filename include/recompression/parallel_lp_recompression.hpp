@@ -131,7 +131,8 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
     inline virtual void directed_cut(const text_t& text,
                                      partition_t& partition,
                                      adj_list_t& adj_list,
-                                     bool& part_l) override {
+                                     bool& part_l,
+                                     variable_t minimum) override {
 #ifdef BENCH
         const auto startTimeCount = recomp::timer::now();
 #endif
@@ -162,8 +163,8 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
             variable_t last_i1 = 0;
             size_t i = bounds[thread_id];
             if (i == 0) {
-                last_i = text[adj_list[i]];
-                last_i1 = text[adj_list[i] + 1];
+                last_i = text[adj_list[i]] - minimum;
+                last_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[last_i] && partition[last_i1]) {
                     lr_count++;
                     prod_l++;
@@ -173,13 +174,13 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
                 }
                 i++;
             } else if (i < adj_list.size()) {
-                last_i = text[adj_list[i - 1]];
-                last_i1 = text[adj_list[i - 1] + 1];
+                last_i = text[adj_list[i - 1]] - minimum;
+                last_i1 = text[adj_list[i - 1] + 1] - minimum;
             }
 
             for (; i < bounds[thread_id + 1]; ++i) {
-                variable_t char_i = text[adj_list[i]];
-                variable_t char_i1 = text[adj_list[i] + 1];
+                variable_t char_i = text[adj_list[i]] - minimum;
+                variable_t char_i1 = text[adj_list[i] + 1] - minimum;
                 if (!partition[char_i] && partition[char_i1]) {
                     lr_count++;
                     if (char_i != last_i || char_i1 != last_i1) {
