@@ -1,4 +1,23 @@
-
+/*
+ * This file integrates customized parts of tudocomp into recompression.
+ * tudocomp is licensed under the Apache License Version 2.0, which follows.
+ *
+ * TuDoComp - TU Dortmund lossless compression framework
+ * Copyright (C) 2016 Patrick Dinklage, Dominik Köppl, Marvin Löbel, Johannes Fischer
+ * Contact found at: https://ls11-www.cs.tu-dortmund.de/staff/koeppl
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #pragma once
 
 #include <climits>
@@ -12,44 +31,22 @@
  *
  */
 class BitOStream {
+ private:
     std::ofstream stream;
 
-    bool dirty = false;
-    std::uint8_t buffer = 0;
-    std::int8_t cursor = 7;
-
-    /**
-     * @brief Writes the current buffer to the output stream.
-     */
-    inline void write_buffer() {
-        if (dirty) {
-            stream.put(static_cast<char>(buffer));
-            reset();
-        }
-    }
-
  public:
-    inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) : file_name(file_name) {
+    explicit inline BitOStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out)
+            : file_name(file_name) {
         stream = std::ofstream(file_name, mode);
         if (!stream) {
             std::cerr << "Failed to read file " << file_name << std::endl;
             exit(1);
         }
-        reset();
     }
 
     ~BitOStream() {
         if (stream.is_open()) {
-            char last = static_cast<char>(7 - cursor);
-            if (cursor >= 2) {
-                buffer |= last;
-            } else {
-                write_buffer();
-                buffer = static_cast<std::uint8_t>(last);
-            }
-
-            dirty = true;
-            write_buffer();
+            write_end();
         }
     }
 
@@ -57,30 +54,8 @@ class BitOStream {
         return file_name;
     }
 
-    /**
-     * @brief Resets the internal state.
-     */
-    inline void reset() {
-        dirty = false;
-        buffer = 0;
-        cursor = 7;
-    }
-
-    inline auto tellp() -> decltype(stream.tellp()) {
-        return stream.tellp();
-    }
-
     inline void close() {
-        char last = static_cast<char>(7 - cursor);
-        if (cursor >= 2) {
-            buffer |= last;
-        } else {
-            write_buffer();
-            buffer = static_cast<std::uint8_t>(last);
-        }
-
-        dirty = true;
-        write_buffer();
+        write_end();
         stream.close();
     }
 
@@ -134,7 +109,7 @@ class BitOStream {
     template<typename value_t>
     inline void write_int(value_t value, size_t bits = sizeof(value_t) * CHAR_BIT) {
         for (int i = bits - 1; i >= 0; --i) {
-            write_bit((value & (value_t(value_t(1) << i))) != value_t(0));
+            write_bit(((value_t(value_t(1) << i)) & value) != value_t(0));
         }
     }
 
@@ -150,22 +125,20 @@ class BitOStream {
                 }
                 std::uint32_t value = 0;
                 if (len > 31) {
-                    value |= (std::uint32_t(1) << 31);
+                    value |= (_bit32_one << 31);
                     if (val) {
-                        value |= (std::uint32_t(1) << 30);
+                        value |= (_bit32_one << 30);
                     }
                     std::uint32_t check_len = len & (std::uint32_t(3) << 30);
                     if (check_len) {
                         i -= len;
-                        if (len & (std::uint32_t(1) << 31)) {
+                        if (len & (_bit32_one << 31)) {
                             len = len >> 2;
                         } else {
                             len = len >> 1;
                         }
                         i += len;
                         value |= len;
-                        // TODO(Chris): we already know the total length, split it here and write all but the last out,
-                        //  the last is handled by the loop itself
                     } else {
                         value |= len;
                     }
@@ -173,7 +146,7 @@ class BitOStream {
                     i -= len;
                     for (size_t j = 0; j < 31 && i < bv.size(); ++j, ++i) {
                         if (bv[i]) {
-                            value |= (std::uint32_t(1) << (30 - j));
+                            value |= (_bit32_one << (30 - j));
                         }
                     }
                 }
@@ -210,4 +183,35 @@ class BitOStream {
 
  private:
     std::string file_name;
+
+    static constexpr std::uint32_t _bit32_one = std::uint32_t(1);
+    static constexpr std::uint8_t _all_set = std::uint8_t(7);
+
+    bool dirty = false;
+    std::uint8_t buffer = 0;
+    std::int8_t cursor = _all_set;
+
+    inline void write_end() {
+        if (cursor < 2) {
+            write_buffer();
+            buffer = _all_set - cursor;
+        } else {
+            buffer |= (_all_set - cursor);
+        }
+
+        dirty = true;
+        write_buffer();
+    }
+
+    /**
+     * @brief Writes the current buffer to the output stream.
+     */
+    inline void write_buffer() {
+        if (dirty) {
+            stream.put(static_cast<char>(buffer));
+            dirty = false;
+            buffer = 0;
+            cursor = _all_set;
+        }
+    }
 };

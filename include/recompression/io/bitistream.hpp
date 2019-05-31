@@ -1,3 +1,23 @@
+/*
+ * This file integrates customized parts of tudocomp into recompression.
+ * tudocomp is licensed under the Apache License Version 2.0, which follows.
+ *
+ * TuDoComp - TU Dortmund lossless compression framework
+ * Copyright (C) 2016 Patrick Dinklage, Dominik Köppl, Marvin Löbel, Johannes Fischer
+ * Contact found at: https://ls11-www.cs.tu-dortmund.de/staff/koeppl
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #pragma once
 
 #include <climits>
@@ -7,74 +27,29 @@
 #include <iostream>
 
 class BitIStream {
+ private:
     std::ifstream stream;
 
-    std::uint8_t current = 0;
-    std::uint8_t buffer = 0;
-
-    bool end = false;
-    std::uint8_t end_bits = 0;
-
-    std::uint8_t cursor = 0;
-
-    inline void read_buffer() {
-        current = buffer;
-        cursor = static_cast<std::uint8_t>(7);
-
-        char c;
-        if (stream.get(c)) {
-            buffer = static_cast<std::uint8_t>(c);
-
-            if (stream.get(c)) {
-                stream.unget();
-            } else {
-                end_bits = static_cast<std::uint8_t>(c);
-                end_bits &= 0x7;
-                if (end_bits >= 6) {
-                    end = true;
-                    buffer = 0;
-                }
-            }
-        } else {
-            end = true;
-            end_bits = current & static_cast<std::uint8_t>(0x7);
-
-            buffer = 0;
-        }
-    }
-
  public:
-    inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out) : file_name(file_name) {
+    explicit inline BitIStream(const std::string& file_name, std::ios_base::openmode mode = std::ios_base::out)
+            : file_name(file_name) {
         stream = std::ifstream(file_name, mode);
         if (!stream) {
             std::cerr << "Failed to read file " << file_name << std::endl;
             exit(1);
         }
         char c;
-        if (stream.get(c)) {
-            end = false;
+        end = !stream.get(c);
+        if (!end) {
             buffer = static_cast<std::uint8_t>(c);
-
             read_buffer();
-        } else {
-            end = true;
-            end_bits = 0;
         }
     }
 
-    ~BitIStream() {}
+    ~BitIStream() = default;
 
     const std::string& get_file_name() const {
         return file_name;
-    }
-
-    /**
-     * @brief Resets the internal state.
-     */
-    inline void reset() {}
-
-    inline auto tellg() -> decltype(stream.tellg()) {
-        return stream.tellg();
     }
 
     inline void close() {
@@ -88,13 +63,13 @@ class BitIStream {
      */
     inline std::uint8_t read_bit() {
         if (!eof()) {
-            std::uint8_t bit = (current >> cursor) & std::uint8_t(1);
+            std::uint8_t mask = current >> cursor;
             if (cursor) {
                 cursor--;
             } else {
                 read_buffer();
             }
-            return bit;
+            return mask & _one_set;
         } else {
             return 0;
         }
@@ -146,14 +121,14 @@ class BitIStream {
                 auto value = read_int<std::uint32_t>();
                 auto type = (value >> 31) & std::uint32_t(1);
                 if (type) {
-                    bool v = (bool)((value >> 30) & std::uint32_t(1));
+                    bool v = (bool) ((value >> 30) & std::uint32_t(1));
                     std::uint32_t len = ((value << 2) >> 2);
                     for (size_t j = 0; j < len && i < bv.size(); ++j, ++i) {
                         bv[i] = v;
                     }
                 } else {
                     for (size_t j = 0; j < 31 && i < bv.size(); ++j, ++i) {
-                        bool v = (bool)((value >> (30 - j)) & std::uint32_t(1));
+                        bool v = (bool) ((value >> (30 - j)) & std::uint32_t(1));
                         bv[i] = v;
                     }
                 }
@@ -163,9 +138,43 @@ class BitIStream {
     }
 
     inline bool eof() const {
-        return end && cursor <= (7 - end_bits);
+        return end && cursor <= _all_set - end_bits;
     }
 
  private:
     std::string file_name;
+
+    static constexpr std::uint8_t _all_set = std::uint8_t(7);
+    static constexpr std::uint8_t _one_set = std::uint8_t(1);
+
+    std::uint8_t current = 0;
+    std::uint8_t buffer = 0;
+
+    bool end = false;
+    std::uint8_t end_bits = 0;
+
+    std::uint8_t cursor = 0;
+
+    inline void read_buffer() {
+        current = buffer;
+        cursor = _all_set;
+
+        char c;
+        if (stream.get(c)) {
+            buffer = static_cast<std::uint8_t>(c);
+
+            if (stream.get(c)) {
+                stream.unget();
+            } else {
+                if ((end_bits = buffer & _all_set) >= 6) {
+                    buffer = 0;
+                    end = true;
+                }
+            }
+        } else {
+            end_bits = _all_set & current;
+            buffer = 0;
+            end = true;
+        }
+    }
 };
