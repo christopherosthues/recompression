@@ -11,11 +11,11 @@
 namespace recomp {
 
 /**
- * @brief
+ * @brief Computes a permutation and renames the variables that the first symbols of each pair is sorted.
  *
- * @tparam variable_t
- * @tparam terminal_count_t
- * @param rlslp
+ * @tparam variable_t The type of non-terminals
+ * @param rlslp The rlslp to permute and rename
+ * @param cores The number of cores to use
  */
 template<typename variable_t = recomp::var_t>
 inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::thread::hardware_concurrency()) {
@@ -27,8 +27,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
         first[i] = i;
         next[i] = i;
     }
-
-//    std::cout << "init first, next" << std::endl;
 
     variable_t size = rlslp.size() - 1;
     for (size_t i = 0; i < rlslp.size(); ++i) {
@@ -43,7 +41,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
             first[left] = variable;
         }
     }
-//    std::cout << "dag created" << std::endl;
 
     std::queue<variable_t> queue;
     for (size_t i = 0; i < rlslp.terminals; ++i) {
@@ -51,7 +48,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
             queue.push(i);
         }
     }
-//    std::cout << "Pushed terminals" << std::endl;
 
     size_t new_index = 0;
     std::vector<variable_t> renamed(rlslp.size());
@@ -65,7 +61,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
         if (first[var] != var) {
             auto child = first[var];
             if (rlslp.is_block(child)) {
-//                block_queue.push(child);
                 stack.push(child);
                 block_stack.push(child);
             } else {
@@ -74,7 +69,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
             while (next[child] != child) {
                 child = next[child];
                 if (rlslp.is_block(child)) {
-//                    block_queue.push(child);
                     stack.push(child);
                     block_stack.push(child);
                 } else {
@@ -87,7 +81,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
             renamed[var - rlslp.terminals] = new_index++;
         }
     }
-//    std::cout << "Renamed til blocks" << std::endl;
     std::queue<variable_t> block_queue;
     while (!stack.empty()) {
         auto var = stack.top();
@@ -100,9 +93,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
     while (!block_queue.empty()) {
         auto var = block_queue.front();
         block_queue.pop();
-//        if (rlslp.is_block(var)) {
-//            stack.push(var);
-//        }
 
         if (first[var] != var) {
             auto child = first[var];
@@ -137,42 +127,11 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
     while (!block_stack.empty()) {
         auto var = block_stack.top();
         block_queue.push(var);
-//        std::cout << var << std::endl;
         block_stack.pop();
         renamed[var - rlslp.terminals] = block_idx--;
     }
 
-
-    // Identify all blocks
-//    while (!block_queue.empty()) {
-//        auto var = block_queue.front();
-//        block_queue.pop();
-//        if (rlslp.is_block(var)) {
-//            block_stack.push(var);
-//        }
-//
-//        if (first[var] != var) {
-//            auto child = first[var];
-//            block_queue.push(child);
-//            while (next[child] != child) {
-//                child = next[child];
-//                block_queue.push(child);
-//            }
-//        }
-//    }
-//    std::cout << "blocks identified" << std::endl;
-
-    // Rename blocks
-//    auto block_idx = rlslp.size() - 1;
-
     new_index = rlslp.blocks - 1;
-//    while (!block_stack.empty()) {
-//        auto var = block_stack.top();
-//        block_queue.push(var);
-//        block_stack.pop();
-//        renamed[var - rlslp.terminals] = block_idx--;
-//    }
-//    std::cout << "blocks renamed" << std::endl;
 
     while (!block_queue.empty()) {
         auto var = block_queue.front();
@@ -198,7 +157,6 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
             renamed[var - rlslp.terminals] = new_index--;
         }
     }
-//    std::cout << "renamed all" << std::endl;
 
     ui_vector<recomp::non_terminal<variable_t>> renamed_rules = std::move(rlslp.non_terminals);
     rlslp.non_terminals.resize(renamed_rules.size());
@@ -212,12 +170,10 @@ inline void sort_rlslp_rules(rlslp<variable_t>& rlslp, size_t cores = std::threa
         }
         rlslp[renamed[i]] = rule;
     }
-//    std::cout << "moved rename" << std::endl;
 
     if (rlslp.root >= rlslp.terminals && !rlslp.empty()) {
         rlslp.root = renamed[rlslp.root - rlslp.terminals] + rlslp.terminals;
     }
-//    std::cout << "renamed root" << std::endl;
 }
 
 }  // namespace recomp

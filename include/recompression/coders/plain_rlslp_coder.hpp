@@ -11,6 +11,10 @@
 namespace recomp {
 namespace coder {
 
+/**
+ * This class implements a coder that encodes and decodes the rules of the rlslp using the full bit width of the
+ * underlying integer type.
+ */
 class PlainRLSLPCoder {
  public:
     static const std::string k_extension;

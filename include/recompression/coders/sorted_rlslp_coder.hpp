@@ -15,12 +15,8 @@ namespace recomp {
 namespace coder {
 
 /**
- * @brief A class to delta encode and decode values.
- *
- * The value used for computing the delta is the last value that was delta encoded. If no such value is
- * given 0 is used for the first value to be encoded.
- *
- * @tparam value_t The type of values to delta-encode.
+ * This class implements a coder that encodes and decodes the rules of the rlslp by first permuting and renaming the
+ * variables such that the first symbols of each pairs are sorted in increasing order.
  */
 class SortedRLSLPCoder {
  public:
@@ -120,7 +116,6 @@ class SortedRLSLPCoder {
             if (!empty) {
                 auto bits = istream.read_int<uint8_t>(6);
                 auto size = istream.read_int<size_t>(bits);
-                // rlslp.reserve(size);
                 rlslp.resize(size);
                 rlslp.terminals = istream.read_int<size_t>(bits);
                 rlslp.root = istream.read_int<variable_t>(bits);

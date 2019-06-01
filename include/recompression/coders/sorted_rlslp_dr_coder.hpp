@@ -19,12 +19,10 @@ namespace recomp {
 namespace coder {
 
 /**
- * @brief A class to delta encode and decode values.
- *
- * The value used for computing the delta is the last value that was delta encoded. If no such value is
- * given 0 is used for the first value to be encoded.
- *
- * @tparam value_t The type of values to delta-encode.
+ * This class implements an experimental coder that encodes and decodes the rules of the rlslp by first permuting
+ * and renaming the variables such that the first symbols of each pairs are sorted in increasing order. The right
+ * symbols of the pairs are also getting delta and additionally elias gamma encoded, the signs are dropped. The
+ * signs are encoded in an extra compressed bitvector.
  */
 class SortedRLSLPDRCoder {
  public:
@@ -74,7 +72,6 @@ class SortedRLSLPDRCoder {
                     }
                     different.insert(diff);
                     ostream.write_elias_gamma_code<int64_t>(diff);
-//                    ostream.write_unary(diff);
                     delta_dr = rlslp[i].second();
                 }
                 std::cout << "Different pair second: " << different.size() << std::endl;
@@ -97,7 +94,6 @@ class SortedRLSLPDRCoder {
                         }
                         different.insert(diff);
                         ostream.write_elias_gamma_code<int64_t>(diff);
-//                        ostream.write_unary(diff);
                         delta_dr = rlslp[i].first();
                     }
                     std::cout << "Different block fist: " << different.size() << std::endl;
@@ -119,7 +115,6 @@ class SortedRLSLPDRCoder {
                             number++;
                         }
                         different.insert(diff);
-//                        ostream.write_unary(diff);
                         ostream.write_elias_gamma_code<int64_t>(diff);
                         delta_dr = rlslp[i].second();
                     }
@@ -169,7 +164,6 @@ class SortedRLSLPDRCoder {
             if (!empty) {
                 auto bits = istream.read_int<uint8_t>(6);
                 auto size = istream.read_int<size_t>(bits);
-                // rlslp.reserve(size);
                 rlslp.resize(size);
                 rlslp.terminals = istream.read_int<size_t>(bits);
                 rlslp.root = istream.read_int<variable_t>(bits);
@@ -183,7 +177,6 @@ class SortedRLSLPDRCoder {
 
                 std::vector<int64_t> diffs(rlslp.blocks);
                 for (size_t i = 0; i < rlslp.blocks; ++i) {
-//                    diffs[i] = istream.read_unary<int64_t>();
                     diffs[i] = istream.read_elias_gamma_code<int64_t>();
                 }
                 std::vector<bool> neg;
@@ -202,7 +195,6 @@ class SortedRLSLPDRCoder {
                     diffs.resize(rlslp.size() - rlslp.blocks);
                     diffs.shrink_to_fit();
                     for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
-//                        diffs[i - rlslp.blocks] = istream.read_unary<int64_t>();
                         diffs[i - rlslp.blocks] = istream.read_elias_gamma_code<int64_t>();
                     }
                     bool num = istream.read_bit();
@@ -224,7 +216,6 @@ class SortedRLSLPDRCoder {
                     delta_dr = 0;
                     for (size_t i = rlslp.blocks; i < rlslp.size(); ++i) {
                         diffs[i - rlslp.blocks] = istream.read_elias_gamma_code<int64_t>();
-//                        diffs[i - rlslp.blocks] = istream.read_unary<int64_t>();
                     }
                     num = istream.read_bit();
                     if (num) {
