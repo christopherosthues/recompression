@@ -10,6 +10,11 @@
 
 namespace recomp {
 
+/**
+ * This is the interface for all implementations of the recompression provided by this library.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class recompression {
  public:
@@ -24,13 +29,44 @@ class recompression {
 
     inline recompression() = default;
 
+    /**
+     *
+     * @param dataset The name of the dataset
+     */
     inline recompression(std::string& dataset) : dataset(dataset) {}
 
+    /**
+     * @brief Builds the straight-line program generating the given text using the recompression technique.
+     *
+     * A straight-line program (SLP) is in particular a context free grammar in Chomsky normal form.
+     * First all letters in the text are replaced by non-terminals which derive the letters. Then
+     * the block compression bcomp and the pair compression pcomp alternately compress blocks and local
+     * pairs in the texts resulting of the previous compression. This will be repeated until the text
+     * contains only one letter.
+     *
+     * @param text[in,out] The text
+     * @param rlslp[out] The rlslp
+     * @param alphabet_size The first non-terminal to generate
+     * @param cores The number of cores to use
+     */
     virtual void recomp(text_t& text,
                         rlslp<variable_t>& rlslp,
                         const size_t& alphabet_size,
                         const size_t cores) {};
 
+    /**
+     * @brief Builds the straight-line program generating the given text using the recompression technique.
+     *
+     * A straight-line program (SLP) is in particular a context free grammar in Chomsky normal form.
+     * First all letters in the text are replaced by non-terminals which derive the letters. Then
+     * the block compression bcomp and the pair compression pcomp alternately compress blocks and local
+     * pairs in the texts resulting of the previous compression. This will be repeated until the text
+     * contains only one letter.
+     *
+     * @param text[in,out] The text
+     * @param rlslp[out] The rlslp
+     * @param cores The number of cores to use
+     */
     virtual void recomp(text_t& text,
                         rlslp <variable_t>& rlslp,
                         const size_t cores) {

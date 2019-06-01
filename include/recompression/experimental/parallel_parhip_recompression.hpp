@@ -27,6 +27,10 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_parhip_recompression : public parallel_rnd_recompression<variable_t> {
  public:
@@ -55,14 +59,6 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
         this->dir = dir;
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
-     * @param cores The number of cores/threads to use
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -107,6 +103,14 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
  protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
+    /**
+     * @brief TODO: docu
+     * @param text
+     * @param compact_bounds
+     * @param copy_bounds
+     * @param count
+     * @param mapping
+     */
     inline void compact(text_t& text,
                         const ui_vector<size_t>& compact_bounds,
                         const ui_vector<size_t>& copy_bounds,
@@ -170,7 +174,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
     }
 
     /**
-     * @brief
+     * @brief TODO docu
      *
      * @param text
      * @param mapping
@@ -506,6 +510,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH

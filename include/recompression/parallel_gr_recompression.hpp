@@ -12,6 +12,12 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ * The class is a parallel implementation of the recompression computing an undirected maximum cut using a parallel
+ * greedy algorithm.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> {
  public:
@@ -36,12 +42,15 @@ class parallel_gr_recompression : public parallel_rnd_recompression<variable_t> 
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
      *
      * @param text[in] The text
-     * @param adj_list[in] The adjacency list of the text (text positions)
      * @param partition[out] The partition
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
+     * @param minimum[in] The smallest symbol in the text
      */
-    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) override {
+    inline virtual void compute_partition(const text_t& text,
+                                          partition_t& partition,
+                                          bool& part_l,
+                                          variable_t minimum) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif

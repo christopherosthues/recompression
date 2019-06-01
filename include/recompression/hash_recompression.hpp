@@ -19,6 +19,11 @@
 
 namespace recomp {
 
+/**
+ * This class is a sequential implementation of the recompression using unordered_maps.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class hash_recompression : public recompression<variable_t> {
  public:
@@ -37,17 +42,6 @@ class hash_recompression : public recompression<variable_t> {
         this->name = "hash";
     }
 
-    /**
-     * @brief Builds the straight-line program generating the given text using the recompression technique.
-     *
-     * A straight-line program (SLP) is in particular a context free grammar in Chomsky normal form.
-     * First all letters in the text are replaced by non-terminals which derive the letters. Then
-     * the block compression bcomp and the pair compression pcomp alternately compress blocks and local
-     * pairs in the texts resulting of the previous compression. This will be repeated until the text
-     * contains only one letter.
-     *
-     * @param text The text
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -94,6 +88,7 @@ class hash_recompression : public recompression<variable_t> {
      *
      * @param text[in,out] The text
      * @param rlslp[in,out] The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
@@ -183,10 +178,11 @@ class hash_recompression : public recompression<variable_t> {
     }
 
     /**
-     * @brief Computes the multiset representing the adjacency graph of the symbols in the text.
+     * @brief Computes the adjacency list of the text.
      *
      * @param text[in] The text
-     * @return The multiset
+     * @param adj[out] The adjacency list
+     * @param part[out] The partition initializes with zeroes
      */
     inline void compute_adj_list(const text_t& text,
                                  adj_list_t& adj,
@@ -254,9 +250,8 @@ class hash_recompression : public recompression<variable_t> {
      * the sets will be swapped.
      *
      * @param text[in] The text
-     * @param alphabet_size[in] The size of the alphabet used in the text
-     *
-     * @return The partition of the letters in the current alphabet represented by a bitvector
+     * @param partition[out] The partitioning of the symbols
+     * @param part_l[out] Indicates which values are in the left partition set
      */
     inline void compute_partition(const text_t& text,
                                   partition_t& partition,
@@ -352,8 +347,7 @@ class hash_recompression : public recompression<variable_t> {
      *
      * @param text[in,out] The text
      * @param rlslp[in,out] The rlslp
-     * @param alphabet_size[in,out] The size of the alphabet used in the text
-     * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH

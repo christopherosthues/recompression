@@ -27,6 +27,10 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class recompression_order_gr : public recompression<variable_t> {
  public:
@@ -51,14 +55,6 @@ class recompression_order_gr : public recompression<variable_t> {
         this->name = "parallel_order_gr";
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
-     * @param cores The number of cores/threads to use
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -108,6 +104,7 @@ class recompression_order_gr : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
@@ -307,7 +304,6 @@ class recompression_order_gr : public recompression<variable_t> {
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-//                    rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
@@ -374,8 +370,6 @@ class recompression_order_gr : public recompression<variable_t> {
             size_t new_text_size = text.size() - block_counts[block_counts.size() - 1];
             if (new_text_size > 1 && block_count > 0) {
                 text_t new_text(new_text_size);
-//                new_text.reserve(new_text_size);
-//                new_text.resize(new_text_size);
 
 #pragma omp parallel num_threads(this->cores)
                 {
@@ -391,7 +385,6 @@ class recompression_order_gr : public recompression<variable_t> {
                 text = std::move(new_text);
             } else if (new_text_size == 1) {
                 text.resize(new_text_size);
-//                text.shrink_to_fit();
             }
 #ifdef BENCH
             const auto endTimeCompact = recomp::timer::now();
@@ -446,7 +439,6 @@ class recompression_order_gr : public recompression<variable_t> {
 #ifdef BENCH
         const auto startTimeMult = recomp::timer::now();
 #endif
-//        partitioned_radix_sort(adj_list);
         ips4o::parallel::sort(adj_list.begin(), adj_list.end(), std::less<adj_t>(), this->cores);
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
@@ -535,25 +527,6 @@ class recompression_order_gr : public recompression<variable_t> {
                 rl_count++;
             }
         }
-//        for (size_t i = 0; i < adj_list.size(); ++i) {
-//            if (std::get<0>(adj_list[i])) {
-//                if (!partition[std::get<1>(adj_list[i])] &&
-//                    partition[std::get<2>(adj_list[i])]) {  // bc in text and b in right set and c in left
-//                    rl_count++;
-//                } else if (partition[std::get<1>(adj_list[i])] &&
-//                           !partition[std::get<2>(adj_list[i])]) {  // bc in text and b in left set and c in right
-//                    lr_count++;
-//                }
-//            } else {
-//                if (!partition[std::get<1>(adj_list[i])] &&
-//                    partition[std::get<2>(adj_list[i])]) {  // cb in text and c in left set and b in right
-//                    lr_count++;
-//                } else if (partition[std::get<1>(adj_list[i])] &&
-//                           !partition[std::get<2>(adj_list[i])]) {  // cb in text and c in right set and b in left
-//                    rl_count++;
-//                }
-//            }
-//        }
 #ifdef BENCH
         const auto endTimeCount = recomp::timer::now();
         const auto timeSpanCount = endTimeCount - startTimeCount;
@@ -575,6 +548,7 @@ class recompression_order_gr : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
@@ -632,7 +606,6 @@ class recompression_order_gr : public recompression<variable_t> {
                     len += 1;
                 }
                 new_rules.emplace_back(left, right, len);
-//                rlslp.non_terminals.emplace_back(left, right, len);
             }
         }
 
@@ -673,7 +646,6 @@ class recompression_order_gr : public recompression<variable_t> {
                     len += 1;
                 }
                 new_rules.emplace_back(left, right, len);
-//                rlslp.non_terminals.emplace_back(left, right, len);
             }
         }
 
@@ -690,8 +662,6 @@ class recompression_order_gr : public recompression<variable_t> {
                   << std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanRules).count());
 #endif
 
-//        rlslp.blocks.reserve(rlslp.size());
-//        rlslp.blocks.resize(rlslp.size()/*, false*/);
         bv.resize(rlslp.size(), false);
 
 #ifdef BENCH
@@ -708,8 +678,6 @@ class recompression_order_gr : public recompression<variable_t> {
                     bool p_l = (*ti).second;
                     bool p_r = (*tn).second;
                     if (p_l == part_l && p_l != p_r) {
-//                    DLOG(INFO) << "Pair (" << text[i] << "," << text[i + 1] << ") found at " << i << " by thread "
-//                               << thread_id;
                         auto pair = std::make_pair(text[i], text[i + 1]);
                         text[i++] = pairs[pair];
                         text[i] = DELETED;
@@ -746,7 +714,6 @@ class recompression_order_gr : public recompression<variable_t> {
 #endif
 
         text.resize(new_text_size);
-//        text.shrink_to_fit();
 
 #ifdef BENCH
         const auto endTime = recomp::timer::now();

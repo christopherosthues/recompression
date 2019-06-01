@@ -72,7 +72,7 @@ The benchmark scripts are:
 
 ## Getting started
 
-This library is a header only library. The recompression.hpp header in the include directory provides all functionality of the library.
+The recompression.hpp header in the include directory provides all functionality of the library.
 
 ```cpp
 #include <memory>

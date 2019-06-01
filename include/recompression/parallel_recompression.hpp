@@ -28,6 +28,11 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ * This class is a parallel implementation of the recompression computing a sequential undirected maximum cut.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_recompression : public recompression<variable_t> {
  public:
@@ -35,7 +40,6 @@ class parallel_recompression : public recompression<variable_t> {
     typedef typename recompression<variable_t>::bv_t bv_t;
     typedef size_t adj_t;
     typedef ui_vector<adj_t> adj_list_t;
-//    typedef std::unordered_map<variable_t, bool> partition_t;
     typedef ui_vector<bool> partition_t;
 
     typedef std::pair<variable_t, size_t> position_t;
@@ -51,14 +55,6 @@ class parallel_recompression : public recompression<variable_t> {
 
     using recompression<variable_t>::recomp;
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (biggest symbol used in the text)
-     * @param cores The number of cores to use
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -101,6 +97,14 @@ class parallel_recompression : public recompression<variable_t> {
  protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
+    /**
+     * @brief Compacts the text
+     *
+     * @param text[in,out] The text
+     * @param compact_bounds[in]
+     * @param copy_bounds[in]
+     * @param count[in]
+     */
     inline void compact(text_t& text,
                         const ui_vector<size_t>& compact_bounds,
                         const ui_vector<size_t>& copy_bounds,
@@ -163,6 +167,7 @@ class parallel_recompression : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
@@ -431,7 +436,7 @@ class parallel_recompression : public recompression<variable_t> {
      *
      * The adjacency list is stored as a list of text positions.
      *
-     * @param text The text
+     * @param text[in] The text
      * @param adj_list[out] The adjacency list (represented as text positions)
      */
     virtual void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
@@ -494,6 +499,16 @@ class parallel_recompression : public recompression<variable_t> {
 #endif
     }
 
+    /**
+     * @brief Computes a directed maximum cut based on the given undirected cut represented by the partition.
+     *
+     * @param text[in] The text
+     * @param partition[in,out] The partition
+     * @param adj_list[in] The adjacency list
+     * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
+     *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
+     * @param minimum[in] The smallest symbol in the text
+     */
     virtual void directed_cut(const text_t& text,
                               partition_t& partition,
                               adj_list_t& adj_list,
@@ -527,10 +542,10 @@ class parallel_recompression : public recompression<variable_t> {
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
      *
      * @param text[in] The text
-     * @param adj_list[in] The adjacency list of the text (text positions)
      * @param partition[out] The partition
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
+     * @param minimum[in] The smallest symbol in the text
      */
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) {
 #ifdef BENCH
@@ -556,9 +571,6 @@ class parallel_recompression : public recompression<variable_t> {
         std::cout << " init_partition=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanInitPar).count();
         const auto startTimePar = recomp::timer::now();
 #endif
-//        std::cout << "partition: " << partition.size() << std::endl;
-//        std::cout << "val: " << text[adj_list[0] + 1] - minimum << std::endl;
-//        std::cout << "val: " << text[adj_list[0]] - minimum << std::endl;
         int l_count = 0;
         int r_count = 0;
         variable_t val = 0;
@@ -579,23 +591,17 @@ class parallel_recompression : public recompression<variable_t> {
             }
 
             if (val < text_i) {
-//                std::cout << "val: " << val - minimum << std::endl;
                 partition[val - minimum] = l_count > r_count;
                 l_count = 0;
                 r_count = 0;
                 val = text_i;
             }
-//            if (partition.find(text_i1) == partition.end()) {
-//                partition[text_i1] = false;
-//            }
-//            std::cout << "val: " << text_i1 - minimum << std::endl;
             if (partition[text_i1 - minimum]) {
                 r_count++;
             } else {
                 l_count++;
             }
         }
-//        std::cout << "val: " << val - minimum << std::endl;
         partition[val - minimum] = l_count > r_count;
 
 #ifdef GRAPH_STATS
@@ -622,13 +628,9 @@ class parallel_recompression : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
-//#ifdef BENCH
-//        const auto startTime = recomp::timer::now();
-//        std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
-//                  << " level=" << this->level << " cores=" << this->cores;
-//#endif
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
         std::cout << "RESULT algo=" << this->name << "_pcomp dataset=" << this->dataset << " text=" << text.size()
@@ -647,7 +649,6 @@ class parallel_recompression : public recompression<variable_t> {
 
         const auto max_letters = rlslp.size() + rlslp.terminals - minimum;
         partition_t partition(max_letters);
-//        partition_t partition;
 
         size_t pair_count = 0;
         bool part_l = false;
@@ -726,9 +727,6 @@ class parallel_recompression : public recompression<variable_t> {
                 pair_counts[thread_id] = cb + pair_overlaps[thread_id] - bounds[thread_id];
             }
         }
-//        {
-//            auto discard = std::move(partition);
-//        }
         partition.resize(1);
         pair_overlaps.resize(1);
 #ifdef BENCH

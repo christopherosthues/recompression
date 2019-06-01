@@ -20,10 +20,10 @@ namespace recomp {
 const term_t CHAR_ALPHABET = 256;
 
 /**
-     * @brief A structure to represent a non-terminal.
-     *
-     * A non-terminal consists of the length of the string that is derived by the non-terminal and its production rule
-     */
+ * @brief A structure to represent a non-terminal.
+ *
+ * A non-terminal consists of the length of the string that is derived by the non-terminal and its production rule
+ */
 template<typename variable_t>
 struct non_terminal {
  public:

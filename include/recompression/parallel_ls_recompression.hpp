@@ -25,6 +25,12 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ * This class is a parallel implementation of the recompression computing the undirected maximum cut using local search
+ * based on a random partition. Counts also the number of new generated production rules like parallel_lp_recompression.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> {
  public:
@@ -43,14 +49,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
         this->name = "parallel_ls";
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
-     * @param cores The number of cores/threads to use
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -95,6 +93,15 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
  protected:
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
+    /**
+     * @brief Compacts the text by copying the symbols.
+     *
+     * @param text[in,out] The text
+     * @param compact_bounds[in] The bounds for the cores to copy from
+     * @param copy_bounds[in] The bounds for the cores to copy to
+     * @param count[in] The number of found blocks/pairs
+     * @param mapping The mapping of the effective alphabet to the replaced symbols
+     */
     inline void compact(text_t& text,
                         const ui_vector<size_t>& compact_bounds,
                         const ui_vector<size_t>& copy_bounds,
@@ -158,10 +165,11 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
     }
 
     /**
-     * @brief
+     * @brief Computes for each symbol in the text its rank in the alphabet and replaces all symbols with it.
      *
-     * @param text
-     * @param mapping
+     * @param text[in,out] The text
+     * @param rlslp[in] The rlslp
+     * @param mapping[out] The mapping from the rank to the symbol
      */
     inline void compute_mapping(text_t& text,
                                 rlslp<variable_t>& rlslp,
@@ -262,7 +270,6 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
      *
      * @param text[in] The text
-     * @param adj_list[in] The adjacency list of the text (text positions)
      * @param partition[out] The partition
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
@@ -451,6 +458,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH

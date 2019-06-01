@@ -25,6 +25,10 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_ls5_recompression : public parallel_ls_recompression<variable_t> {
  public:

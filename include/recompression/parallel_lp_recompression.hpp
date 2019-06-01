@@ -21,6 +21,14 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ * This class is a parallel implementation of the recompression computing an undirected maximum cut using the sequential
+ * greedy approximation algorithm. Additionally the directed maximum cut algorithm counts the number of new generated
+ * production rules to choose the partition which generates less if the cut values of the two partition of the directed
+ * maximum cut are equal.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_lp_recompression : public parallel_recompression<variable_t> {
  public:
@@ -127,6 +135,7 @@ class parallel_lp_recompression : public parallel_recompression<variable_t> {
      * @param partition[in,out] The partition
      * @param adj_list[in] The adjacency list of the text
      * @param part_l[in,out] Flag to indicate which partition set is the left set
+     * @param minimum[in] The smallest symbol in the text
      */
     inline virtual void directed_cut(const text_t& text,
                                      partition_t& partition,

@@ -27,6 +27,10 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class recompression_order_ls : public recompression<variable_t> {
  public:
@@ -51,14 +55,6 @@ class recompression_order_ls : public recompression<variable_t> {
         this->name = "parallel_order_ls";
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
-     * @param cores The number of cores/threads to use
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -109,6 +105,7 @@ class recompression_order_ls : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void bcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
@@ -308,7 +305,6 @@ class recompression_order_ls : public recompression<variable_t> {
 
                     auto bc = distinct_blocks[n_threads];
                     auto rlslp_size = nt_count + bc;
-//                    rlslp.reserve(rlslp_size);
                     rlslp.resize(rlslp_size);
                     rlslp.blocks += bc;
                     bv.resize(rlslp_size, true);
@@ -377,8 +373,6 @@ class recompression_order_ls : public recompression<variable_t> {
             size_t new_text_size = text.size() - block_counts[block_counts.size() - 1];
             if (new_text_size > 1 && block_count > 0) {
                 text_t new_text(new_text_size);
-//                new_text.reserve(new_text_size);
-//                new_text.resize(new_text_size);
 
 #pragma omp parallel num_threads(this->cores)
                 {
@@ -394,7 +388,6 @@ class recompression_order_ls : public recompression<variable_t> {
                 text = std::move(new_text);
             } else if (new_text_size == 1) {
                 text.resize(new_text_size);
-//                text.shrink_to_fit();
             }
 #ifdef BENCH
             const auto endTimeCompact = recomp::timer::now();
@@ -449,7 +442,6 @@ class recompression_order_ls : public recompression<variable_t> {
 #ifdef BENCH
         const auto startTimeMult = recomp::timer::now();
 #endif
-//        partitioned_radix_sort(adj_list);
         ips4o::parallel::sort(adj_list.begin(), adj_list.end(), std::less<adj_t>(), this->cores);
 #ifdef BENCH
         const auto endTimeMult = recomp::timer::now();
@@ -561,6 +553,7 @@ class recompression_order_ls : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH

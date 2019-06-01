@@ -12,6 +12,10 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ * This class is a parallel implementation of the recompression
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_gr2_recompression : public parallel_rnd_recompression<variable_t> {
  public:
@@ -40,8 +44,12 @@ class parallel_gr2_recompression : public parallel_rnd_recompression<variable_t>
      * @param partition[out] The partition
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
+     * @param minimum[in] The smallest symbol in the text
      */
-    inline virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) override {
+    inline virtual void compute_partition(const text_t& text,
+                                          partition_t& partition,
+                                          bool& part_l,
+                                          variable_t minimum) override {
 #ifdef BENCH
         const auto startTime = recomp::timer::now();
 #endif
@@ -85,8 +93,6 @@ class parallel_gr2_recompression : public parallel_rnd_recompression<variable_t>
 
 #pragma omp single
                 {
-//                bounds.reserve(n_threads + 1);
-//                bounds.resize(n_threads + 1, adj_list_size);
                     bounds.resize(n_threads + 1);
                     bounds[n_threads] = adj_list_size;
                 }

@@ -25,6 +25,13 @@ namespace recomp {
 
 namespace parallel {
 
+/**
+ * This class is a parallel implementation of the recompression computing a random partition in parallel.
+ * The undirected maximum cut and the directed maximum cut are repeated @code{iters} times returning the partition
+ * with the best cut value of all partitions.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class parallel_rnddir_recompression : public parallel_lp_recompression<variable_t> {
  private:
@@ -74,14 +81,6 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
         }
     }
 
-    /**
-     * @brief Builds a context free grammar in Chomsky normal form using the recompression technique.
-     *
-     * @param text The text
-     * @param rlslp The rlslp
-     * @param alphabet_size The size of the alphabet (minimum biggest symbol used in the text)
-     * @param cores The number of cores/threads to use
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -130,10 +129,10 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
      *
      * @param text[in] The text
-     * @param adj_list[in] The adjacency list of the text (text positions)
      * @param partition[out] The partition
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
+     * @param minimum[in] The smallest symbol in the text
      */
     virtual void compute_partition(const text_t& text, partition_t& partition, bool& part_l, variable_t minimum) {
 #ifdef BENCH
@@ -174,8 +173,6 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
             std::cout << " undir_cut=" << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanPar).count();
             const auto startTimeCount = recomp::timer::now();
 #endif
-//            int prod_l = 0;
-//            int prod_r = 0;
             ui_vector<size_t> bounds;
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
             {
@@ -251,7 +248,6 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
                 const auto startTimePar = recomp::timer::now();
 #endif
                 partition_t tmp_part(partition.size());
-                //                    tmp_cut = 0;
                 tmp_part[0] = false;  // ensure, that minimum one symbol is in the left partition and one in the right
                 tmp_part[tmp_part.size() - 1] = true;
 #pragma omp parallel num_threads(this->cores)
@@ -263,16 +259,6 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
                     for (size_t i = 1; i < tmp_part.size() - 1; ++i) {
                         tmp_part[i] = (distribution(gen) == 1);
                     }
-
-
-//#pragma omp for schedule(static) reduction(+:tmp_cut)
-//                    for (size_t i = 0; i < adj_list.size(); ++i) {
-//                        variable_t char_i = text[adj_list[i]] - minimum;
-//                        variable_t char_i1 = text[adj_list[i] + 1] - minimum;
-//                        if (tmp_part[char_i] != tmp_part[char_i1]) {
-//                            tmp_cut++;
-//                        }
-//                    }
                 }
 
 #ifdef BENCH
@@ -394,10 +380,6 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
             }
         }
 #ifdef BENCH
-        //        const auto endTimeCount = recomp::timer::now();
-//        const auto timeSpanCount = endTimeCount - startTimeCount;
-//        std::cout << " lr=" << lr_count << " rl=" << rl_count << " dir_cut="
-//                  << std::chrono::duration_cast<std::chrono::milliseconds>(timeSpanCount).count();
         std::cout << " lr=" << lr_count << " rl=" << rl_count;
         const auto endTime = recomp::timer::now();
         const auto timeSpan = endTime - startTime;
@@ -411,6 +393,7 @@ class parallel_rnddir_recompression : public parallel_lp_recompression<variable_
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH

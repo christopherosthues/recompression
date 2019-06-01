@@ -16,6 +16,11 @@
 
 namespace recomp {
 
+/**
+ * This class is a sequential implementation of the recompression.
+ *
+ * @tparam variable_t The type of non-terminals
+ */
 template<typename variable_t = var_t>
 class recompression_fast : public recompression<variable_t> {
  public:
@@ -33,17 +38,6 @@ class recompression_fast : public recompression<variable_t> {
         this->name = "fast_seq";
     }
 
-    /**
-     * @brief Builds the straight-line program generating the given text using the recompression technique.
-     *
-     * A straight-line program (SLP) is in particular a context free grammar in Chomsky normal form.
-     * First all letters in the text are replaced by non-terminals which derive the letters. Then
-     * the block compression bcomp and the pair compression pcomp alternately compress blocks and local
-     * pairs in the texts resulting of the previous compression. This will be repeated until the text
-     * contains only one letter.
-     *
-     * @param text The text
-     */
     inline virtual void recomp(text_t& text,
                                rlslp<variable_t>& rlslp,
                                const size_t& alphabet_size,
@@ -152,6 +146,7 @@ class recompression_fast : public recompression<variable_t> {
      *
      * @param text[in,out] The text
      * @param rlslp[in,out] The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
@@ -259,10 +254,10 @@ class recompression_fast : public recompression<variable_t> {
     }
 
     /**
-     * @brief Computes the multiset representing the adjacency graph of the symbols in the text.
+     * @brief Computes the adjacency list of the text.
      *
      * @param text[in] The text
-     * @return The multiset
+     * @param adj_list[out] The adjacency list of the text
      */
     inline void compute_adj_list(const text_t& text, adj_list_t& adj_list) {
 #ifdef BENCH
@@ -298,10 +293,8 @@ class recompression_fast : public recompression<variable_t> {
     /**
      * @brief Computes the partition based on the adjacency graph of the text given by the multiset.
      *
-     * @param adj_list[i] Multiset representing the adjacency graph of the text
-     * @param alphabet_size[in] The size of the alphabet used in the text
-     *
-     * @return The partition of the symbols in the alphabet to maximize the number of pairs to be compressed
+     * @param adj_list[in] Multiset representing the adjacency graph of the text
+     * @param partition[out] The partitioning of the symbols
      */
     inline void compute_partition(const adj_list_t& adj_list, partition_t& partition) {
 #ifdef BENCH
@@ -390,8 +383,7 @@ class recompression_fast : public recompression<variable_t> {
      *
      * @param text[in] The text
      * @param alphabet_size[in] The size of the alphabet used in the text
-     *
-     * @return The partition of the letters in the current alphabet represented by a bitvector
+     * @param partition[out] The partitioning of the symbols
      */
     inline void partition(const text_t& text,
                           const size_t& alphabet_size,
@@ -427,6 +419,7 @@ class recompression_fast : public recompression<variable_t> {
      *
      * @param text[in,out] The text
      * @param rlslp[in,out] The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      * @param alphabet_size[in,out] The size of the alphabet used in the text
      * @param mapping[in,out] The mapping of the symbols in the text to the non-terminal
      */
