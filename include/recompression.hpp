@@ -62,6 +62,16 @@ void experimental_variants(std::vector<std::string>& variants) {
     variants.emplace_back("parallel_parhip");
 }
 
+/**
+ * @brief Creates a unique pointer for the given class name.
+ *
+ * @tparam variable_t The type of non-terminals
+ * @param name The name of the recompression algorithm
+ * @param dataset The dataset to test
+ * @param parhip The path to the executable of parhip
+ * @param dir The directory where parhip puts the partition file
+ * @return A unique pointer of the recompression class
+ */
 template<typename variable_t = var_t>
 std::unique_ptr<recompression<variable_t>> create_recompression(const std::string& name, std::string& dataset, std::string parhip, std::string dir) {
 
@@ -128,6 +138,14 @@ std::unique_ptr<recompression<variable_t>> create_recompression(const std::strin
 
 namespace coder {
 
+/**
+ * @brief Encodes the given rlslp with the specified encoder and writes it to the file.
+ *
+ * @tparam variable_t The type of non-terminals
+ * @param coder The name of the coder
+ * @param file_name The name of the file to write to
+ * @param rlslp The rlslp to encode
+ */
 template<typename variable_t = var_t>
 void encode(const std::string& coder, const std::string& file_name, rlslp<variable_t>& rlslp) {
     if (coder == "plain") {
@@ -145,6 +163,14 @@ void encode(const std::string& coder, const std::string& file_name, rlslp<variab
     }
 }
 
+/**
+ * @brief Reads and decodes the rlslp from the given file with the specified decoder.
+ *
+ * @tparam variable_t The type of non-terminals
+ * @param coder The name of the coder
+ * @param file_name The name of the file to read from
+ * @return The decoded rlslp
+ */
 template<typename variable_t = var_t>
 rlslp<variable_t> decode(const std::string& coder, const std::string& file_name) {
     if (coder == "plain") {
@@ -164,6 +190,12 @@ rlslp<variable_t> decode(const std::string& coder, const std::string& file_name)
     }
 }
 
+/**
+ * @brief Returns the file extension used for the specified coder.
+ *
+ * @param name The name of the coder
+ * @return The file extension for the coder
+ */
 std::string get_coder_extension(const std::string& name) {
     if (name == "plain") {
         return coder::PlainRLSLPCoder::k_extension;

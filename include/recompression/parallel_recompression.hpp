@@ -101,9 +101,9 @@ class parallel_recompression : public recompression<variable_t> {
      * @brief Compacts the text
      *
      * @param text[in,out] The text
-     * @param compact_bounds[in]
-     * @param copy_bounds[in]
-     * @param count[in]
+     * @param compact_bounds[in] The bounds for the cores to copy from
+     * @param copy_bounds[in] The bounds for the cores to copy to
+     * @param count[in] The number of found blocks/pairs
      */
     inline void compact(text_t& text,
                         const ui_vector<size_t>& compact_bounds,

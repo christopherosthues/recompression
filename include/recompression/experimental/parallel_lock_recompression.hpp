@@ -456,7 +456,7 @@ class parallel_lock_recompression : public recompression<variable_t> {
      *
      * @param adj_list[in] The adjacency list of the text
      * @param partition[out] The partition
-     * @param part_l[out] Indicates which value TODO docu
+     * @param part_l[out] Indicates which value is used for the left partition set
      */
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
         adj_list_t adj_list(text.size() - 1);
@@ -630,6 +630,7 @@ class parallel_lock_recompression : public recompression<variable_t> {
      *
      * @param text The text
      * @param rlslp The rlslp
+     * @param bv[in,out] The bitvector to indicate which rules derive blocks
      */
     inline void pcomp(text_t& text, rlslp<variable_t>& rlslp, bv_t& bv) {
 #ifdef BENCH
@@ -753,7 +754,6 @@ class parallel_lock_recompression : public recompression<variable_t> {
             }
         };
         ips4o::parallel::sort(positions.begin(), positions.end(), sort_cond, this->cores);
-//        parallel::partitioned_radix_sort(sort_pairs);
 #ifdef BENCH
         const auto endTimeSort = recomp::timer::now();
         const auto timeSpanSort = endTimeSort - startTimeSort;
@@ -816,7 +816,6 @@ class parallel_lock_recompression : public recompression<variable_t> {
 
                 auto pc = distinct_pairs[n_threads];
                 auto rlslp_size = nt_count + pc;
-//                rlslp.reserve(rlslp_size);
                 rlslp.resize(rlslp_size);
                 bv.resize(rlslp_size, false);
             }
@@ -897,8 +896,6 @@ class parallel_lock_recompression : public recompression<variable_t> {
         size_t new_text_size = text.size() - pair_counts[pair_counts.size() - 1];
         if (new_text_size > 1 && pair_count > 0) {
             text_t new_text(new_text_size);
-//            new_text.reserve(new_text_size);
-//            new_text.resize(new_text_size);
 
 #pragma omp parallel num_threads(this->cores)
             {
@@ -914,7 +911,6 @@ class parallel_lock_recompression : public recompression<variable_t> {
             text = std::move(new_text);
         } else if (new_text_size == 1) {
             text.resize(new_text_size);
-//            text.shrink_to_fit();
         }
 #ifdef BENCH
         const auto endTimeCompact = recomp::timer::now();
