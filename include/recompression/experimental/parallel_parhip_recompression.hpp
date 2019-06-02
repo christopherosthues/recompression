@@ -28,7 +28,7 @@ namespace recomp {
 namespace parallel {
 
 /**
- * This class is a parallel implementation of the recompression computing a parallel undirected maximum cut based
+ * @brief This class is a parallel implementation of the recompression computing a parallel undirected maximum cut based
  * on the partition computed by parhip.
  *
  * @tparam variable_t The type of non-terminals

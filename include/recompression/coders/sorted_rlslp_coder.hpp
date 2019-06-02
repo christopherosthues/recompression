@@ -15,8 +15,8 @@ namespace recomp {
 namespace coder {
 
 /**
- * This class implements a coder that encodes and decodes the rules of the rlslp by first permuting and renaming the
- * variables such that the first symbols of each pairs are sorted in increasing order.
+ * @brief This class implements a coder that encodes and decodes the rules of the rlslp by first permuting and renaming
+ * the variables such that the first symbols of each pairs are sorted in increasing order.
  */
 class SortedRLSLPCoder {
  public:

@@ -22,8 +22,10 @@ namespace recomp {
 namespace parallel {
 
 /**
- * This class is a parallel implementation of the recompression computing an undirected maximum cut using the sequential
- * greedy approximation algorithm. Additionally the directed maximum cut algorithm counts the number of new generated
+ * @brief This class is a parallel implementation of the recompression computing an undirected maximum cut using the
+ * sequential greedy approximation algorithm.
+ *
+ * Additionally the directed maximum cut algorithm counts the number of new generated
  * production rules to choose the partition which generates less if the cut values of the two partition of the directed
  * maximum cut are equal.
  *

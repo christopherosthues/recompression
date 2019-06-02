@@ -26,7 +26,8 @@ namespace recomp {
 namespace parallel {
 
 /**
- * This class is a parallel implementation of the recompression computing a random partition in parallel.
+ * @brief This class is a parallel implementation of the recompression computing a random partition in parallel.
+ *
  * The undirected maximum cut and the directed maximum cut are repeated @code{iters} times returning the partition
  * with the best cut value of all partitions. Counts also the number of new generated production rules like
  * parallel_lp_recompression.

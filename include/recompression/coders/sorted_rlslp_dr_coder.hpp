@@ -19,10 +19,11 @@ namespace recomp {
 namespace coder {
 
 /**
- * This class implements an experimental coder that encodes and decodes the rules of the rlslp by first permuting
- * and renaming the variables such that the first symbols of each pairs are sorted in increasing order. The right
- * symbols of the pairs are also getting delta and additionally elias gamma encoded, the signs are dropped. The
- * signs are encoded in an extra compressed bitvector.
+ * @brief This class implements an experimental coder that encodes and decodes the rules of the rlslp by first permuting
+ * and renaming the variables such that the first symbols of each pairs are sorted in increasing order.
+ *
+ * The right symbols of the pairs are also getting delta and additionally elias gamma encoded, the signs are dropped.
+ * The signs are encoded in an extra compressed bitvector.
  */
 class SortedRLSLPDRCoder {
  public:

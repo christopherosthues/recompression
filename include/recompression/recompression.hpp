@@ -11,7 +11,7 @@
 namespace recomp {
 
 /**
- * This is the interface for all implementations of the recompression provided by this library.
+ * @brief This is the interface for all implementations of the recompression provided by this library.
  *
  * @tparam variable_t The type of non-terminals
  */

@@ -13,8 +13,8 @@ namespace recomp {
 namespace parallel {
 
 /**
- * The class is a parallel implementation of the recompression computing an undirected maximum cut using a parallel
- * greedy algorithm. The initial partition is initialize with alternating values
+ * @brief The class is a parallel implementation of the recompression computing an undirected maximum cut using a
+ * parallel greedy algorithm. The initial partition is initialize with alternating values
  *
  * @tparam variable_t The type of non-terminals
  */

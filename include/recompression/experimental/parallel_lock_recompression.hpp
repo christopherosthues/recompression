@@ -29,7 +29,7 @@ namespace recomp {
 namespace parallel {
 
 /**
- * This class is a parallel implementation of the recompression computing an undirected maximum cut using a
+ * @brief This class is a parallel implementation of the recompression computing an undirected maximum cut using a
  * parallelized greedy algorithm with locks.
  *
  * @tparam variable_t The type of non-terminals

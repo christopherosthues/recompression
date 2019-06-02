@@ -13,8 +13,10 @@ namespace recomp {
 namespace parallel {
 
 /**
- * The class is a parallel implementation of the recompression computing an undirected maximum cut using a parallel
- * greedy algorithm. Counts also the number of new generated production rules like parallel_lp_recompression.
+ * @brief The class is a parallel implementation of the recompression computing an undirected maximum cut using a
+ * parallel greedy algorithm.
+ *
+ * Counts also the number of new generated production rules like parallel_lp_recompression.
  *
  * @tparam variable_t The type of non-terminals
  */

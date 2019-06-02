@@ -17,7 +17,7 @@
 namespace recomp {
 
 /**
- * This class is a sequential implementation of the recompression.
+ * @brief This class is a sequential implementation of the recompression.
  *
  * @tparam variable_t The type of non-terminals
  */

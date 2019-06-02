@@ -20,7 +20,7 @@
 namespace recomp {
 
 /**
- * This class is a sequential implementation of the recompression using unordered_maps.
+ * @brief This class is a sequential implementation of the recompression using unordered_maps.
  *
  * @tparam variable_t The type of non-terminals
  */
