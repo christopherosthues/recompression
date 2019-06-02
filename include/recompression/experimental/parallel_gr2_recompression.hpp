@@ -13,7 +13,9 @@ namespace recomp {
 namespace parallel {
 
 /**
- * This class is a parallel implementation of the recompression
+ * The class is a parallel implementation of the recompression computing an undirected maximum cut using a parallel
+ * greedy algorithm which is repeated two times.
+ *
  * @tparam variable_t The type of non-terminals
  */
 template<typename variable_t = var_t>

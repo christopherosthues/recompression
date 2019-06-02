@@ -28,6 +28,8 @@ namespace recomp {
 namespace parallel {
 
 /**
+ * This class is a parallel implementation of the recompression computing a sequential undirected maximum cut. Renames
+ * the pairs using the adjacency list. At first all pairs ba with a < b are renamed than all pairs ab.
  *
  * @tparam variable_t The type of non-terminals
  */

@@ -100,7 +100,7 @@ class parallel_ls_recompression : public parallel_rnd_recompression<variable_t> 
      * @param compact_bounds[in] The bounds for the cores to copy from
      * @param copy_bounds[in] The bounds for the cores to copy to
      * @param count[in] The number of found blocks/pairs
-     * @param mapping The mapping of the effective alphabet to the replaced symbols
+     * @param mapping[in] The mapping of the effective alphabet to the replaced symbols
      */
     inline void compact(text_t& text,
                         const ui_vector<size_t>& compact_bounds,

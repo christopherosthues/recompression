@@ -29,6 +29,8 @@ namespace recomp {
 namespace parallel {
 
 /**
+ * This class is a parallel implementation of the recompression computing an undirected maximum cut using a
+ * parallelized greedy algorithm with locks.
  *
  * @tparam variable_t The type of non-terminals
  */
@@ -454,7 +456,7 @@ class parallel_lock_recompression : public recompression<variable_t> {
      *
      * @param adj_list[in] The adjacency list of the text
      * @param partition[out] The partition
-     * @param part_l[out] Indicates which value
+     * @param part_l[out] Indicates which value TODO docu
      */
     inline void compute_partition(const text_t& text, partition_t& partition, bool& part_l) {
         adj_list_t adj_list(text.size() - 1);

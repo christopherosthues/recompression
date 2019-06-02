@@ -28,7 +28,8 @@ namespace parallel {
 /**
  * This class is a parallel implementation of the recompression computing a random partition in parallel.
  * The computation of the undirected maximum cut is repeates @code{iters} times returning the partition
- * with the best cut value of all partitions.
+ * with the best cut value of all partitions. Counts also the number of new generated production rules
+ * like parallel_lp_recompression.
  *
  * @tparam variable_t The type of non-terminals
  */

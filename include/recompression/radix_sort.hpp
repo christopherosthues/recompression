@@ -20,13 +20,13 @@
 namespace recomp {
 
 /**
- * @brief TODO
+ * @brief Returns the D-th block of digits of the integer in LSD order.
  *
  * @tparam value_t The type of integer value
  * @tparam D The number of digits
  * @param value The value
  * @param digits The block of digits to extract (0 gives the least significant block of D bits)
- * @return TODO
+ * @return the D-th block of digits of the integer in LSD order.
  */
 template<typename value_t, std::uint8_t D = 8>
 value_t digits(value_t value, std::uint8_t digits) {
@@ -126,7 +126,6 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
 
 #pragma omp single
         {
-//            DLOG(INFO) << "Init bounds";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i] = new size_t[n_threads + 1];
                 bounds[i][0] = 0;
@@ -136,7 +135,6 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
             std::array<std::deque<T>, n_buckets> t_buckets;
-//            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vector.size(); ++i) {
                 t_buckets[digits<variable_t, D>(text[vector[i]], n_blocks - 1, mask)].emplace_back(vector[i]);
@@ -151,7 +149,6 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
 //            }
 #endif
 
-//            DLOG(INFO) << "Write lengths";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i][thread_id + 1] = t_buckets[i].size();
             }
@@ -159,7 +156,6 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
 #pragma omp barrier
 #pragma omp single
             {
-//                DLOG(INFO) << "Computing prefix sums";
                 size_t buck = 0;
                 for (size_t i = 0; i < bounds.size(); ++i) {
                     for (size_t j = 1; j < n_threads + 1; ++j) {
@@ -174,14 +170,12 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
                     buckets[i].resize(buckets[i].size() + bounds[i][n_threads]);
                     hist[i + 1] = hist[i] + bounds[i][n_threads];
                     if (hist[i] != hist[i+1]) {
-//                        DLOG(INFO) << "Adding bucket " << i << ", hist[i]: " << (hist[i] + bounds[i][n_threads]);
                         bucks[buck++] = i;
                     }
                 }
                 bucks.resize(buck);
             }
 
-//            DLOG(INFO) << "Computing global buckets";
             for (size_t i = 0; i < buckets.size(); ++i) {
                 std::copy(t_buckets[i].begin(), t_buckets[i].end(), buckets[i].begin() + bounds[i][thread_id]);
             }
@@ -204,11 +198,9 @@ void partitioned_parallel_radix_sort_pairs(text_t& text, ui_vector<T>& vector, c
                 if (insuff_key) {
                     n_blocks--;
                 }
-//                DLOG(INFO) << "Key not sufficient: " << std::to_string(insuff_key);
             }
         }
     }
-//    DLOG(INFO) << "Delete bounds arrays";
     for (size_t i = 0; i < bounds.size(); ++i) {
         delete[] bounds[i];
     }
@@ -296,7 +288,6 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
 
 #pragma omp single
         {
-//            DLOG(INFO) << "Init bounds";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i] = new size_t[n_threads + 1];
                 bounds[i][0] = 0;
@@ -306,7 +297,6 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
             std::array<std::deque<T>, n_buckets> t_buckets;
-//            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vector.size(); ++i) {
                 t_buckets[digits<variable_t, D>(text[vector[i].second], n_blocks - 1, mask)].emplace_back(vector[i]);
@@ -321,7 +311,6 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
 //            }
 #endif
 
-//            DLOG(INFO) << "Write lengths";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i][thread_id + 1] = t_buckets[i].size();
             }
@@ -329,7 +318,6 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
 #pragma omp barrier
 #pragma omp single
             {
-//                DLOG(INFO) << "Computing prefix sums";
                 size_t buck = 0;
                 for (size_t i = 0; i < bounds.size(); ++i) {
                     for (size_t j = 1; j < n_threads + 1; ++j) {
@@ -344,14 +332,12 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
                     buckets[i].resize(buckets[i].size() + bounds[i][n_threads]);
                     hist[i + 1] = hist[i] + bounds[i][n_threads];
                     if (hist[i] != hist[i+1]) {
-//                        DLOG(INFO) << "Adding bucket " << i << ", hist[i]: " << (hist[i] + bounds[i][n_threads]);
                         bucks[buck++] = i;
                     }
                 }
                 bucks.resize(buck);
             }
 
-//            DLOG(INFO) << "Computing global buckets";
             for (size_t i = 0; i < buckets.size(); ++i) {
                 std::copy(t_buckets[i].begin(), t_buckets[i].end(), buckets[i].begin() + bounds[i][thread_id]);
             }
@@ -374,11 +360,9 @@ void partitioned_parallel_radix_sort_blocks(text_t& text, ui_vector<T>& vector, 
                 if (insuff_key) {
                     n_blocks--;
                 }
-//                DLOG(INFO) << "Key not sufficient: " << std::to_string(insuff_key);
             }
         }
     }
-//    DLOG(INFO) << "Delete bounds arrays";
     for (size_t i = 0; i < bounds.size(); ++i) {
         delete[] bounds[i];
     }
@@ -491,7 +475,6 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
 
 #pragma omp single
         {
-//            DLOG(INFO) << "Init bounds";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i] = new size_t[n_threads + 1];
                 bounds[i][0] = 0;
@@ -501,7 +484,6 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
             std::array<std::deque<variable_t>, n_buckets> t_buckets;
-//            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vec.size(); ++i) {
                 t_buckets[digits<variable_t, D>(vec[i], n_blocks - 1, mask)].emplace_back(vec[i]);
@@ -516,7 +498,6 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
 //            }
 #endif
 
-//            DLOG(INFO) << "Write lengths";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i][thread_id + 1] = t_buckets[i].size();
             }
@@ -524,7 +505,6 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
 #pragma omp barrier
 #pragma omp single
             {
-//                DLOG(INFO) << "Computing prefix sums";
                 size_t buck = 0;
                 for (size_t i = 0; i < bounds.size(); ++i) {
                     for (size_t j = 1; j < n_threads + 1; ++j) {
@@ -539,14 +519,12 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
                     buckets[i].resize(buckets[i].size() + bounds[i][n_threads]);
                     hist[i + 1] = hist[i] + bounds[i][n_threads];
                     if (hist[i] != hist[i+1]) {
-//                        DLOG(INFO) << "Adding bucket " << i << ", hist[i]: " << (hist[i] + bounds[i][n_threads]);
                         bucks[buck++] = i;
                     }
                 }
                 bucks.resize(buck);
             }
 
-//            DLOG(INFO) << "Computing global buckets";
             for (size_t i = 0; i < buckets.size(); ++i) {
                 std::copy(t_buckets[i].begin(), t_buckets[i].end(), buckets[i].begin() + bounds[i][thread_id]);
             }
@@ -569,11 +547,9 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
                 if (insuff_key) {
                     n_blocks--;
                 }
-//                DLOG(INFO) << "Key not sufficient: " << std::to_string(insuff_key);
             }
         }
     }
-//    DLOG(INFO) << "Delete bounds arrays";
     for (size_t i = 0; i < bounds.size(); ++i) {
         delete[] bounds[i];
     }
@@ -617,19 +593,6 @@ void partitioned_radix_sort(std::vector<variable_t>& vec, const size_t cores = s
             }
 
             // Exchange radix sort for the remaining blocks
-//            for (std::uint8_t j = 1; j < lsd_blocks; ++j) {
-//                for (size_t b = 0; b < queues.size(); ++b) {
-//                    for (size_t k = 0; k < sizes[b]; ++k) {
-//                        auto elem = queues[b].front();
-//                        queues[digits<variable_t, D>(elem.second, j, mask)].push(elem);
-//                        queues[b].pop();
-//                    }
-//                }
-//
-//                for (size_t b = 0; b < queues.size(); ++b) {
-//                    sizes[b] = queues[b].size();
-//                }
-//            }
 
             for (std::uint8_t j = 1; j < n_blocks - 1; ++j) {
                 for (size_t b = 0; b < queues.size(); ++b) {
@@ -686,7 +649,6 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
 
 #pragma omp single
         {
-//            DLOG(INFO) << "Init bounds";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i] = new size_t[n_threads + 1];
                 bounds[i][0] = 0;
@@ -696,7 +658,6 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
             std::array<std::deque<std::pair<variable_t, variable_t>>, n_buckets> t_buckets;
-//            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vec.size(); ++i) {
                 t_buckets[digits<variable_t, D>(vec[i].first, n_blocks - 1, mask)].emplace_back(vec[i]);
@@ -711,7 +672,6 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
 //            }
 #endif
 
-//            DLOG(INFO) << "Write lengths";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i][thread_id + 1] = t_buckets[i].size();
             }
@@ -719,7 +679,6 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
 #pragma omp barrier
 #pragma omp single
             {
-//                DLOG(INFO) << "Computing prefix sums";
                 size_t buck = 0;
                 for (size_t i = 0; i < bounds.size(); ++i) {
                     for (size_t j = 1; j < n_threads + 1; ++j) {
@@ -734,14 +693,12 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
                     buckets[i].resize(buckets[i].size() + bounds[i][n_threads]);
                     hist[i + 1] = hist[i] + bounds[i][n_threads];
                     if (hist[i] != hist[i+1]) {
-//                        DLOG(INFO) << "Adding bucket " << i << ", hist[i]: " << (hist[i] + bounds[i][n_threads]);
                         bucks[buck++] = i;
                     }
                 }
                 bucks.resize(buck);
             }
 
-//            DLOG(INFO) << "Computing global buckets";
             for (size_t i = 0; i < buckets.size(); ++i) {
                 std::copy(t_buckets[i].begin(), t_buckets[i].end(), buckets[i].begin() + bounds[i][thread_id]);
             }
@@ -763,11 +720,9 @@ void partitioned_radix_sort(std::vector<std::pair<variable_t, variable_t>>& vec,
                 if (insuff_key) {
                     n_blocks--;
                 }
-//                DLOG(INFO) << "Key not sufficient: " << std::to_string(insuff_key);
             }
         }
     }
-//    DLOG(INFO) << "Delete bounds arrays";
     for (size_t i = 0; i < bounds.size(); ++i) {
         delete[] bounds[i];
     }
@@ -873,7 +828,6 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 
 #pragma omp single
         {
-//            DLOG(INFO) << "Init bounds";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i] = new size_t[n_threads + 1];
                 bounds[i][0] = 0;
@@ -883,10 +837,8 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 #pragma omp barrier
         while (insuff_key && n_blocks > 0) {
             std::array<std::deque<std::tuple<variable_t, variable_t, bool>>, n_buckets> t_buckets;
-//            DLOG(INFO) << "MSD radix sort step for key block " << n_blocks;
 #pragma omp for schedule(static) nowait
             for (size_t i = 0; i < vec.size(); ++i) {
-//            auto bit_block = digits<variable_t, D>(vec[i].first, n_blocks - 1);
                 t_buckets[digits<variable_t, D>(std::get<0>(vec[i]), n_blocks - 1, mask)].emplace_back(vec[i]);
             }
 
@@ -899,7 +851,6 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 //            }
 #endif
 
-//            DLOG(INFO) << "Write lengths";
             for (size_t i = 0; i < bounds.size(); ++i) {
                 bounds[i][thread_id + 1] = t_buckets[i].size();
             }
@@ -907,7 +858,6 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
 #pragma omp barrier
 #pragma omp single
             {
-//                DLOG(INFO) << "Computing prefix sums";
                 size_t buck = 0;
                 for (size_t i = 0; i < bounds.size(); ++i) {
                     for (size_t j = 1; j < n_threads + 1; ++j) {
@@ -922,14 +872,12 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
                     buckets[i].resize(buckets[i].size() + bounds[i][n_threads]);
                     hist[i + 1] = hist[i] + bounds[i][n_threads];
                     if (hist[i] != hist[i+1]) {
-//                        DLOG(INFO) << "Adding bucket " << i << ", hist[i]: " << (hist[i] + bounds[i][n_threads]);
                         bucks[buck++] = i;
                     }
                 }
                 bucks.resize(buck);
             }
 
-//            DLOG(INFO) << "Computing global buckets";
             for (size_t i = 0; i < buckets.size(); ++i) {
                 std::copy(t_buckets[i].begin(), t_buckets[i].end(), buckets[i].begin() + bounds[i][thread_id]);
             }
@@ -951,11 +899,9 @@ void partitioned_radix_sort(std::vector<std::tuple<variable_t, variable_t, bool>
                 if (insuff_key) {
                     n_blocks--;
                 }
-//                DLOG(INFO) << "Key not sufficient: " << std::to_string(insuff_key);
             }
         }
     }
-//    DLOG(INFO) << "Delete bounds arrays";
     for (size_t i = 0; i < bounds.size(); ++i) {
         delete[] bounds[i];
     }
@@ -1064,7 +1010,6 @@ void bucket_sort(adj_list_t& adj_list, const size_t cores = std::thread::hardwar
             for (size_t i = 1; i < bounds_len + 1; ++i) {
                 bounds[i] += bounds[i - 1];
             }
-//            positions.resize(positions.size() + bounds[n_threads]);
         }
         std::copy(buckets[0].begin(), buckets[0].end(), adj_list.begin() + bounds[thread_id]);
         std::copy(buckets[1].begin(), buckets[1].end(), adj_list.begin() + bounds[thread_id + n_threads]);

@@ -28,6 +28,8 @@ namespace recomp {
 namespace parallel {
 
 /**
+ * This class is a parallel implementation of the recompression computing a parallel undirected maximum cut based
+ * on the partition computed by parhip.
  *
  * @tparam variable_t The type of non-terminals
  */
@@ -53,7 +55,8 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
         this->name = "parallel_parhip";
     }
 
-    inline parallel_parhip_recompression(std::string& dataset, std::string parhip, std::string dir) : parallel_rnd_recompression<variable_t>(dataset) {
+    inline parallel_parhip_recompression(std::string& dataset, std::string parhip, std::string dir)
+            : parallel_rnd_recompression<variable_t>(dataset) {
         this->name = "parallel_parhip";
         this->parhip = parhip;
         this->dir = dir;
@@ -104,12 +107,13 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
     const variable_t DELETED = std::numeric_limits<variable_t>::max();
 
     /**
-     * @brief TODO: docu
-     * @param text
-     * @param compact_bounds
-     * @param copy_bounds
-     * @param count
-     * @param mapping
+     * @brief Compacts the text by copying the symbols.
+     *
+     * @param text[in,out] The text
+     * @param compact_bounds[in] The bounds for the cores to copy from
+     * @param copy_bounds[in] The bounds for the cores to copy to
+     * @param count[in] The number of found blocks/pairs
+     * @param mapping[in] The mapping of the effective alphabet to the replaced symbols
      */
     inline void compact(text_t& text,
                         const ui_vector<size_t>& compact_bounds,
@@ -174,10 +178,11 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
     }
 
     /**
-     * @brief TODO docu
+     * @brief Computes for each symbol in the text its rank in the alphabet and replaces all symbols with it.
      *
-     * @param text
-     * @param mapping
+     * @param text[in,out] The text
+     * @param rlslp[in] The rlslp
+     * @param mapping[out] The mapping from the rank to the symbol
      */
     inline void compute_mapping(text_t& text,
                                 rlslp<variable_t>& rlslp,
@@ -203,7 +208,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
         ui_vector<size_t> hist_bounds;
 #pragma omp parallel num_threads(this->cores)
         {
-            auto n_threads = (size_t)omp_get_num_threads();
+            auto n_threads = (size_t) omp_get_num_threads();
             auto thread_id = omp_get_thread_num();
 
 #pragma omp single
@@ -279,7 +284,6 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
      * @brief Computes a partitioning (Sigma_l, Sigma_r) of the symbols in the text.
      *
      * @param text[in] The text
-     * @param adj_list[in] The adjacency list of the text (text positions)
      * @param partition[out] The partition
      * @param part_l[out] Indicates which partition set is the first one (@code{false} if symbol with value false
      *                    are in Sigma_l, otherwise all symbols with value true are in Sigma_l)
@@ -291,7 +295,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
 #endif
 
         const size_t n = partition.size();
-        auto* xadj = new idxtype[n + 1];
+        auto *xadj = new idxtype[n + 1];
         xadj[0] = 0;
 
         size_t m = 0;
@@ -300,7 +304,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
             auto c = text[i];
             auto c1 = text[i + 1];
             if (c < c1) {
-                std::swap(c ,c1);
+                std::swap(c, c1);
             }
             if (adjncys[c].find(c1) == adjncys[c].end()) {
                 adjncys[c].insert(std::make_pair(c1, 1));
@@ -313,7 +317,9 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
         std::string data = this->dataset;
         util::replace_all(data, "\\", "");
         std::ofstream out_file;
-        const auto exec = "mpirun -n " + std::to_string(this->cores) + " " + parhip + " " + dir + data + ".graph --k=" + std::to_string(this->cores) + " --preconfiguration=ultrafastsocial --imbalance=3 --save_partition";
+        const auto exec = "mpirun -n " + std::to_string(this->cores) + " " + parhip + " " + dir + data + ".graph --k=" +
+                          std::to_string(this->cores) +
+                          " --preconfiguration=ultrafastsocial --imbalance=3 --save_partition";
         out_file.open(data + ".graph", std::ofstream::out | std::ofstream::trunc);
         out_file << n << " " << ((n * n - (2 * m) - n) / 2) << " \n";
 
@@ -334,7 +340,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
             out_file << "\n";
         }
         out_file.close();
-        
+
 #ifdef BENCH
         const auto endTimeGraph = recomp::timer::now();
         const auto timeSpanGraph = endTimeGraph - startTimeGraph;
@@ -351,7 +357,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
         std::string part_str;
         in_file.seekg(0, std::ios::beg);
 
-        auto* part = new idxtype[n];
+        auto *part = new idxtype[n];
         for (size_t i = 0; i < n; ++i) {
             std::getline(in_file, part_str);
             part[i] = util::str_to_int(part_str);
@@ -438,7 +444,7 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
 #pragma omp parallel num_threads(this->cores) reduction(+:lr_count) reduction(+:rl_count) reduction(+:prod_r) reduction(+:prod_l)
         {
             auto thread_id = omp_get_thread_num();
-            auto n_threads = (size_t)omp_get_num_threads();
+            auto n_threads = (size_t) omp_get_num_threads();
 #pragma omp single
             {
                 bounds.resize(n_threads + 1);
@@ -594,7 +600,8 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
             size_t cb = compact_bounds[thread_id];
             if (cb > 0) {
                 if (cb < text.size()) {
-                    pair_overlaps[thread_id] = (partition[text[cb - 1]] == part_l && partition[text[cb]] != part_l) ? 1 : 0;
+                    pair_overlaps[thread_id] = (partition[text[cb - 1]] == part_l && partition[text[cb]] != part_l) ? 1
+                                                                                                                    : 0;
                 }
                 pair_counts[thread_id] = cb + pair_overlaps[thread_id] - bounds[thread_id];
             }
@@ -709,7 +716,8 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
                 } else {
                     len += 1;
                 }
-                productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2, len);
+                productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(last_char1, last_char2,
+                                                                                                 len);
                 j++;
                 last_var++;
                 text[positions[i]] = last_var;
@@ -734,7 +742,8 @@ class parallel_parhip_recompression : public parallel_rnd_recompression<variable
                     } else {
                         len += 1;
                     }
-                    productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2, len);
+                    productions[nt_count + distinct_pairs[thread_id] + j] = non_terminal<variable_t>(char_i1, char_i2,
+                                                                                                     len);
                     j++;
                     last_var++;
                     text[positions[i]] = last_var;

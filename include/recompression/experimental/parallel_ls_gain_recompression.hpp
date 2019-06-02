@@ -26,6 +26,9 @@ namespace recomp {
 namespace parallel {
 
 /**
+ * This class is a parallel implementation of the recompression computing the undirected maximum cut using local search
+ * based on a random partition. The local search flips only p nodes. Counts also the number of new generated
+ * production rules like parallel_lp_recompression.
  *
  * @tparam variable_t The type of non-terminals
  */
