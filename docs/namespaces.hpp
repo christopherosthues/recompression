@@ -8,6 +8,11 @@
 namespace recomp {
 
 /**
+ * @brief Contains all coders to encode and decode a rlslp.
+ */
+namespace coder {}
+
+/**
  * @brief Contains LCE query algorithms.
  */
 namespace lce_query {}

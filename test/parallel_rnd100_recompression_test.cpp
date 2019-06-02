@@ -15,7 +15,7 @@ typedef parallel::parallel_rnd_recompression<var_t>::partition_t partition_t;
 typedef parallel::parallel_rnd_recompression<var_t>::alphabet_t alphabet_t;
 typedef parallel::parallel_rnd_recompression<var_t>::bv_t bv_t;
 
-int k = 100;
+size_t k = 100;
 
 TEST(parallel_rnd5_bcomp, no_block) {
     text_t text = util::create_ui_vector(std::vector<var_t>{2, 1, 2, 1, 4, 1, 3, 2, 3, 1, 4, 1, 3, 4, 1, 3, 2, 3, 1, 4, 1, 3, 2, 1});
