@@ -7,8 +7,8 @@ We provide a doxygen generated API reference which lists all types, classes and 
 ## Requirements
 This library requires:
 
-* A C++14 compiler such as g++ 7.3 or higher.
-* A 64-bit operating system (I've only tested on Linux).
+* A C++14 compiler such as g++ 7.3 or higher
+* A 64-bit operating system
 * The cmake build system
 
 ### Dependencies
