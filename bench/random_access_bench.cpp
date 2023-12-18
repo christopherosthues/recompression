@@ -14,7 +14,7 @@
 int main(int argc, char *argv[]) {
     tlx::CmdlineParser cmd;
     cmd.set_description("Benchmark for runtime experiments of random access queries");
-    cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
+    cmd.set_author("Christopher Osthues");
 
     std::string path;
     cmd.add_param_string("path", path, "The path to the directory containing the files");

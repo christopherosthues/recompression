@@ -10,7 +10,7 @@
 int main(int argc, char *argv[]) {
     tlx::CmdlineParser cmd;
     cmd.set_description("Reads the given files, removes the zero symbol and writes it to <filename>_wz.");
-    cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
+    cmd.set_author("Christopher Osthues");
 
     std::string path;
     cmd.add_param_string("path", path, "The path to the directory containing the files");

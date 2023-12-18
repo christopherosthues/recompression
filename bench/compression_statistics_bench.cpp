@@ -12,7 +12,7 @@
 int main(int argc, char *argv[]) {
     tlx::CmdlineParser cmd;
     cmd.set_description("Generates the rlslp from the recompression and stores it using the given coder.");
-    cmd.set_author("Christopher Osthues <osthues.christopher@web.de>");
+    cmd.set_author("Christopher Osthues");
 
     std::string path;
     cmd.add_param_string("path", path, "The path to the directory containing the files");

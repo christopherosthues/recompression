@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 
-option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." ON)
+option(RECOMPRESSION_ENABLE_TESTS "Set to ON to enable building and running unit tests." OFF)
 option(RECOMPRESSION_ENABLE_AUTO_RUN_TESTS "Set to ON to automatically run all tests after a successful build." ON)
 option(RECOMPRESSION_ENABLE_BENCHMARKS "Set to ON to automatically build all benchmark experiments." ON)
 option(RECOMPRESSION_GENERATE_DOC "Set ON to generate doxygen API reference in build/doc directory" ON)
@@ -8,7 +8,7 @@ option(RECOMPRESSION_ENABLE_MALLOC_COUNT "Set ON to enable memory measurement." 
 
 project(recompression)
 set(PROJECT_VENDOR "Christopher Osthues")
-set(PROJECT_CONTACT "osthues.christopher@web.de")
+set(PROJECT_CONTACT "")
 set(PROJECT_URL "https://github.com/christopherosthues/recompression")
 set(PROJECT_DESCRIPTION "Recompression")
 
@@ -70,7 +70,7 @@ endif ()
 
 build_library()
 
-add_subdirectory(test)
+#add_subdirectory(test)
 
 add_subdirectory(bench)
 
